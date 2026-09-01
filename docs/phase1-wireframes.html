@@ -1,0 +1,1231 @@
+<title>Pharmatiya Wireframe Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root {
+  /* Strictly greyscale. A wireframe should carry no colour decisions —
+     hierarchy here comes from value, weight and border style only.
+     Single-theme by intent: this page stays grey-on-white in any host theme. */
+  --bg:        #e9e9e9;
+  --frame:     #ffffff;
+  --band:      #f4f4f4;
+  --band-dark: #dcdcdc;
+  --ink:       #1a1a1a;
+  --ink-mid:   #5f5f5f;
+  --ink-soft:  #8c8c8c;
+  --line:      #c4c4c4;
+  --line-soft: #dedede;
+  --fill:      #d4d4d4;
+  --fill-soft: #e8e8e8;
+  --mark:      #2e2e2e;
+  --mark-soft: #dedede;
+  --warn:      #6e6e6e;
+
+  --mono: 'IBM Plex Mono', 'Cascadia Mono', Consolas, monospace;
+  --sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ TOOLBAR ═══════════════════════════════════════════════ */
+
+.toolbar {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--frame);
+  border-bottom: 1px solid var(--line);
+}
+.toolbar__inner {
+  width: min(100% - 2rem, 78rem); margin-inline: auto;
+  display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.5rem;
+  padding: .7rem 0;
+}
+.brandmark {
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-soft); margin-right: auto;
+}
+.brandmark b { color: var(--ink); font-weight: 500; }
+
+[role="tablist"] { display: flex; flex-wrap: wrap; gap: .25rem; }
+
+.tab {
+  font-family: var(--mono); font-size: .74rem; letter-spacing: .04em;
+  padding: .42rem .7rem; border: 1px solid transparent; border-radius: 2px;
+  background: none; color: var(--ink-mid); cursor: pointer; white-space: nowrap;
+}
+.tab:hover { background: var(--band); color: var(--ink); }
+.tab[aria-selected="true"] {
+  background: var(--mark-soft); border-color: var(--mark); color: var(--mark);
+}
+.tab:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+
+.ctrls { display: flex; gap: .4rem; align-items: center; }
+.seg { display: flex; border: 1px solid var(--line); border-radius: 2px; overflow: hidden; }
+.seg button {
+  font-family: var(--mono); font-size: .7rem; padding: .38rem .68rem;
+  background: var(--frame); color: var(--ink-mid); border: 0; cursor: pointer;
+}
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--fill); color: var(--ink); }
+.seg button:focus-visible { outline: 2px solid var(--mark); outline-offset: -2px; }
+
+/* ═══ STAGE ═════════════════════════════════════════════════ */
+
+.stage { width: min(100% - 2rem, 78rem); margin: 1.5rem auto 4rem; }
+
+.pagemeta {
+  display: flex; flex-wrap: wrap; gap: .4rem 1.5rem; align-items: baseline;
+  font-family: var(--mono); font-size: .72rem; color: var(--ink-soft);
+  margin-bottom: .9rem; padding-bottom: .7rem; border-bottom: 1px solid var(--line);
+}
+.pagemeta b { color: var(--ink); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
+.pagemeta .cta { color: var(--mark); }
+
+.canvas {
+  background: var(--frame); border: 1px solid var(--line);
+  margin-inline: auto; transition: max-width .25s ease;
+  overflow: hidden;
+}
+[data-viewport="desktop"] .canvas { max-width: 100%; }
+[data-viewport="mobile"] .canvas { max-width: 375px; border-width: 8px; border-radius: 18px; border-color: var(--band-dark); }
+
+[hidden] { display: none !important; }
+
+/* ═══ WIREFRAME PRIMITIVES ══════════════════════════════════ */
+
+.wf { padding: 0; }
+
+.sect {
+  padding: 2rem 1.75rem; border-bottom: 1px solid var(--line-soft);
+  position: relative;
+}
+[data-viewport="mobile"] .sect { padding: 1.25rem 1rem; }
+.sect--band { background: var(--band); }
+.sect--dark { background: var(--band-dark); }
+.sect--bleed { background: var(--band); }
+
+.slabel {
+  font-family: var(--mono); font-size: .62rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-soft); margin: 0 0 .9rem;
+  display: flex; align-items: center; gap: .5rem;
+}
+.slabel::after { content: ""; flex: 1; height: 1px; background: var(--line-soft); }
+
+/* text simulation */
+.tx { background: var(--fill); border-radius: 1px; height: .55rem; margin-bottom: .4rem; }
+.tx:last-child { margin-bottom: 0; }
+.tx.w90 { width: 90%; } .tx.w80 { width: 80%; } .tx.w70 { width: 70%; }
+.tx.w60 { width: 60%; } .tx.w45 { width: 45%; } .tx.w30 { width: 30%; }
+.txblock { margin-bottom: 1rem; }
+
+/* real headings kept legible — content architecture must be reviewable */
+.hd {
+  font-size: 1.55rem; line-height: 1.15; font-weight: 600; margin: 0 0 .6rem;
+  letter-spacing: -.015em; max-width: 22ch;
+}
+[data-viewport="mobile"] .hd { font-size: 1.15rem; }
+.hd--sm { font-size: 1.05rem; max-width: 30ch; }
+[data-viewport="mobile"] .hd--sm { font-size: .95rem; }
+.eyebrow {
+  font-family: var(--mono); font-size: .62rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-soft); margin: 0 0 .7rem;
+}
+.sub { font-size: .82rem; color: var(--ink-mid); margin: 0 0 1rem; max-width: 46ch; }
+
+/* placeholder media / charts */
+.ph {
+  border: 1px dashed var(--line); border-radius: 2px;
+  background-image: repeating-linear-gradient(-45deg, transparent 0 7px, var(--line-soft) 7px 8px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: .3rem; padding: 1rem; text-align: center; min-height: 8rem;
+}
+.ph b {
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--ink-mid); font-weight: 500;
+}
+.ph span { font-family: var(--mono); font-size: .6rem; color: var(--ink-soft); }
+.ph--tall { min-height: 12rem; }
+.ph--short { min-height: 5.5rem; }
+
+/* boxes */
+.box { border: 1px solid var(--line); border-radius: 2px; padding: .9rem; background: var(--frame); }
+.box__t {
+  font-family: var(--mono); font-size: .64rem; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-mid); margin: 0 0 .5rem;
+}
+
+/* buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .06em;
+  text-transform: uppercase; padding: .6rem 1rem; border-radius: 2px;
+  background: var(--fill); color: var(--ink); border: 1px solid var(--line);
+  cursor: pointer; text-decoration: none; min-height: 2.4rem;
+}
+.btn--primary { background: var(--mark); border-color: var(--mark); color: var(--frame); }
+.btn--ghost { background: transparent; }
+.btn:hover { filter: brightness(.94); }
+.btn:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+.btn--full { width: 100%; }
+
+.lnk {
+  font-family: var(--mono); font-size: .68rem; color: var(--mark);
+  background: none; border: 0; padding: .3rem 0; cursor: pointer; text-align: left;
+  text-decoration: underline; text-underline-offset: .2em;
+}
+.lnk:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+
+/* layout splits */
+.row { display: grid; gap: 1.5rem; align-items: start; }
+.r6040 { grid-template-columns: 6fr 4fr; }
+.r4060 { grid-template-columns: 4fr 6fr; }
+.r6535 { grid-template-columns: 65fr 35fr; }
+.r3565 { grid-template-columns: 35fr 65fr; }
+.r5050 { grid-template-columns: 1fr 1fr; }
+.r3col { grid-template-columns: repeat(3, 1fr); }
+.r4col { grid-template-columns: repeat(4, 1fr); }
+[data-viewport="mobile"] .row { grid-template-columns: 1fr !important; gap: 1rem; }
+[data-viewport="mobile"] .r4col { grid-template-columns: 1fr 1fr !important; }
+
+/* proof figures */
+.fig { }
+.fig b { display: block; font-size: 1.7rem; font-weight: 600; line-height: 1; letter-spacing: -.02em; }
+[data-viewport="mobile"] .fig b { font-size: 1.3rem; }
+.fig span { font-family: var(--mono); font-size: .62rem; color: var(--ink-soft); display: block; margin-top: .35rem; }
+.fig--todo b { color: var(--warn); font-family: var(--mono); font-size: .8rem; }
+
+/* header + footer chrome inside canvas */
+.chrome {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  padding: .8rem 1.75rem; border-bottom: 1px solid var(--line);
+  background: var(--frame); position: relative;
+}
+[data-viewport="mobile"] .chrome { padding: .7rem 1rem; }
+.chrome__logo { font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; font-weight: 500; }
+.chrome__nav { display: flex; gap: .9rem; margin-left: auto; }
+.chrome__nav button {
+  font-family: var(--mono); font-size: .64rem; color: var(--ink-mid);
+  background: none; border: 0; cursor: pointer; padding: .2rem 0;
+  border-bottom: 2px solid transparent;
+}
+.chrome__nav button:hover { color: var(--ink); }
+.chrome__nav button.on { color: var(--ink); border-bottom-color: var(--mark); }
+.chrome__nav button:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+.burger { margin-left: auto; font-family: var(--mono); font-size: .8rem; border: 1px solid var(--line); background: var(--band); padding: .35rem .6rem; border-radius: 2px; cursor: pointer; }
+
+[data-viewport="desktop"] .m-only { display: none !important; }
+[data-viewport="mobile"] .d-only { display: none !important; }
+
+/* sticky mobile cta */
+.mbar {
+  position: sticky; bottom: 0; padding: .6rem 1rem;
+  background: var(--frame); border-top: 1px solid var(--line);
+}
+
+/* stack helper */
+.stack { display: grid; gap: .75rem; }
+.stack--tight { gap: .45rem; }
+.inline { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+
+/* coverage bars */
+.cov { display: grid; gap: .5rem; }
+.cov div { display: grid; grid-template-columns: 6.5rem 1fr; gap: .7rem; align-items: center; }
+[data-viewport="mobile"] .cov div { grid-template-columns: 1fr; gap: .2rem; }
+.cov span { font-family: var(--mono); font-size: .64rem; color: var(--ink-mid); }
+.bar { height: .6rem; background: var(--fill-soft); border: 1px solid var(--line-soft); border-radius: 1px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--fill); }
+
+/* workflow */
+.flowsteps { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; align-items: stretch; }
+[data-viewport="mobile"] .flowsteps { grid-template-columns: 1fr; }
+.step { border: 1px solid var(--line); border-radius: 2px; padding: .8rem; background: var(--frame); position: relative; }
+.step em {
+  font-family: var(--mono); font-style: normal; font-size: .62rem;
+  color: var(--ink-soft); display: block; margin-bottom: .35rem;
+}
+.step b { display: block; font-family: var(--mono); font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; margin-bottom: .4rem; }
+.step p { margin: 0; font-size: .75rem; color: var(--ink-mid); }
+.arrow { font-family: var(--mono); color: var(--ink-soft); text-align: center; font-size: .8rem; }
+[data-viewport="desktop"] .arrow--v { display: none; }
+[data-viewport="mobile"] .arrow--h { display: none; }
+.reviewbar {
+  margin-top: .7rem; border: 1px solid var(--mark); background: var(--mark-soft);
+  border-radius: 2px; padding: .6rem .8rem;
+  font-family: var(--mono); font-size: .66rem; color: var(--mark);
+}
+
+/* form sim */
+.field { display: grid; gap: .3rem; }
+.field span { font-family: var(--mono); font-size: .62rem; color: var(--ink-mid); }
+.field i { display: block; height: 2.4rem; border: 1px solid var(--line); border-radius: 2px; background: var(--fill-soft); }
+.field i.ta { height: 4.5rem; }
+.routecards { display: grid; grid-template-columns: repeat(3,1fr); gap: .7rem; }
+[data-viewport="mobile"] .routecards { grid-template-columns: 1fr; }
+.route {
+  border: 1px solid var(--line); border-radius: 2px; padding: .8rem;
+  cursor: pointer; background: var(--frame); text-align: left; font: inherit; color: inherit;
+}
+.route[aria-pressed="true"] { border-color: var(--mark); box-shadow: inset 0 0 0 1px var(--mark); background: var(--mark-soft); }
+.route:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+.route b { display: block; font-family: var(--mono); font-size: .66rem; letter-spacing: .06em; text-transform: uppercase; margin-bottom: .3rem; }
+.route p { margin: 0; font-size: .74rem; color: var(--ink-mid); }
+.condit { border-left: 2px solid var(--mark); padding-left: .8rem; }
+
+/* annotations */
+.anno {
+  border-left: 3px dashed var(--warn); background: var(--band);
+  padding: .6rem .8rem; margin-top: 1rem;
+  font-size: .76rem; color: var(--ink-mid);
+}
+.anno b { font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--warn); display: block; margin-bottom: .25rem; }
+[data-notes="off"] .anno { display: none; }
+
+/* Blocked-on-client-input markers. With colour removed, the dashed border
+   and the band do the distinguishing. */
+.todo {
+  display: inline-block; font-family: var(--mono); font-size: .6rem;
+  letter-spacing: .06em; color: var(--warn); border: 1px dashed var(--warn);
+  background: var(--band); padding: .12em .4em; border-radius: 2px;
+}
+
+.footwf { padding: 1.5rem 1.75rem; background: var(--band); }
+[data-viewport="mobile"] .footwf { padding: 1.25rem 1rem; }
+
+.legend {
+  margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: .5rem 1.5rem;
+  font-family: var(--mono); font-size: .66rem; color: var(--ink-soft);
+}
+.legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.key { width: 1.1rem; height: .7rem; border-radius: 1px; display: inline-block; }
+.key--ph { border: 1px dashed var(--line); background-image: repeating-linear-gradient(-45deg, transparent 0 5px, var(--line-soft) 5px 6px); }
+.key--tx { background: var(--fill); }
+.key--mark { background: var(--mark); }
+.key--warn { border: 1px dashed var(--warn); background: var(--band); }
+</style>
+
+<div data-viewport="desktop" data-notes="on" id="root">
+
+<div class="toolbar">
+  <div class="toolbar__inner">
+    <p class="brandmark"><b>Pharmatiya</b> &nbsp;Phase 1 wireframes &nbsp;&middot;&nbsp; low fidelity</p>
+
+    <div role="tablist" aria-label="Pages">
+      <button class="tab" role="tab" id="tab-home" aria-controls="p-home" aria-selected="true">Home</button>
+      <button class="tab" role="tab" id="tab-services" aria-controls="p-services" aria-selected="false">Services</button>
+      <button class="tab" role="tab" id="tab-evidence" aria-controls="p-evidence" aria-selected="false">Evidence</button>
+      <button class="tab" role="tab" id="tab-nextgen" aria-controls="p-nextgen" aria-selected="false">NextGen AI</button>
+      <button class="tab" role="tab" id="tab-about" aria-controls="p-about" aria-selected="false">About</button>
+      <button class="tab" role="tab" id="tab-contact" aria-controls="p-contact" aria-selected="false">Contact</button>
+    </div>
+
+    <div class="ctrls">
+      <div class="seg" role="group" aria-label="Viewport">
+        <button id="vp-desktop" aria-pressed="true">Desktop</button>
+        <button id="vp-mobile" aria-pressed="false">375px</button>
+      </div>
+      <div class="seg">
+        <button id="notes-toggle" aria-pressed="true">Notes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stage">
+
+<!-- ══════════════════ HOME ══════════════════ -->
+<div id="p-home" role="tabpanel" aria-labelledby="tab-home" tabindex="-1">
+  <div class="pagemeta">
+    <b>Home</b>
+    <span>Objective: state what Pharmatiya does, for whom, with what proof &mdash; in one screen</span>
+    <span class="cta">Primary: Book a consultation</span>
+    <span>Secondary: Explore the evidence</span>
+  </div>
+
+  <div class="canvas">
+    <div class="wf">
+
+      <div class="chrome">
+        <span class="chrome__logo">PHARMATIYA HEALTH</span>
+        <nav class="chrome__nav d-only">
+          <button class="on" data-go="home">Services</button>
+          <button data-go="services">Evidence</button>
+          <button data-go="evidence">NextGen AI</button>
+          <button data-go="nextgen">About</button>
+          <button data-go="contact">Contact</button>
+        </nav>
+        <button class="btn btn--primary d-only" data-go="contact" style="margin-left:1rem">Book a consultation</button>
+        <button class="burger m-only" data-go="contact">☰</button>
+      </div>
+
+      <!-- HERO -->
+      <div class="sect">
+        <div class="row r6040">
+          <div>
+            <p class="eyebrow">HEOR &middot; RWE &middot; Market access</p>
+            <h2 class="hd">Health economics and real-world evidence for teams that have to defend the result.</h2>
+            <div class="txblock">
+              <div class="tx w90"></div><div class="tx w80"></div><div class="tx w60"></div>
+            </div>
+            <div class="inline">
+              <button class="btn btn--primary" data-go="contact">Book a consultation</button>
+              <button class="lnk" data-go="evidence">Explore the evidence &rarr;</button>
+            </div>
+          </div>
+          <div class="ph ph--tall">
+            <b>Kaplan&ndash;Meier figure</b>
+            <span>two-arm survival curve</span>
+            <span class="todo">ILLUSTRATIVE &middot; Fig. 1</span>
+          </div>
+        </div>
+        <div class="anno">
+          <b>Note &mdash; mobile order</b>
+          On 375px the figure moves <em>below</em> the copy and CTA, so the positioning statement and primary action are both visible without scrolling. Switch the viewport toggle to see it.
+        </div>
+      </div>
+
+      <!-- PROOF -->
+      <div class="sect sect--band">
+        <p class="slabel">Proof figures</p>
+        <div class="row r4col">
+          <div class="fig"><b>25+</b><span>years of practice</span></div>
+          <div class="fig"><b>1,000+</b><span>study synopses</span></div>
+          <div class="fig fig--todo"><b>[TO PROVIDE]</b><span>therapeutic areas</span></div>
+          <div class="fig fig--todo"><b>[TO PROVIDE]</b><span>datasets worked</span></div>
+        </div>
+        <div style="margin-top:1rem"><button class="lnk" data-go="evidence">See the evidence &rarr;</button></div>
+        <div class="anno">
+          <b>Note &mdash; unverified figure</b>
+          &ldquo;1,000+ synopses&rdquo; appears only in the brief and is not corroborated on the current site. It stays flagged until you confirm it.
+        </div>
+      </div>
+
+      <!-- SERVICES -->
+      <div class="sect">
+        <p class="slabel">What we do &mdash; three editorial rows, alternating split</p>
+
+        <div class="stack" style="gap:1.75rem">
+          <div class="row r6535">
+            <div>
+              <h3 class="hd hd--sm">Evidence generation</h3>
+              <p class="sub">Your trial answered a controlled question. Payers are asking an uncontrolled one.</p>
+              <div class="txblock"><div class="tx w90"></div><div class="tx w70"></div></div>
+              <button class="lnk" data-go="services">See this service &rarr;</button>
+            </div>
+            <div class="ph d-only"><b>Forest plot</b><span>4 subgroups, 95% CI</span><span class="todo">Fig. 2</span></div>
+          </div>
+
+          <div class="row r3565">
+            <div class="ph d-only"><b>Cohort attrition</b><span>n &rarr; n &rarr; n</span><span class="todo">Fig. 3</span></div>
+            <div>
+              <h3 class="hd hd--sm">Real-world data analytics</h3>
+              <p class="sub">You hold claims or EHR data and no analytic capacity to interrogate it.</p>
+              <div class="txblock"><div class="tx w90"></div><div class="tx w60"></div></div>
+              <button class="lnk" data-go="services">See this service &rarr;</button>
+            </div>
+          </div>
+
+          <div class="row r6535">
+            <div>
+              <h3 class="hd hd--sm">Access &amp; value strategy</h3>
+              <p class="sub">You have the evidence. The payer conversation still stalls.</p>
+              <div class="txblock"><div class="tx w80"></div><div class="tx w70"></div></div>
+              <button class="lnk" data-go="services">See this service &rarr;</button>
+            </div>
+            <div class="ph d-only"><b>Cost-effectiveness plane</b><span>4 quadrants, WTP line</span><span class="todo">Fig. 4</span></div>
+          </div>
+        </div>
+
+        <div class="anno">
+          <b>Note &mdash; fixes a live defect</b>
+          Each row deep-links to its own anchor on Services. On the current site all three teasers point at the same page and Services is absent from the nav entirely. Graphics are dropped on mobile rather than shrunk &mdash; a forest plot at 375px is illegible.
+        </div>
+      </div>
+
+      <!-- COVERAGE -->
+      <div class="sect sect--bleed">
+        <p class="slabel">Data &amp; therapeutic coverage &mdash; full-bleed band</p>
+        <div class="cov">
+          <div><span>Payer</span><div class="bar"><i style="width:80%"></i></div></div>
+          <div><span>PBM</span><div class="bar"><i style="width:60%"></i></div></div>
+          <div><span>Claims</span><div class="bar"><i style="width:90%"></i></div></div>
+          <div><span>EMR / EHR</span><div class="bar"><i style="width:70%"></i></div></div>
+          <div><span>Lab</span><div class="bar"><i style="width:50%"></i></div></div>
+          <div><span>Registry</span><div class="bar"><i style="width:40%"></i></div></div>
+        </div>
+        <p class="sub" style="margin-top:1rem">Therapeutic areas <span class="todo">PHARMATIYA TO PROVIDE</span></p>
+        <button class="lnk" data-go="evidence">Full coverage detail &rarr;</button>
+      </div>
+
+      <!-- NEXTGEN -->
+      <div class="sect sect--dark">
+        <p class="slabel">NextGen AI &mdash; inverted panel, the only one on the page</p>
+        <div class="row r4060">
+          <div>
+            <h3 class="hd hd--sm">AI-assisted evidence synopses, reviewed by the people who would have written them.</h3>
+            <button class="btn btn--primary" data-go="nextgen" style="margin-top:.6rem">Explore NextGen AI</button>
+          </div>
+          <div>
+            <div class="flowsteps">
+              <div class="step"><em>①</em><b>Feasibility</b></div>
+              <div class="step"><em>②</em><b>Retrospective</b></div>
+              <div class="step"><em>③</em><b>Pragmatic outreach</b></div>
+            </div>
+            <div class="reviewbar">✓ No PHI uploaded &nbsp; ✓ Human expert review &nbsp; ✓ Model disclosed</div>
+          </div>
+        </div>
+        <div class="anno">
+          <b>Note &mdash; why inverted</b>
+          Tonal inversion marks a different kind of offering without a gradient or a glow. The workflow rotates to vertical on mobile &mdash; the single adaptation that most affects comprehension on a phone.
+        </div>
+      </div>
+
+      <!-- CREDIBILITY -->
+      <div class="sect">
+        <div class="row r6535">
+          <div style="max-width:44ch">
+            <p class="sub" style="font-size:.95rem">Twenty-five years, including building the organic Outcomes Research division at <span class="todo">PENDING CLEARANCE</span>.</p>
+            <button class="lnk" data-go="about">About Pharmatiya &rarr;</button>
+          </div>
+          <div></div>
+        </div>
+      </div>
+
+      <!-- CLOSING CTA -->
+      <div class="sect sect--band">
+        <div class="row r6040">
+          <div>
+            <h3 class="hd hd--sm">Start with a conversation about the question you are trying to answer.</h3>
+            <p class="sub">A 30-minute call with a senior researcher. No sales team.</p>
+          </div>
+          <div class="stack stack--tight">
+            <button class="btn btn--primary btn--full" data-go="contact">Book a consultation</button>
+            <button class="lnk" data-go="contact">Or email us &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footwf">
+        <div class="row r6040">
+          <div>
+            <p class="eyebrow">Pharmatiya Health</p>
+            <div class="tx w45"></div><div class="tx w60"></div>
+            <p class="sub" style="font-size:.7rem; margin-top:.6rem">New York, NY 10280 &middot; admin@pharmatiya.net <span class="todo">real mailto</span></p>
+          </div>
+          <div class="box">
+            <p class="box__t">Quarterly Insights Digest</p>
+            <div class="inline">
+              <i style="flex:1; min-width:8rem; height:2.2rem; border:1px solid var(--line); border-radius:2px; background:var(--fill-soft)"></i>
+              <button class="btn">Subscribe</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mbar m-only">
+        <button class="btn btn--primary btn--full" data-go="contact">Book a consultation</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ SERVICES ══════════════════ -->
+<div id="p-services" role="tabpanel" aria-labelledby="tab-services" tabindex="-1" hidden>
+  <div class="pagemeta">
+    <b>Services</b>
+    <span>Objective: let a buyer locate their problem and see the matching approach</span>
+    <span class="cta">Primary: Discuss this engagement</span>
+    <span>Secondary: See the methods &rarr; Evidence</span>
+  </div>
+
+  <div class="canvas">
+    <div class="wf">
+      <div class="chrome">
+        <span class="chrome__logo">PHARMATIYA HEALTH</span>
+        <nav class="chrome__nav d-only">
+          <button class="on" data-go="services">Services</button>
+          <button data-go="evidence">Evidence</button>
+          <button data-go="nextgen">NextGen AI</button>
+          <button data-go="about">About</button>
+          <button data-go="contact">Contact</button>
+        </nav>
+        <button class="btn btn--primary d-only" data-go="contact" style="margin-left:1rem">Book a consultation</button>
+        <button class="burger m-only">☰</button>
+      </div>
+
+      <div class="sect">
+        <div class="row r6040">
+          <div>
+            <p class="eyebrow">Services</p>
+            <h2 class="hd">Three engagement types. Most projects combine two.</h2>
+            <p class="sub">Each begins with the question you need answered, not with a package.</p>
+          </div>
+          <div class="box">
+            <p class="box__t">On this page</p>
+            <div class="stack stack--tight">
+              <button class="lnk">· Evidence generation</button>
+              <button class="lnk">· Real-world data analytics</button>
+              <button class="lnk">· Access &amp; value strategy</button>
+            </div>
+          </div>
+        </div>
+        <div class="anno">
+          <b>Note &mdash; landing target</b>
+          This index is where the homepage deep links arrive, so a visitor lands on their service and can still see the other two exist.
+        </div>
+      </div>
+
+      <!-- SERVICE 01 -->
+      <div class="sect">
+        <p class="slabel">Service 01 &mdash; #evidence-generation</p>
+        <div class="row r6535">
+          <div class="stack">
+            <div>
+              <p class="eyebrow">The problem</p>
+              <h3 class="hd hd--sm">Your trial answered a controlled question. Payers and HTA bodies are asking an uncontrolled one.</h3>
+            </div>
+            <div>
+              <p class="eyebrow">Our approach</p>
+              <div class="tx w90"></div><div class="tx w80"></div><div class="tx w70"></div>
+            </div>
+          </div>
+          <div class="ph ph--tall d-only">
+            <b>Kaplan&ndash;Meier, two arms</b>
+            <span>with number-at-risk table</span>
+            <span class="todo">ILLUSTRATIVE &middot; Fig. 2.1</span>
+          </div>
+        </div>
+
+        <div class="row r5050" style="margin-top:1.5rem">
+          <div class="box">
+            <p class="box__t">Methodology</p>
+            <div class="stack stack--tight">
+              <p class="sub" style="margin:0; font-size:.76rem">Study design &amp; feasibility · Protocol development · Survival analysis · Propensity scoring · Multivariate modelling</p>
+            </div>
+          </div>
+          <div class="box">
+            <p class="box__t">Deliverables</p>
+            <p class="sub" style="margin:0; font-size:.76rem">Protocol document · Statistical analysis plan · Analysis datasets &amp; code · Results report + interpretation <span class="todo">CONFIRM FULL LIST</span></p>
+          </div>
+        </div>
+
+        <div class="box" style="margin-top:1rem">
+          <p class="box__t">Proof</p>
+          <div class="inline">
+            <span class="todo">RELATED CASE STUDY — TO PROVIDE</span>
+            <button class="lnk" data-go="evidence">Methods detail &rarr; Evidence</button>
+          </div>
+        </div>
+
+        <div style="margin-top:1rem">
+          <button class="btn btn--primary" data-go="contact">Discuss an evidence-generation project</button>
+        </div>
+      </div>
+
+      <!-- SERVICE 02 -->
+      <div class="sect sect--band">
+        <p class="slabel">Service 02 &mdash; #rwe-analytics &nbsp;&middot;&nbsp; layout mirrored</p>
+        <div class="row r3565">
+          <div class="ph ph--tall d-only">
+            <b>Cohort attrition diagram</b>
+            <span>source → inclusion → exclusion → final</span>
+            <span class="todo">ILLUSTRATIVE &middot; Fig. 2.2</span>
+          </div>
+          <div class="stack">
+            <div>
+              <p class="eyebrow">The problem</p>
+              <h3 class="hd hd--sm">You hold claims or EHR data and no analytic capacity to use it.</h3>
+            </div>
+            <div>
+              <p class="eyebrow">Methodology</p>
+              <p class="sub" style="font-size:.76rem">SQL extraction (Hadoop, Teradata, TOAD) · SAS / SPSS analysis · Logistic regression, ANOVA · ML on hierarchical files</p>
+            </div>
+            <div class="inline">
+              <button class="btn btn--primary" data-go="contact">Discuss an analytics project</button>
+            </div>
+          </div>
+        </div>
+        <div class="anno">
+          <b>Note &mdash; why mirrored</b>
+          The information spine is identical across all three services so they stay comparable; the layout inverts so the page does not read as three stacked clones.
+        </div>
+      </div>
+
+      <!-- SERVICE 03 -->
+      <div class="sect">
+        <p class="slabel">Service 03 &mdash; #access-strategy</p>
+        <div class="row r6535">
+          <div class="stack">
+            <div>
+              <p class="eyebrow">The problem</p>
+              <h3 class="hd hd--sm">You have the evidence. The payer conversation still stalls.</h3>
+            </div>
+            <div>
+              <p class="eyebrow">Deliverables</p>
+              <p class="sub" style="font-size:.76rem">Value dossier · Value-based contract framework · Payer-ready summary</p>
+            </div>
+            <div><button class="btn btn--primary" data-go="contact">Discuss an access engagement</button></div>
+          </div>
+          <div class="ph d-only"><b>Cost-effectiveness plane</b><span>4 quadrants, WTP threshold</span><span class="todo">Fig. 2.3</span></div>
+        </div>
+      </div>
+
+      <div class="sect sect--band">
+        <p class="slabel">Engagement model</p>
+        <p class="sub"><span class="todo">PHARMATIYA TO PROVIDE</span> &mdash; pricing guidance or engagement model. Omitted entirely if not supplied; no placeholder pricing will ship.</p>
+      </div>
+
+      <div class="footwf"><div class="tx w30"></div><div class="tx w45"></div></div>
+      <div class="mbar m-only"><button class="btn btn--primary btn--full" data-go="contact">Book a consultation</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ EVIDENCE ══════════════════ -->
+<div id="p-evidence" role="tabpanel" aria-labelledby="tab-evidence" tabindex="-1" hidden>
+  <div class="pagemeta">
+    <b>Evidence</b>
+    <span>Objective: answer &ldquo;why should we believe you can do this?&rdquo;</span>
+    <span class="cta">Primary: Book a consultation</span>
+    <span>Secondary: Request a sample deliverable</span>
+  </div>
+
+  <div class="canvas">
+    <div class="wf">
+      <div class="chrome">
+        <span class="chrome__logo">PHARMATIYA HEALTH</span>
+        <nav class="chrome__nav d-only">
+          <button data-go="services">Services</button>
+          <button class="on" data-go="evidence">Evidence</button>
+          <button data-go="nextgen">NextGen AI</button>
+          <button data-go="about">About</button>
+          <button data-go="contact">Contact</button>
+        </nav>
+        <button class="btn btn--primary d-only" data-go="contact" style="margin-left:1rem">Book a consultation</button>
+        <button class="burger m-only">☰</button>
+      </div>
+
+      <div class="sect">
+        <p class="eyebrow">Evidence</p>
+        <h2 class="hd">What we have done, with which data, by which methods.</h2>
+        <p class="sub">Client work is confidential. What follows is anonymised, and every method described is one we have executed.</p>
+      </div>
+
+      <div class="sect">
+        <p class="slabel">Case studies &mdash; 2 to 3</p>
+        <div class="stack">
+          <div class="box">
+            <div class="inline" style="justify-content:space-between">
+              <p class="box__t" style="margin:0">Case 01</p>
+              <span class="todo">THERAPEUTIC AREA — TO PROVIDE</span>
+            </div>
+            <div class="row r5050" style="margin-top:.8rem">
+              <div class="stack stack--tight">
+                <p class="eyebrow" style="margin:0">Challenge</p><div class="tx w90"></div><div class="tx w70"></div>
+                <p class="eyebrow" style="margin:.5rem 0 0">Dataset</p><div class="tx w80"></div>
+                <p class="eyebrow" style="margin:.5rem 0 0">Methodology</p><div class="tx w90"></div><div class="tx w60"></div>
+              </div>
+              <div class="stack stack--tight">
+                <p class="eyebrow" style="margin:0">Approach</p><div class="tx w80"></div><div class="tx w60"></div>
+                <p class="eyebrow" style="margin:.5rem 0 0">Outcome</p>
+                <div class="ph ph--short"><b>Result figure</b><span>supplied with case</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="box" style="opacity:.6">
+            <p class="box__t">Case 02 &mdash; same spine, figure position alternates</p>
+            <div class="tx w90"></div><div class="tx w70"></div>
+          </div>
+        </div>
+        <div class="anno">
+          <b>Note &mdash; fabrication guard</b>
+          Until case material arrives (input 2, before Week 4) this section renders as a single honest statement of confidentiality plus a contact route. It ships <em>omitted, not filled</em>. No outcome, client or result will be invented to complete a layout.
+        </div>
+      </div>
+
+      <div class="sect sect--bleed">
+        <p class="slabel">Dataset coverage &mdash; full-bleed</p>
+        <div class="row r3col">
+          <div class="box"><p class="box__t">Payer</p><p class="sub" style="font-size:.76rem;margin:0">Medical · Eligibility · Formulary</p></div>
+          <div class="box"><p class="box__t">Provider</p><p class="sub" style="font-size:.76rem;margin:0">EMR · EHR · Registry</p></div>
+          <div class="box"><p class="box__t">Claims / pharmacy</p><p class="sub" style="font-size:.76rem;margin:0">Pharmacy Rx · Medical · External lab</p></div>
+        </div>
+        <div class="anno">
+          <b>Note &mdash; input 4 dependency</b>
+          Dataset <em>types</em> always display. Named sources (Aetna/CVS, Cigna, Intermountain, Select Health, Express Scripts, Komodo, MedStar) display only if cleared for public use. Until then: <span class="todo">PENDING CLIENT CLEARANCE</span>
+        </div>
+      </div>
+
+      <div class="sect">
+        <p class="slabel">Therapeutic expertise &mdash; scannable grid</p>
+        <div class="row r4col">
+          <div class="box"><p class="box__t">Wound care</p><div class="tx w70"></div></div>
+          <div class="box"><p class="box__t">Lung transplant</p><div class="tx w70"></div></div>
+          <div class="box"><p class="box__t">Heart failure</p><div class="tx w70"></div></div>
+          <div class="box"><p class="box__t">Diabetes</p><div class="tx w70"></div></div>
+        </div>
+        <p class="sub" style="margin-top:.8rem; font-size:.76rem">Corroborated on the current site today. Remainder <span class="todo">TO CONFIRM</span></p>
+      </div>
+
+      <div class="sect sect--band">
+        <p class="slabel">Methods &amp; analytical capability</p>
+        <div class="row r3col">
+          <div><p class="eyebrow">Study design</p><p class="sub" style="font-size:.76rem">Retrospective observational · Prospective pragmatic · Epidemiology / burden of illness · Cohort development · Risk stratification</p></div>
+          <div><p class="eyebrow">Statistics</p><p class="sub" style="font-size:.76rem">Logistic regression · ANOVA · Survival analysis · Propensity scores · Multivariate models · ML techniques</p></div>
+          <div><p class="eyebrow">Engineering</p><p class="sub" style="font-size:.76rem">SQL extraction · Hadoop · Teradata · TOAD · SAS · SPSS · Hierarchical files</p></div>
+        </div>
+        <div class="anno">
+          <b>Note</b>
+          Every item above is already stated on the current About page. Nothing has been added.
+        </div>
+      </div>
+
+      <div class="sect">
+        <div class="box">
+          <p class="box__t">Sample deliverable</p>
+          <h3 class="hd hd--sm">See the shape of what you receive.</h3>
+          <p class="sub" style="font-size:.78rem">A redacted synopsis and analysis report.</p>
+          <div class="inline">
+            <i style="flex:1; min-width:10rem; height:2.4rem; border:1px solid var(--line); border-radius:2px; background:var(--fill-soft)"></i>
+            <button class="btn btn--primary">Request sample</button>
+          </div>
+          <p class="sub" style="font-size:.72rem; margin:.6rem 0 0">We send one file. No sequence, no list.</p>
+        </div>
+        <div class="anno">
+          <b>Note &mdash; conditional section</b>
+          Gate UX designed now; built only if a sample is supplied. Omitted at launch rather than shipped non-functional.
+        </div>
+      </div>
+
+      <div class="footwf"><div class="tx w30"></div><div class="tx w45"></div></div>
+      <div class="mbar m-only"><button class="btn btn--primary btn--full" data-go="contact">Book a consultation</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ NEXTGEN AI ══════════════════ -->
+<div id="p-nextgen" role="tabpanel" aria-labelledby="tab-nextgen" tabindex="-1" hidden>
+  <div class="pagemeta">
+    <b>NextGen AI</b>
+    <span>Objective: explain the product and establish trust in its use of AI</span>
+    <span class="cta">Primary: Request a demo</span>
+    <span>Secondary: Open RWE - Builder (existing users)</span>
+  </div>
+
+  <div class="canvas">
+    <div class="wf">
+      <div class="chrome">
+        <span class="chrome__logo">PHARMATIYA HEALTH</span>
+        <nav class="chrome__nav d-only">
+          <button data-go="services">Services</button>
+          <button data-go="evidence">Evidence</button>
+          <button class="on" data-go="nextgen">NextGen AI</button>
+          <button data-go="about">About</button>
+          <button data-go="contact">Contact</button>
+        </nav>
+        <button class="btn btn--primary d-only" style="margin-left:1rem">Request a demo</button>
+        <button class="burger m-only">☰</button>
+      </div>
+
+      <div class="sect">
+        <div class="row r6040">
+          <div>
+            <p class="eyebrow">NextGen AI</p>
+            <h2 class="hd">Evidence synopses drafted in hours, reviewed by the researchers who would have written them.</h2>
+            <p class="sub"><span class="todo">PHARMATIYA TO CONFIRM precise product definition</span></p>
+            <div class="inline">
+              <button class="btn btn--primary">Request a demo</button>
+              <button class="lnk">Already a user? Open RWE - Builder &rarr;</button>
+            </div>
+          </div>
+          <div class="ph ph--tall">
+            <b>Product interface</b>
+            <span class="todo">SCREENSHOT — INPUT 5</span>
+            <span>No mockup will be invented</span>
+          </div>
+        </div>
+        <div class="anno">
+          <b>Note &mdash; header CTA swaps</b>
+          This is the only page where the header CTA is &ldquo;Request a demo&rdquo; rather than &ldquo;Book a consultation&rdquo; &mdash; a deliberately lower commitment. The existing app link is preserved so current users keep their route.
+        </div>
+      </div>
+
+      <div class="sect sect--band">
+        <p class="slabel">How it works</p>
+        <div class="flowsteps">
+          <div class="step"><em>①</em><b>Feasibility</b><p>Can this question be answered with the data available?</p></div>
+          <div class="step"><em>②</em><b>Retrospective</b><p>What does existing data already show?</p></div>
+          <div class="step"><em>③</em><b>Pragmatic outreach</b><p>Who should be approached, and how?</p></div>
+        </div>
+        <div class="reviewbar">⬤ HUMAN EXPERT REVIEW &mdash; required at every stage before output leaves the system. Not optional. Not post-hoc.</div>
+        <div class="anno">
+          <b>Note &mdash; structural, not decorative</b>
+          The review bar spans all three stages deliberately: it is drawn as part of the workflow, not as a caveat beneath it. On mobile the three steps rotate to vertical with arrows between them.
+        </div>
+      </div>
+
+      <div class="sect">
+        <p class="slabel">Where AI is used &mdash; and where it is not</p>
+        <div class="row r5050">
+          <div class="box">
+            <p class="box__t">The model does</p>
+            <p class="sub" style="font-size:.78rem; margin:0">Drafts synopsis structure · Summarises literature · Proposes cohort definitions · <span class="todo">TO CONFIRM</span></p>
+          </div>
+          <div class="box">
+            <p class="box__t">A researcher does</p>
+            <p class="sub" style="font-size:.78rem; margin:0">Approves the study question · Validates every method choice · Signs off all output · Retains professional responsibility</p>
+          </div>
+        </div>
+        <div class="anno">
+          <b>Note</b>
+          The right-hand column is longer than the left, and that is the point.
+        </div>
+      </div>
+
+      <div class="sect sect--bleed">
+        <p class="slabel">Trust &mdash; full-bleed band, not fine print</p>
+        <div class="row r3col">
+          <div class="box">
+            <p class="box__t">No PHI uploaded</p>
+            <p class="sub" style="font-size:.76rem">Protected health information is not uploaded to the system. <span class="todo">CONFIRM EXACT DATA HANDLING</span></p>
+          </div>
+          <div class="box">
+            <p class="box__t">Human review mandatory</p>
+            <p class="sub" style="font-size:.76rem">No output reaches a client without expert sign-off.</p>
+          </div>
+          <div class="box">
+            <p class="box__t">Model disclosed</p>
+            <p class="sub" style="font-size:.76rem">We name the underlying model and its version. <span class="todo">PHARMATIYA TO SPECIFY</span></p>
+          </div>
+        </div>
+        <div style="margin-top:1.2rem">
+          <p class="eyebrow">Limitations</p>
+          <p class="sub" style="font-size:.78rem">What the tool does not do. <span class="todo">TO PROVIDE</span> &mdash; stating limits plainly is a trust asset with this audience. Recommended, not optional.</p>
+        </div>
+        <div class="anno">
+          <b>Note &mdash; compliance dependency</b>
+          Every claim in this band is a factual statement about data handling and AI use. None can be drafted by us and published without review. Blocked on input 9 (compliance review windows) and input 5.
+        </div>
+      </div>
+
+      <div class="sect">
+        <div class="box">
+          <p class="box__t">Request a demo</p>
+          <h3 class="hd hd--sm">A 30-minute walkthrough with the team that built it.</h3>
+          <div class="row r3col" style="margin-top:.8rem">
+            <div class="field"><span>Name *</span><i></i></div>
+            <div class="field"><span>Work email *</span><i></i></div>
+            <div class="field"><span>Organisation *</span><i></i></div>
+          </div>
+          <div class="field" style="margin-top:.7rem"><span>What are you trying to evaluate?</span><i class="ta"></i></div>
+          <div style="margin-top:.8rem"><button class="btn btn--primary">Request demo</button></div>
+        </div>
+      </div>
+
+      <div class="footwf"><div class="tx w30"></div><div class="tx w45"></div></div>
+      <div class="mbar m-only"><button class="btn btn--primary btn--full">Request a demo</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ ABOUT ══════════════════ -->
+<div id="p-about" role="tabpanel" aria-labelledby="tab-about" tabindex="-1" hidden>
+  <div class="pagemeta">
+    <b>About</b>
+    <span>Objective: make 25 years of track record scannable and human</span>
+    <span class="cta">Primary: Speak with Pharmatiya</span>
+    <span>Secondary: See our methods &rarr; Evidence</span>
+  </div>
+
+  <div class="canvas">
+    <div class="wf">
+      <div class="chrome">
+        <span class="chrome__logo">PHARMATIYA HEALTH</span>
+        <nav class="chrome__nav d-only">
+          <button data-go="services">Services</button>
+          <button data-go="evidence">Evidence</button>
+          <button data-go="nextgen">NextGen AI</button>
+          <button class="on" data-go="about">About</button>
+          <button data-go="contact">Contact</button>
+        </nav>
+        <button class="btn btn--primary d-only" data-go="contact" style="margin-left:1rem">Book a consultation</button>
+        <button class="burger m-only">☰</button>
+      </div>
+
+      <div class="sect">
+        <div class="row r6040">
+          <div>
+            <p class="eyebrow">About</p>
+            <h2 class="hd">A senior evidence team, not a staffing model.</h2>
+            <div class="txblock"><div class="tx w90"></div><div class="tx w80"></div><div class="tx w60"></div></div>
+          </div>
+          <div class="ph ph--tall">
+            <b>Real office / working photograph</b>
+            <span class="todo">INPUT 1</span>
+            <span>No stock substitute</span>
+          </div>
+        </div>
+        <div class="anno">
+          <b>Note</b>
+          If no photography is supplied this becomes a typographic panel. It does not fall back to purchased imagery.
+        </div>
+      </div>
+
+      <div class="sect sect--bleed">
+        <p class="slabel">Track record</p>
+        <div class="row r3col">
+          <div class="fig"><b>25+</b><span>years in HEOR, RWE and outcomes research</span></div>
+          <div class="fig"><b>1,000+</b><span>study synopses delivered</span></div>
+          <div class="fig fig--todo"><b>[TO PROVIDE]</b><span>therapeutic areas</span></div>
+        </div>
+      </div>
+
+      <div class="sect">
+        <p class="slabel">Milestones</p>
+        <div class="row r5col" style="grid-template-columns:repeat(5,1fr)">
+          <div class="box"><p class="box__t">[YEAR]</p><p class="sub" style="font-size:.72rem;margin:0">Outcomes Research division established</p></div>
+          <div class="box"><p class="box__t">[YEAR]</p><p class="sub" style="font-size:.72rem;margin:0">Payer-side analytics build-out</p></div>
+          <div class="box"><p class="box__t">[YEAR]</p><p class="sub" style="font-size:.72rem;margin:0">Pharmacovigilance &amp; trials product lead</p></div>
+          <div class="box"><p class="box__t">[YEAR]</p><p class="sub" style="font-size:.72rem;margin:0">Pharmatiya founded</p></div>
+          <div class="box"><p class="box__t">[YEAR]</p><p class="sub" style="font-size:.72rem;margin:0">NextGen AI / RWE-Builder</p></div>
+        </div>
+        <div class="anno">
+          <b>Note &mdash; dates not estimated</b>
+          Milestone <em>events</em> are drawn from the current About page. <span class="todo">DATES TO PROVIDE</span> &mdash; none will be guessed. Without dates this renders as an unnumbered sequence.
+        </div>
+      </div>
+
+      <div class="sect sect--band">
+        <p class="slabel">Team</p>
+        <div class="row r3col">
+          <div><div class="ph ph--short"><b>Headshot</b><span class="todo">INPUT 1</span></div><div style="margin-top:.5rem"><div class="tx w60"></div><div class="tx w45"></div><div class="tx w70"></div></div></div>
+          <div><div class="ph ph--short"><b>Headshot</b><span class="todo">INPUT 1</span></div><div style="margin-top:.5rem"><div class="tx w60"></div><div class="tx w45"></div><div class="tx w70"></div></div></div>
+          <div><div class="ph ph--short"><b>Headshot</b><span class="todo">INPUT 1</span></div><div style="margin-top:.5rem"><div class="tx w60"></div><div class="tx w45"></div><div class="tx w70"></div></div></div>
+        </div>
+        <div class="anno">
+          <b>Note</b>
+          Credentials matter to this buyer &mdash; degrees, prior institutions, specialism. If photography is unavailable at launch this ships as name + credentials in typographic treatment, never stock portraits or illustrated avatars.
+        </div>
+      </div>
+
+      <div class="sect">
+        <p class="slabel">Expertise &mdash; condensed; full detail on Evidence</p>
+        <div class="row r5050">
+          <div class="box"><p class="box__t">Evidence &amp; analytics</p><p class="sub" style="font-size:.76rem;margin:0">Study design · Statistical analysis · Cohort development · Risk stratification · Data engineering</p></div>
+          <div class="box"><p class="box__t">Strategy &amp; access</p><p class="sub" style="font-size:.76rem;margin:0">Value propositions · Value-based contracting · Care management programme design · Payer&ndash;provider value propositions</p></div>
+        </div>
+        <div style="margin-top:.8rem"><button class="lnk" data-go="evidence">Full methods detail &rarr; Evidence</button></div>
+      </div>
+
+      <div class="sect sect--band">
+        <div class="row r6040">
+          <div>
+            <h3 class="hd hd--sm">Speak with Pharmatiya</h3>
+            <p class="sub">Talk to a senior researcher about your question.</p>
+          </div>
+          <div><button class="btn btn--primary btn--full" data-go="contact">Book a consultation</button></div>
+        </div>
+      </div>
+
+      <div class="footwf"><div class="tx w30"></div><div class="tx w45"></div></div>
+      <div class="mbar m-only"><button class="btn btn--primary btn--full" data-go="contact">Book a consultation</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ CONTACT ══════════════════ -->
+<div id="p-contact" role="tabpanel" aria-labelledby="tab-contact" tabindex="-1" hidden>
+  <div class="pagemeta">
+    <b>Contact</b>
+    <span>Objective: route the enquiry correctly and capture it reliably</span>
+    <span class="cta">Primary: Send enquiry (routed)</span>
+    <span>Secondary: Book directly; subscribe to Digest</span>
+  </div>
+
+  <div class="canvas">
+    <div class="wf">
+      <div class="chrome">
+        <span class="chrome__logo">PHARMATIYA HEALTH</span>
+        <nav class="chrome__nav d-only">
+          <button data-go="services">Services</button>
+          <button data-go="evidence">Evidence</button>
+          <button data-go="nextgen">NextGen AI</button>
+          <button data-go="about">About</button>
+          <button class="on" data-go="contact">Contact</button>
+        </nav>
+        <button class="burger m-only">☰</button>
+      </div>
+
+      <div class="sect">
+        <p class="eyebrow">Contact</p>
+        <h2 class="hd">Tell us which applies and the enquiry reaches the right person directly.</h2>
+      </div>
+
+      <div class="sect">
+        <p class="slabel">Route selection &mdash; chosen before the form is filled</p>
+        <div class="routecards" role="group" aria-label="Enquiry route">
+          <button class="route" aria-pressed="true" data-route="new"><b>New client</b><p>Scoping a study or an evidence need.</p></button>
+          <button class="route" aria-pressed="false" data-route="existing"><b>Existing client</b><p>A question about work in progress.</p></button>
+          <button class="route" aria-pressed="false" data-route="press"><b>Press &amp; partners</b><p>Media, academic or partnership.</p></button>
+        </div>
+        <div class="anno">
+          <b>Note &mdash; try it</b>
+          These are live. Selecting a route changes the fields below. Radio cards rather than a dropdown keep all three paths visible &mdash; a visitor who does not see &ldquo;existing client&rdquo; assumes there is no route for them. Routing destinations <span class="todo">INPUT 6</span>
+        </div>
+      </div>
+
+      <div class="sect sect--band">
+        <p class="slabel">Enquiry form &mdash; fields adapt to route</p>
+        <div class="row r5050">
+          <div class="field"><span>Name *</span><i></i></div>
+          <div class="field"><span>Organisation *</span><i></i></div>
+        </div>
+        <div class="row r5050" style="margin-top:.7rem">
+          <div class="field"><span>Work email *</span><i></i></div>
+          <div class="field"><span>Role</span><i></i></div>
+        </div>
+
+        <div class="condit" id="route-new" style="margin-top:1rem">
+          <p class="eyebrow" style="margin-bottom:.5rem">Shown for new client</p>
+          <div class="field"><span>Which service is closest?</span><i></i></div>
+          <div class="field" style="margin-top:.7rem"><span>What question are you trying to answer? *</span><i class="ta"></i></div>
+        </div>
+
+        <div class="condit" id="route-existing" style="margin-top:1rem" hidden>
+          <p class="eyebrow" style="margin-bottom:.5rem">Shown for existing client</p>
+          <div class="field"><span>Project reference (if known)</span><i></i></div>
+          <div class="field" style="margin-top:.7rem"><span>Your question *</span><i class="ta"></i></div>
+        </div>
+
+        <div class="condit" id="route-press" style="margin-top:1rem" hidden>
+          <p class="eyebrow" style="margin-bottom:.5rem">Shown for press &amp; partners</p>
+          <div class="field"><span>Publication / organisation type</span><i></i></div>
+          <div class="field" style="margin-top:.7rem"><span>Deadline, if any</span><i></i></div>
+        </div>
+
+        <p class="sub" style="margin-top:1rem; font-size:.76rem">☐ Add me to the Quarterly Insights Digest &mdash; unticked by default, consent is opt-in</p>
+        <button class="btn btn--primary">Send enquiry</button>
+
+        <div class="anno">
+          <b>Note &mdash; states</b>
+          Validation on blur, not on keystroke. Errors name the fix (&ldquo;Enter a work email address&rdquo;, not &ldquo;Invalid&rdquo;), are announced in a polite live region, and never signal by colour alone. Success replaces the form with a confirmation naming the route and the response time &mdash; it does not silently clear.
+        </div>
+      </div>
+
+      <div class="sect">
+        <div class="row r5050">
+          <div class="box">
+            <p class="box__t">Book directly</p>
+            <p class="sub" style="font-size:.78rem">A 30-minute consultation with a senior researcher.</p>
+            <div class="ph ph--short"><b>Calendar embed</b><span class="todo">INPUT 6</span></div>
+            <p class="sub" style="font-size:.72rem; margin:.5rem 0 0">If no calendar is supplied this becomes a &ldquo;request a time&rdquo; field in the form.</p>
+          </div>
+          <div class="box">
+            <p class="box__t">Direct contact</p>
+            <p class="sub" style="font-size:.8rem">admin@pharmatiya.net <span class="todo">real mailto</span></p>
+            <p class="sub" style="font-size:.8rem; margin:0">Pharmatiya LLC<br>New York, NY 10280</p>
+            <p class="sub" style="font-size:.72rem; margin-top:.6rem">Address retained verbatim from the current footer.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sect sect--bleed">
+        <p class="slabel">Quarterly Insights Digest</p>
+        <p class="sub"><span class="todo">CONFIRM</span> frequency, topics, who writes it. Sent quarterly. Unsubscribe in one click.</p>
+        <div class="inline">
+          <i style="flex:1; min-width:10rem; max-width:22rem; height:2.4rem; border:1px solid var(--line); border-radius:2px; background:var(--fill-soft)"></i>
+          <button class="btn btn--primary">Subscribe</button>
+        </div>
+        <div class="anno">
+          <b>Note &mdash; new capability</b>
+          The current site names this Digest twice and captures nothing. This is its first working subscription path.
+        </div>
+      </div>
+
+      <div class="footwf"><div class="tx w30"></div><div class="tx w45"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <span><i class="key key--ph"></i> placeholder media / chart</span>
+  <span><i class="key key--tx"></i> body copy, not yet written</span>
+  <span><i class="key key--mark"></i> primary action</span>
+  <span><i class="key key--warn"></i> blocked on client input</span>
+  <span>Nav and CTAs are clickable &mdash; they switch tabs.</span>
+</div>
+
+</div>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('root');
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+
+  function show(name) {
+    tabs.forEach(function (t) {
+      var on = t.id === 'tab-' + name;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(t.id.replace('tab-', '')); });
+    t.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      var n = tabs[(i + d + tabs.length) % tabs.length];
+      n.focus(); show(n.id.replace('tab-', ''));
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest('[data-go]');
+    if (el) show(el.getAttribute('data-go'));
+  });
+
+  var dsk = document.getElementById('vp-desktop');
+  var mob = document.getElementById('vp-mobile');
+  function vp(mode) {
+    root.setAttribute('data-viewport', mode);
+    dsk.setAttribute('aria-pressed', mode === 'desktop' ? 'true' : 'false');
+    mob.setAttribute('aria-pressed', mode === 'mobile' ? 'true' : 'false');
+  }
+  dsk.addEventListener('click', function () { vp('desktop'); });
+  mob.addEventListener('click', function () { vp('mobile'); });
+
+  var nt = document.getElementById('notes-toggle');
+  nt.addEventListener('click', function () {
+    var on = root.getAttribute('data-notes') === 'on';
+    root.setAttribute('data-notes', on ? 'off' : 'on');
+    nt.setAttribute('aria-pressed', on ? 'false' : 'true');
+  });
+
+  var routes = Array.prototype.slice.call(document.querySelectorAll('.route'));
+  routes.forEach(function (r) {
+    r.addEventListener('click', function () {
+      routes.forEach(function (o) { o.setAttribute('aria-pressed', 'false'); });
+      r.setAttribute('aria-pressed', 'true');
+      ['new', 'existing', 'press'].forEach(function (k) {
+        document.getElementById('route-' + k).hidden = (k !== r.getAttribute('data-route'));
+      });
+    });
+  });
+})();
+</script>

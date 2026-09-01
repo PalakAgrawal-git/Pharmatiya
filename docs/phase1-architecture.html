@@ -1,0 +1,1856 @@
+<title>Pharmatiya Phase 1 Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;450;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root {
+  --paper:      #f2f4f2;
+  --surface:    #fbfcfb;
+  --sunk:       #e7ebe8;
+  --ink:        #151b1a;
+  --ink-muted:  #55625e;
+  --ink-faint:  #7d8985;
+  --rule:       #d2d9d5;
+  --rule-firm:  #b6c0bb;
+  --accent:     #0e5a5e;
+  --accent-lift:#12777c;
+  --retain:     #46565f;
+  --improve:    #0e5a5e;
+  --consolidate:#7d5f18;
+  --remove:     #8c3a2b;
+
+  --font-display: 'Spectral', 'Sitka Text', Cambria, Georgia, serif;
+  --font-text: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Cascadia Mono', Consolas, monospace;
+
+  --shell: 82rem;
+  --measure: 68ch;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:      #0f1413;
+    --surface:    #161d1b;
+    --sunk:       #1c2523;
+    --ink:        #e6ebe8;
+    --ink-muted:  #a3b0ab;
+    --ink-faint:  #7c8a88;
+    --rule:       #2b3633;
+    --rule-firm:  #3d4a46;
+    --accent:     #5fb8bb;
+    --accent-lift:#8ad4d6;
+    --retain:     #93a3ab;
+    --improve:    #5fb8bb;
+    --consolidate:#c9a44e;
+    --remove:     #d98a76;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:      #0f1413;
+  --surface:    #161d1b;
+  --sunk:       #1c2523;
+  --ink:        #e6ebe8;
+  --ink-muted:  #a3b0ab;
+  --ink-faint:  #7c8a88;
+  --rule:       #2b3633;
+  --rule-firm:  #3d4a46;
+  --accent:     #5fb8bb;
+  --accent-lift:#8ad4d6;
+  --retain:     #93a3ab;
+  --improve:    #5fb8bb;
+  --consolidate:#c9a44e;
+  --remove:     #d98a76;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 16px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  width: min(100% - 3rem, var(--shell));
+  margin-inline: auto;
+  padding-block: 3rem 6rem;
+  display: grid;
+  gap: 3.5rem;
+}
+@media (min-width: 66rem) {
+  .page { grid-template-columns: 15rem 1fr; align-items: start; }
+}
+
+.masthead { grid-column: 1 / -1; border-bottom: 2px solid var(--ink); padding-bottom: 1.75rem; }
+.masthead .kicker {
+  font-family: var(--font-mono); font-size: .72rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--accent); margin: 0 0 1rem;
+}
+.masthead h1 {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(2.1rem, 1.4rem + 3.2vw, 3.9rem);
+  line-height: 1.04; letter-spacing: -.02em; margin: 0 0 .6rem; text-wrap: balance;
+}
+.masthead .standfirst {
+  font-family: var(--font-display); font-size: clamp(1.05rem, .98rem + .45vw, 1.3rem);
+  font-style: italic; color: var(--ink-muted); max-width: 54ch; margin: 0 0 1.5rem;
+}
+.byline {
+  display: flex; flex-wrap: wrap; gap: .4rem 2rem;
+  font-family: var(--font-mono); font-size: .74rem; color: var(--ink-faint);
+  letter-spacing: .04em;
+}
+.byline b { color: var(--ink-muted); font-weight: 500; }
+
+.toc { font-family: var(--font-mono); font-size: .76rem; line-height: 1.5; }
+@media (min-width: 66rem) { .toc { position: sticky; top: 2rem; } }
+.toc h2 {
+  font-family: var(--font-mono); font-size: .7rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-faint); font-weight: 500;
+  margin: 0 0 .9rem; padding-bottom: .6rem; border-bottom: 1px solid var(--rule);
+}
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: .42rem; max-width: none; }
+.toc a { color: var(--ink-muted); text-decoration: none; display: grid; grid-template-columns: 2.1rem 1fr; }
+.toc a span { color: var(--ink-faint); }
+.toc a:hover, .toc a:hover span { color: var(--accent); }
+.toc li { margin: 0; }
+.toc .grp {
+  margin-top: .9rem; padding-top: .7rem; border-top: 1px solid var(--rule);
+  color: var(--ink-faint); letter-spacing: .1em; text-transform: uppercase; font-size: .66rem;
+}
+.toc .grp:first-child { margin-top: 0; border-top: 0; padding-top: 0; }
+
+.doc { min-width: 0; display: grid; gap: 4rem; }
+
+section { scroll-margin-top: 2rem; }
+
+.sec-head { display: flex; gap: 1rem; align-items: baseline; border-bottom: 1px solid var(--rule-firm); padding-bottom: .7rem; margin-bottom: 1.6rem; }
+.sec-num { font-family: var(--font-mono); font-size: .8rem; color: var(--accent); letter-spacing: .06em; flex: none; }
+.sec-head h2 {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(1.5rem, 1.25rem + 1.1vw, 2.1rem);
+  line-height: 1.12; letter-spacing: -.015em; margin: 0; text-wrap: balance;
+}
+
+h3 {
+  font-family: var(--font-display); font-weight: 600; font-size: 1.24rem;
+  line-height: 1.2; margin: 2.2rem 0 .7rem; letter-spacing: -.01em;
+}
+h4 {
+  font-family: var(--font-mono); font-weight: 500; font-size: .78rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint);
+  margin: 1.8rem 0 .6rem;
+}
+
+p { margin: 0 0 1rem; max-width: var(--measure); }
+ul, ol { max-width: var(--measure); padding-left: 1.2rem; margin: 0 0 1rem; }
+li { margin-bottom: .35rem; }
+strong { font-weight: 600; }
+a { color: var(--accent); text-underline-offset: .16em; }
+code {
+  font-family: var(--font-mono); font-size: .86em;
+  background: var(--sunk); padding: .1em .35em; border-radius: 2px;
+}
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.lede { font-family: var(--font-display); font-size: 1.14rem; line-height: 1.5; color: var(--ink-muted); max-width: 58ch; }
+
+.scroller { overflow-x: auto; margin-bottom: 1.4rem; border: 1px solid var(--rule); background: var(--surface); }
+
+table { border-collapse: collapse; width: 100%; font-size: .87rem; min-width: 46rem; }
+th, td { text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+thead th {
+  font-family: var(--font-mono); font-size: .68rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-faint); font-weight: 500;
+  background: var(--sunk);
+}
+tbody tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 450; }
+
+.tag {
+  display: inline-block; font-family: var(--font-mono); font-size: .66rem;
+  letter-spacing: .08em; text-transform: uppercase; padding: .2em .5em;
+  border: 1px solid currentColor; white-space: nowrap;
+}
+.t-retain { color: var(--retain); }
+.t-improve { color: var(--improve); }
+.t-consolidate { color: var(--consolidate); }
+.t-remove { color: var(--remove); }
+
+pre.wire {
+  font-family: var(--font-mono); font-size: .74rem; line-height: 1.45;
+  margin: 0; padding: 1.4rem; color: var(--ink);
+  white-space: pre; tab-size: 2;
+}
+@media (max-width: 40rem) { pre.wire { font-size: .6rem; padding: 1rem; } }
+
+.rationale { border-left: 2px solid var(--accent); padding-left: 1.1rem; margin: 1.4rem 0; }
+.rationale h4 { margin-top: 0; color: var(--accent); }
+.rationale dl { margin: 0; display: grid; gap: .3rem 1rem; }
+@media (min-width: 40rem) { .rationale dl { grid-template-columns: 6.5rem 1fr; } }
+.rationale dt {
+  font-family: var(--font-mono); font-size: .68rem; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-faint); padding-top: .28em;
+}
+.rationale dd { margin: 0; font-size: .92rem; max-width: 62ch; }
+
+.note {
+  background: var(--surface); border: 1px solid var(--rule);
+  border-left: 3px solid var(--consolidate);
+  padding: 1rem 1.2rem; margin: 1.4rem 0; font-size: .92rem;
+}
+.note p:last-child { margin-bottom: 0; }
+.note .lbl {
+  font-family: var(--font-mono); font-size: .68rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--consolidate); display: block; margin-bottom: .35rem;
+}
+.note--flag { border-left-color: var(--remove); }
+.note--flag .lbl { color: var(--remove); }
+
+.findings { list-style: none; padding: 0; max-width: none; counter-reset: f; }
+.findings > li {
+  counter-increment: f; display: grid; gap: .2rem 1rem; padding: .95rem 0;
+  border-bottom: 1px solid var(--rule); margin: 0; max-width: none;
+}
+@media (min-width: 46rem) { .findings > li { grid-template-columns: 2.4rem 1fr; } }
+.findings > li::before {
+  content: counter(f, decimal-leading-zero);
+  font-family: var(--font-mono); font-size: .74rem; color: var(--ink-faint); padding-top: .25em;
+}
+.findings b { display: block; font-weight: 600; }
+.findings .ev {
+  font-family: var(--font-mono); font-size: .76rem; color: var(--ink-muted);
+  display: block; margin-top: .3rem;
+}
+
+.flow { border: 1px solid var(--rule); background: var(--surface); padding: 1.1rem 1.3rem; margin-bottom: 1rem; }
+.flow h4 { margin: 0 0 .5rem; color: var(--accent); }
+.flow .path { font-family: var(--font-mono); font-size: .78rem; line-height: 1.9; color: var(--ink); }
+.flow .path em { color: var(--ink-faint); font-style: normal; }
+.flow p { font-size: .88rem; color: var(--ink-muted); margin: .6rem 0 0; }
+
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: .8rem; max-width: none; margin-bottom: 1.4rem; }
+.sw { border: 1px solid var(--rule); }
+.sw .chip { height: 3.2rem; }
+.sw .meta { padding: .5rem .6rem; font-family: var(--font-mono); font-size: .68rem; background: var(--surface); }
+.sw .meta b { display: block; font-weight: 500; }
+.sw .meta span { color: var(--ink-faint); }
+
+.pair { display: grid; gap: 1.5rem; }
+@media (min-width: 48rem) { .pair { grid-template-columns: 1fr 1fr; } }
+.pair > div { min-width: 0; }
+.pair ul { max-width: none; }
+</style>
+
+<div class="page">
+
+<header class="masthead">
+  <p class="kicker">Phase 1 &middot; Stages 1&ndash;10 &middot; For review and approval</p>
+  <h1>Pharmatiya Health: Information Architecture &amp; Wireframes</h1>
+  <p class="standfirst">An audit of pharmatiya.net, a retain/improve/remove decision record, the six-page architecture, user flows, and low-fidelity wireframes &mdash; submitted before any interface is built.</p>
+  <div class="byline">
+    <span><b>Prepared by</b> Vaelo Creative</span>
+    <span><b>Date</b> 1 September 2026</span>
+    <span><b>Status</b> Awaiting sign-off</span>
+    <span><b>Gate</b> Build begins on approval</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <h2>Contents</h2>
+  <ol>
+    <li class="grp">Analysis</li>
+    <li><a href="#s01"><span>01</span> Understanding</a></li>
+    <li><a href="#s02"><span>02</span> Website audit</a></li>
+    <li><a href="#s03"><span>03</span> UX problems</a></li>
+    <li><a href="#s04"><span>04</span> Decision matrix</a></li>
+    <li><a href="#s05"><span>05</span> Audiences</a></li>
+    <li class="grp">Architecture</li>
+    <li><a href="#s06"><span>06</span> Sitemap</a></li>
+    <li><a href="#s07"><span>07</span> User flows</a></li>
+    <li><a href="#s08"><span>08</span> Home content</a></li>
+    <li class="grp">Wireframes</li>
+    <li><a href="#s09"><span>09</span> Home desktop</a></li>
+    <li><a href="#s10"><span>10</span> Home mobile</a></li>
+    <li><a href="#s11"><span>11</span> Services</a></li>
+    <li><a href="#s12"><span>12</span> Evidence</a></li>
+    <li><a href="#s13"><span>13</span> NextGen AI</a></li>
+    <li><a href="#s14"><span>14</span> About</a></li>
+    <li><a href="#s15"><span>15</span> Contact</a></li>
+    <li class="grp">Direction</li>
+    <li><a href="#s16"><span>16</span> Visual direction</a></li>
+    <li><a href="#s17"><span>17</span> Design system</a></li>
+  </ol>
+</nav>
+
+<div class="doc">
+
+<section id="s01">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Understanding of Pharmatiya</h2></div>
+
+  <p class="lede">Pharmatiya Health is a specialist health economics, outcomes research and real-world evidence consultancy &mdash; a small senior team selling methodological depth, not headcount.</p>
+
+  <p>Read strictly from the Phase 1 brief and the current site, the company does four distinguishable things:</p>
+
+  <h4>Evidence generation</h4>
+  <p>Design and execution of HEOR and RWE studies: retrospective observational work, prospective pragmatic trials, epidemiology and burden-of-illness studies, cohort development. This includes protocol development, operationalisation, analysis and interpretation.</p>
+
+  <h4>Analytics on real patient data</h4>
+  <p>Work across payer, PBM, EMR and EHR sources, with stated experience in medical and pharmacy claims and external lab data. Methods named on the current About page include logistic regression, ANOVA, survival analysis, propensity scoring and machine learning on hierarchical files, executed in SAS and SPSS, with extraction via SQL over Hadoop, Teradata and TOAD.</p>
+
+  <h4>Strategy and access advisory</h4>
+  <p>Translating that evidence into commercial outcomes for pharma and device manufacturers: value propositions, market access strategy, value-based and outcomes-based contracts, care management programme design, and payer&ndash;provider proposals.</p>
+
+  <h4>A software product</h4>
+  <p>An AI-assisted evidence tool, referred to in the brief as NextGen AI and shipping today as <strong>RWE&nbsp;-&nbsp;Builder</strong> at <code>app.pharmatiya.net</code>. Its stated workflow is Feasibility &rarr; Retrospective &rarr; Pragmatic Outreach, with no PHI uploads and mandatory human expert review.</p>
+
+  <div class="note">
+    <span class="lbl">Naming to confirm</span>
+    <p>The brief calls the product <strong>NextGen AI</strong>; the live navigation calls it <strong>RWE - Builder</strong>. These appear to be the same product. Phase 1 needs a single decided public name, because the page URL, the navigation label and the CTA all depend on it. This document uses NextGen AI throughout, per the brief.</p>
+  </div>
+
+  <h3>What the positioning is not</h3>
+  <p>Nothing in the source material supports positioning Pharmatiya as a large CRO, a technology platform business, or a general management consultancy. The credible claim is a senior, methods-led evidence partner with 25+ years of operating history and direct payer-side experience &mdash; notably the build-out of an organic Outcomes Research division at Aetna, which is the single most concrete credential in the current copy and is presently buried in the middle of a wall of text.</p>
+</section>
+
+<section id="s02">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Existing website audit</h2></div>
+
+  <p class="lede">Audited 1 September 2026 against the live Squarespace site. Every item below was verified in the rendered page or its DOM, not inferred.</p>
+
+  <h3>A. Existing sitemap</h3>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>URL</th><th>Title</th><th>Reachable from</th><th>Assessment</th></tr></thead>
+      <tbody>
+        <tr><td><code>/</code>, <code>/home</code></td><td>Home &mdash; Pharmatiya Health</td><td>Primary nav, logo</td><td>Two URLs serve the same page</td></tr>
+        <tr><td><code>/about</code></td><td>About &mdash; Pharmatiya Health</td><td>Primary nav, homepage</td><td>The only page with real substance</td></tr>
+        <tr><td><code>/services</code></td><td>Services &mdash; Pharmatiya Health</td><td>Homepage teasers only</td><td><strong>Orphaned &mdash; absent from primary navigation</strong></td></tr>
+        <tr><td><code>/contact</code></td><td>Let&rsquo;s Connect! &mdash; Pharmatiya Health</td><td>Primary nav, footer</td><td>Contains no form</td></tr>
+        <tr><td><code>/cart</code></td><td>Pharmatiya Health</td><td>Persistent cart icon</td><td>Template remnant, empty</td></tr>
+        <tr><td><code>/new-dropdown</code></td><td>&mdash;</td><td>&ldquo;Products&rdquo; folder in nav</td><td>Unedited Squarespace folder slug</td></tr>
+        <tr><td><code>app.pharmatiya.net</code></td><td>RWE - Builder</td><td>Primary nav (external)</td><td>The product; no marketing page supports it</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>B. Existing navigation</h3>
+  <p><strong>Primary navigation, in order:</strong> Home &middot; Products (folder, resolving to <code>/new-dropdown</code>) &rarr; RWE - Builder &middot; About &middot; Let&rsquo;s Connect!</p>
+  <p><strong>Footer:</strong> the tagline &ldquo;Healthcare Research &amp; Analytics&rdquo;, the line &ldquo;Pharmatiya LLC 2026 - All rights reserved&rdquo;, Location &ldquo;New York, NY 10280&rdquo;, and Contact &ldquo;admin@pharmatiya.net&rdquo;. There is no footer navigation.</p>
+  <p><strong>Persistent:</strong> a cart icon with a &ldquo;0&rdquo; counter, and a &ldquo;Skip to Content&rdquo; link targeting <code>#page</code>.</p>
+
+  <div class="note note--flag">
+    <span class="lbl">Two navigation defects</span>
+    <p>Services is not in the primary navigation at all. A visitor can only reach it by clicking one of three homepage teasers &mdash; and all three teasers link to the same page, so nothing distinguishes them. Separately, the footer&rsquo;s <code>admin@pharmatiya.net</code> is not a <code>mailto:</code> link; it points to <code>/contact</code>, which has no form. The email address is displayed but not actionable anywhere on the site.</p>
+  </div>
+
+  <h3>C. Existing functionality</h3>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Mechanism</th><th>Present?</th><th>Verified state</th></tr></thead>
+      <tbody>
+        <tr><td>Contact form</td><td>No</td><td>Zero <code>&lt;form&gt;</code> and zero input elements on <code>/contact</code>, despite copy reading &ldquo;please provide your information&rdquo;</td></tr>
+        <tr><td>Any form, site-wide</td><td>No</td><td>No form element found on Home, Services, About or Contact</td></tr>
+        <tr><td>Consultation booking</td><td>No</td><td>The homepage &ldquo;Schedule your appointment&rdquo; block contains no link, button or calendar</td></tr>
+        <tr><td>Quarterly Insights Digest signup</td><td>No</td><td>Described in two places; no capture mechanism exists</td></tr>
+        <tr><td>Shopping cart</td><td>Yes</td><td>Live <code>/cart</code> route with persistent counter</td></tr>
+        <tr><td>Mobile navigation</td><td>Yes</td><td>Squarespace default overlay with a &ldquo;Folder: Products / Back&rdquo; drill-down</td></tr>
+        <tr><td>Product access</td><td>Partial</td><td>Outbound link to <code>app.pharmatiya.net</code>; no explanation, no demo request</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>The consequence:</strong> the site has no lead-capture mechanism of any kind. Every stated call to action terminates in a page that cannot accept a response. This is the single most valuable thing Phase 1 fixes.</p>
+
+  <h3>D. Existing content</h3>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Content</th><th>Location</th><th>Judgement</th></tr></thead>
+      <tbody>
+        <tr><td>Dataset and method detail &mdash; payer/PBM/EMR/EHR experience, named statistical techniques, named software</td><td>About</td><td><strong>Genuinely valuable.</strong> Specific, verifiable, differentiating. Currently unreadable as formatted.</td></tr>
+        <tr><td>Aetna Outcomes Research division build-out; product lines conceived (epidemiology, trial recruitment, care management, VBC)</td><td>About</td><td><strong>Strongest single credential on the site.</strong> Buried mid-paragraph.</td></tr>
+        <tr><td>&ldquo;25 years of experience&rdquo;</td><td>Home, About</td><td>Keep; needs to be a headline figure, not a clause.</td></tr>
+        <tr><td>&ldquo;Strategic Insights Advisory&rdquo; / &ldquo;Quarterly Insights Digest&rdquo; / &ldquo;Expert Team Consultation&rdquo;</td><td>Home, Services</td><td>Labels are vague and the middle one is a newsletter, not a service. Structure needs rethinking.</td></tr>
+        <tr><td>&ldquo;tailored solutions&rdquo;, &ldquo;actionable insights&rdquo;, &ldquo;unlock full potential&rdquo;, &ldquo;drive your business forward&rdquo;</td><td>Home, Services, About</td><td><strong>Rewrite entirely.</strong> &ldquo;Tailored solutions&rdquo; appears on three pages; the phrasing is interchangeable with any consultancy in any sector.</td></tr>
+        <tr><td>&ldquo;Contact us &mdash; Interested in working together? Fill out some info&hellip;&rdquo;</td><td>Repeated on Home, Services, About</td><td>Duplicated three times and false in all three &mdash; there is nothing to fill out.</td></tr>
+        <tr><td>Office location, entity name, email</td><td>Footer</td><td>Retain as fact; make actionable.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>E. Media and markup</h3>
+  <ul>
+    <li><strong>Five images carry the alt text &ldquo;Placeholder&rdquo;</strong> &mdash; four on the homepage, one on Contact. These are unreplaced template assets, visible to every visitor and every screen reader.</li>
+    <li>One further image has an empty <code>alt</code> attribute while carrying meaning.</li>
+    <li>The logo is delivered as <code>Pharmatiya_Health_Logo.jpg</code> &mdash; a raster JPEG, not vector. It will soften on high-density displays and cannot be recoloured.</li>
+    <li>No team photography, no office photography, no case studies, no client names, no outcome figures anywhere on the site.</li>
+  </ul>
+</section>
+
+<section id="s03">
+  <div class="sec-head"><span class="sec-num">03</span><h2>UX problems</h2></div>
+
+  <p class="lede">Ordered by commercial cost, not by how easy each is to fix.</p>
+
+  <ol class="findings">
+    <li><div>
+      <b>The site cannot capture a lead.</b>
+      Three pages invite the visitor to get in touch. None provides a means to do so. A buyer who wants to contact Pharmatiya must leave the site, and the one email address shown is not clickable.
+      <span class="ev">Verified: 0 form elements site-wide; footer email href is /contact, not mailto:</span>
+    </div></li>
+    <li><div>
+      <b>The primary conversion action does not exist as a control.</b>
+      &ldquo;Schedule your appointment&rdquo; is set as a heading with body copy and no link. It reads as a call to action and behaves as decoration.
+      <span class="ev">Verified: no anchor or button within the block</span>
+    </div></li>
+    <li><div>
+      <b>Services is unreachable from the navigation.</b>
+      The page describing what the company sells is omitted from the primary menu. Any visitor who lands on About or Contact from search has no path to it.
+      <span class="ev">Verified: primary nav contains Home, Products, About, Let&rsquo;s Connect! only</span>
+    </div></li>
+    <li><div>
+      <b>The three service teasers are undifferentiated and all lead to one page.</b>
+      A buyer cannot navigate to the specific service that matches their need, and the three descriptions are close enough in wording that they do not disambiguate themselves.
+      <span class="ev">Verified: all three anchors resolve to /services</span>
+    </div></li>
+    <li><div>
+      <b>Placeholder images are shipped in production.</b>
+      Five images announce themselves as unfinished, on the two pages a first-time buyer is most likely to see.
+      <span class="ev">Verified: alt="Placeholder" &times;4 on Home, &times;1 on Contact</span>
+    </div></li>
+    <li><div>
+      <b>Heading hierarchy is structurally broken.</b>
+      The homepage declares five separate H1 elements and then drops straight to H4, with no H2 or H3 anywhere. Screen-reader users get five competing page titles and no usable outline; search engines get no topical structure.
+      <span class="ev">Verified: H1 &times;5 (&ldquo;Research &amp; Analytics&rdquo;, &ldquo;Our Services&rdquo;, &ldquo;Schedule your appointment&rdquo;, &ldquo;About our company&rdquo;, &ldquo;Contact Us&rdquo;), then H4 &times;5, no H2/H3</span>
+    </div></li>
+    <li><div>
+      <b>An e-commerce cart is present on a consultancy site.</b>
+      A cart icon with a live counter sits in the header of every page and links to an empty checkout. It suggests the company sells products online, which it does not, and it is the clearest single signal that the site is an unedited template.
+    </div></li>
+    <li><div>
+      <b>The company&rsquo;s real expertise is invisible above the fold and unreadable below it.</b>
+      All substantive proof &mdash; named datasets, statistical methods, the Aetna division build-out &mdash; sits on About in long unbroken paragraphs with no headings, no scannable structure and no visual entry points. The homepage, meanwhile, says nothing a competitor could not say.
+    </div></li>
+    <li><div>
+      <b>The differentiating product is a bare external link.</b>
+      RWE - Builder appears only as a navigation item pointing off-site. There is no explanation of what it does, how it works, what it does with patient data, or how to request access. A buyer cannot evaluate it without leaving.
+    </div></li>
+    <li><div>
+      <b>Navigation labels are template artefacts.</b>
+      &ldquo;Products&rdquo; resolves to <code>/new-dropdown</code> and contains one item that is not a purchasable product. &ldquo;Let&rsquo;s Connect!&rdquo; is register-mismatched against a buyer audience of health economists and market access directors.
+    </div></li>
+    <li><div>
+      <b>The same contact block is duplicated across three pages.</b>
+      Repetition without variation trains visitors to ignore it, and it occupies the position where page-specific next steps should sit.
+    </div></li>
+    <li><div>
+      <b>No page states who Pharmatiya serves.</b>
+      Nowhere does the site name its buyer &mdash; pharma commercial, medical affairs, HEOR, payers, providers. A visitor must infer whether they are in the right place.
+    </div></li>
+  </ol>
+
+  <h3>F. Visual problems</h3>
+  <ul>
+    <li><strong>Recognisably a template.</strong> The layout, the cart, the folder-dropdown behaviour and the section rhythm are all Squarespace defaults, unmodified.</li>
+    <li><strong>No visual hierarchy.</strong> Five H1s at similar sizes means nothing dominates; the eye has no entry point and no path.</li>
+    <li><strong>Three identical cards.</strong> The service row is the exact pattern the brief rules out, and it is the only structural device on the homepage.</li>
+    <li><strong>Imagery carries no information.</strong> Placeholder images occupy the positions where proof &mdash; a chart, a result, a person &mdash; should be doing work.</li>
+    <li><strong>Typography is undifferentiated.</strong> One family, few weights, no editorial contrast between display, body, label and data. Nothing signals a research organisation.</li>
+    <li><strong>Nothing looks like evidence.</strong> For a company whose product is statistical rigour, there is not a single chart, figure, table or number on the site.</li>
+    <li><strong>Raster logo.</strong> Soft on retina displays; reads as low production value at exactly the moment credibility is being assessed.</li>
+  </ul>
+</section>
+
+<section id="s04">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Retain / improve / remove matrix</h2></div>
+
+  <p class="lede">Every meaningful element of the current site, with an explicit decision. Nothing disappears silently.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Existing element</th><th>Purpose</th><th>Decision</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td>Home page</td><td>Entry point, positioning</td><td><span class="tag t-improve">Improve</span></td><td>Retained as entry point; copy, hierarchy and proof entirely rebuilt.</td></tr>
+        <tr><td>About page</td><td>Credibility, track record</td><td><span class="tag t-improve">Improve</span></td><td>Content substantially retained &mdash; it is the best material on the site &mdash; but restructured into scannable sections with headings and a timeline.</td></tr>
+        <tr><td>Services page</td><td>What the company sells</td><td><span class="tag t-improve">Improve</span></td><td>Retained and promoted into primary navigation. Restructured problem &rarr; approach &rarr; method &rarr; deliverables per service.</td></tr>
+        <tr><td>Contact page</td><td>Enquiry destination</td><td><span class="tag t-improve">Improve</span></td><td>Retained as a destination and given, for the first time, a working form with segmented routing.</td></tr>
+        <tr><td>Three service teasers on Home</td><td>Route into services</td><td><span class="tag t-improve">Improve</span></td><td>Purpose retained, presentation replaced. Editorial rows with distinct deep links to each service, not three identical cards to one page.</td></tr>
+        <tr><td>&ldquo;Strategic Insights Advisory&rdquo; service</td><td>Named service line</td><td><span class="tag t-improve">Improve</span></td><td>Service retained; name and description rewritten to state the actual deliverable. <em>Final naming pending Pharmatiya review (input 3).</em></td></tr>
+        <tr><td>&ldquo;Expert Team Consultation&rdquo; service</td><td>Named service line</td><td><span class="tag t-improve">Improve</span></td><td>As above. Retained as a distinct service line.</td></tr>
+        <tr><td>&ldquo;Quarterly Insights Digest&rdquo;</td><td>Listed as a service</td><td><span class="tag t-consolidate">Consolidate</span></td><td>Not a service &mdash; it is a newsletter. Moves out of the service line-up and becomes a real subscription on Contact plus a footer signup. Its mention is retained; its miscategorisation is not.</td></tr>
+        <tr><td>&ldquo;Contact us&rdquo; block repeated on 3 pages</td><td>Conversion prompt</td><td><span class="tag t-consolidate">Consolidate</span></td><td>Replaced by one page-appropriate closing CTA per page, each with a different next step rather than the same paragraph three times.</td></tr>
+        <tr><td>RWE - Builder nav link (external)</td><td>Product access</td><td><span class="tag t-improve">Improve</span></td><td>Destination retained. A NextGen AI marketing page is inserted ahead of it so buyers can evaluate before leaving; existing users still get a direct route to the app.</td></tr>
+        <tr><td>&ldquo;Products&rdquo; nav folder</td><td>Container for one item</td><td><span class="tag t-remove">Remove</span></td><td>A dropdown holding a single link adds a click and no information. Replaced by a direct NextGen AI nav item. The <code>/new-dropdown</code> slug is a template artefact.</td></tr>
+        <tr><td>Shopping cart and <code>/cart</code></td><td>E-commerce</td><td><span class="tag t-remove">Remove</span></td><td>Nothing is sold online. Explicitly out of scope in the brief. Removing it eliminates the strongest template signal on the site. <strong>No user task is lost.</strong></td></tr>
+        <tr><td>Placeholder images (&times;5)</td><td>None</td><td><span class="tag t-remove">Remove</span></td><td>Unreplaced template assets. Positions reallocated to data-graphics and real photography.</td></tr>
+        <tr><td>&ldquo;Let&rsquo;s Connect!&rdquo; nav label</td><td>Route to contact</td><td><span class="tag t-improve">Improve</span></td><td>Destination retained, label changed to &ldquo;Contact&rdquo;. Register matches the buyer.</td></tr>
+        <tr><td>Footer email <code>admin@pharmatiya.net</code></td><td>Direct contact</td><td><span class="tag t-improve">Improve</span></td><td>Retained and made a real <code>mailto:</code>. <em>Whether admin@ remains the public address is pending input 6.</em></td></tr>
+        <tr><td>Office location, New York NY 10280</td><td>Legitimacy signal</td><td><span class="tag t-retain">Retain</span></td><td>Carried to Contact and footer unchanged.</td></tr>
+        <tr><td>Entity line &ldquo;Pharmatiya LLC&rdquo;</td><td>Legal identity</td><td><span class="tag t-retain">Retain</span></td><td>Carried to footer.</td></tr>
+        <tr><td>&ldquo;Healthcare Research &amp; Analytics&rdquo; tagline</td><td>Descriptor</td><td><span class="tag t-retain">Retain</span></td><td>Accurate and short. Kept in the footer; the homepage gets a sharper positioning line above it.</td></tr>
+        <tr><td>Dataset / method detail on About</td><td>Proof of capability</td><td><span class="tag t-improve">Improve</span></td><td>Retained in full, redistributed: methods and datasets gain structured treatment on Evidence, condensed summary stays on About.</td></tr>
+        <tr><td>&ldquo;Skip to Content&rdquo; link</td><td>Accessibility</td><td><span class="tag t-retain">Retain</span></td><td>Rebuilt properly with a visible focus state.</td></tr>
+        <tr><td>Mobile nav overlay</td><td>Small-screen navigation</td><td><span class="tag t-improve">Improve</span></td><td>Purpose retained; the folder drill-down disappears with the Products folder, so the menu becomes one flat list of six.</td></tr>
+        <tr><td>Generic marketing copy</td><td>Filler</td><td><span class="tag t-remove">Remove</span></td><td>Replaced with specific claims. Nothing of substance is lost because nothing of substance is stated.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <span class="lbl">Task-preservation check</span>
+    <p>Meaningful tasks a visitor can complete on the current site: read about the company, read about services, find the office location, find an email address, reach the RWE - Builder application. <strong>All five survive, and four are improved.</strong> The only removed capability is the cart, which cannot complete a transaction and never could. Two tasks the current site invites but cannot deliver &mdash; sending an enquiry and subscribing to the Digest &mdash; become possible for the first time.</p>
+  </div>
+</section>
+
+<section id="s05">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Audiences by buying intent</h2></div>
+
+  <p class="lede">Four intents, each with a different first question and a different evidence threshold. The architecture is built to answer them in the order they are asked.</p>
+
+  <h3>1. The HEOR / RWE buyer</h3>
+  <p><em>Typically: Director of HEOR, RWE lead, or evidence-generation manager inside a pharmaceutical or device company, scoping a study they cannot staff internally.</em></p>
+  <div class="pair">
+    <div>
+      <h4>Trying to establish</h4>
+      <ul>
+        <li>Can this team design a defensible protocol?</li>
+        <li>Do they have access to the data my question needs?</li>
+        <li>Have they done this in my therapeutic area?</li>
+        <li>Will the output survive payer or journal scrutiny?</li>
+      </ul>
+      <h4>Objections</h4>
+      <ul>
+        <li>&ldquo;Small shop &mdash; can they actually execute?&rdquo;</li>
+        <li>&ldquo;No published evidence of prior work.&rdquo;</li>
+        <li>&ldquo;Is this consultants or statisticians?&rdquo;</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Evidence needed before contact</h4>
+      <ul>
+        <li>Named methods, at the level of specificity a peer would use</li>
+        <li>Dataset types and access model</li>
+        <li>At least one worked case, even anonymised</li>
+        <li>Named deliverables &mdash; what actually arrives</li>
+      </ul>
+      <h4>Confidence signals</h4>
+      <ul>
+        <li>Correct vocabulary used unselfconsciously</li>
+        <li>Real statistical graphics, correctly drawn</li>
+        <li>Named credentials and payer-side history</li>
+        <li>Absence of marketing superlatives</li>
+      </ul>
+    </div>
+  </div>
+  <p><strong>Architectural implication:</strong> this buyer is why the Evidence page exists, and why methods and datasets get structured, scannable treatment rather than prose.</p>
+
+  <h3>2. The commercial / market access decision-maker</h3>
+  <p><em>Typically: brand, commercial or market access leadership. Less interested in method, more in whether the evidence will move a payer.</em></p>
+  <p>Needs quickly: what business problem this solves, what the engagement model is, what the output looks like in a payer conversation, and evidence of value-based contracting experience. Objection is commercial, not methodological &mdash; &ldquo;will this change an access decision?&rdquo; The Aetna history and the value-based contract experience are the assets here, which is why they are promoted out of the About page.</p>
+
+  <h3>3. The referral visitor</h3>
+  <p><em>Arrives with a name already recommended, often mid-conversation, frequently on a phone.</em></p>
+  <p>This visitor is verifying, not discovering, and gives the site seconds. They need to confirm within one screen that this is the right Pharmatiya, that it is a real firm with a real address, and that its scope matches what they were told. They then want a contact route immediately. <strong>Implication:</strong> the homepage must state what the company does and for whom above the fold, and a contact path must be reachable from every page without scrolling to the footer.</p>
+
+  <h3>4. The NextGen AI prospect</h3>
+  <p><em>Evaluating the tool, often sceptical of AI claims in a regulated context.</em></p>
+  <p>Their questions are almost entirely about trust: what the model touches, whether patient data leaves their control, who reviews output, and what happens when it is wrong. They need the workflow explained concretely, the human review step shown as part of the process rather than a disclaimer, and honest disclosure of the underlying model. <strong>Implication:</strong> trust content is designed as primary page structure on the NextGen AI page, not as fine print &mdash; and the CTA is a demo request, which is a lower commitment than a consultation.</p>
+
+  <div class="note">
+    <span class="lbl">Ordering principle</span>
+    <p>All four intents converge on one question: <em>is this firm credible?</em> Every architectural decision below prioritises answering that over describing services. This is why Evidence is a top-level page rather than a section of Services.</p>
+  </div>
+</section>
+
+<section id="s06">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Proposed sitemap</h2></div>
+
+  <div class="scroller">
+    <pre class="wire">
+                          ┌──────────────────┐
+                          │       HOME       │
+                          │        /         │
+                          └────────┬─────────┘
+                                   │
+        ┌──────────────┬───────────┼───────────┬──────────────┐
+        │              │           │           │              │
+   ┌────┴─────┐  ┌─────┴─────┐ ┌───┴──────┐ ┌──┴───┐  ┌───────┴──────┐
+   │ SERVICES │  │ EVIDENCE  │ │ NEXTGEN  │ │ABOUT │  │   CONTACT    │
+   │/services │  │/evidence  │ │   AI     │ │/about│  │  /contact    │
+   │          │  │           │ │/nextgen- │ │      │  │              │
+   │          │  │           │ │   ai     │ │      │  │              │
+   └────┬─────┘  └─────┬─────┘ └───┬──────┘ └──┬───┘  └───────┬──────┘
+        │              │           │           │              │
+   #evidence-      #methods    external →   #team        3 routed
+   generation      #datasets   app.pharma    #timeline    enquiry
+   #rwe-analytics  #therapeutic  tiya.net    #expertise   types
+   #access-        -areas      (existing                  +
+    strategy       #case-      users)                    Digest
+                   studies                               signup
+   (in-page        (in-page                              +
+    anchors,        anchors)                             booking
+    deep-linked
+    from Home)
+
+   ── Utility (recommended, not part of the six-page IA) ─────────────
+      /privacy   /terms   /accessibility   /sitemap.xml   /robots.txt
+</pre>
+  </div>
+
+  <p>Primary navigation is a flat list of six. No dropdowns, no folders. At six items this fits comfortably on desktop and drills cleanly on mobile, and it removes the extra click the Products folder currently imposes.</p>
+
+  <h3>Page specifications</h3>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Page</th><th>Objective</th><th>Primary intent served</th><th>Primary CTA</th><th>Secondary CTA</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Home</td>
+          <td>Establish what Pharmatiya does, for whom, with what proof &mdash; within one screen</td>
+          <td>Referral visitor; all others as entry</td>
+          <td>Book a consultation</td>
+          <td>Explore the evidence</td>
+        </tr>
+        <tr>
+          <td>Services</td>
+          <td>Let a buyer locate their problem and see the matching approach and deliverables</td>
+          <td>HEOR/RWE buyer; commercial buyer</td>
+          <td>Discuss this engagement</td>
+          <td>See the methods behind it &rarr; Evidence</td>
+        </tr>
+        <tr>
+          <td>Evidence</td>
+          <td>Answer &ldquo;why should we believe you can do this?&rdquo;</td>
+          <td>HEOR/RWE buyer</td>
+          <td>Book a consultation</td>
+          <td>Request a sample deliverable</td>
+        </tr>
+        <tr>
+          <td>NextGen AI</td>
+          <td>Explain the product and establish trust in its use of AI</td>
+          <td>NextGen AI prospect</td>
+          <td>Request a demo</td>
+          <td>Open RWE - Builder (existing users)</td>
+        </tr>
+        <tr>
+          <td>About</td>
+          <td>Make 25 years of track record scannable and human</td>
+          <td>Referral visitor; commercial buyer</td>
+          <td>Speak with Pharmatiya</td>
+          <td>See our methods &rarr; Evidence</td>
+        </tr>
+        <tr>
+          <td>Contact</td>
+          <td>Route the enquiry correctly and capture it reliably</td>
+          <td>All</td>
+          <td>Send enquiry (routed)</td>
+          <td>Book directly; subscribe to Digest</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Required functionality by page</h4>
+  <ul>
+    <li><strong>Home:</strong> static; no forms. Persistent header CTA.</li>
+    <li><strong>Services:</strong> static; deep-linkable section anchors.</li>
+    <li><strong>Evidence:</strong> static; optional gated-download UX (form &rarr; email delivery) if Pharmatiya supplies a sample.</li>
+    <li><strong>NextGen AI:</strong> static; demo request form or routed link.</li>
+    <li><strong>About:</strong> static; optimised team photography.</li>
+    <li><strong>Contact:</strong> the only stateful page &mdash; segmented enquiry form with validation, Digest subscription, and an embedded or linked booking calendar if one is supplied.</li>
+  </ul>
+
+  <div class="note">
+    <span class="lbl">Open dependency</span>
+    <p>Form handling requires a decision tied to input 10 (hosting). A static site needs an external endpoint &mdash; a form service, a serverless function, or the host&rsquo;s built-in handler. This affects nothing in the architecture but must be settled before the Contact page is built in Week 4&ndash;5. Recommendation follows in the build phase.</p>
+  </div>
+</section>
+
+<section id="s07">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Primary user flows</h2></div>
+
+  <div class="flow">
+    <h4>Flow A &mdash; Service-led evaluation</h4>
+    <div class="path">
+      Home <em>&mdash; reads positioning, recognises own problem in a service row</em><br>
+      &darr;<br>
+      Services <em>&mdash; deep-linked to the relevant service anchor, not the page top</em><br>
+      &darr;<br>
+      Service block <em>&mdash; problem &rarr; approach &rarr; method &rarr; deliverables</em><br>
+      &darr;<br>
+      Evidence <em>&mdash; follows the &ldquo;see the methods behind this&rdquo; link to verify</em><br>
+      &darr;<br>
+      Contact <em>&mdash; new-client route, referring service pre-noted</em><br>
+      &darr;<br>
+      <strong>Book a consultation</strong>
+    </div>
+    <p>The longest and highest-value path. Its critical requirement is that the homepage teasers deep-link to individual services &mdash; the exact thing the current site fails to do.</p>
+  </div>
+
+  <div class="flow">
+    <h4>Flow B &mdash; Proof-led evaluation</h4>
+    <div class="path">
+      Home <em>&mdash; proof figures catch attention before services do</em><br>
+      &darr;<br>
+      Evidence <em>&mdash; enters at case studies</em><br>
+      &darr;<br>
+      Case study <em>&mdash; challenge / method / dataset / approach / outcome</em><br>
+      &darr;<br>
+      Dataset coverage + therapeutic areas <em>&mdash; checks own area is covered</em><br>
+      &darr;<br>
+      Contact <em>&mdash; new-client route</em>
+    </div>
+    <p>The sceptical buyer&rsquo;s path. They resist marketing and go looking for substantiation first, so proof figures on the homepage must link directly into Evidence rather than into Services.</p>
+  </div>
+
+  <div class="flow">
+    <h4>Flow C &mdash; Product evaluation</h4>
+    <div class="path">
+      Home <em>&mdash; NextGen AI section, given real weight, not a footnote</em><br>
+      &darr;<br>
+      NextGen AI <em>&mdash; what it is, in one screen</em><br>
+      &darr;<br>
+      Workflow <em>&mdash; Feasibility &rarr; Retrospective &rarr; Pragmatic Outreach</em><br>
+      &darr;<br>
+      Trust section <em>&mdash; no PHI uploads / mandatory human review / model disclosure</em><br>
+      &darr;<br>
+      <strong>Request a demo</strong>
+    </div>
+    <p>Trust sits between understanding and action deliberately. A prospect who understands the workflow but not the data handling will not convert; placing trust after the workflow and before the CTA answers the objection at the moment it forms.</p>
+  </div>
+
+  <div class="flow">
+    <h4>Flow D &mdash; Referral validation</h4>
+    <div class="path">
+      Direct entry <em>&mdash; often to Home or About, name already known</em><br>
+      &darr;<br>
+      About <em>&mdash; track record, team, timeline: &ldquo;is this a real firm?&rdquo;</em><br>
+      &darr;<br>
+      Evidence <em>&mdash; optional depth check</em><br>
+      &darr;<br>
+      Contact <em>&mdash; frequently the header CTA, skipping the page body entirely</em>
+    </div>
+    <p>Short and impatient. Its requirement is a persistent header CTA so this visitor never has to hunt, and real team photography so the &ldquo;real firm&rdquo; question resolves visually in under a second.</p>
+  </div>
+
+  <div class="flow">
+    <h4>Flow E &mdash; Mobile visitor</h4>
+    <div class="path">
+      Home (mobile) <em>&mdash; positioning + proof figures within first two screens</em><br>
+      &darr;<br>
+      Services (stacked) <em>&mdash; scans service headings only, ignores body copy</em><br>
+      &darr;<br>
+      Relevant service <em>&mdash; expands deliverables</em><br>
+      &darr;<br>
+      Sticky bottom CTA bar <em>&mdash; persistent, thumb-reachable</em><br>
+      &darr;<br>
+      Contact <em>&mdash; short form, route selected first</em>
+    </div>
+    <p>Mobile users scan headings and skip prose, so the mobile order front-loads proof and shortens every text block. The sticky bottom CTA exists because the mobile page is long and the header CTA scrolls away.</p>
+  </div>
+</section>
+
+<section id="s08">
+  <div class="sec-head"><span class="sec-num">08</span><h2>Homepage content architecture</h2></div>
+
+  <p class="lede">Seven sections, each answering one buyer question and handing off to the next. No section repeats another&rsquo;s structure.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>#</th><th>Section</th><th>Question answered</th><th>Layout</th><th>Hands off to</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Positioning hero</td><td>What is this company and is it for me?</td><td>60/40, headline left, Kaplan&ndash;Meier figure right</td><td>Consultation, or Evidence</td></tr>
+        <tr><td>2</td><td>Proof figures</td><td>Are they substantial?</td><td>Full-width offset figure row, 4 up</td><td>Evidence</td></tr>
+        <tr><td>3</td><td>Service lines</td><td>What do they actually do?</td><td>Three editorial rows, alternating 65/35 &amp; 35/65</td><td>Individual service anchors</td></tr>
+        <tr><td>4</td><td>Capability &amp; coverage</td><td>Do they cover my data and my area?</td><td>Full-bleed dataset/therapeutic matrix</td><td>Evidence</td></tr>
+        <tr><td>5</td><td>NextGen AI</td><td>What is the differentiator?</td><td>Inverted panel, 40/60, workflow diagram</td><td>NextGen AI</td></tr>
+        <tr><td>6</td><td>Credibility line</td><td>Who are they?</td><td>Narrow editorial column, offset left</td><td>About</td></tr>
+        <tr><td>7</td><td>Consultation CTA</td><td>What happens if I get in touch?</td><td>Asymmetric closing block</td><td>Contact</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Copy direction for the hero</h4>
+  <p>The headline must state the category and the buyer. Working draft, pending Pharmatiya review:</p>
+  <p style="font-family:var(--font-display); font-size:1.5rem; line-height:1.25; border-left:2px solid var(--accent); padding-left:1.1rem; max-width:30ch;">Health economics and real-world evidence for teams that have to defend the result.</p>
+  <p>Supporting line: <em>&ldquo;Twenty-five years designing HEOR and RWE studies across payer, provider and claims data &mdash; protocol through interpretation, for commercial, medical affairs and market access teams.&rdquo;</em></p>
+  <p>This states the discipline, the data, the scope of engagement and the buyer in two sentences, and contains no adjective that a competitor could not disprove. It replaces &ldquo;Research &amp; Analytics&rdquo; over a paragraph about unlocking potential.</p>
+
+  <div class="note note--flag">
+    <span class="lbl">Figures require confirmation</span>
+    <p>The brief cites <strong>25+ years</strong> and <strong>1,000+ synopses</strong>. The first is corroborated on the current About page; the second appears only in the brief and must be confirmed before publication. The remaining two figure slots are marked <code>[PHARMATIYA TO PROVIDE]</code> in the wireframe &mdash; candidates are studies delivered, therapeutic areas covered, or datasets worked. <strong>No figure will be invented.</strong></p>
+  </div>
+</section>
+
+<section id="s09">
+  <div class="sec-head"><span class="sec-num">09</span><h2>Homepage &mdash; desktop wireframe</h2></div>
+  <p>1280px reference width. Low fidelity: boxes indicate position and hierarchy, not styling.</p>
+
+  <div class="scroller">
+    <pre class="wire">
+┌────────────────────────────────────────────────────────────────────────────┐
+│  PHARMATIYA HEALTH        Services  Evidence  NextGen AI  About  Contact   │
+│                                                    [ BOOK A CONSULTATION ] │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│  HEOR · RWE · MARKET ACCESS                                                │
+│                                              ╭───────────────────────────╮ │
+│  Health economics and real-world             │                           │ │
+│  evidence for teams that have to             │   KAPLAN–MEIER FIGURE     │ │
+│  defend the result.                          │   two-arm survival curve  │ │
+│                                              │                           │ │
+│  Twenty-five years designing HEOR and        │   ILLUSTRATIVE DATA       │ │
+│  RWE studies across payer, provider and      │   Fig. 1                  │ │
+│  claims data — protocol through              ╰───────────────────────────╯ │
+│  interpretation.                                                           │
+│                                                                            │
+│  [ BOOK A CONSULTATION ]   Explore the evidence →                          │
+│                                                                            │
+├────────────────────────────────────────────────────────────────────────────┤
+│      25+              1,000+            [TO PROVIDE]      [TO PROVIDE]     │
+│      years of         study             therapeutic       datasets         │
+│      practice         synopses          areas             worked           │
+│                                                      all → /evidence       │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│  WHAT WE DO                                                                │
+│                                                                            │
+│  ┌──────────────────────────────────────┐  ┌────────────────────────────┐  │
+│  │ Evidence generation                  │  │                            │  │
+│  │                                      │  │   FOREST PLOT              │  │
+│  │ You need a defensible answer about   │  │   4 subgroup estimates     │  │
+│  │ how a product performs outside the   │  │   with 95% CI              │  │
+│  │ trial. We design the protocol,       │  │                            │  │
+│  │ execute the analysis, interpret it.  │  │   ILLUSTRATIVE · Fig. 2    │  │
+│  │                                      │  │                            │  │
+│  │ Protocol · SAP · analysis · report   │  └────────────────────────────┘  │
+│  │ → See this service                   │                                  │
+│  └──────────────────────────────────────┘                                  │
+│                                                        (65/35)             │
+│  ┌────────────────────────────┐  ┌──────────────────────────────────────┐  │
+│  │                            │  │ Real-world data analytics            │  │
+│  │   COHORT ATTRITION         │  │                                      │  │
+│  │   DIAGRAM                  │  │ You have claims or EHR data and no   │  │
+│  │   n → n → n                │  │ capacity to interrogate it. We build │  │
+│  │                            │  │ the cohort and run the statistics.   │  │
+│  │   ILLUSTRATIVE · Fig. 3    │  │                                      │  │
+│  │                            │  │ Cohort · risk model · code · output  │  │
+│  └────────────────────────────┘  │ → See this service                   │  │
+│                                  └──────────────────────────────────────┘  │
+│                                       (35/65 — rhythm inverts)             │
+│  ┌──────────────────────────────────────┐  ┌────────────────────────────┐  │
+│  │ Access & value strategy              │  │  COST-EFFECTIVENESS PLANE  │  │
+│  │                                      │  │  4-quadrant scatter        │  │
+│  │ You have evidence and need it to     │  │                            │  │
+│  │ move a payer. We turn it into a       │  │  ILLUSTRATIVE · Fig. 4    │  │
+│  │ value proposition and contract terms.│  │                            │  │
+│  │                                      │  └────────────────────────────┘  │
+│  │ Value dossier · VBC design · model   │                                  │
+│  │ → See this service                   │                                  │
+│  └──────────────────────────────────────┘                                  │
+├────────────────────────────────────────────────────────────────────────────┤
+│  ░░░ FULL-BLEED BAND ░░░                                                   │
+│  DATA & THERAPEUTIC COVERAGE                                               │
+│                                                                            │
+│   Payer      ████████░░   PBM     ██████░░░░   EMR / EHR  ███████░░░       │
+│   Claims     █████████░   Lab     █████░░░░░   Registry   ████░░░░░░       │
+│                                                                            │
+│   Therapeutic areas: [PHARMATIYA TO PROVIDE — grid of named areas]          │
+│                                                                            │
+│   Full coverage detail on the Evidence page →                              │
+├────────────────────────────────────────────────────────────────────────────┤
+│  ▓▓▓ INVERTED PANEL (dark ground) ▓▓▓                                      │
+│                                                                            │
+│  NEXTGEN AI                                                                │
+│                        ┌──────────────────────────────────────────────┐    │
+│  AI-assisted evidence  │  ① FEASIBILITY  →  ② RETROSPECTIVE  →        │    │
+│  synopses, reviewed    │                    ③ PRAGMATIC OUTREACH      │    │
+│  by the people who     │                                              │    │
+│  would have written    │  ─────────────────────────────────────────   │    │
+│  them.                 │  ✓ No PHI uploaded    ✓ Human expert review  │    │
+│                        │  ✓ Model disclosed                           │    │
+│  [ EXPLORE NEXTGEN AI ]└──────────────────────────────────────────────┘    │
+├────────────────────────────────────────────────────────────────────────────┤
+│         ┌────────────────────────────────────────────┐                     │
+│         │ Twenty-five years, including building the  │   (offset left,     │
+│         │ organic Outcomes Research division at      │    narrow column,   │
+│         │ [Aetna — PENDING CLEARANCE].               │    editorial)       │
+│         │                                            │                     │
+│         │ About Pharmatiya →                         │                     │
+│         └────────────────────────────────────────────┘                     │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│  Start with a conversation about the question            [ BOOK A          │
+│  you are trying to answer.                                 CONSULTATION ]  │
+│                                                                            │
+│  A 30-minute call with a senior researcher.              Or email us →     │
+│  No sales team.                                                            │
+│                                                                            │
+├────────────────────────────────────────────────────────────────────────────┤
+│  PHARMATIYA HEALTH          Services   Evidence   NextGen AI               │
+│  New York, NY 10280         About      Contact    Privacy                  │
+│  admin@pharmatiya.net                                                      │
+│                             ┌──────────────────────────────────────┐       │
+│  Pharmatiya LLC 2026        │ Quarterly Insights Digest            │       │
+│  Healthcare Research        │ [ email________________ ] [SUBSCRIBE]│       │
+│  & Analytics                └──────────────────────────────────────┘       │
+└────────────────────────────────────────────────────────────────────────────┘
+</pre>
+  </div>
+
+  <div class="rationale">
+    <h4>Hero</h4>
+    <dl>
+      <dt>What</dt><dd>Category eyebrow, positioning headline, supporting specifics, dual CTA, and a real Kaplan&ndash;Meier figure.</dd>
+      <dt>Why here</dt><dd>The referral visitor and the sceptical buyer both decide within one screen. The figure does the work stock photography currently fails at: it signals the discipline before a word is read.</dd>
+      <dt>Question</dt><dd>&ldquo;What is this company, and is it for me?&rdquo;</dd>
+      <dt>Next</dt><dd>Consultation for the ready; Evidence for the sceptical.</dd>
+    </dl>
+  </div>
+
+  <div class="rationale">
+    <h4>Proof figures</h4>
+    <dl>
+      <dt>What</dt><dd>Four figures set large in the display face, on a full-width offset row &mdash; not boxed cards.</dd>
+      <dt>Why here</dt><dd>Immediately after positioning, because the claim needs substantiating before the visitor invests in reading. The brief is explicit that proof must not be buried in About.</dd>
+      <dt>Question</dt><dd>&ldquo;Is this a serious firm or two people with a website?&rdquo;</dd>
+      <dt>Next</dt><dd>The whole row links into Evidence.</dd>
+    </dl>
+  </div>
+
+  <div class="rationale">
+    <h4>Service lines</h4>
+    <dl>
+      <dt>What</dt><dd>Three editorial rows, each pairing a problem statement with a real HEOR graphic and a named deliverable list. The 65/35 split inverts on the middle row.</dd>
+      <dt>Why here</dt><dd>Once credibility is established, the buyer needs to locate their own problem. The alternating rhythm is deliberate: identical cards are what the brief rules out and what the current site does.</dd>
+      <dt>Question</dt><dd>&ldquo;Do they do the specific thing I need?&rdquo;</dd>
+      <dt>Next</dt><dd>Each row deep-links to its own anchor on Services &mdash; fixing the current all-three-to-one-page defect.</dd>
+    </dl>
+  </div>
+
+  <div class="rationale">
+    <h4>Data &amp; therapeutic coverage</h4>
+    <dl>
+      <dt>What</dt><dd>A full-bleed band showing dataset-type coverage and therapeutic areas.</dd>
+      <dt>Why here</dt><dd>The most common disqualifying question is coverage. Answering it on the homepage prevents a qualified buyer bouncing on the assumption they are not served.</dd>
+      <dt>Question</dt><dd>&ldquo;Do they have my data and my therapy area?&rdquo;</dd>
+      <dt>Next</dt><dd>Evidence, for the full matrix.</dd>
+    </dl>
+  </div>
+
+  <div class="rationale">
+    <h4>NextGen AI panel</h4>
+    <dl>
+      <dt>What</dt><dd>An inverted dark panel &mdash; the only one on the page &mdash; carrying the three-step workflow and three trust guarantees.</dd>
+      <dt>Why here</dt><dd>Tonal inversion marks this as a different kind of offering without resorting to a gradient or a glow. Trust markers appear at first mention because scepticism forms immediately in a regulated context.</dd>
+      <dt>Question</dt><dd>&ldquo;What makes them different, and is the AI claim credible?&rdquo;</dd>
+      <dt>Next</dt><dd>NextGen AI page.</dd>
+    </dl>
+  </div>
+
+  <div class="rationale">
+    <h4>Credibility line &amp; closing CTA</h4>
+    <dl>
+      <dt>What</dt><dd>A short offset editorial paragraph carrying the single strongest credential, then an asymmetric closing block that says what actually happens on contact.</dd>
+      <dt>Why here</dt><dd>The visitor who has read this far is close; the remaining objection is &ldquo;who am I actually going to talk to?&rdquo; Naming a 30-minute call with a senior researcher answers it concretely, where the current site offers &ldquo;tailored solutions&rdquo;.</dd>
+      <dt>Question</dt><dd>&ldquo;What happens if I get in touch?&rdquo;</dd>
+      <dt>Next</dt><dd>Contact.</dd>
+    </dl>
+  </div>
+</section>
+
+<section id="s10">
+  <div class="sec-head"><span class="sec-num">10</span><h2>Homepage &mdash; mobile wireframe</h2></div>
+  <p>375px reference. Section order changes from desktop; this is a re-architecture, not a reflow.</p>
+
+  <div class="scroller">
+    <pre class="wire">
+┌───────────────────────────────┐
+│ PHARMATIYA          [ ☰ ]     │  56px header, sticky
+├───────────────────────────────┤
+│                               │
+│ HEOR · RWE · MARKET ACCESS    │
+│                               │
+│ Health economics and          │  32px, 3–4 lines max
+│ real-world evidence for       │
+│ teams that have to defend     │
+│ the result.                   │
+│                               │
+│ Twenty-five years designing   │  16px, ≤3 lines,
+│ HEOR and RWE studies across   │  shortened from desktop
+│ payer, provider and claims    │
+│ data.                         │
+│                               │
+│ ┌───────────────────────────┐ │
+│ │  [ BOOK A CONSULTATION ]  │ │  full-width, 48px tall
+│ └───────────────────────────┘ │
+│   Explore the evidence →      │
+│                               │
+├───────────────────────────────┤
+│ ╭───────────────────────────╮ │
+│ │   KAPLAN–MEIER FIGURE     │ │  moves BELOW copy;
+│ │   simplified: 2 curves,   │ │  annotations dropped,
+│ │   axis labels only        │ │  stroke weight up
+│ │   ILLUSTRATIVE · Fig. 1   │ │
+│ ╰───────────────────────────╯ │
+├───────────────────────────────┤
+│  25+          1,000+          │  2×2 grid, not 4-across
+│  years        synopses        │
+│                               │
+│  [TO PROV.]   [TO PROV.]      │
+│  areas        datasets        │
+│                               │
+│  See the evidence →           │
+├───────────────────────────────┤
+│ WHAT WE DO                    │
+│                               │
+│ ─────────────────────────     │
+│ Evidence generation           │  headings carry the scan;
+│                               │  body copy trimmed ~40%
+│ You need a defensible answer  │
+│ about how a product performs  │
+│ outside the trial.            │
+│                               │
+│ Protocol · SAP · analysis     │
+│ See this service →            │
+│ ─────────────────────────     │
+│ Real-world data analytics     │
+│ …                             │
+│ ─────────────────────────     │
+│ Access & value strategy       │
+│ …                             │
+│ ─────────────────────────     │
+│                               │
+│ (graphics omitted here —      │
+│  they do not survive 375px    │
+│  legibly and would cost       │
+│  ~180KB for decoration)       │
+├───────────────────────────────┤
+│ ░ COVERAGE ░                  │
+│                               │
+│ Payer      ████████░░         │  bars stack vertically,
+│ PBM        ██████░░░░         │  full width each
+│ Claims     █████████░         │
+│ EMR/EHR    ███████░░░         │
+│ Lab        █████░░░░░         │
+│ Registry   ████░░░░░░         │
+│                               │
+│ Therapeutic areas:            │
+│ [PHARMATIYA TO PROVIDE]       │  2-col chip grid
+├───────────────────────────────┤
+│ ▓ NEXTGEN AI ▓                │  inverted panel retained
+│                               │
+│ AI-assisted evidence          │
+│ synopses, reviewed by the     │
+│ people who would have         │
+│ written them.                 │
+│                               │
+│ ① FEASIBILITY                 │  workflow rotates to
+│      ↓                        │  VERTICAL — the single
+│ ② RETROSPECTIVE               │  most important mobile
+│      ↓                        │  adaptation
+│ ③ PRAGMATIC OUTREACH          │
+│                               │
+│ ✓ No PHI uploaded             │
+│ ✓ Human expert review         │
+│ ✓ Model disclosed             │
+│                               │
+│ [ EXPLORE NEXTGEN AI ]        │
+├───────────────────────────────┤
+│ Twenty-five years, including  │
+│ building the Outcomes         │
+│ Research division at          │
+│ [PENDING CLEARANCE].          │
+│                               │
+│ About Pharmatiya →            │
+├───────────────────────────────┤
+│ Start with a conversation     │
+│ about the question you are    │
+│ trying to answer.             │
+│                               │
+│ A 30-minute call with a       │
+│ senior researcher.            │
+│                               │
+│ [ BOOK A CONSULTATION ]       │
+├───────────────────────────────┤
+│ FOOTER — single column        │
+│ Nav (2-col list)              │
+│ Digest signup (stacked field  │
+│   + full-width button)        │
+│ Address · email (mailto)      │
+│ Pharmatiya LLC 2026           │
+├───────────────────────────────┤
+│▓ [ BOOK A CONSULTATION ]     ▓│  sticky bottom bar,
+└───────────────────────────────┘  appears after hero
+</pre>
+  </div>
+
+  <h4>Navigation behaviour</h4>
+  <ul>
+    <li>Sticky 56px header: wordmark and menu button only. The desktop CTA is dropped from the header to avoid crowding; the sticky bottom bar carries it instead.</li>
+    <li>Menu opens a full-screen overlay with six items at 20px and 56px touch targets. <strong>No folder drill-down</strong> &mdash; the Products folder is gone, so the current two-level &ldquo;Folder: Products / Back&rdquo; interaction disappears entirely.</li>
+    <li>Focus is trapped in the overlay while open; Escape closes; focus returns to the trigger. Background scroll is locked.</li>
+    <li>The overlay closes on route change; the current page is marked <code>aria-current</code>.</li>
+  </ul>
+
+  <h4>CTA behaviour</h4>
+  <ul>
+    <li>The sticky bottom bar appears once the hero scrolls out of view and hides while the closing CTA is on screen, so the same action never appears twice.</li>
+    <li>It reserves layout height rather than overlaying the footer, so the Digest field is never obscured.</li>
+    <li>All touch targets are at least 44&times;44px; primary buttons are 48px tall and full width.</li>
+  </ul>
+
+  <h4>Content stacking and simplification</h4>
+  <ul>
+    <li><strong>Order changes:</strong> the hero figure moves below the copy and CTA, so the positioning statement and primary action are both visible without scrolling on a 320px screen.</li>
+    <li><strong>Body copy is cut by roughly 40%</strong> in the service rows. Mobile visitors scan headings; the full text remains on the Services page.</li>
+    <li><strong>Service graphics are dropped on mobile</strong> rather than shrunk. A forest plot at 375px is illegible, and shipping it as decoration costs bandwidth for no comprehension.</li>
+    <li><strong>The Kaplan&ndash;Meier figure is simplified, not scaled</strong>: censoring marks and inline annotations are removed, stroke weight increases, only axis extremes are labelled.</li>
+    <li><strong>The workflow diagram rotates from horizontal to vertical</strong> &mdash; the single adaptation that most affects comprehension of NextGen AI on a phone.</li>
+    <li><strong>Coverage bars stack full-width</strong> with the label above each bar rather than beside it.</li>
+  </ul>
+
+  <h4>Typography and breakpoints</h4>
+  <ul>
+    <li><strong>320px:</strong> H1 at 28px. The tightest constraint is long medical terminology &mdash; &ldquo;pharmacoepidemiology&rdquo;, &ldquo;cost-effectiveness&rdquo;. Body text uses <code>hyphens: auto</code> and <code>overflow-wrap: break-word</code> to prevent horizontal overflow.</li>
+    <li><strong>375px:</strong> H1 at 32px, body 16px, line length ~38 characters.</li>
+    <li><strong>430px:</strong> H1 at 34px; 2&times;2 proof grid gains breathing room; no layout change.</li>
+    <li>Body text never drops below 16px, including captions on data figures (14px minimum).</li>
+  </ul>
+
+  <h4>Forms and data on mobile</h4>
+  <ul>
+    <li>Form fields are full width at 48px with labels above, never placeholder-as-label. Correct <code>inputmode</code> and <code>autocomplete</code> so the right keyboard appears.</li>
+    <li>Every data graphic has a text alternative; where a figure is dropped on mobile its key finding is retained as a caption line, so no information is mobile-only or desktop-only.</li>
+    <li>Any wide table scrolls inside its own container with a visible edge affordance &mdash; the page body never scrolls horizontally at any width.</li>
+  </ul>
+</section>
+
+<section id="s11">
+  <div class="sec-head"><span class="sec-num">11</span><h2>Services &mdash; wireframe</h2></div>
+
+  <div class="scroller">
+    <pre class="wire">
+┌────────────────────────────────────────────────────────────────────────────┐
+│  HEADER + [ BOOK A CONSULTATION ]                                          │
+├────────────────────────────────────────────────────────────────────────────┤
+│  SERVICES                                                                  │
+│  Three engagement types. Most projects                                     │
+│  combine two.                                    ┌──────────────────────┐  │
+│                                                  │ ON THIS PAGE         │  │
+│  Each begins with the question you need          │ · Evidence gener…    │  │
+│  answered, not with a package.                   │ · RWD analytics      │  │
+│                                                  │ · Access & value     │  │
+│                                                  └──────────────────────┘  │
+├────────────────────────────────────────────────────────────────────────────┤
+│  #evidence-generation                                       SERVICE 01     │
+│  ────────────────────────────────────────────────────────────────────────  │
+│                                                                            │
+│  THE PROBLEM                     ┌──────────────────────────────────────┐  │
+│  Your trial answered a           │  KAPLAN–MEIER, TWO ARMS              │  │
+│  controlled question. Payers     │  with number-at-risk table below     │  │
+│  and HTA bodies are asking an    │                                      │  │
+│  uncontrolled one.               │  ILLUSTRATIVE DATA · Fig. 2.1        │  │
+│                                  └──────────────────────────────────────┘  │
+│  OUR APPROACH                                                              │
+│  Text block, 2–3 short paragraphs. What we do first, what we               │
+│  establish before writing a protocol, who is involved.                     │
+│                                                                            │
+│  METHODOLOGY                     DELIVERABLES                              │
+│  · Study design & feasibility    · Protocol document                       │
+│  · Protocol development          · Statistical analysis plan               │
+│  · Survival analysis             · Analysis datasets & code                │
+│  · Propensity scoring            · Results report + interpretation         │
+│  · Multivariate modelling        · [PHARMATIYA TO CONFIRM full list]       │
+│                                                                            │
+│  PROOF                                                                     │
+│  ┌──────────────────────────────────────────────────────────────────────┐  │
+│  │ Related case study → [PHARMATIYA TO PROVIDE]                         │  │
+│  │ Methods detail → Evidence page                                       │  │
+│  └──────────────────────────────────────────────────────────────────────┘  │
+│                                                                            │
+│  NEXT   [ Discuss an evidence-generation project ]                         │
+├────────────────────────────────────────────────────────────────────────────┤
+│  #rwe-analytics                                             SERVICE 02     │
+│  ────────────────────────────────────────────────────────────────────────  │
+│  (identical information spine; layout MIRRORED — graphic left, text        │
+│   right — so the page does not become three stacked clones)                │
+│                                                                            │
+│  ┌──────────────────────────────┐   THE PROBLEM                            │
+│  │  COHORT ATTRITION DIAGRAM    │   You hold claims or EHR data and        │
+│  │  Source population           │   no analytic capacity to use it.        │
+│  │    → inclusion               │                                          │
+│  │      → exclusion             │   OUR APPROACH …                         │
+│  │        → final cohort  n=…   │                                          │
+│  │  ILLUSTRATIVE · Fig. 2.2     │   METHODOLOGY                            │
+│  └──────────────────────────────┘   · SQL extraction (Hadoop, Teradata)    │
+│                                     · SAS / SPSS analysis                  │
+│                                     · Logistic regression, ANOVA           │
+│                                     · ML on hierarchical files             │
+│                                                                            │
+│                                     DELIVERABLES · PROOF · NEXT            │
+├────────────────────────────────────────────────────────────────────────────┤
+│  #access-strategy                                           SERVICE 03     │
+│  ────────────────────────────────────────────────────────────────────────  │
+│  (spine repeats; layout returns to text-left, graphic-right)               │
+│                                                                            │
+│  THE PROBLEM                     ┌──────────────────────────────────────┐  │
+│  You have the evidence. The      │  COST-EFFECTIVENESS PLANE            │  │
+│  payer conversation still        │  4 quadrants, WTP threshold line     │  │
+│  stalls.                         │  ILLUSTRATIVE · Fig. 2.3             │  │
+│                                  └──────────────────────────────────────┘  │
+│  METHODOLOGY                     DELIVERABLES                              │
+│  · Value proposition dev.        · Value dossier                           │
+│  · Value-based contract design   · Contract framework                      │
+│  · Care management design        · Payer-ready summary                     │
+│                                                                            │
+│  NEXT   [ Discuss an access engagement ]                                    │
+├────────────────────────────────────────────────────────────────────────────┤
+│  ENGAGEMENT MODEL                                                          │
+│  How projects typically start, run and conclude.                           │
+│  [PHARMATIYA TO PROVIDE — pricing guidance or engagement model,            │
+│   per brief. Omitted entirely if not supplied; no placeholder pricing.]    │
+├────────────────────────────────────────────────────────────────────────────┤
+│  CLOSING CTA + FOOTER                                                      │
+└────────────────────────────────────────────────────────────────────────────┘
+</pre>
+  </div>
+
+  <div class="rationale">
+    <h4>Why this structure</h4>
+    <dl>
+      <dt>What</dt><dd>Three services on one page, each following the same information spine &mdash; problem, approach, methodology, deliverables, proof, next action &mdash; with the layout mirroring on the middle service.</dd>
+      <dt>Why here</dt><dd>Opening each service with the buyer&rsquo;s problem rather than the service name lets a visitor self-identify while scanning. A consistent spine makes the three comparable; mirrored layout stops comparability becoming monotony.</dd>
+      <dt>Question</dt><dd>&ldquo;Do they do my specific thing, how do they do it, and what do I actually receive?&rdquo;</dd>
+      <dt>Next</dt><dd>A service-specific CTA, so the enquiry arrives already qualified rather than as a generic contact-form submission.</dd>
+    </dl>
+  </div>
+  <p>The &ldquo;on this page&rdquo; index in the header is the landing target for the homepage deep links, so a visitor arriving from a homepage teaser lands on their service and can still see the other two exist.</p>
+</section>
+
+<section id="s12">
+  <div class="sec-head"><span class="sec-num">12</span><h2>Evidence &mdash; wireframe</h2></div>
+  <p>The new page, and the one that carries the most weight with the primary buyer.</p>
+
+  <div class="scroller">
+    <pre class="wire">
+┌────────────────────────────────────────────────────────────────────────────┐
+│  HEADER + [ BOOK A CONSULTATION ]                                          │
+├────────────────────────────────────────────────────────────────────────────┤
+│  EVIDENCE                                                                  │
+│  What we have done, with which data,                                       │
+│  by which methods.                                                         │
+│                                                                            │
+│  Client work is confidential. What follows is anonymised, and every        │
+│  method described is one we have executed.                                 │
+├────────────────────────────────────────────────────────────────────────────┤
+│  CASE STUDIES                                          [PHARMATIYA TO      │
+│                                                         PROVIDE 2–3]       │
+│  ┌──────────────────────────────────────────────────────────────────────┐  │
+│  │ CASE 01                                        Therapeutic area: […] │  │
+│  │ ──────────────────────────────────────────────────────────────────── │  │
+│  │ CHALLENGE      What the client could not answer.                     │  │
+│  │                                                                      │  │
+│  │ DATASET        Type, size, time window, provenance.                  │  │
+│  │                                                                      │  │
+│  │ METHODOLOGY    Design and statistical approach.                      │  │
+│  │                                                                      │  │
+│  │ APPROACH       How the work was sequenced.                           │  │
+│  │                                                                      │  │
+│  │ OUTCOME        What was delivered and what it enabled.               │  │
+│  │                ┌────────────────────────────────────────┐            │  │
+│  │                │  RESULT FIGURE — supplied with case    │            │  │
+│  │                └────────────────────────────────────────┘            │  │
+│  └──────────────────────────────────────────────────────────────────────┘  │
+│                                                                            │
+│  ┌── CASE 02 ───────────────────────────────────────────────────────────┐  │
+│  │ (same spine, alternating figure position)                            │  │
+│  └──────────────────────────────────────────────────────────────────────┘  │
+│                                                                            │
+│  ⚠ Until Pharmatiya supplies case material (input 2, due before Week 4)    │
+│    this section renders as a single honest statement of confidentiality    │
+│    plus a contact route — NOT as invented cases or empty boxes.            │
+├────────────────────────────────────────────────────────────────────────────┤
+│  ░░░ FULL-BLEED ░░░  DATASET COVERAGE                                      │
+│                                                                            │
+│         PAYER            PROVIDER          CLAIMS / PHARMACY               │
+│    ┌──────────────┐  ┌──────────────┐  ┌──────────────┐                    │
+│    │ Medical      │  │ EMR          │  │ Pharmacy Rx  │   Matrix of        │
+│    │ Eligibility  │  │ EHR          │  │ Medical      │   dataset TYPE     │
+│    │ Formulary    │  │ Registry     │  │ External lab │   (always shown)   │
+│    └──────────────┘  └──────────────┘  └──────────────┘   ×                │
+│                                                            NAMED SOURCE    │
+│    Named sources: [PENDING CLIENT CLEARANCE — input 4]     (only if        │
+│    Aetna/CVS · Cigna · Intermountain · Select Health ·      cleared)        │
+│    Express Scripts · Komodo · MedStar                                      │
+├────────────────────────────────────────────────────────────────────────────┤
+│  THERAPEUTIC EXPERTISE                                                     │
+│                                                                            │
+│  ┌────────────┬────────────┬────────────┬────────────┐                     │
+│  │ Area       │ Area       │ Area       │ Area       │  Scannable grid.    │
+│  │ ─────────  │ ─────────  │ ─────────  │ ─────────  │  Each cell: area +  │
+│  │ study type │ study type │ study type │ study type │  work type done.    │
+│  └────────────┴────────────┴────────────┴────────────┘                     │
+│                                                                            │
+│  Corroborated today: wound care, lung transplant, congestive heart         │
+│  failure, diabetes, medication adherence, opioid utilisation.              │
+│  Remainder: [PHARMATIYA TO CONFIRM]                                        │
+├────────────────────────────────────────────────────────────────────────────┤
+│  METHODS & ANALYTICAL CAPABILITY                                           │
+│                                                                            │
+│  STUDY DESIGN          STATISTICS              ENGINEERING                 │
+│  · Retrospective       · Logistic regression   · SQL extraction            │
+│    observational       · ANOVA                 · Hadoop · Teradata         │
+│  · Prospective         · Survival analysis     · TOAD                      │
+│    pragmatic           · Propensity scores     · SAS · SPSS                │
+│  · Epidemiology /      · Multivariate models   · Hierarchical files        │
+│    burden of illness   · ML techniques                                     │
+│  · Cohort development                                                      │
+│  · Risk stratification                                                     │
+│                                                                            │
+│  (every item above is stated on the current About page — nothing added)    │
+├────────────────────────────────────────────────────────────────────────────┤
+│  SAMPLE DELIVERABLE                                                        │
+│  ┌──────────────────────────────────────────────────────────────────────┐  │
+│  │ See the shape of what you receive.                                   │  │
+│  │ A redacted synopsis and analysis report.                             │  │
+│  │                                                                      │  │
+│  │ [ Work email ______________ ]  [ REQUEST SAMPLE ]                    │  │
+│  │ We send one file. No sequence, no list.                              │  │
+│  └──────────────────────────────────────────────────────────────────────┘  │
+│  ⚠ Built only if Pharmatiya supplies a sample. Gate UX designed now;       │
+│    section omitted at launch rather than shipped non-functional.           │
+├────────────────────────────────────────────────────────────────────────────┤
+│  CLOSING CTA + FOOTER                                                      │
+└────────────────────────────────────────────────────────────────────────────┘
+</pre>
+  </div>
+
+  <div class="rationale">
+    <h4>Why this order</h4>
+    <dl>
+      <dt>What</dt><dd>Case studies first, then dataset coverage, therapeutic areas, methods, and an optional sample request.</dd>
+      <dt>Why here</dt><dd>Worked examples persuade before capability lists do. Coverage follows because it is the disqualifying question, and methods sit last because only the most technical reader reaches them &mdash; and that reader will read them wherever they are.</dd>
+      <dt>Question</dt><dd>&ldquo;Why should we believe Pharmatiya can do this?&rdquo;</dd>
+      <dt>Next</dt><dd>Consultation, or the lower-commitment sample request for buyers not yet ready to talk.</dd>
+    </dl>
+  </div>
+
+  <div class="note note--flag">
+    <span class="lbl">Fabrication guard</span>
+    <p>Two sections on this page depend entirely on client-supplied material. If case studies (input 2) or a sample deliverable are not supplied, those sections <strong>ship omitted, not filled</strong>. No outcome, dataset, client, therapeutic area or result will be invented to complete a layout. The dataset names listed above are taken verbatim from the current About page and are marked pending clearance until input 4 resolves whether they may be named publicly.</p>
+  </div>
+</section>
+
+<section id="s13">
+  <div class="sec-head"><span class="sec-num">13</span><h2>NextGen AI &mdash; wireframe</h2></div>
+
+  <div class="scroller">
+    <pre class="wire">
+┌────────────────────────────────────────────────────────────────────────────┐
+│  HEADER + [ REQUEST A DEMO ]        ← CTA swaps on this page only          │
+├────────────────────────────────────────────────────────────────────────────┤
+│  NEXTGEN AI                                                                │
+│                                                                            │
+│  Evidence synopses drafted in hours,      ┌─────────────────────────────┐  │
+│  reviewed by the researchers who          │  PRODUCT INTERFACE          │  │
+│  would have written them.                 │  [PHARMATIYA TO PROVIDE     │  │
+│                                           │   screenshot — input 5]     │  │
+│  What it is, in one line: [PHARMATIYA     │                             │  │
+│  TO CONFIRM precise product definition]   │  No mockup will be invented │  │
+│                                           └─────────────────────────────┘  │
+│  [ REQUEST A DEMO ]   Already a user? Open RWE - Builder →                 │
+│                       (app.pharmatiya.net — existing path preserved)       │
+├────────────────────────────────────────────────────────────────────────────┤
+│  HOW IT WORKS                                                              │
+│                                                                            │
+│  ┌───────────────┐      ┌───────────────┐      ┌───────────────┐           │
+│  │ ①             │      │ ②             │      │ ③             │           │
+│  │ FEASIBILITY   │ ───▶ │ RETROSPECTIVE │ ───▶ │ PRAGMATIC     │           │
+│  │               │      │               │      │ OUTREACH      │           │
+│  │ Can this      │      │ What does     │      │ Who should be │           │
+│  │ question be   │      │ existing data │      │ approached,   │           │
+│  │ answered with │      │ already show? │      │ and how?      │           │
+│  │ the data      │      │               │      │               │           │
+│  │ available?    │      │               │      │               │           │
+│  └───────┬───────┘      └───────┬───────┘      └───────┬───────┘           │
+│          │                      │                      │                   │
+│          ▼                      ▼                      ▼                   │
+│  ┌──────────────────────────────────────────────────────────────────────┐  │
+│  │  ⬤ HUMAN EXPERT REVIEW — required at every stage before output       │  │
+│  │     leaves the system. Not optional. Not post-hoc.                   │  │
+│  └──────────────────────────────────────────────────────────────────────┘  │
+│                                                                            │
+│  The review bar spans all three stages deliberately: it is drawn as        │
+│  part of the workflow, not as a caveat beneath it.                         │
+├────────────────────────────────────────────────────────────────────────────┤
+│  WHERE AI IS USED — AND WHERE IT IS NOT                                    │
+│                                                                            │
+│  ┌────────────────────────────────┬─────────────────────────────────────┐  │
+│  │ THE MODEL DOES                 │ A RESEARCHER DOES                   │  │
+│  │ ─────────────────────────────  │ ─────────────────────────────────   │  │
+│  │ · Drafts synopsis structure    │ · Approves the study question       │  │
+│  │ · Summarises literature        │ · Validates every method choice     │  │
+│  │ · Proposes cohort definitions  │ · Signs off all output              │  │
+│  │ · [TO CONFIRM — input 5]       │ · Retains professional              │  │
+│  │                                │   responsibility                    │  │
+│  └────────────────────────────────┴─────────────────────────────────────┘  │
+│                                                                            │
+│  Two honest columns. The right-hand column is longer than the left,        │
+│  and that is the point.                                                    │
+├────────────────────────────────────────────────────────────────────────────┤
+│  ░░░ TRUST — FULL-BLEED, NOT FINE PRINT ░░░                                │
+│                                                                            │
+│  ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐      │
+│  │ NO PHI UPLOADED    │ │ HUMAN REVIEW       │ │ MODEL DISCLOSED    │      │
+│  │                    │ │ MANDATORY          │ │                    │      │
+│  │ Protected health   │ │                    │ │ We name the        │      │
+│  │ information is not │ │ No output reaches  │ │ underlying model   │      │
+│  │ uploaded to the    │ │ a client without   │ │ and its version.   │      │
+│  │ system.            │ │ expert sign-off.   │ │                    │      │
+│  │                    │ │                    │ │ [PHARMATIYA TO     │      │
+│  │ [TO CONFIRM exact  │ │                    │ │  SPECIFY — this is │      │
+│  │  data handling —   │ │                    │ │  a disclosure, and │      │
+│  │  input 5 + input 9 │ │                    │ │  must be accurate] │      │
+│  │  compliance review]│ │                    │ │                    │      │
+│  └────────────────────┘ └────────────────────┘ └────────────────────┘      │
+│                                                                            │
+│  LIMITATIONS                                                               │
+│  What the tool does not do. [PHARMATIYA TO PROVIDE]                        │
+│  Stating limits plainly is a trust asset with this audience, not a         │
+│  weakness. Recommended, not optional.                                      │
+├────────────────────────────────────────────────────────────────────────────┤
+│  WHO IT IS FOR / TYPICAL USE                                               │
+│  Short editorial block. [PHARMATIYA TO PROVIDE]                            │
+├────────────────────────────────────────────────────────────────────────────┤
+│  ┌──────────────────────────────────────────────────────────────────────┐  │
+│  │  REQUEST A DEMO                                                      │  │
+│  │  A 30-minute walkthrough with the team that built it.                │  │
+│  │                                                                      │  │
+│  │  [ Name ______ ] [ Work email ______ ] [ Organisation ______ ]       │  │
+│  │  [ What are you trying to evaluate? _______________________ ]        │  │
+│  │  [ REQUEST DEMO ]                                                    │  │
+│  └──────────────────────────────────────────────────────────────────────┘  │
+├────────────────────────────────────────────────────────────────────────────┤
+│  FOOTER                                                                    │
+└────────────────────────────────────────────────────────────────────────────┘
+</pre>
+  </div>
+
+  <div class="rationale">
+    <h4>Why trust is structural here</h4>
+    <dl>
+      <dt>What</dt><dd>The human-review bar is drawn across the workflow diagram; an explicit does/does-not table follows; three trust guarantees get a full-bleed band; limitations are stated.</dd>
+      <dt>Why here</dt><dd>The brief requires transparency to be &ldquo;disclosure, not disclaimer&rdquo;. A buyer in a regulated environment reads AI claims adversarially &mdash; every one of these elements answers an objection at the moment it forms, which is why none of them sit in a footer.</dd>
+      <dt>Question</dt><dd>&ldquo;What touches patient data, who is accountable, and what happens when the model is wrong?&rdquo;</dd>
+      <dt>Next</dt><dd>Demo request &mdash; deliberately a lower commitment than a consultation. Existing users keep a direct route to the app, preserving the one product path the current site provides.</dd>
+    </dl>
+  </div>
+
+  <div class="note note--flag">
+    <span class="lbl">Compliance dependency</span>
+    <p>Everything in the trust band is a factual claim about data handling and AI use. None of it can be drafted by us and published without review. This page is the primary consumer of input 9 (compliance review windows) and input 5 (product detail), and its trust section cannot be finalised until both land.</p>
+  </div>
+</section>
+
+<section id="s14">
+  <div class="sec-head"><span class="sec-num">14</span><h2>About &mdash; wireframe</h2></div>
+  <p>The current About content survives almost intact. What changes is that it becomes navigable.</p>
+
+  <div class="scroller">
+    <pre class="wire">
+┌────────────────────────────────────────────────────────────────────────────┐
+│  HEADER + [ BOOK A CONSULTATION ]                                          │
+├────────────────────────────────────────────────────────────────────────────┤
+│  ABOUT                                                                     │
+│                                                                            │
+│  A senior evidence team, not a          ┌──────────────────────────────┐   │
+│  staffing model.                        │  REAL OFFICE / WORKING       │   │
+│                                         │  PHOTOGRAPH                  │   │
+│  Two short paragraphs: who              │  [PHARMATIYA TO PROVIDE      │   │
+│  Pharmatiya is and how it works.        │   — input 1]                 │   │
+│                                         │                              │   │
+│                                         │  No stock photography will   │   │
+│                                         │  be substituted. If none is  │   │
+│                                         │  supplied, this becomes a    │   │
+│                                         │  typographic panel.          │   │
+│                                         └──────────────────────────────┘   │
+├────────────────────────────────────────────────────────────────────────────┤
+│  ░░░ TRACK RECORD ░░░                                                      │
+│                                                                            │
+│      25+                    1,000+                  [TO PROVIDE]           │
+│      years in HEOR,         study synopses          therapeutic areas      │
+│      RWE and outcomes       delivered                                      │
+│      research                                                              │
+├────────────────────────────────────────────────────────────────────────────┤
+│  MILESTONES                                                                │
+│                                                                            │
+│  ●───────────●───────────●───────────●───────────●                         │
+│  │           │           │           │           │                         │
+│  [YEAR]      [YEAR]      [YEAR]      [YEAR]      [YEAR]                    │
+│  Outcomes    Payer-side  Pharmaco-   Pharmatiya  NextGen AI /              │
+│  Research    analytics   vigilance & founded     RWE-Builder               │
+│  division    build-out   clinical                                          │
+│  established             trials                                            │
+│  at [PENDING             product                                           │
+│  CLEARANCE]              lead                                              │
+│                                                                            │
+│  ⚠ Milestone events are drawn from the current About page. DATES are       │
+│    [PHARMATIYA TO PROVIDE] — none will be estimated. If dates are not      │
+│    supplied the timeline renders as an unnumbered sequence.                │
+├────────────────────────────────────────────────────────────────────────────┤
+│  TEAM                                                                      │
+│                                                                            │
+│  ┌───────────┐  ┌───────────┐  ┌───────────┐                               │
+│  │  PHOTO    │  │  PHOTO    │  │  PHOTO    │   Real headshots only.        │
+│  │           │  │           │  │           │   [PHARMATIYA TO PROVIDE      │
+│  ├───────────┤  ├───────────┤  ├───────────┤    — input 1, before Week 2]  │
+│  │ Name      │  │ Name      │  │ Name      │                               │
+│  │ Role      │  │ Role      │  │ Role      │   Credentials matter to this  │
+│  │ Credentials│ │ Credentials│ │ Credentials│  buyer — degrees, prior      │
+│  │ 2-line bio│  │ 2-line bio│  │ 2-line bio│   institutions, specialism.   │
+│  └───────────┘  └───────────┘  └───────────┘                               │
+│                                                                            │
+│  ⚠ If photography is unavailable at launch, this section ships as          │
+│    name + credentials in typographic treatment. It does NOT ship with      │
+│    stock portraits or illustrated avatars.                                 │
+├────────────────────────────────────────────────────────────────────────────┤
+│  EXPERTISE                          (condensed — full detail on Evidence)  │
+│                                                                            │
+│  ┌────────────────────────┐  ┌────────────────────────┐                    │
+│  │ EVIDENCE & ANALYTICS   │  │ STRATEGY & ACCESS      │                    │
+│  │ · Study design         │  │ · Value propositions   │                    │
+│  │ · Statistical analysis │  │ · Value-based          │                    │
+│  │ · Cohort development   │  │   contracting          │                    │
+│  │ · Risk stratification  │  │ · Care management      │                    │
+│  │ · Data engineering     │  │   programme design     │                    │
+│  └────────────────────────┘  │ · Payer–provider       │                    │
+│                              │   value propositions   │                    │
+│                              └────────────────────────┘                    │
+│                                                                            │
+│  Full methods detail → Evidence                                            │
+├────────────────────────────────────────────────────────────────────────────┤
+│  DATASET & PARTNER EXPERIENCE                                              │
+│  Summary row; full matrix lives on Evidence.                               │
+│  Named organisations shown only where cleared [input 4].                   │
+├────────────────────────────────────────────────────────────────────────────┤
+│  ┌──────────────────────────────────────────────────────────────────────┐  │
+│  │  Speak with Pharmatiya                          [ BOOK A CONSULT. ]  │  │
+│  │  Talk to a senior researcher about your question.                    │  │
+│  └──────────────────────────────────────────────────────────────────────┘  │
+├────────────────────────────────────────────────────────────────────────────┤
+│  FOOTER                                                                    │
+└────────────────────────────────────────────────────────────────────────────┘
+</pre>
+  </div>
+
+  <div class="rationale">
+    <h4>What changes and what does not</h4>
+    <dl>
+      <dt>What</dt><dd>The same expertise content the site already carries, broken into a track-record band, a timeline, a team section, a two-column expertise summary and a dataset row.</dd>
+      <dt>Why here</dt><dd>The current page&rsquo;s failure is formatting, not substance: long unbroken paragraphs with no headings. Sectioning it makes 25 years scannable in ten seconds while leaving the depth available to anyone who reads on. The deepest technical material moves to Evidence so About stays human.</dd>
+      <dt>Question</dt><dd>&ldquo;Is this a real firm with real people and a real history?&rdquo;</dd>
+      <dt>Next</dt><dd>Consultation for the convinced; Evidence for those who want method detail.</dd>
+    </dl>
+  </div>
+</section>
+
+<section id="s15">
+  <div class="sec-head"><span class="sec-num">15</span><h2>Contact &mdash; wireframe</h2></div>
+  <p>The page that currently has no form at all. It becomes the only stateful page on the site.</p>
+
+  <div class="scroller">
+    <pre class="wire">
+┌────────────────────────────────────────────────────────────────────────────┐
+│  HEADER                                                                    │
+├────────────────────────────────────────────────────────────────────────────┤
+│  CONTACT                                                                   │
+│  Tell us which applies and the enquiry reaches the right person directly.  │
+├────────────────────────────────────────────────────────────────────────────┤
+│  ┌─────────────────────┐ ┌─────────────────────┐ ┌─────────────────────┐   │
+│  │ ◉ NEW CLIENT        │ │ ○ EXISTING CLIENT   │ │ ○ PRESS & PARTNERS  │   │
+│  │                     │ │                     │ │                     │   │
+│  │ Scoping a study or  │ │ A question about    │ │ Media, academic or  │   │
+│  │ an evidence need.   │ │ work in progress.   │ │ partnership.        │   │
+│  └─────────────────────┘ └─────────────────────┘ └─────────────────────┘   │
+│   ↑ Radio group, not a dropdown: all three routes are visible at once,     │
+│     and the choice is made before the form is filled, not after.           │
+│     Routing destinations: [PHARMATIYA TO CONFIRM — input 6]                │
+├────────────────────────────────────────────────────────────────────────────┤
+│  FORM (fields adapt to the route selected above)                           │
+│                                                                            │
+│  Name *                          Organisation *                            │
+│  [__________________________]    [__________________________]              │
+│                                                                            │
+│  Work email *                    Role                                      │
+│  [__________________________]    [__________________________]              │
+│                                                                            │
+│  ── shown for NEW CLIENT only ──────────────────────────────────────────   │
+│  Which service is closest?                                                 │
+│  [ ▾ Evidence generation / RWD analytics / Access & value / Not sure ]      │
+│                                                                            │
+│  What question are you trying to answer? *                                 │
+│  [                                                                    ]    │
+│  [                                                                    ]    │
+│                                                                            │
+│  ── shown for EXISTING CLIENT only ─────────────────────────────────────   │
+│  Project reference (if known)                                              │
+│  [__________________________]                                              │
+│                                                                            │
+│  [ ] Add me to the Quarterly Insights Digest                               │
+│      (unticked by default — consent is opt-in)                             │
+│                                                                            │
+│  [ SEND ENQUIRY ]                                                          │
+│                                                                            │
+│  Inline validation on blur. Errors state what to fix, not "invalid input". │
+│  Success replaces the form with a confirmation naming the route and the    │
+│  expected response time — it does not silently clear.                      │
+├────────────────────────────────────────────────────────────────────────────┤
+│  ┌────────────────────────────────┬─────────────────────────────────────┐  │
+│  │ BOOK DIRECTLY                  │ DIRECT CONTACT                      │  │
+│  │                                │                                     │  │
+│  │ A 30-minute consultation with  │ admin@pharmatiya.net  ← real mailto │  │
+│  │ a senior researcher.           │                                     │  │
+│  │                                │ Pharmatiya LLC                      │  │
+│  │ ┌────────────────────────────┐ │ New York, NY 10280                  │  │
+│  │ │ CALENDAR EMBED             │ │                                     │  │
+│  │ │ [PHARMATIYA TO PROVIDE     │ │ (Address retained verbatim from     │  │
+│  │ │  — input 6]                │ │  the current footer.)               │  │
+│  │ │                            │ │                                     │  │
+│  │ │ If no calendar is supplied │ │                                     │  │
+│  │ │ this becomes a "request a  │ │                                     │  │
+│  │ │ time" field in the form.   │ │                                     │  │
+│  │ └────────────────────────────┘ │                                     │  │
+│  └────────────────────────────────┴─────────────────────────────────────┘  │
+├────────────────────────────────────────────────────────────────────────────┤
+│  ░░░ QUARTERLY INSIGHTS DIGEST ░░░                                         │
+│                                                                            │
+│  What it is: [PHARMATIYA TO CONFIRM — frequency, topics, who writes it]    │
+│  Sent quarterly. [n] issues a year. Unsubscribe in one click.              │
+│                                                                            │
+│  [ Work email ____________________ ]  [ SUBSCRIBE ]                        │
+│                                                                            │
+│  ↑ The current site names this Digest twice and captures nothing.          │
+│    This is its first working subscription path.                            │
+├────────────────────────────────────────────────────────────────────────────┤
+│  FOOTER                                                                    │
+└────────────────────────────────────────────────────────────────────────────┘
+</pre>
+  </div>
+
+  <div class="rationale">
+    <h4>Why routing precedes the form</h4>
+    <dl>
+      <dt>What</dt><dd>Three visible route options selected first, a form whose fields adapt to the choice, a booking panel, direct contact details, and a working Digest subscription.</dd>
+      <dt>Why here</dt><dd>Routing first means an existing client with a project question is never made to fill in a new-business form, and a new enquiry arrives pre-qualified with the service and the actual question attached. Radio cards rather than a dropdown keep all three paths visible &mdash; a visitor who does not see &ldquo;existing client&rdquo; assumes there is no route for them.</dd>
+      <dt>Question</dt><dd>&ldquo;How do I reach the right person, and how quickly will they answer?&rdquo;</dd>
+      <dt>Next</dt><dd>A confirmation state that names the route and the response time, so the visitor leaves knowing what happens next.</dd>
+    </dl>
+  </div>
+
+  <h4>Accessibility specifics for this page</h4>
+  <ul>
+    <li>The route selector is a genuine <code>fieldset</code> with a <code>legend</code> and radio inputs &mdash; arrow-key navigable, announced as a group.</li>
+    <li>Every field has a persistent visible <code>&lt;label&gt;</code>; placeholders are never used as labels.</li>
+    <li>Errors are associated by <code>aria-describedby</code>, announced via a polite live region, and never signalled by colour alone.</li>
+    <li>Conditional fields appearing on route change are announced, and focus is not stolen mid-typing.</li>
+    <li>Success and failure states are both reachable and announced &mdash; a submission that fails must say so, not appear to succeed.</li>
+  </ul>
+</section>
+
+<section id="s16">
+  <div class="sec-head"><span class="sec-num">16</span><h2>Recommended visual direction</h2></div>
+
+  <p class="lede">Scientific editorialism. The register of a clinical research publication, executed with the precision of a modern digital product &mdash; and no element of the current SaaS-template vocabulary.</p>
+
+  <h3>The organising idea</h3>
+  <p>Pharmatiya&rsquo;s product is statistical rigour. The site should therefore be built out of the material that discipline actually produces: survival curves, forest plots, cohort diagrams, coverage matrices, number-at-risk tables. These are not illustrations placed near the content &mdash; they <em>are</em> the visual identity, occupying the positions a template would fill with stock photography.</p>
+  <p>This solves the brief&rsquo;s hardest constraint honestly. A site cannot avoid looking AI-generated by adding decoration; it avoids it by having real content in the positions where decoration usually goes.</p>
+
+  <h3>What we will not do</h3>
+  <div class="pair">
+    <div>
+      <ul>
+        <li>No stock photography of scientists or laboratories</li>
+        <li>No three identical feature cards</li>
+        <li>No gradient hero, no glow, no floating orbs</li>
+        <li>No glassmorphism</li>
+        <li>No decorative icon sets</li>
+      </ul>
+    </div>
+    <div>
+      <ul>
+        <li>No centred-everything layouts</li>
+        <li>No repeated identical section patterns</li>
+        <li>No abstract 3D or circuit-board AI imagery</li>
+        <li>No fake dashboards, statistics or testimonials</li>
+        <li>No large rounded cards or pill UI as a default</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Layout rhythm</h3>
+  <p>No two consecutive sections share a structure. The homepage sequence alternates deliberately: 60/40 hero &rarr; full-width figure row &rarr; 65/35 editorial &rarr; 35/65 inverted &rarr; 65/35 &rarr; full-bleed band &rarr; 40/60 dark panel &rarr; narrow offset column &rarr; asymmetric close. Rhythm comes from varying the split and the ground, not from adding ornament.</p>
+  <p>Cards appear in exactly three places, where grouping is genuinely informational: team members, contact route options, and trust guarantees. Everywhere else, content sits directly on the page separated by rules and space.</p>
+
+  <h3>Colour</h3>
+  <p>Per the brief, brand identity is not being redesigned in Phase 1. The direction below refines how the existing identity is used digitally and is <strong>pending confirmation against the vector logo (input 8)</strong>, which will establish the true brand values.</p>
+
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#0e5a5e"></div><div class="meta"><b>Primary</b><span>#0E5A5E</span></div></div>
+    <div class="sw"><div class="chip" style="background:#0a3f47"></div><div class="meta"><b>Primary deep</b><span>#0A3F47</span></div></div>
+    <div class="sw"><div class="chip" style="background:#8c3a2b"></div><div class="meta"><b>Data signal</b><span>#8C3A2B</span></div></div>
+    <div class="sw"><div class="chip" style="background:#f2f4f2"></div><div class="meta"><b>Canvas</b><span>#F2F4F2</span></div></div>
+    <div class="sw"><div class="chip" style="background:#fbfcfb; border-bottom:1px solid #d2d9d5"></div><div class="meta"><b>Surface</b><span>#FBFCFB</span></div></div>
+    <div class="sw"><div class="chip" style="background:#151b1a"></div><div class="meta"><b>Ink</b><span>#151B1A</span></div></div>
+    <div class="sw"><div class="chip" style="background:#55625e"></div><div class="meta"><b>Muted</b><span>#55625E</span></div></div>
+    <div class="sw"><div class="chip" style="background:#d2d9d5"></div><div class="meta"><b>Border</b><span>#D2D9D5</span></div></div>
+  </div>
+
+  <p>The neutrals carry a slight green-cool bias so they sit with the primary rather than reading as generic grey. Data-visualisation accents (teal, oxblood, olive) are chosen to remain distinguishable under the common forms of colour-vision deficiency and to survive greyscale printing &mdash; a real requirement when a buyer prints a page for an internal review. <strong>No gradients anywhere.</strong></p>
+
+  <h3>Typography direction</h3>
+  <p>Three roles, deliberately contrasted: a serif for display and editorial voice, a technical sans for interface and body, and a monospace for labels, figures and data annotation. The monospace is what makes the site read as analytical rather than promotional.</p>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Role</th><th>Recommendation</th><th>Fallback direction</th><th>Rationale</th></tr></thead>
+      <tbody>
+        <tr><td>Display / editorial</td><td>A licensed transitional or contemporary serif with a true italic &mdash; the ~$200&ndash;500 budget in input 7</td><td>Spectral, Source Serif 4, Literata</td><td>Carries research-publication authority. Distinguishes Pharmatiya from every sans-only consultancy site.</td></tr>
+        <tr><td>Body / interface</td><td>A neutral technical sans with a wide weight range</td><td>IBM Plex Sans</td><td>Deliberately not Inter, which is the most common signal of a generated design.</td></tr>
+        <tr><td>Labels / data</td><td>Monospace, used for eyebrows, figure numbers, axis labels, captions</td><td>IBM Plex Mono</td><td>Encodes the analytical register and gives figures a native visual language.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>This document is set in the fallback pairing, so it is a live specimen of the worst case: Spectral, IBM Plex Sans and IBM Plex Mono. The licensed display face should improve on it, not rescue it.</p>
+
+  <h3>Photography</h3>
+  <p>Real photography only, in three places: the About hero (office or working environment), team headshots, and nowhere else. Where real photography is unavailable, the position is filled with data, typography or structured layout &mdash; never with stock. This is a hard rule with no fallback to purchased imagery.</p>
+</section>
+
+<section id="s17">
+  <div class="sec-head"><span class="sec-num">17</span><h2>Initial design system direction</h2></div>
+  <p class="lede">Enough to build against. Tokens are finalised after design approval and after the vector logo confirms the true brand values.</p>
+
+  <h3>Grid</h3>
+  <ul>
+    <li><strong>Desktop:</strong> max content width 1216px, 12 columns, 24px gutters, 48px outer margins. Full-bleed bands break the container deliberately and are the only elements that do.</li>
+    <li><strong>Tablet (768&ndash;1023px):</strong> 8 columns, 20px gutters, 32px margins. Two-column splits collapse to one at 960px.</li>
+    <li><strong>Mobile (&lt;768px):</strong> 4 columns, 16px gutters, 20px margins &mdash; reducing to 16px at 320px.</li>
+    <li>Asymmetric splits are expressed as column spans (7/5, 8/4, 5/7), never as arbitrary percentages, so rhythm stays systematic.</li>
+  </ul>
+
+  <h3>Spacing scale</h3>
+  <p>A 4px base with a restricted set of steps &mdash; <code>4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 · 128</code>. Section padding uses 96px desktop / 56px mobile; the gap between related blocks is 32px; between a heading and its body, 12px. Restricting the scale is what makes an asymmetric layout read as composed rather than arbitrary.</p>
+
+  <h3>Type scale</h3>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Role</th><th>Desktop</th><th>Mobile</th><th>Face</th><th>Line height</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>H1</td><td>56px</td><td>32px (28px @320)</td><td>Display serif, 600</td><td>1.05</td><td><code>text-wrap: balance</code></td></tr>
+        <tr><td>H2</td><td>36px</td><td>26px</td><td>Display serif, 600</td><td>1.15</td><td>Section titles</td></tr>
+        <tr><td>H3</td><td>24px</td><td>20px</td><td>Display serif, 600</td><td>1.2</td><td>Sub-sections, service names</td></tr>
+        <tr><td>H4</td><td>13px</td><td>13px</td><td>Mono, 500, uppercase</td><td>1.3</td><td>0.1em tracking &mdash; the label voice</td></tr>
+        <tr><td>Body large</td><td>19px</td><td>17px</td><td>Sans, 400</td><td>1.55</td><td>Ledes, hero support</td></tr>
+        <tr><td>Body</td><td>17px</td><td>16px</td><td>Sans, 400</td><td>1.6</td><td>Max 68ch measure</td></tr>
+        <tr><td>Small</td><td>15px</td><td>15px</td><td>Sans, 400</td><td>1.5</td><td>Secondary detail</td></tr>
+        <tr><td>Caption</td><td>14px</td><td>14px</td><td>Mono, 400</td><td>1.45</td><td>Figure captions, sources</td></tr>
+        <tr><td>Data label</td><td>12px</td><td>12px</td><td>Mono, 400</td><td>1.3</td><td>Axis labels, annotations</td></tr>
+        <tr><td>Figure value</td><td>48px</td><td>36px</td><td>Display serif, 600</td><td>1.0</td><td><code>tabular-nums</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Buttons</h3>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Variant</th><th>Default</th><th>Hover</th><th>Focus</th><th>Disabled</th></tr></thead>
+      <tbody>
+        <tr><td>Primary</td><td>Solid primary, canvas text, 1px same-colour border, square corners (2px radius)</td><td>Primary-deep fill</td><td>2px offset outline, always visible, never removed on mouse input</td><td>40% opacity, <code>cursor: not-allowed</code>, <code>aria-disabled</code></td></tr>
+        <tr><td>Secondary</td><td>Transparent, primary text, 1px primary border</td><td>Primary fill, canvas text</td><td>As primary</td><td>As primary</td></tr>
+        <tr><td>Text link</td><td>Primary, underlined, trailing arrow on directional links</td><td>Primary-deep, arrow shifts 2px</td><td>Outline around the full link box</td><td>Muted, not underlined</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Minimum hit area 44&times;44px everywhere; 48px height for primary buttons. Radius is 2px throughout &mdash; enough to avoid harshness, far short of the pill and large-radius vocabulary the brief rules out.</p>
+
+  <h3>Form elements</h3>
+  <ul>
+    <li><strong>Input / textarea:</strong> 1px border, 2px radius, 12&times;14px padding, 48px min height. Label always above and always visible. Focus draws a 2px primary outline <em>and</em> darkens the border &mdash; never colour alone.</li>
+    <li><strong>Select:</strong> native element, styled minimally. Native pickers behave correctly on mobile and are accessible for free.</li>
+    <li><strong>Checkbox / radio:</strong> 20px control, 44px total target, label clickable. Radio cards on Contact remain real radio inputs beneath their styling.</li>
+    <li><strong>Validation:</strong> on blur, not on keystroke. Error text sits below the field with an icon and a message naming the fix (&ldquo;Enter a work email address&rdquo;, not &ldquo;Invalid&rdquo;). <code>aria-invalid</code> plus <code>aria-describedby</code>; announced in a polite live region.</li>
+    <li><strong>Success:</strong> replaces the form with a confirmation stating what was sent, where it routed, and the expected response time.</li>
+  </ul>
+
+  <h3>Data components</h3>
+  <ul>
+    <li><strong>Figure:</strong> the chart, a mono figure number (&ldquo;Fig. 2.1&rdquo;), a sentence-case caption stating the finding, and a source line. Captions state what the figure shows, never &ldquo;chart showing data&rdquo;.</li>
+    <li><strong>Illustrative marker:</strong> any figure not drawn from real client data carries a persistent <code>ILLUSTRATIVE DATA</code> label in the caption area &mdash; a requirement of the brief and a condition of publishing.</li>
+    <li><strong>Legend:</strong> inline labels placed at the end of each series wherever possible, rather than a detached key. Series are distinguished by both colour and dash pattern, so they survive greyscale and colour-blind viewing.</li>
+    <li><strong>Annotation:</strong> mono, muted, with a hairline leader to the point it marks.</li>
+    <li><strong>Table:</strong> hairline row rules, no vertical rules, no zebra striping, mono numerals with <code>tabular-nums</code>, sticky header on scroll, and an <code>overflow-x</code> container so the page never scrolls sideways.</li>
+    <li><strong>Text alternative:</strong> every figure carries an accessible description of the finding, not of the shape. This is a WCAG AA requirement and it is also how the content reaches anyone reading on a phone with figures dropped.</li>
+  </ul>
+
+  <h3>Cards</h3>
+  <p>Used in three places only &mdash; team members, contact routes, trust guarantees &mdash; each because the content is genuinely a set of parallel items. 1px border, 2px radius, no shadow, no hover lift. Everywhere else, rules and space do the grouping.</p>
+
+  <h3>Accessibility baseline</h3>
+  <ul>
+    <li>WCAG 2.2 AA. Body text meets 4.5:1 minimum; large display text 3:1; UI borders and focus indicators 3:1.</li>
+    <li>One H1 per page, then a strictly descending outline &mdash; directly correcting the five-H1 homepage.</li>
+    <li>Full keyboard operability, a visible focus state on every interactive element, and a working skip link.</li>
+    <li>Landmark regions (<code>header</code>, <code>nav</code>, <code>main</code>, <code>footer</code>) with accessible names where repeated.</li>
+    <li>ARIA only where semantics fall short &mdash; the mobile menu, live-region validation, <code>aria-current</code> on navigation.</li>
+    <li><code>prefers-reduced-motion</code> honoured; no motion is required to understand any content.</li>
+    <li>Meaningful alt text on every image. <strong>The word &ldquo;Placeholder&rdquo; will not appear in any alt attribute at launch.</strong></li>
+  </ul>
+
+  <h3>Performance posture</h3>
+  <p>Statically rendered, no client-side JavaScript except the mobile menu, the contact form&rsquo;s conditional fields and validation. Charts are hand-authored inline SVG rather than a charting library &mdash; they are fixed figures, not live data, so a runtime dependency would cost hundreds of kilobytes for nothing. Photography served as AVIF/WebP with explicit dimensions to eliminate layout shift. Two font families, subset to Latin, <code>font-display: swap</code>, self-hosted and preloaded.</p>
+</section>
+
+<section id="s18">
+  <div class="sec-head"><span class="sec-num">&mdash;</span><h2>What we need to proceed</h2></div>
+
+  <p>The architecture above is complete and buildable. Five items block specific sections, and two are needed before design work begins in Week 2.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Input</th><th>Blocks</th><th>If not supplied</th><th>Needed by</th></tr></thead>
+      <tbody>
+        <tr><td>4 &mdash; Dataset name clearance</td><td>Evidence dataset coverage; About; Home coverage band</td><td>Dataset <em>types</em> shown; named sources omitted</td><td><strong>Week 1</strong></td></tr>
+        <tr><td>6 &mdash; Contact routing &amp; calendar</td><td>Contact page routing; booking panel</td><td>Single route; &ldquo;request a time&rdquo; field replaces calendar</td><td><strong>Week 1</strong></td></tr>
+        <tr><td>9 &mdash; Compliance review windows</td><td>NextGen AI trust section; any outcome claim</td><td>Trust claims cannot be published</td><td><strong>Week 1</strong></td></tr>
+        <tr><td>1 &mdash; Team &amp; office photography</td><td>About hero; team section</td><td>Typographic treatment; no stock substitute</td><td>Before Week 2</td></tr>
+        <tr><td>7 &mdash; Typeface decision</td><td>Entire type system</td><td>Fallback stack ships; distinctiveness reduced</td><td>Before Week 2</td></tr>
+        <tr><td>8 &mdash; Vector logo</td><td>Header, footer, favicon; brand colour confirmation</td><td>Current raster JPEG persists &mdash; visible quality cost</td><td>Before Week 2</td></tr>
+        <tr><td>2 &mdash; Case study material</td><td>Evidence case studies</td><td>Section omitted, not filled</td><td>Before Week 4</td></tr>
+        <tr><td>5 &mdash; NextGen AI product detail</td><td>NextGen AI page throughout</td><td>Page cannot be completed</td><td>Before Week 4</td></tr>
+        <tr><td>3 &mdash; Service descriptions reviewed</td><td>Services page copy; service naming</td><td>Nothing published unverified</td><td>Before Week 4</td></tr>
+        <tr><td>10 &mdash; Hosting preference</td><td>Form handling; deployment; redirects</td><td>Build proceeds; deployment blocked</td><td>Before Week 5</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <span class="lbl">Two decisions we need from you directly</span>
+    <p><strong>1. Product naming.</strong> NextGen AI or RWE - Builder as the public name? The page URL, navigation label and every CTA depend on it.<br>
+    <strong>2. Figure confirmation.</strong> The &ldquo;1,000+ synopses&rdquo; figure appears only in the brief and is not corroborated anywhere on the current site. Confirm it before it goes on the homepage, and tell us what the two remaining proof figures should be.</p>
+  </div>
+
+  <p style="margin-top:2rem; padding-top:1.5rem; border-top:2px solid var(--ink); font-family:var(--font-display); font-size:1.1rem;">
+    On approval of this architecture, the build proceeds to final copy, polished UI, design tokens, component architecture, responsive implementation, accessibility, SEO and the closing old-versus-new functionality audit.
+  </p>
+</section>
+
+</div>
+</div>

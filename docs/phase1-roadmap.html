@@ -1,0 +1,752 @@
+<title>Pharmatiya Phase 1 Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;450;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root {
+  --paper:      #f2f4f2;
+  --surface:    #fbfcfb;
+  --sunk:       #e7ebe8;
+  --ink:        #151b1a;
+  --ink-muted:  #55625e;
+  --ink-faint:  #7d8985;
+  --rule:       #d2d9d5;
+  --rule-firm:  #b6c0bb;
+  --accent:     #0e5a5e;
+  --gate:       #7d5f18;
+  --block:      #8c3a2b;
+  --done:       #46605a;
+
+  --font-display: 'Spectral', 'Sitka Text', Cambria, Georgia, serif;
+  --font-text: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Cascadia Mono', Consolas, monospace;
+
+  --shell: 78rem;
+  --measure: 68ch;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:      #0f1413;
+    --surface:    #161d1b;
+    --sunk:       #1c2523;
+    --ink:        #e6ebe8;
+    --ink-muted:  #a3b0ab;
+    --ink-faint:  #7c8a88;
+    --rule:       #2b3633;
+    --rule-firm:  #3d4a46;
+    --accent:     #5fb8bb;
+    --gate:       #c9a44e;
+    --block:      #d98a76;
+    --done:       #8fada6;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:      #0f1413;
+  --surface:    #161d1b;
+  --sunk:       #1c2523;
+  --ink:        #e6ebe8;
+  --ink-muted:  #a3b0ab;
+  --ink-faint:  #7c8a88;
+  --rule:       #2b3633;
+  --rule-firm:  #3d4a46;
+  --accent:     #5fb8bb;
+  --gate:       #c9a44e;
+  --block:      #d98a76;
+  --done:       #8fada6;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 16px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page { width: min(100% - 3rem, var(--shell)); margin-inline: auto; padding-block: 3rem 6rem; }
+
+/* ── masthead ── */
+.masthead { border-bottom: 2px solid var(--ink); padding-bottom: 1.75rem; margin-bottom: 3rem; }
+.kicker {
+  font-family: var(--font-mono); font-size: .72rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--accent); margin: 0 0 1rem;
+}
+.masthead h1 {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(2.1rem, 1.4rem + 3.2vw, 3.7rem);
+  line-height: 1.04; letter-spacing: -.02em; margin: 0 0 .6rem; text-wrap: balance;
+}
+.standfirst {
+  font-family: var(--font-display); font-size: clamp(1.05rem, .98rem + .45vw, 1.28rem);
+  font-style: italic; color: var(--ink-muted); max-width: 56ch; margin: 0 0 1.5rem;
+}
+.byline {
+  display: flex; flex-wrap: wrap; gap: .4rem 2rem;
+  font-family: var(--font-mono); font-size: .74rem; color: var(--ink-faint); letter-spacing: .04em;
+}
+.byline b { color: var(--ink-muted); font-weight: 500; }
+
+/* ── shared ── */
+section { margin-bottom: 4rem; }
+.sec-head {
+  display: flex; gap: 1rem; align-items: baseline;
+  border-bottom: 1px solid var(--rule-firm); padding-bottom: .7rem; margin-bottom: 1.6rem;
+}
+.sec-num { font-family: var(--font-mono); font-size: .8rem; color: var(--accent); flex: none; letter-spacing: .06em; }
+.sec-head h2 {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(1.5rem, 1.25rem + 1.1vw, 2.05rem);
+  line-height: 1.12; letter-spacing: -.015em; margin: 0;
+}
+h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; margin: 2rem 0 .6rem; }
+h4 {
+  font-family: var(--font-mono); font-weight: 500; font-size: .74rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); margin: 1.5rem 0 .5rem;
+}
+p { margin: 0 0 1rem; max-width: var(--measure); }
+ul { max-width: var(--measure); padding-left: 1.2rem; margin: 0 0 1rem; }
+li { margin-bottom: .3rem; }
+a { color: var(--accent); }
+code { font-family: var(--font-mono); font-size: .86em; background: var(--sunk); padding: .1em .35em; border-radius: 2px; }
+.lede { font-family: var(--font-display); font-size: 1.12rem; line-height: 1.5; color: var(--ink-muted); max-width: 58ch; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.scroller { overflow-x: auto; border: 1px solid var(--rule); background: var(--surface); margin-bottom: 1.4rem; }
+table { border-collapse: collapse; width: 100%; font-size: .87rem; min-width: 44rem; }
+th, td { text-align: left; padding: .68rem .9rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+thead th {
+  font-family: var(--font-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-faint); font-weight: 500; background: var(--sunk);
+}
+tbody tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 450; }
+.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.tag {
+  display: inline-block; font-family: var(--font-mono); font-size: .64rem;
+  letter-spacing: .08em; text-transform: uppercase; padding: .18em .48em;
+  border: 1px solid currentColor; border-radius: 2px; white-space: nowrap;
+}
+.t-gate { color: var(--gate); }
+.t-block { color: var(--block); }
+.t-done { color: var(--done); }
+.t-vaelo { color: var(--accent); }
+
+/* ── summary strip ── */
+.strip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 1.5rem; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  padding-block: 1.5rem; margin-bottom: 2.5rem;
+}
+.strip div b {
+  display: block; font-family: var(--font-display); font-size: 2rem;
+  line-height: 1; font-weight: 600; letter-spacing: -.02em; color: var(--accent);
+}
+.strip div span {
+  display: block; font-family: var(--font-mono); font-size: .66rem;
+  color: var(--ink-faint); margin-top: .45rem; letter-spacing: .04em;
+}
+
+/* ── timeline ── */
+.tl { display: grid; gap: 0; margin-bottom: 1.5rem; }
+.wk {
+  display: grid; gap: .3rem 1.5rem; padding: 1.3rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+@media (min-width: 52rem) { .wk { grid-template-columns: 11rem 1fr; } }
+.wk:first-child { border-top: 1px solid var(--rule-firm); }
+
+.wk__when { }
+.wk__when b {
+  display: block; font-family: var(--font-mono); font-size: .72rem;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink);
+}
+.wk__when span {
+  display: block; font-family: var(--font-mono); font-size: .68rem;
+  color: var(--ink-faint); margin-top: .2rem; font-variant-numeric: tabular-nums;
+}
+.wk__when .tag { margin-top: .5rem; }
+
+.wk__what h3 { margin: 0 0 .5rem; font-size: 1.15rem; }
+.wk__cols { display: grid; gap: 1rem 2rem; margin-top: .8rem; }
+@media (min-width: 42rem) { .wk__cols { grid-template-columns: 1fr 1fr; } }
+.wk__cols ul { margin: 0; font-size: .87rem; }
+.wk__cols li { color: var(--ink-muted); }
+.exit {
+  margin-top: .9rem; padding: .55rem .8rem; background: var(--sunk);
+  border-left: 2px solid var(--accent); font-size: .84rem; color: var(--ink-muted);
+}
+.exit b {
+  font-family: var(--font-mono); font-size: .64rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--accent); display: block; margin-bottom: .2rem;
+}
+.wk--gate { background: var(--surface); }
+.wk--gate .exit { border-left-color: var(--gate); }
+.wk--gate .exit b { color: var(--gate); }
+.wk--done .wk__what h3 { color: var(--ink-muted); }
+
+/* ── notes ── */
+.note {
+  background: var(--surface); border: 1px solid var(--rule);
+  border-left: 3px solid var(--gate); padding: 1rem 1.2rem; margin: 1.4rem 0; font-size: .92rem;
+}
+.note p:last-child { margin-bottom: 0; }
+.note .lbl {
+  font-family: var(--font-mono); font-size: .66rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--gate); display: block; margin-bottom: .35rem;
+}
+.note--block { border-left-color: var(--block); }
+.note--block .lbl { color: var(--block); }
+.note--ok { border-left-color: var(--accent); }
+.note--ok .lbl { color: var(--accent); }
+
+/* ── critical path ── */
+.cp { font-family: var(--font-mono); font-size: .74rem; line-height: 1.8; overflow-x: auto; }
+.cp pre { margin: 0; padding: 1.3rem; white-space: pre; }
+
+/* ── build order ── */
+.stages { display: grid; gap: .6rem; counter-reset: st; }
+.stg {
+  counter-increment: st; display: grid; gap: .2rem 1rem;
+  border: 1px solid var(--rule); background: var(--surface); padding: .85rem 1rem; border-radius: 2px;
+}
+@media (min-width: 42rem) { .stg { grid-template-columns: 2.2rem 1fr; } }
+.stg::before {
+  content: counter(st, decimal-leading-zero);
+  font-family: var(--font-mono); font-size: .72rem; color: var(--ink-faint); padding-top: .2em;
+}
+.stg b { display: block; font-weight: 600; }
+.stg span { display: block; font-size: .85rem; color: var(--ink-muted); }
+.stg code { font-size: .78em; }
+
+.close {
+  margin-top: 2.5rem; padding-top: 1.5rem; border-top: 2px solid var(--ink);
+  font-family: var(--font-display); font-size: 1.08rem; max-width: 60ch;
+}
+</style>
+
+<div class="page">
+
+<header class="masthead">
+  <p class="kicker">Phase 1 &middot; Delivery roadmap &middot; Architecture approved</p>
+  <h1>Pharmatiya Health: Road to Launch</h1>
+  <p class="standfirst">Seven weeks from kickoff to go-live, two sign-off gates, ten client inputs and one hard dependency chain &mdash; sequenced so nothing waits on anything it does not have to.</p>
+  <div class="byline">
+    <span><b>Prepared by</b> Vaelo Creative</span>
+    <span><b>Issued</b> 3 September 2026</span>
+    <span><b>Kickoff</b> Mon 7 September 2026</span>
+    <span><b>Launch target</b> Fri 23 October 2026</span>
+  </div>
+</header>
+
+<div class="strip">
+  <div><b>7</b><span>weeks to launch</span></div>
+  <div><b>2</b><span>sign-off gates</span></div>
+  <div><b>10</b><span>client inputs</span></div>
+  <div><b>3</b><span>due in week 1</span></div>
+  <div><b>6</b><span>pages to build</span></div>
+</div>
+
+<section>
+  <div class="sec-head"><span class="sec-num">01</span><h2>Where we are</h2></div>
+
+  <p class="lede">Stages 1&ndash;10 are complete and approved. That work sat ahead of the contracted seven weeks, so Week 1 starts with the architecture already settled rather than still being argued.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Delivered</th><th>Covers</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Existing site audit</td><td>Sitemap, navigation, functionality, content, UX and visual problems &mdash; DOM-verified against the live site</td><td><span class="tag t-done">Approved</span></td></tr>
+        <tr><td>Retain / improve / remove matrix</td><td>22 elements decided; task-preservation check completed</td><td><span class="tag t-done">Approved</span></td></tr>
+        <tr><td>Audience &amp; information architecture</td><td>Four buying intents, six-page sitemap, page objectives and CTAs</td><td><span class="tag t-done">Approved</span></td></tr>
+        <tr><td>User flows</td><td>Five journeys, desktop and mobile</td><td><span class="tag t-done">Approved</span></td></tr>
+        <tr><td>Wireframes</td><td>All six pages, desktop and 375px, clickable prototype</td><td><span class="tag t-done">Approved</span></td></tr>
+        <tr><td>Visual &amp; design-system direction</td><td>Grid, type scale, colour tokens, components, accessibility baseline</td><td><span class="tag t-done">Approved</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note note--ok">
+    <span class="lbl">What this buys us</span>
+    <p>Week 1 was scoped in the brief as content audit, input gathering and sitemap finalisation. Two of those three are already done. The week therefore compresses to <strong>chasing the four Week-1 inputs and standing up the repository</strong> &mdash; which means design can start earlier, and the schedule carries roughly three days of slack it would not otherwise have.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">02</span><h2>The critical path</h2></div>
+
+  <p>Only one chain actually determines the launch date. Everything else has float.</p>
+
+  <div class="scroller cp">
+<pre>
+  WEEK 1        WEEK 2         WEEK 3        WEEK 4-5       WEEK 6         WEEK 7
+  ────────      ────────       ────────      ─────────      ────────       ────────
+
+  Inputs
+  4·6·9    ──▶  Design      ──▶ GATE 1   ──▶ Build      ──▶ Content    ──▶ GATE 2
+  cleared       system +       DESIGN        6 pages        + QA           LAUNCH
+                homepage       APPROVAL      responsive     a11y audit     DNS
+                comps                        accessible     cross-browser  redirects
+                                                                           analytics
+     │             ▲                            ▲              ▲
+     │             │                            │              │
+     │          Inputs                       Inputs         Inputs
+     │          1·7·8                        2·3·5          hosting
+     │          photos,                      cases,         10
+     │          typeface,                    services,
+     │          logo                         product
+     │
+     └── if these slip, EVERYTHING slips ────────────────────────────────▶
+
+
+  FLOAT:  Inputs 2·3·5 have ~3 weeks of float — needed by Week 4, requested now.
+          Input 10 (hosting) has ~4 weeks — blocks deployment only, not build.
+          Inputs 1·7·8 have ~1 week — they gate design, not architecture.
+</pre>
+  </div>
+
+  <div class="note note--block">
+    <span class="lbl">The one rule that governs the date</span>
+    <p>Both gates require Pharmatiya sign-off before we proceed. <strong>If sign-off is delayed, the timeline shifts by the same number of days</strong> &mdash; it does not compress. The same applies to Week-1 inputs: they are the only items with zero float, and a week&rsquo;s delay on dataset clearance is a week&rsquo;s delay on launch.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">03</span><h2>Week by week</h2></div>
+
+  <div class="tl">
+
+    <div class="wk">
+      <div class="wk__when">
+        <b>Week 1</b>
+        <span>7&ndash;11 Sep</span>
+        <span class="tag t-vaelo">Discovery</span>
+      </div>
+      <div class="wk__what">
+        <h3>Kickoff and input gathering</h3>
+        <p style="font-size:.9rem; color:var(--ink-muted); margin-bottom:0">Architecture is settled, so this week is about unblocking design and build. The four Week-1 inputs are the entire point of it.</p>
+        <div class="wk__cols">
+          <div>
+            <h4>Vaelo does</h4>
+            <ul>
+              <li>Kickoff call, walk the approved wireframes</li>
+              <li>Stand up the Next.js repository and CI</li>
+              <li>Draft copy for Home and Services</li>
+              <li>Issue the input request with owners and dates</li>
+              <li>Recommend a form handler and hosting option</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Pharmatiya does</h4>
+            <ul>
+              <li><strong>Input 4</strong> &mdash; dataset name clearance: yes or no per organisation</li>
+              <li><strong>Input 6</strong> &mdash; contact routing and calendar link</li>
+              <li><strong>Input 9</strong> &mdash; compliance review turnaround time</li>
+              <li>Decide the public product name</li>
+              <li>Confirm or withdraw the &ldquo;1,000+ synopses&rdquo; figure</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exit">
+          <b>Exit criteria</b>
+          Four Week-1 inputs received. Product name decided. Repository running with a deploy preview. Design can start Monday without open questions.
+        </div>
+      </div>
+    </div>
+
+    <div class="wk">
+      <div class="wk__when">
+        <b>Week 2</b>
+        <span>14&ndash;18 Sep</span>
+        <span class="tag t-vaelo">Design</span>
+      </div>
+      <div class="wk__what">
+        <h3>Design system and homepage composition</h3>
+        <p style="font-size:.9rem; color:var(--ink-muted); margin-bottom:0">Turning the approved wireframes into a resolved visual system, with the homepage as the proof of it.</p>
+        <div class="wk__cols">
+          <div>
+            <h4>Vaelo does</h4>
+            <ul>
+              <li>Finalise design tokens: colour, type scale, spacing, grid</li>
+              <li>Licence and set the display typeface</li>
+              <li>Homepage composition, desktop and mobile</li>
+              <li>Draw the real HEOR figures: Kaplan&ndash;Meier, forest plot, cohort diagram, CE plane</li>
+              <li>Component inventory against the wireframes</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Pharmatiya does</h4>
+            <ul>
+              <li><strong>Input 1</strong> &mdash; team, office and working photography</li>
+              <li><strong>Input 7</strong> &mdash; typeface decision (~$200&ndash;500)</li>
+              <li><strong>Input 8</strong> &mdash; logo in vector format (SVG or AI)</li>
+              <li>Review draft Home and Services copy</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exit">
+          <b>Exit criteria</b>
+          Homepage composed at both breakpoints, tokens locked, figures drawn, remaining five pages specified against the system. Ready to present.
+        </div>
+      </div>
+    </div>
+
+    <div class="wk wk--gate">
+      <div class="wk__when">
+        <b>Week 3</b>
+        <span>21&ndash;25 Sep</span>
+        <span class="tag t-gate">Gate 1</span>
+      </div>
+      <div class="wk__what">
+        <h3>Design review and approval</h3>
+        <p style="font-size:.9rem; color:var(--ink-muted); margin-bottom:0">The first contractual gate. Nothing is built until this closes.</p>
+        <div class="wk__cols">
+          <div>
+            <h4>Vaelo does</h4>
+            <ul>
+              <li>Present design direction and homepage</li>
+              <li>Walk the remaining five page designs</li>
+              <li>Consolidate feedback into one revision round</li>
+              <li>Reissue for sign-off</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Pharmatiya does</h4>
+            <ul>
+              <li>Review and consolidate internal feedback into a single response</li>
+              <li><strong>Approve the design direction in writing</strong></li>
+              <li>Release the 30% design-approval payment</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exit">
+          <b>Gate condition</b>
+          Written design approval. One consolidated revision round is included; a second round or a change of direction after approval moves the launch date and is quoted separately.
+        </div>
+      </div>
+    </div>
+
+    <div class="wk">
+      <div class="wk__when">
+        <b>Weeks 4&ndash;5</b>
+        <span>28 Sep &ndash; 9 Oct</span>
+        <span class="tag t-vaelo">Build</span>
+      </div>
+      <div class="wk__what">
+        <h3>Front-end implementation</h3>
+        <p style="font-size:.9rem; color:var(--ink-muted); margin-bottom:0">Next.js, React, TypeScript, Tailwind. Statically exported. Build order is set out in section 04.</p>
+        <div class="wk__cols">
+          <div>
+            <h4>Vaelo does</h4>
+            <ul>
+              <li>Tokens, layout primitives, UI components</li>
+              <li>Evidence components: forest plot, K&ndash;M, dataset map, therapeutic matrix</li>
+              <li>All six pages, responsive at six breakpoints</li>
+              <li>Contact form with routing, validation and states</li>
+              <li>Accessibility built in, not retrofitted</li>
+              <li>Deploy previews on every commit</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Pharmatiya does</h4>
+            <ul>
+              <li><strong>Input 2</strong> &mdash; 2&ndash;3 anonymised case studies</li>
+              <li><strong>Input 3</strong> &mdash; service descriptions verified</li>
+              <li><strong>Input 5</strong> &mdash; NextGen AI screenshots, features, limitations</li>
+              <li><strong>Input 10</strong> &mdash; hosting preference</li>
+              <li>Review preview builds as pages land</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exit">
+          <b>Exit criteria</b>
+          Six pages built and responsive, real content placed where supplied, placeholders clearly marked where not. Form submitting to a live endpoint. Preview URL shared.
+        </div>
+      </div>
+    </div>
+
+    <div class="wk">
+      <div class="wk__when">
+        <b>Week 6</b>
+        <span>12&ndash;16 Oct</span>
+        <span class="tag t-vaelo">Content + QA</span>
+      </div>
+      <div class="wk__what">
+        <h3>Final content, testing and audit</h3>
+        <p style="font-size:.9rem; color:var(--ink-muted); margin-bottom:0">The week where anything still marked &ldquo;to provide&rdquo; either arrives or gets cut.</p>
+        <div class="wk__cols">
+          <div>
+            <h4>Vaelo does</h4>
+            <ul>
+              <li>Place final copy and photography</li>
+              <li>Accessibility audit: keyboard, screen reader, contrast, headings</li>
+              <li>Cross-browser: Chrome, Safari, Firefox, Edge, iOS, Android</li>
+              <li>Responsive check at 320, 375, 768, 1024, 1280, 1440+</li>
+              <li>Core Web Vitals and image optimisation</li>
+              <li>SEO: titles, meta, OG, schema, sitemap, robots</li>
+              <li>Old-versus-new functionality audit</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Pharmatiya does</h4>
+            <ul>
+              <li>Final copy approval, page by page</li>
+              <li>Compliance sign-off on any outcome or regulatory claim</li>
+              <li>Confirm what ships and what is deferred</li>
+              <li>Provide DNS access ahead of Week 7</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exit">
+          <b>Exit criteria</b>
+          Zero placeholder images. Zero unapproved claims. WCAG AA verified. Functionality audit signed off. Launch-ready build on a staging URL.
+        </div>
+      </div>
+    </div>
+
+    <div class="wk wk--gate">
+      <div class="wk__when">
+        <b>Week 7</b>
+        <span>19&ndash;23 Oct</span>
+        <span class="tag t-gate">Gate 2</span>
+      </div>
+      <div class="wk__what">
+        <h3>Launch</h3>
+        <p style="font-size:.9rem; color:var(--ink-muted); margin-bottom:0">The second contractual gate. Go-live requires written approval.</p>
+        <div class="wk__cols">
+          <div>
+            <h4>Vaelo does</h4>
+            <ul>
+              <li>Configure DNS and TLS</li>
+              <li>Apply 301 redirects from the Squarespace URLs</li>
+              <li>Install analytics and form notifications</li>
+              <li>Submit sitemap; verify indexing</li>
+              <li>Post-launch check at 24 and 72 hours</li>
+              <li>Hand over repository, assets and documentation</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Pharmatiya does</h4>
+            <ul>
+              <li><strong>Approve go-live in writing</strong></li>
+              <li>Confirm Squarespace cancellation timing</li>
+              <li>Test the contact routes end to end and confirm receipt</li>
+              <li>Release the final 30% payment</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exit">
+          <b>Gate condition</b>
+          Written go-live approval, DNS access, and confirmed receipt of a test enquiry through each of the three contact routes.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <h4>Redirect map to be applied at launch</h4>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Old URL</th><th>New URL</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr><td><code>/home</code></td><td><code>/</code></td><td>301</td></tr>
+        <tr><td><code>/about</code></td><td><code>/about</code></td><td>Unchanged</td></tr>
+        <tr><td><code>/services</code></td><td><code>/services</code></td><td>Unchanged</td></tr>
+        <tr><td><code>/contact</code></td><td><code>/contact</code></td><td>Unchanged</td></tr>
+        <tr><td><code>/new-dropdown</code></td><td><code>/nextgen-ai</code></td><td>301</td></tr>
+        <tr><td><code>/cart</code></td><td><code>/</code></td><td>301 &mdash; cart removed</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">04</span><h2>Build order, Weeks 4&ndash;5</h2></div>
+
+  <p class="lede">Foundations first, then the components that carry credibility, then the pages that depend on them. Contact is built last because it is the only stateful page and needs the hosting decision.</p>
+
+  <div class="stages">
+    <div class="stg"><div><b>Project foundation</b><span>Next.js with static export, TypeScript strict, Tailwind configured against the approved tokens. Base layout, fonts self-hosted and subset.</span></div></div>
+    <div class="stg"><div><b>Layout components</b><span><code>Header</code>, <code>Navigation</code>, <code>MobileNavigation</code> with focus trap, <code>Footer</code>. Skip link and landmarks. Keyboard-tested before anything else is built on top.</span></div></div>
+    <div class="stg"><div><b>UI primitives</b><span><code>Button</code>, <code>Input</code>, <code>SectionHeader</code>, <code>DataLabel</code>. All states defined once: default, hover, focus, disabled, error.</span></div></div>
+    <div class="stg"><div><b>Evidence components</b><span><code>ForestPlot</code>, <code>KaplanMeierGraphic</code>, <code>DatasetMap</code>, <code>TherapeuticMatrix</code>, <code>CaseStudy</code>. Hand-authored inline SVG, each with a text alternative describing the finding.</span></div></div>
+    <div class="stg"><div><b>Home</b><span>Assembles <code>Hero</code>, <code>Proof</code>, <code>Services</code>, <code>NextGenTeaser</code>, <code>CTA</code>. Built first because it exercises the most components and surfaces system gaps early.</span></div></div>
+    <div class="stg"><div><b>Services and Evidence</b><span>The two content-heaviest pages, sharing the service spine and the evidence components. Deep-link anchors verified against the homepage.</span></div></div>
+    <div class="stg"><div><b>NextGen AI and About</b><span>Workflow diagram with the review bar; timeline and team grid. Both degrade gracefully if photography or product detail has not arrived.</span></div></div>
+    <div class="stg"><div><b>Contact</b><span><code>ContactRouting</code> with conditional fields, validation, live-region errors and a real success state. Last, because it depends on the hosting and form-handler decision.</span></div></div>
+    <div class="stg"><div><b>Responsive and accessibility pass</b><span>Every page at six widths. Axe and manual screen-reader testing. Contrast verified against the final palette, not the draft one.</span></div></div>
+  </div>
+
+  <div class="note">
+    <span class="lbl">Decision needed by Week 4</span>
+    <p>A statically exported site cannot process form submissions on its own. The contact form needs an endpoint &mdash; a form service, a serverless function, or the host&rsquo;s built-in handler. This follows from input 10 and we will recommend an option in Week 1, but it must be settled before the Contact page is built.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">05</span><h2>Input schedule</h2></div>
+
+  <p>Ten items, in the order they block work. Dates assume a 7 September kickoff.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>#</th><th>Input</th><th>Blocks</th><th class="num">Due</th><th>Float</th></tr></thead>
+      <tbody>
+        <tr><td>4</td><td>Dataset name clearance</td><td>Evidence coverage, About, Home band</td><td class="num">Fri 11 Sep</td><td><span class="tag t-block">None</span></td></tr>
+        <tr><td>6</td><td>Contact routing &amp; calendar</td><td>Contact page routing and booking</td><td class="num">Fri 11 Sep</td><td><span class="tag t-block">None</span></td></tr>
+        <tr><td>9</td><td>Compliance review windows</td><td>NextGen AI trust section, all claims</td><td class="num">Fri 11 Sep</td><td><span class="tag t-block">None</span></td></tr>
+        <tr><td>1</td><td>Team &amp; office photography</td><td>About hero and team section</td><td class="num">Fri 18 Sep</td><td>~1 week</td></tr>
+        <tr><td>7</td><td>Typeface decision</td><td>Entire type system</td><td class="num">Fri 18 Sep</td><td>~1 week</td></tr>
+        <tr><td>8</td><td>Vector logo</td><td>Header, footer, favicon, brand colours</td><td class="num">Fri 18 Sep</td><td>~1 week</td></tr>
+        <tr><td>2</td><td>Case study material</td><td>Evidence case studies</td><td class="num">Fri 2 Oct</td><td>~3 weeks</td></tr>
+        <tr><td>3</td><td>Service descriptions verified</td><td>Services copy and naming</td><td class="num">Fri 2 Oct</td><td>~3 weeks</td></tr>
+        <tr><td>5</td><td>NextGen AI product detail</td><td>The whole NextGen AI page</td><td class="num">Fri 2 Oct</td><td>~3 weeks</td></tr>
+        <tr><td>10</td><td>Hosting preference</td><td>Form handling, deployment, redirects</td><td class="num">Fri 9 Oct</td><td>~4 weeks</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note note--block">
+    <span class="lbl">Two decisions we still need from you</span>
+    <p><strong>Product naming.</strong> NextGen AI or RWE - Builder as the public name? The page URL, the navigation label, the redirect map and every CTA depend on it. Needed at kickoff.<br>
+    <strong>The 1,000+ synopses figure.</strong> It appears only in the brief and is not corroborated on the current site. Confirm it, or tell us what to put in its place, before it goes on the homepage.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">06</span><h2>Payment schedule</h2></div>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Milestone</th><th>Trigger</th><th class="num">Share</th><th class="num">Amount</th><th class="num">Expected</th></tr></thead>
+      <tbody>
+        <tr><td>On signing</td><td>Contract executed, kickoff booked</td><td class="num">40%</td><td class="num">&#8377;1,14,000</td><td class="num">Week 1</td></tr>
+        <tr><td>On design approval</td><td>Gate 1 &mdash; written design sign-off</td><td class="num">30%</td><td class="num">&#8377;85,500</td><td class="num">Week 3</td></tr>
+        <tr><td>On launch</td><td>Gate 2 &mdash; site live</td><td class="num">30%</td><td class="num">&#8377;85,500</td><td class="num">Week 7</td></tr>
+        <tr><td><strong>Phase 1 total</strong></td><td></td><td class="num">100%</td><td class="num"><strong>&#8377;2,85,000</strong></td><td class="num"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="font-size:.9rem; color:var(--ink-muted)">All amounts exclude GST. Pricing is placeholder pending Vaelo&rsquo;s confirmed rate card.</p>
+
+  <h4>Third-party costs, paid by Pharmatiya</h4>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Item</th><th class="num">Cost</th><th>Needed by</th></tr></thead>
+      <tbody>
+        <tr><td>Licensed typeface</td><td class="num">~$200&ndash;500 one-time</td><td>Week 2</td></tr>
+        <tr><td>Hosting and domain</td><td class="num">Depends on provider</td><td>Week 5</td></tr>
+        <tr><td>Calendar booking tool</td><td class="num">~$10&ndash;15 / month</td><td>Week 4, if used</td></tr>
+        <tr><td>Email platform for the Digest</td><td class="num">Free tier likely sufficient</td><td>Week 4</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">07</span><h2>Risks and how each is handled</h2></div>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Risk</th><th>Impact</th><th>Handling</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Case studies never arrive</td>
+          <td>Evidence page loses its strongest section &mdash; and Evidence is the page the primary buyer came for</td>
+          <td>Section ships omitted, not filled. Nothing is invented. We will offer a structured interview to draft cases from your recollection for your approval, which needs a 90-minute call in Week 4.</td>
+        </tr>
+        <tr>
+          <td>Dataset clearance withheld</td>
+          <td>Coverage claims become generic; a key credibility signal is lost</td>
+          <td>Dataset <em>types</em> always display. Named sources only where cleared. The page works either way, less persuasively without names.</td>
+        </tr>
+        <tr>
+          <td>No team photography</td>
+          <td>About cannot answer &ldquo;is this a real firm?&rdquo; visually for the referral visitor</td>
+          <td>Typographic treatment with names and credentials. No stock portraits under any circumstance. A local photographer is ~half a day if you want one.</td>
+        </tr>
+        <tr>
+          <td>Compliance review is slower than the build</td>
+          <td>NextGen AI trust claims cannot be published; the page ships incomplete</td>
+          <td>Why input 9 is a Week-1 item: we need the turnaround time to schedule submission, not the review itself. Claims are drafted early and submitted in Week 4.</td>
+        </tr>
+        <tr>
+          <td>Gate feedback arrives fragmented or late</td>
+          <td>Direct day-for-day slip on launch</td>
+          <td>One named reviewer consolidates internal feedback into a single response. One revision round is included at Gate 1.</td>
+        </tr>
+        <tr>
+          <td>Scope grows during build</td>
+          <td>Weeks 4&ndash;5 overrun; QA compresses; quality drops where it is least visible</td>
+          <td>The out-of-scope list in the brief holds. Additions are quoted as Phase 2 rather than absorbed.</td>
+        </tr>
+        <tr>
+          <td>Squarespace cancelled before DNS propagates</td>
+          <td>Site downtime during a live cutover</td>
+          <td>New site verified on a staging domain first; Squarespace stays active for 7 days after go-live.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">08</span><h2>Definition of done</h2></div>
+
+  <p>Launch is not &ldquo;the pages exist&rdquo;. Every item below is verified before go-live, and each maps to a defect found in the audit.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Check</th><th>Standard</th><th>Fixes</th></tr></thead>
+      <tbody>
+        <tr><td>Lead capture</td><td>All three contact routes deliver a test enquiry to a confirmed inbox</td><td>Zero forms on the current site</td></tr>
+        <tr><td>Booking</td><td>Consultation CTA reaches a working booking or request path from every page</td><td>&ldquo;Schedule your appointment&rdquo; is not a link today</td></tr>
+        <tr><td>Digest</td><td>Subscription writes to a real list and sends a confirmation</td><td>Mentioned twice, captures nothing</td></tr>
+        <tr><td>Navigation</td><td>All six pages reachable from every page; Services in the primary nav</td><td>Services is currently orphaned</td></tr>
+        <tr><td>Deep links</td><td>Each homepage service teaser lands on its own service anchor</td><td>All three point at one page today</td></tr>
+        <tr><td>Images</td><td>No image has placeholder alt text; every alt describes the content</td><td>Five images read &ldquo;Placeholder&rdquo;</td></tr>
+        <tr><td>Headings</td><td>One H1 per page, strictly descending outline</td><td>Homepage has five H1s and no H2</td></tr>
+        <tr><td>Contrast</td><td>4.5:1 body, 3:1 large text and UI borders</td><td>WCAG AA requirement</td></tr>
+        <tr><td>Keyboard</td><td>Every interactive element reachable and visibly focused; mobile menu traps and restores focus</td><td>WCAG AA requirement</td></tr>
+        <tr><td>Responsive</td><td>No horizontal overflow at 320, 375, 768, 1024, 1280, 1440+</td><td>Long medical terminology is the stress case</td></tr>
+        <tr><td>Logo</td><td>Vector, sharp at all densities, with a favicon set</td><td>Currently a raster JPEG</td></tr>
+        <tr><td>Cart</td><td>No cart, no <code>/cart</code> route, no e-commerce markup anywhere</td><td>Template remnant on every page</td></tr>
+        <tr><td>Redirects</td><td>Every old URL resolves 301 to its new equivalent</td><td>Preserves search equity</td></tr>
+        <tr><td>Performance</td><td>Core Web Vitals pass on mobile; no unnecessary JavaScript</td><td>Static-first requirement</td></tr>
+        <tr><td>Claims</td><td>No unverified figure, dataset name or outcome published</td><td>Fabrication guard</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">09</span><h2>After Phase 1</h2></div>
+
+  <p>Out of scope here, noted so the sequence is visible. Nothing below is committed or quoted.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Phase</th><th>Scope</th><th>Depends on</th></tr></thead>
+      <tbody>
+        <tr><td>Phase 2</td><td>Brand identity &mdash; logo, palette, brand guidelines</td><td>Phase 1 live; identity gaps evidenced by real use</td></tr>
+        <tr><td>Phase 3</td><td>NextGen AI product development, onboarding, audit trail; client portal or login</td><td>Product roadmap, not a website decision</td></tr>
+        <tr><td>Ongoing</td><td>Blog or CMS, content writing, SEO retainer, video</td><td>Whether Pharmatiya intends to publish regularly</td></tr>
+        <tr><td>Recommended</td><td>Utility pages: privacy, terms, accessibility statement</td><td>Small; can be added in Week 6 if you want them at launch</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="close">
+    The architecture is approved and the wireframes are signed off. What determines the 23 October launch date now is not design or build capacity &mdash; it is whether the three Week-1 inputs land by Friday 11 September, and whether the two gates close on schedule.
+  </p>
+</section>
+
+</div>

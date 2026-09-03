@@ -1,0 +1,391 @@
+<title>Pharmatiya Website Rebuild</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;450;600&display=swap">
+
+<style>
+:root {
+  --paper:     #f2f4f2;
+  --surface:   #fbfcfb;
+  --sunk:      #e7ebe8;
+  --ink:       #151b1a;
+  --ink-muted: #55625e;
+  --ink-faint: #7d8985;
+  --rule:      #d2d9d5;
+  --rule-firm: #b6c0bb;
+  --accent:    #0e5a5e;
+  --flag:      #7d5f18;
+
+  --display: 'Spectral', 'Sitka Text', Cambria, Georgia, serif;
+  --text: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1413; --surface: #161d1b; --sunk: #1c2523;
+    --ink: #e6ebe8; --ink-muted: #a3b0ab; --ink-faint: #7c8a88;
+    --rule: #2b3633; --rule-firm: #3d4a46;
+    --accent: #5fb8bb; --flag: #c9a44e;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1413; --surface: #161d1b; --sunk: #1c2523;
+  --ink: #e6ebe8; --ink-muted: #a3b0ab; --ink-faint: #7c8a88;
+  --rule: #2b3633; --rule-firm: #3d4a46;
+  --accent: #5fb8bb; --flag: #c9a44e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.page { width: min(100% - 2.5rem, 46rem); margin-inline: auto; padding-block: 3.5rem 6rem; }
+
+header { border-bottom: 2px solid var(--ink); padding-bottom: 1.6rem; margin-bottom: 2.5rem; }
+.kicker {
+  font-size: .78rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent); margin: 0 0 1rem; font-weight: 600;
+}
+h1 {
+  font-family: var(--display); font-weight: 600;
+  font-size: clamp(2rem, 1.4rem + 2.8vw, 3.1rem);
+  line-height: 1.06; letter-spacing: -.02em; margin: 0 0 .7rem; text-wrap: balance;
+}
+.standfirst {
+  font-family: var(--display); font-style: italic;
+  font-size: clamp(1.1rem, 1rem + .5vw, 1.3rem);
+  color: var(--ink-muted); margin: 0 0 1.4rem; max-width: 40ch;
+}
+.meta {
+  display: flex; flex-wrap: wrap; gap: .3rem 2rem;
+  font-size: .82rem; color: var(--ink-faint);
+}
+.meta b { color: var(--ink-muted); font-weight: 600; }
+
+section { margin-bottom: 3.2rem; }
+
+h2 {
+  font-family: var(--display); font-weight: 600;
+  font-size: clamp(1.4rem, 1.2rem + .8vw, 1.8rem);
+  line-height: 1.15; letter-spacing: -.015em;
+  margin: 0 0 1rem; padding-bottom: .5rem;
+  border-bottom: 1px solid var(--rule-firm);
+}
+h3 { font-family: var(--display); font-size: 1.15rem; font-weight: 600; margin: 1.8rem 0 .4rem; }
+
+p { margin: 0 0 1.05rem; }
+ul { padding-left: 1.15rem; margin: 0 0 1.05rem; }
+li { margin-bottom: .5rem; }
+strong { font-weight: 600; }
+
+.lede { font-family: var(--display); font-size: 1.15rem; line-height: 1.5; color: var(--ink-muted); }
+
+/* problem / fix pairs */
+.pairs { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+.pair {
+  display: grid; gap: .2rem 1.5rem; padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+@media (min-width: 40rem) { .pair { grid-template-columns: 1fr 1fr; } }
+.pair b { font-weight: 600; }
+.pair span { color: var(--ink-muted); font-size: .94rem; }
+.pair .fix { color: var(--accent); font-size: .94rem; }
+@media (min-width: 40rem) { .pair .fix { border-left: 2px solid var(--rule); padding-left: 1.2rem; } }
+
+/* page list */
+.pages { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+.pg {
+  display: grid; gap: .15rem 1.5rem; padding: .95rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+@media (min-width: 40rem) { .pg { grid-template-columns: 9rem 1fr; } }
+.pg b { font-family: var(--display); font-size: 1.08rem; font-weight: 600; }
+.pg span { color: var(--ink-muted); font-size: .95rem; }
+.pg em { font-style: normal; color: var(--flag); font-size: .82rem; font-weight: 600; }
+
+/* timeline */
+.tl { display: grid; gap: 0; border-top: 1px solid var(--rule); margin-bottom: 1.2rem; }
+.tl div {
+  display: grid; gap: .1rem 1.5rem; padding: .8rem 0;
+  border-bottom: 1px solid var(--rule); align-items: baseline;
+}
+@media (min-width: 34rem) { .tl div { grid-template-columns: 5.5rem 1fr auto; } }
+.tl b { font-weight: 600; font-size: .92rem; }
+.tl span { color: var(--ink-muted); font-size: .95rem; }
+.tl .when { color: var(--ink-faint); font-size: .84rem; white-space: nowrap; }
+.tl .gate b, .tl .gate span { color: var(--flag); }
+
+/* asks */
+.asks { display: grid; gap: 1.2rem; }
+.ask {
+  border: 1px solid var(--rule); background: var(--surface);
+  border-left: 3px solid var(--accent); padding: 1rem 1.2rem;
+}
+.ask h3 { margin: 0 0 .2rem; font-size: 1.05rem; }
+.ask .due {
+  font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600; margin-bottom: .6rem;
+}
+.ask ul { margin: 0; }
+.ask li { font-size: .95rem; color: var(--ink-muted); }
+.ask--soon { border-left-color: var(--flag); }
+.ask--soon .due { color: var(--flag); }
+
+/* money */
+table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+th, td { text-align: left; padding: .65rem .2rem; border-bottom: 1px solid var(--rule); }
+thead th {
+  font-size: .76rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-faint); font-weight: 600;
+}
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+tfoot td { font-weight: 600; border-bottom: 0; border-top: 2px solid var(--rule-firm); }
+
+.note {
+  background: var(--sunk); border-left: 3px solid var(--flag);
+  padding: 1rem 1.2rem; margin: 1.4rem 0; font-size: .96rem;
+}
+.note p:last-child { margin-bottom: 0; }
+.note b { color: var(--flag); }
+
+.out { columns: 2; column-gap: 2rem; font-size: .94rem; color: var(--ink-muted); }
+@media (max-width: 34rem) { .out { columns: 1; } }
+.out li { break-inside: avoid; }
+
+.close {
+  margin-top: 3rem; padding-top: 1.6rem; border-top: 2px solid var(--ink);
+  font-family: var(--display); font-size: 1.1rem; line-height: 1.5;
+}
+.sig { margin-top: 1.5rem; font-size: .88rem; color: var(--ink-faint); }
+</style>
+
+<div class="page">
+
+<header>
+  <p class="kicker">Phase 1 &middot; Website rebuild</p>
+  <h1>Pharmatiya Health: what we are building</h1>
+  <p class="standfirst">A new six-page website, replacing pharmatiya.net &mdash; and what we need from you to deliver it.</p>
+  <div class="meta">
+    <span><b>Prepared by</b> Vaelo Creative</span>
+    <span><b>Date</b> 3 September 2026</span>
+    <span><b>Launch</b> 23 October 2026</span>
+  </div>
+</header>
+
+<section>
+  <h2>In short</h2>
+  <p class="lede">We are rebuilding pharmatiya.net from scratch as a six-page website, built to convince the people who actually buy HEOR and real-world evidence work.</p>
+  <p>The current site does not show what Pharmatiya is capable of. It reads like a template &mdash; because it is one. Twenty-five years of specialist experience sits behind generic wording, and the site has no working way for a prospective client to get in touch.</p>
+  <p>The new site fixes both problems: it makes the expertise visible, and it makes it possible to act on.</p>
+</section>
+
+<section>
+  <h2>What we found</h2>
+  <p>We went through the current site page by page. These are the issues that matter commercially.</p>
+
+  <div class="pairs">
+    <div class="pair">
+      <div><b>There is no way to contact you</b><br><span>Three pages invite visitors to get in touch, but there is no form anywhere on the site. The email address in the footer is not clickable either.</span></div>
+      <div class="fix">A working contact form, sorted by enquiry type, plus a clickable email address and direct consultation booking.</div>
+    </div>
+    <div class="pair">
+      <div><b>&ldquo;Schedule your appointment&rdquo; is not a button</b><br><span>It looks like a call to action but nothing happens when you click it. There is no way to book anything.</span></div>
+      <div class="fix">A real booking route on every page, connected to your calendar.</div>
+    </div>
+    <div class="pair">
+      <div><b>Your Services page is hidden</b><br><span>It exists, but it is missing from the main menu. Visitors can only reach it through the homepage.</span></div>
+      <div class="fix">Services in the main navigation, with each service reachable directly.</div>
+    </div>
+    <div class="pair">
+      <div><b>Unfinished template images are live</b><br><span>Five images on the site are still the placeholders that came with the template, including on the homepage.</span></div>
+      <div class="fix">Real photography and genuine research graphics in every one of those positions.</div>
+    </div>
+    <div class="pair">
+      <div><b>There is a shopping cart</b><br><span>A leftover from the template. It sits on every page and suggests you sell products online.</span></div>
+      <div class="fix">Removed completely.</div>
+    </div>
+    <div class="pair">
+      <div><b>Your best material is buried</b><br><span>The About page holds everything that proves your expertise &mdash; the datasets, the methods, the Outcomes Research division you built &mdash; in long paragraphs nobody reads to the end.</span></div>
+      <div class="fix">Broken into sections a busy buyer can scan in ten seconds, with the depth still there underneath.</div>
+    </div>
+    <div class="pair">
+      <div><b>Your AI tool is almost invisible</b><br><span>It appears as a single menu link pointing off-site. Nothing explains what it does or why it can be trusted.</span></div>
+      <div class="fix">Its own page, explaining the workflow, the human review process and how patient data is handled.</div>
+    </div>
+    <div class="pair">
+      <div><b>Nothing on the site is specific</b><br><span>Phrases like &ldquo;tailored solutions&rdquo; and &ldquo;actionable insights&rdquo; repeat across pages. Any consultancy in any industry could have written them.</span></div>
+      <div class="fix">Real numbers, named datasets, named methods and concrete deliverables.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The six pages</h2>
+
+  <div class="pages">
+    <div class="pg">
+      <b>Home</b>
+      <span>Says clearly what Pharmatiya does and who for, with proof visible immediately &mdash; 25+ years, study volume, therapeutic areas &mdash; rather than buried. One clear action: book a consultation.</span>
+    </div>
+    <div class="pg">
+      <b>Services</b>
+      <span>Your three service lines, each framed around a problem your buyer recognises, followed by your approach, your methods and exactly what they receive at the end.</span>
+    </div>
+    <div class="pg">
+      <b>Evidence</b>
+      <span>A new page, and the most important one. It answers the question every serious buyer asks: why should we believe you can do this? Case studies, dataset coverage, therapeutic areas and methods.</span>
+      <span></span><em>Needs case study material from you</em>
+    </div>
+    <div class="pg">
+      <b>NextGen AI</b>
+      <span>A new page for your AI tool. Explains the three-step workflow, where AI is used and where your researchers remain in control, and how patient data is protected.</span>
+      <span></span><em>Needs product detail from you</em>
+    </div>
+    <div class="pg">
+      <b>About</b>
+      <span>Twenty-five years made scannable: track record, milestones, the team with real photographs and credentials, and your dataset experience.</span>
+      <span></span><em>Needs team photography from you</em>
+    </div>
+    <div class="pg">
+      <b>Contact</b>
+      <span>Separate routes for new clients, existing clients and press, so enquiries reach the right person. Plus consultation booking and a working signup for the Quarterly Insights Digest.</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>How it will look</h2>
+  <p>Restrained and precise &mdash; closer to a research publication than a technology startup. The visual character comes from your own field: survival curves, forest plots and cohort diagrams used as design elements, in the places a template would put stock photography.</p>
+  <p>We will not use stock photos of scientists in laboratories, rows of identical feature boxes, or gradient banners. Those are the visual habits that make a company look like everyone else, and they would undercut exactly the expertise we are trying to communicate.</p>
+  <p>The site will work properly on phones, meet international accessibility standards, and load quickly.</p>
+</section>
+
+<section>
+  <h2>Timeline</h2>
+  <p>Seven weeks from kickoff to launch. Two points require your written approval before we continue.</p>
+
+  <div class="tl">
+    <div><b>Week 1</b><span>Kickoff, and gathering what we need from you</span><span class="when">7&ndash;11 Sep</span></div>
+    <div><b>Week 2</b><span>Design: the visual system and the homepage</span><span class="when">14&ndash;18 Sep</span></div>
+    <div class="gate"><b>Week 3</b><span>You review and approve the design &mdash; approval point</span><span class="when">21&ndash;25 Sep</span></div>
+    <div><b>Weeks 4&ndash;5</b><span>Build: all six pages, on desktop and mobile</span><span class="when">28 Sep &ndash; 9 Oct</span></div>
+    <div><b>Week 6</b><span>Final content, testing and accessibility checks</span><span class="when">12&ndash;16 Oct</span></div>
+    <div class="gate"><b>Week 7</b><span>You approve go-live, and the site launches &mdash; approval point</span><span class="when">19&ndash;23 Oct</span></div>
+  </div>
+
+  <div class="note">
+    <p><b>Please note:</b> if either approval is delayed, the launch date moves by the same number of days. The same is true of the materials listed below &mdash; we cannot build the pages that depend on them until they arrive.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What we need from you</h2>
+  <p>We cannot build a credible site without real material. Everything below is grouped by when we need it.</p>
+
+  <div class="asks">
+    <div class="ask ask--soon">
+      <p class="due">By Friday 11 September</p>
+      <h3>Three decisions at kickoff</h3>
+      <ul>
+        <li><strong>Dataset names.</strong> Can we name Aetna/CVS, Cigna, Intermountain and the others publicly? A simple yes or no for each.</li>
+        <li><strong>Where enquiries should go.</strong> Who receives new business, existing client questions and press? And a calendar link if you want direct booking.</li>
+        <li><strong>Compliance turnaround.</strong> How long does an internal review take? We need the timing, not the review itself, so we can schedule around it.</li>
+      </ul>
+    </div>
+
+    <div class="ask">
+      <p class="due">By Friday 18 September</p>
+      <h3>Before design begins</h3>
+      <ul>
+        <li><strong>Photographs</strong> of the team, the office and people working. No stock imagery will be substituted.</li>
+        <li><strong>Your logo as a vector file</strong> (SVG or AI). The current one is a low-resolution image.</li>
+        <li><strong>Typeface approval.</strong> We will suggest options; budget around $200&ndash;500 one-time.</li>
+      </ul>
+    </div>
+
+    <div class="ask">
+      <p class="due">By Friday 2 October</p>
+      <h3>Before the pages are built</h3>
+      <ul>
+        <li><strong>Two or three case studies</strong>, anonymised. This is the strongest proof of expertise you can give us.</li>
+        <li><strong>Service descriptions checked.</strong> We write the drafts; you confirm they are accurate. Nothing is published without your sign-off.</li>
+        <li><strong>NextGen AI details:</strong> screenshots, how the workflow runs, what it does and does not do.</li>
+      </ul>
+    </div>
+
+    <div class="ask">
+      <p class="due">By Friday 9 October</p>
+      <h3>Before launch</h3>
+      <ul>
+        <li><strong>Hosting preference.</strong> The new site is not tied to Squarespace and can be hosted anywhere. We are happy to recommend an option.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note">
+    <p><b>Two quick answers we need now:</b> should the AI tool be called <strong>NextGen AI</strong> or <strong>RWE&nbsp;-&nbsp;Builder</strong> publicly? And can you confirm the <strong>&ldquo;1,000+ synopses&rdquo;</strong> figure? We would rather leave a number off the homepage than publish one we cannot stand behind.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Investment</h2>
+
+  <table>
+    <thead>
+      <tr><th>Stage</th><th class="num">Share</th><th class="num">Amount</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>On signing</td><td class="num">40%</td><td class="num">&#8377;1,14,000</td></tr>
+      <tr><td>On design approval</td><td class="num">30%</td><td class="num">&#8377;85,500</td></tr>
+      <tr><td>On launch</td><td class="num">30%</td><td class="num">&#8377;85,500</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><td>Phase 1 total</td><td class="num">100%</td><td class="num">&#8377;2,85,000</td></tr>
+    </tfoot>
+  </table>
+
+  <p style="font-size:.88rem; color:var(--ink-faint); margin-top:.8rem">All amounts exclude GST. Pricing is placeholder pending Vaelo&rsquo;s confirmed rate card.</p>
+
+  <h3>Costs paid directly by Pharmatiya</h3>
+  <ul>
+    <li>Licensed typeface &mdash; approximately $200&ndash;500, one-time</li>
+    <li>Hosting and domain &mdash; depends on the provider chosen</li>
+    <li>Calendar booking tool, if used &mdash; approximately $10&ndash;15 per month</li>
+    <li>Email platform for the Digest &mdash; a free tier is likely sufficient</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Not included in Phase 1</h2>
+  <p>These are separate pieces of work, noted so the boundary is clear.</p>
+  <ul class="out">
+    <li>Brand identity redesign &mdash; Phase 2</li>
+    <li>NextGen AI product development &mdash; Phase 3</li>
+    <li>Client portal or login</li>
+    <li>Blog or content management system</li>
+    <li>E-commerce or payments</li>
+    <li>Mobile app</li>
+    <li>Ongoing content writing or SEO</li>
+    <li>Video production</li>
+    <li>Paid advertising</li>
+    <li>HIPAA compliance consulting</li>
+  </ul>
+</section>
+
+<p class="close">
+  Everything a visitor can do on your current site, they will still be able to do on the new one &mdash; and two things they cannot do today, sending you an enquiry and subscribing to the Digest, will work for the first time.
+</p>
+
+<p class="sig">
+  Vaelo Creative &middot; hello@vaelocreative.com<br>
+  Working document &mdash; pending rate card confirmation.
+</p>
+
+</div>

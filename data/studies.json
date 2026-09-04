@@ -1,0 +1,6 @@
+{
+  "generatedAt": null,
+  "source": "Google Sheet — studylist tab",
+  "note": "Populate with: npm run studies (see scripts/fetch-studies.mjs). Committed empty so the site never ships invented study records.",
+  "studies": []
+}

@@ -3,6 +3,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { DataLabel, Pending } from "@/components/ui/DataLabel";
 import Button from "@/components/ui/Button";
 import WorkflowDiagram from "@/components/sections/WorkflowDiagram";
+import StudyFinder from "@/components/sections/StudyFinder";
 
 export const metadata = {
   title: `${site.productName}`,
@@ -80,7 +81,26 @@ export default function NextGenPage() {
         </div>
       </section>
 
+      {/* The keyword study search from the current homepage, rebuilt and
+          working. It sits directly under the hero because it is the clearest
+          demonstration of what the product does — a visitor can try it
+          before reading anything. */}
       <section className="border-b border-rule bg-sunk">
+        <div className="shell py-14 lg:py-20">
+          <DataLabel as="h2" className="mb-3 flex items-center gap-4">
+            Try it — search prior work
+            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+          </DataLabel>
+          <p className="measure mb-6 text-muted">
+            Feasibility starts with a question most teams cannot answer
+            quickly: has this been looked at before, in which data? Type a
+            condition, a data type or a method.
+          </p>
+          <StudyFinder />
+        </div>
+      </section>
+
+      <section className="border-b border-rule">
         <div className="shell py-14 lg:py-20">
           <DataLabel as="h2" className="mb-8 flex items-center gap-4">
             How it works

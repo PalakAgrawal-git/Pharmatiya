@@ -38,6 +38,26 @@ docs/                 architecture, wireframes, roadmap, client report
 `lib/site.ts` is the single place to change content. Anything awaiting client
 input is flagged there with the input number from the architecture document.
 
+## Study list
+
+The NextGen AI page carries a keyword search over Pharmatiya's study list,
+rebuilt from the search on the current homepage. Data is pulled from the same
+Google Sheet at **build time**, not in the browser:
+
+```bash
+GOOGLE_SHEETS_API_KEY=... PHARMATIYA_SHEET_ID=... npm run studies
+```
+
+That writes `data/studies.json`, which is imported into the bundle. The sheet
+stays the editing surface — re-run after changes.
+
+The live site fetches the sheet client-side with the API key and sheet ID
+embedded in page source, so anyone can read the key and query the sheet. That
+key should be rotated and restricted, and it is not reproduced here.
+
+`data/studies.json` is committed empty. The finder shows a clear notice rather
+than fabricated study records until it is populated.
+
 ## Outstanding client inputs
 
 The build is complete, but these are unresolved and are marked in the UI

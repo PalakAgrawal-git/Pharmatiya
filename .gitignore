@@ -5,3 +5,8 @@ dist/
 .env.production
 .DS_Store
 npm-debug.log*
+
+# Next.js
+/.next/
+/out/
+next-env.d.ts

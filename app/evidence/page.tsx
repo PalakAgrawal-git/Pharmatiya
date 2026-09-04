@@ -4,6 +4,7 @@ import { DataLabel, Pending } from "@/components/ui/DataLabel";
 import CaseStudies from "@/components/evidence/CaseStudies";
 import DatasetMap from "@/components/evidence/DatasetMap";
 import TherapeuticMatrix from "@/components/evidence/TherapeuticMatrix";
+import PublicationList from "@/components/evidence/PublicationList";
 import CTA from "@/components/sections/CTA";
 
 export const metadata = {
@@ -66,6 +67,25 @@ export default function EvidencePage() {
             <span aria-hidden="true" className="h-px flex-1 bg-rule" />
           </DataLabel>
           <TherapeuticMatrix />
+        </div>
+      </section>
+
+      {/* The published record. This sits high on the page because it is the
+          only proof on the site a buyer can verify without asking us for
+          anything — the linkable entries carry a DOI, PMID or patent number. */}
+      <section className="border-b border-rule">
+        <div className="shell py-14 lg:py-20">
+          <DataLabel as="h2" className="mb-3 flex items-center gap-4">
+            The published record
+            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+          </DataLabel>
+          <p className="measure mb-8 text-muted">
+            Forty-seven publications, abstracts, posters, a patent and a book
+            chapter, from 2003 to 2022 — in JAMA, Circulation, Diabetes,
+            Obesity and Metabolism, Vaccine and others. Search it, or filter by
+            type.
+          </p>
+          <PublicationList />
         </div>
       </section>
 

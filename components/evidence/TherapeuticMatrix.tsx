@@ -1,5 +1,4 @@
 import { therapeuticAreas } from "@/lib/site";
-import { Pending } from "@/components/ui/DataLabel";
 
 /**
  * Therapeutic-area grid. Only areas corroborated on the current About page
@@ -21,8 +20,8 @@ export default function TherapeuticMatrix() {
       </ul>
 
       <p className="measure mt-4 text-small text-muted">
-        Corroborated engagements. Full therapeutic coverage{" "}
-        <Pending>Pharmatiya to confirm</Pending>
+        Each area is evidenced by entries in the published record below.
+        Therapeutic experience outside the published literature is broader.
       </p>
     </div>
   );

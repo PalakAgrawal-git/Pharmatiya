@@ -12,28 +12,41 @@ export const metadata = {
   alternates: { canonical: "/about/" },
 };
 
-/** Events are drawn from the current About page. Dates are not estimated. */
+/**
+ * Milestones. Date ranges are taken from the span of the published record for
+ * each period — the affiliations on those papers are already public — rather
+ * than from unpublished employment history. Anything not corroborated that way
+ * is left marked as pending.
+ */
 const milestones = [
   {
-    event: "Outcomes Research division established",
+    period: "2003–2011",
+    event: "Hospital epidemiology and outcomes research",
     detail:
-      "Built an organic outcomes research function on the payer side — hiring, training and managing the clinical, biostatistics and analytical team.",
+      "Infection surveillance, antibiotic utilisation and hospital-associated infection studies in an integrated health system, published across IDSA, ICAAC, SHEA and ASM.",
   },
   {
-    event: "Payer-side analytics build-out",
+    period: "2011–2014",
+    event: "Pharmacovigilance and clinical trials product lead",
     detail:
-      "Proprietary pharmacy, lab and medical claims used to identify and risk-stratify populations for care management.",
+      "Conceptualised and executed pharmacovigilance and clinical-trials products, including a claims-based sentinel system analysing five million lives. US patent 8,744,872 filed January 2013, issued June 2014.",
   },
   {
-    event: "Pharmacovigilance & clinical trials product lead",
+    period: "2014–2019",
+    event: "Payer-side analytics and pragmatic trials",
     detail:
-      "Conceptualised, developed and executed pharmacovigilance and clinical-trials products.",
+      "Real-world evidence and pragmatic trials on inpatient clinical data and outpatient claims — including the nationwide mSToPS atrial fibrillation screening trial, published in JAMA in 2018.",
   },
-  { event: "Pharmatiya founded", detail: "Independent HEOR and RWE practice." },
   {
-    event: `${site.productName} developed`,
+    period: "2019–2022",
+    event: "Machine learning in outcomes research",
     detail:
-      "AI-assisted evidence synopses with mandatory human expert review.",
+      "Applied machine learning to hospitalisation risk in COVID-19, and published on the boundary between machine learning and traditional statistical modelling in healthcare analytics.",
+  },
+  {
+    period: null,
+    event: "Pharmatiya founded",
+    detail: "Independent HEOR and RWE practice.",
   },
 ];
 
@@ -127,8 +140,7 @@ export default function AboutPage() {
             <span aria-hidden="true" className="h-px flex-1 bg-rule" />
           </DataLabel>
 
-          {/* An unnumbered sequence until dates are supplied — none are
-              estimated. */}
+          {/* Periods are the span of the published record, not estimates. */}
           <ol className="border-t border-rule">
             {milestones.map((milestone) => (
               <li
@@ -139,8 +151,8 @@ export default function AboutPage() {
                   <p className="font-display text-[1.05rem] font-semibold">
                     {milestone.event}
                   </p>
-                  <p className="mt-1">
-                    <Pending>Date to provide</Pending>
+                  <p className="mt-1 font-mono text-caption tabular text-accent">
+                    {milestone.period ?? <Pending>Date to provide</Pending>}
                   </p>
                 </div>
                 <p className="measure text-small text-muted">
@@ -159,17 +171,93 @@ export default function AboutPage() {
             <span aria-hidden="true" className="h-px flex-1 bg-rule" />
           </DataLabel>
 
-          <div className="border border-dashed border-rule-firm bg-surface p-6 sm:p-8">
-            <p className="measure text-muted">
-              Team profiles — names, credentials and specialisms — with real
-              photography. <Pending>Pending client input 1</Pending>
-            </p>
-            <p className="measure mt-3 text-small text-faint">
-              If photography is unavailable at launch this section ships as
-              names and credentials in typographic treatment. It will not ship
-              with stock portraits or illustrated avatars.
-            </p>
+          <div className="grid gap-6 lg:grid-cols-[16rem_1fr]">
+            {/* Photography pending client input 1 — a typographic panel
+                stands in. No stock portrait is substituted. */}
+            <div className="flex min-h-[11rem] flex-col items-center justify-center gap-2 border border-dashed border-rule-firm bg-surface p-5 text-center">
+              <DataLabel>Photograph</DataLabel>
+              <p className="text-caption text-faint">Pending</p>
+            </div>
+
+            <div className="border-t border-rule-firm pt-4">
+              <h3 className="text-[1.35rem]">Rajesh R. Mehta, R.Ph., M.S.</h3>
+              <p className="mt-1 font-mono text-caption uppercase tracking-[0.1em] text-faint">
+                Health economics &amp; outcomes research{" "}
+                <Pending>Role title to confirm</Pending>
+              </p>
+
+              <p className="measure mt-4 text-muted">
+                A licensed pharmacist who moved into outcomes research and
+                stayed for twenty-five years. His published work runs from
+                hospital infection surveillance through claims-based
+                pharmacovigilance to nationwide pragmatic trials — including
+                the mSToPS atrial fibrillation screening trial published in{" "}
+                <em>JAMA</em> in 2018, and a systematic review of therapeutic
+                inertia in type 2 diabetes in{" "}
+                <em>Diabetes, Obesity and Metabolism</em>.
+              </p>
+
+              <dl className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+                <div>
+                  <dt className="font-mono text-caption uppercase tracking-[0.1em] text-faint">
+                    Education
+                  </dt>
+                  <dd className="mt-1 text-small text-muted">
+                    M.S. Pharmacy Administration, <em>magna cum laude</em>,
+                    Idaho State University
+                    <br />
+                    B.Pharm, University of Pune
+                  </dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-caption uppercase tracking-[0.1em] text-faint">
+                    Licensure
+                  </dt>
+                  <dd className="mt-1 text-small text-muted">
+                    Registered pharmacist, Utah and Maryland
+                  </dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-caption uppercase tracking-[0.1em] text-faint">
+                    Patent
+                  </dt>
+                  <dd className="mt-1 text-small text-muted">
+                    <a
+                      href="https://patents.google.com/patent/US8744872"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent underline underline-offset-4"
+                    >
+                      US 8,744,872
+                    </a>{" "}
+                    — System and method for pharmacovigilance
+                  </dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-caption uppercase tracking-[0.1em] text-faint">
+                    Affiliations
+                  </dt>
+                  <dd className="mt-1 text-small text-muted">
+                    ISPOR · American Diabetes Association · American College of
+                    Cardiology
+                  </dd>
+                </div>
+              </dl>
+
+              <p className="mt-5">
+                <Link
+                  href="/evidence/"
+                  className="font-mono text-small text-accent underline underline-offset-4"
+                >
+                  The full published record →
+                </Link>
+              </p>
+            </div>
           </div>
+
+          <p className="measure mt-6 text-small text-faint">
+            Further team profiles <Pending>Pending client input 1</Pending>
+          </p>
         </div>
       </section>
 

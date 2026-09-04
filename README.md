@@ -58,6 +58,37 @@ key should be rotated and restricted, and it is not reproduced here.
 `data/studies.json` is committed empty. The finder shows a clear notice rather
 than fabricated study records until it is populated.
 
+## Published record
+
+The Evidence page carries 47 publications, abstracts, posters, a patent and a
+book chapter (2003-2022), searchable and filterable by type. Entries with a
+DOI, PMID or patent number link to the source, so a buyer can verify them
+without contacting Pharmatiya.
+
+`data/publications.json` is generated from the supplied bibliography:
+
+```bash
+python scripts/build-publications.py
+```
+
+Only the published record is used. Personal contact details, licence numbers
+and client engagements that do not appear in the literature are deliberately
+excluded -- see the Disclosure note below.
+
+## Disclosure boundary
+
+The supplied resume contains material that is NOT on the site by decision:
+
+- Personal phone number, personal email address, pharmacy licence numbers.
+- Named value-based-care engagements (Aetna/Inova, Aetna/Medtronic,
+  Aetna/Merck) and named product initiatives (Ozempic, CAR-T, Entresto,
+  Januvia). These are not in the published literature and need client
+  clearance before publication.
+- Personal revenue figures.
+
+Employer names appear only where they are already inside a published citation
+or affiliation.
+
 ## Outstanding client inputs
 
 The build is complete, but these are unresolved and are marked in the UI

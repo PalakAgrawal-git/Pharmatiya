@@ -48,13 +48,13 @@ export const nav = [
 export const proofFigures = [
   { value: "25+", label: "years in HEOR, RWE and outcomes research" },
   {
-    value: "1,000+",
-    label: "study synopses delivered",
-    // Appears only in the brief; not corroborated on the current site.
-    unverified: true,
+    value: "47",
+    label: "publications, abstracts and posters, 2003–2022",
+    // Counted from the bibliography Pharmatiya supplied. Every entry is on
+    // the Evidence page and the linkable ones cite a DOI, PMID or patent.
   },
-  { value: null, label: "therapeutic areas", pending: true },
-  { value: null, label: "datasets worked", pending: true },
+  { value: "14", label: "peer-reviewed journal publications" },
+  { value: "12", label: "therapeutic areas in the published record" },
 ] as const;
 
 export const services = [
@@ -134,17 +134,20 @@ export const methods = {
   design: [
     "Retrospective observational",
     "Prospective pragmatic",
+    "Randomised controlled trials",
     "Epidemiology and burden of illness",
     "Cohort development",
     "Risk stratification",
+    "Surveillance and point-prevalence studies",
   ],
   statistics: [
     "Logistic regression",
     "ANOVA",
     "Survival analysis",
-    "Propensity scores",
+    "Propensity score matching",
     "Multivariate models",
     "Machine learning techniques",
+    "Systematic review and meta-analysis",
   ],
   engineering: [
     "SQL extraction",
@@ -180,16 +183,23 @@ export const namedSources = [
 ] as const;
 
 /**
- * Therapeutic areas corroborated on the current About page. The list is
- * deliberately short — additions require client confirmation.
+ * Therapeutic areas evidenced by the published record (data/publications.json,
+ * derived from the bibliography Pharmatiya supplied). Counts are entry counts
+ * from that file, so every claim here is traceable to a citation.
  */
 export const therapeuticAreas = [
-  { area: "Wound care", note: "EHR-based analysis" },
-  { area: "Lung transplant", note: "EHR-based analysis" },
-  { area: "Congestive heart failure", note: "Care management" },
-  { area: "Diabetes", note: "Care management" },
-  { area: "Medication adherence", note: "Claims-based" },
-  { area: "Opioid utilisation", note: "Claims-based" },
+  { area: "Infectious disease", note: "26 entries — C. difficile, MRSA, S. pneumoniae, ABSSSI, HAI" },
+  { area: "Atrial fibrillation", note: "6 entries — incl. the mSToPS trial, JAMA 2018" },
+  { area: "Trauma", note: "4 entries — hospital-associated infection" },
+  { area: "Asthma", note: "3 entries — guideline impact and resource use" },
+  { area: "Type 2 diabetes", note: "Meta-analysis, Diabetes Obes Metab 2021" },
+  { area: "Pharmacovigilance", note: "US patent 8,744,872; claims-based sentinel" },
+  { area: "Cardiovascular", note: "Technology-enabled trials, Circulation 2019" },
+  { area: "Mental health", note: "Pharmacogenetic testing, Depress Anxiety 2018" },
+  { area: "Psoriasis & PsA", note: "Treatment patterns within a health plan" },
+  { area: "Haemophilia A", note: "Prophylaxis utilisation, claims" },
+  { area: "Opioid utilisation", note: "Peri-surgical opioid use" },
+  { area: "COVID-19", note: "Machine learning hospitalisation risk" },
 ] as const;
 
 /**

@@ -40,7 +40,11 @@ export const metadata: Metadata = {
     siteName: site.name,
     locale: "en_US",
   },
-  robots: { index: true, follow: true },
+  // The GitHub Pages preview must not be indexed alongside the live site.
+  robots:
+    process.env.NEXT_PUBLIC_PREVIEW === "true"
+      ? { index: false, follow: false }
+      : { index: true, follow: true },
 };
 
 export default function RootLayout({

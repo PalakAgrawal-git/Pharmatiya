@@ -99,7 +99,7 @@ export default function NextGenPage() {
           <Reveal>
             <DataLabel as="h2" className="mb-3 flex items-center gap-4">
               Try it — search prior work
-              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
             </DataLabel>
             <p className="measure mb-6 text-muted">
               Feasibility starts with a question most teams cannot answer
@@ -121,7 +121,7 @@ export default function NextGenPage() {
           <Reveal>
             <h2 className="mb-8 flex items-center gap-4 font-mono text-caption font-normal uppercase tracking-[0.14em] text-white/45">
               How it works
-              <span aria-hidden="true" className="h-px flex-1 bg-white/15" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-white/15" />
             </h2>
           </Reveal>
           <Reveal delay={100}>
@@ -135,7 +135,7 @@ export default function NextGenPage() {
           <Reveal>
             <DataLabel as="h2" className="mb-8 flex items-center gap-4">
               Where AI is used — and where it is not
-              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
             </DataLabel>
           </Reveal>
 
@@ -186,7 +186,7 @@ export default function NextGenPage() {
           <Reveal>
             <DataLabel as="h2" className="mb-8 flex items-center gap-4">
               Trust
-              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
             </DataLabel>
           </Reveal>
 

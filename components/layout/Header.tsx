@@ -31,6 +31,13 @@ export default function Header() {
         <Navigation />
         <MobileNavigation />
       </div>
+
+      {/* Reading progress, sitting on the header's own bottom rule. Pure CSS
+          scroll-linked animation — no listener, no state, no re-render. */}
+      <div
+        aria-hidden="true"
+        className="read-progress absolute inset-x-0 bottom-[-1px] h-[2px] bg-accent"
+      />
     </header>
   );
 }

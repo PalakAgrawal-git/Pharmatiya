@@ -97,15 +97,15 @@ export default function ServicesPage() {
               <Reveal>
                 <DataLabel as="h2" className="mb-8 flex items-center gap-4">
                   Service {String(index + 1).padStart(2, "0")} — {service.name}
-                  <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+                  <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
                 </DataLabel>
               </Reveal>
 
               <div
                 className={`grid items-start gap-10 lg:gap-14 ${
                   flipped
-                    ? "lg:grid-cols-[35fr_65fr]"
-                    : "lg:grid-cols-[65fr_35fr]"
+                    ? "lg:grid-cols-[40fr_60fr]"
+                    : "lg:grid-cols-[60fr_40fr]"
                 }`}
               >
                 <Reveal className={flipped ? "lg:order-2" : "lg:order-1"}>
@@ -124,7 +124,9 @@ export default function ServicesPage() {
 
                 <Reveal
                   delay={140}
-                  className={flipped ? "lg:order-1" : "lg:order-2"}
+                  className={`hidden lg:block ${
+                    flipped ? "lg:order-1" : "lg:order-2"
+                  }`}
                 >
                   <Figure number={graphic.number} caption={graphic.caption}>
                     {graphic.node}

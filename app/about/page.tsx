@@ -6,6 +6,7 @@ import DatasetMap from "@/components/evidence/DatasetMap";
 import TeamRoster from "@/components/sections/TeamRoster";
 import CTA from "@/components/sections/CTA";
 import Reveal from "@/components/motion/Reveal";
+import CountUp from "@/components/motion/CountUp";
 import GraphGround from "@/components/layout/GraphGround";
 
 export const metadata = {
@@ -126,7 +127,7 @@ export default function AboutPage() {
           <Reveal>
             <h2 className="mb-10 flex items-center gap-4 font-mono text-caption font-normal uppercase tracking-[0.14em] text-white/45">
               Our track record
-              <span aria-hidden="true" className="h-px flex-1 bg-white/15" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-white/15" />
             </h2>
           </Reveal>
 
@@ -138,7 +139,9 @@ export default function AboutPage() {
                 className="border-t border-white/20 pt-5"
               >
                 <dt className="font-display text-[clamp(1.9rem,1.3rem+2.4vw,3.2rem)] font-semibold leading-[0.95] tracking-[-0.03em] tabular text-white">
-                  {figure.value ?? (
+                  {figure.value ? (
+                    <CountUp value={figure.value} />
+                  ) : (
                     <span className="font-mono text-[1rem] uppercase tracking-[0.06em] text-flag">
                       To provide
                     </span>
@@ -158,7 +161,7 @@ export default function AboutPage() {
           <Reveal>
             <DataLabel as="h2" className="mb-8 flex items-center gap-4">
               How we got here
-              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
             </DataLabel>
           </Reveal>
 
@@ -196,7 +199,7 @@ export default function AboutPage() {
           <Reveal>
             <DataLabel as="h2" className="mb-3 flex items-center gap-4">
               Who we are
-              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
             </DataLabel>
             <p className="measure mb-8 text-muted">
               Credentials matter to the people who commission this work, so we
@@ -214,7 +217,7 @@ export default function AboutPage() {
           <Reveal>
             <DataLabel as="h2" className="mb-8 flex items-center gap-4">
               What we do
-              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
             </DataLabel>
           </Reveal>
 

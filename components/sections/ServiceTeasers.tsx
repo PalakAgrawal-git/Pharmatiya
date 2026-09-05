@@ -39,7 +39,7 @@ export default function ServiceTeasers() {
         <Reveal>
           <h2 className="mb-14 flex items-center gap-5 font-mono text-caption uppercase tracking-[0.14em] text-faint">
             What we do
-            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+            <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
           </h2>
         </Reveal>
 

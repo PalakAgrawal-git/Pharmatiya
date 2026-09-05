@@ -1,21 +1,42 @@
 import type { CSSProperties } from "react";
 
-/** Bootstrap replicates, positioned around a point estimate in the
- *  north-east quadrant: more effective, more costly, below threshold. */
+/**
+ * Bootstrap replicates in the north-east quadrant: the intervention is both
+ * more effective and more costly than the comparator. All but two sit below
+ * the willingness-to-pay line, so it is cost-effective at that threshold.
+ *
+ * Every point satisfies y > 150 - (3/7)(x - 230), which is the threshold line
+ * below. That relationship is what the figure asserts, so the coordinates are
+ * derived from it rather than sprinkled by eye.
+ */
 const cloud = [
-  [312, 118], [298, 132], [326, 108], [340, 126], [305, 145], [288, 122],
-  [334, 140], [352, 116], [318, 100], [296, 158], [346, 154], [364, 132],
-  [280, 140], [324, 166], [358, 100], [302, 96], [370, 148], [286, 108],
-  [338, 92], [310, 172], [272, 128], [352, 172], [330, 128], [316, 138],
+  [272, 141], [286, 138], [296, 132], [300, 144], [312, 128],
+  [318, 140], [326, 120], [334, 134], [340, 146], [346, 118],
+  [356, 130], [364, 112], [376, 124],
+  // Two replicates above the line. A cloud that fell entirely on one side
+  // would be describing certainty the method does not produce.
+  [330, 100], [306, 106],
 ];
 
 /**
  * Cost-effectiveness plane.
  *
- * When animated the axes and threshold arrive first, then the bootstrap cloud
- * accumulates point by point, and the point estimate lands last. That ordering
- * is the argument the figure makes: the replicates are what the estimate rests
- * on, so they precede it.
+ * Reduced for a website: the two quadrant captions and two-thirds of the
+ * scatter are gone. A visitor reads this figure as "the cloud sits below the
+ * threshold line", and twenty-four overlapping points plus corner labels made
+ * that harder to see, not easier.
+ *
+ * The threshold line was also wrong and is corrected here. It ran from
+ * (230,270) to (440,60) — crossing the horizontal axis well right of the
+ * origin — but on a cost-effectiveness plane the threshold is cost = lambda x
+ * effect and must pass through the origin. As drawn, only 2 of 24 replicates
+ * fell on the cost-effective side while the accessible description claimed
+ * "the great majority" did, so the figure and its own alt text disagreed. The
+ * line now starts at the origin and the cloud is positioned against it.
+ *
+ * When animated the axes and threshold arrive first, then the cloud
+ * accumulates, and the point estimate lands last: the replicates are what the
+ * estimate rests on, so they precede it.
  */
 export default function CostEffectivenessPlane({
   animate = false,
@@ -26,7 +47,7 @@ export default function CostEffectivenessPlane({
 }) {
   return (
     <svg
-      viewBox="0 0 460 300"
+      viewBox="112 8 348 212"
       role="img"
       aria-labelledby="ce-title ce-desc"
       className={`w-full ${className}`}
@@ -35,16 +56,25 @@ export default function CostEffectivenessPlane({
       <desc id="ce-desc">
         Bootstrap replicates cluster in the north-east quadrant — the
         intervention is both more effective and more costly than the
-        comparator. The great majority fall below the willingness-to-pay
+        comparator. Thirteen of fifteen fall below the willingness-to-pay
         threshold line, indicating cost-effectiveness at that threshold.
       </desc>
 
-      {/* Willingness-to-pay threshold. Not drawn with `.draw` — the dash
-          pattern is load-bearing here (it marks the line as a threshold, not
-          a fitted curve) and stroke-dasharray animation would override it. */}
+      {/* Axes through the origin at (230, 150). The viewBox crops the empty
+          left of the plane rather than centring the origin: with the whole
+          cloud in the north-east quadrant, a symmetric frame spent over half
+          its width on white space. Both loss quadrants stay visible, which is
+          the part that carries meaning. */}
+      <line x1="122" y1="150" x2="440" y2="150" stroke="var(--color-faint)" strokeWidth="1" />
+      <line x1="230" y1="30" x2="230" y2="215" stroke="var(--color-faint)" strokeWidth="1" />
+
+      {/* Willingness-to-pay threshold: cost = lambda x effect, so it passes
+          through the origin. Not drawn with `.draw` — the dash pattern marks
+          it as a threshold rather than a fitted curve, and animating
+          stroke-dasharray would override it. */}
       <line
         x1="230"
-        y1="270"
+        y1="150"
         x2="440"
         y2="60"
         stroke="var(--color-series-3)"
@@ -56,9 +86,9 @@ export default function CostEffectivenessPlane({
         }
       />
       <text
-        x="436"
-        y="54"
-        fontSize="10"
+        x="438"
+        y="50"
+        fontSize="12"
         fill="var(--color-series-3)"
         textAnchor="end"
         fontFamily="var(--font-mono)"
@@ -66,22 +96,18 @@ export default function CostEffectivenessPlane({
         WTP threshold
       </text>
 
-      {/* Axes through the origin */}
-      <line x1="20" y1="150" x2="440" y2="150" stroke="var(--color-faint)" strokeWidth="1" />
-      <line x1="230" y1="20" x2="230" y2="280" stroke="var(--color-faint)" strokeWidth="1" />
-
       {cloud.map(([cx, cy], i) => (
         <circle
           key={i}
           cx={cx}
           cy={cy}
-          r="3.2"
+          r="4.5"
           fill="var(--color-series-1)"
-          fillOpacity="0.28"
+          fillOpacity="0.3"
           className={animate ? "pop-in" : undefined}
           style={
             animate
-              ? ({ "--pop-delay": `${300 + i * 26}ms` } as CSSProperties)
+              ? ({ "--pop-delay": `${300 + i * 45}ms` } as CSSProperties)
               : undefined
           }
         />
@@ -92,41 +118,30 @@ export default function CostEffectivenessPlane({
         className={animate ? "pop-in" : undefined}
         style={
           animate
-            ? ({ "--pop-delay": `${300 + cloud.length * 26 + 120}ms` } as CSSProperties)
+            ? ({ "--pop-delay": `${300 + cloud.length * 45 + 120}ms` } as CSSProperties)
             : undefined
         }
       >
-        <circle cx="322" cy="130" r="5" fill="var(--color-series-1)" />
+        <circle cx="325" cy="128" r="6" fill="var(--color-series-1)" />
         <circle
-          cx="322"
-          cy="130"
-          r="9"
+          cx="325"
+          cy="128"
+          r="11"
           fill="none"
           stroke="var(--color-series-1)"
-          strokeWidth="1"
+          strokeWidth="1.25"
         />
       </g>
 
-      <g fontSize="10" fill="var(--color-faint)" fontFamily="var(--font-mono)">
-        {/* Dropped clear of the axis rather than sitting tight under it. At
-            its old y=166 the dashed threshold line crossed straight through
-            this label and two replicates touched it: the line meets the
-            horizontal axis at x=350, so the strip just beneath the axis is
-            exactly where the line and the densest part of the cloud both sit.
-            By y=190 the line has moved left to x≈308 and the lowest replicate
-            is 15px above, so the label clears both — without widening the
-            canvas, which would have scaled every label on the figure down. */}
-        <text x="452" y="190" textAnchor="end">
+      {/* The strip below the axis is now free of both the line and the cloud,
+          because the corrected threshold rises only into the upper right. */}
+      <g fontSize="12" fill="var(--color-faint)" fontFamily="var(--font-mono)">
+        <text x="438" y="172" textAnchor="end">
           Incremental effect →
         </text>
-        <text x="236" y="30">
+        <text x="238" y="26">
           ↑ Incremental cost
         </text>
-      </g>
-
-      <g fontSize="9.5" fill="var(--color-muted)" fontFamily="var(--font-mono)">
-        <text x="240" y="278">More effective, less costly</text>
-        <text x="222" y="44" textAnchor="end">More costly, less effective</text>
       </g>
     </svg>
   );

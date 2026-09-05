@@ -20,7 +20,7 @@ export default function CoverageBand() {
           <Reveal>
             <h2 className="mb-6 flex items-center gap-4 font-mono text-caption uppercase tracking-[0.14em] text-faint">
               Coverage
-              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
             </h2>
             <p className="text-[clamp(1.4rem,1.1rem+1.4vw,2.1rem)] leading-[1.12] tracking-[-0.02em]">
               Payer, provider and claims data — for twenty-five years.

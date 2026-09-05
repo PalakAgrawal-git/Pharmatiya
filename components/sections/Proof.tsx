@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { proofFigures } from "@/lib/site";
 import Reveal from "@/components/motion/Reveal";
+import CountUp from "@/components/motion/CountUp";
 
 /**
  * Proof figures.
@@ -20,7 +21,7 @@ export default function Proof() {
         <Reveal>
           <p className="mb-12 flex items-center gap-4 font-mono text-caption uppercase tracking-[0.14em] text-white/45">
             The record
-            <span aria-hidden="true" className="h-px flex-1 bg-white/15" />
+            <span aria-hidden="true" className="rule-grow h-px flex-1 bg-white/15" />
           </p>
         </Reveal>
 
@@ -32,7 +33,9 @@ export default function Proof() {
               className="border-t border-white/20 pt-5"
             >
               <dt className="font-display text-[clamp(2.6rem,1.6rem+3.6vw,4.4rem)] font-semibold leading-[0.9] tracking-[-0.035em] tabular text-white">
-                {figure.value ?? (
+                {figure.value ? (
+                  <CountUp value={figure.value} />
+                ) : (
                   <span className="font-mono text-[1rem] uppercase tracking-[0.06em] text-flag">
                     To provide
                   </span>

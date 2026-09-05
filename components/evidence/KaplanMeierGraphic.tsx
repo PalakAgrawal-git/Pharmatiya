@@ -1,6 +1,4 @@
 type Props = {
-  /** Drops censoring marks and gridlines, thickens strokes. */
-  simplified?: boolean;
   /** Draws the curves on scroll. Requires an ancestor with data-reveal. */
   animate?: boolean;
   className?: string;
@@ -14,21 +12,24 @@ const COMPARATOR =
 /**
  * Two-arm Kaplan–Meier survival estimate.
  *
+ * Deliberately reduced for a website rather than a manuscript. The finding a
+ * visitor needs is "these two arms separate and stay separated"; gridlines,
+ * intermediate axis ticks and censoring marks all served precise reading off
+ * the plot, which nobody does on a marketing page and which rendered at
+ * around five pixels in a narrow column. Two curves, the two axis extremes
+ * and a direct label for each arm carry the same finding at a glance.
+ *
+ * Nothing was removed from the accessible description: a screen-reader user
+ * still gets the exact figures.
+ *
  * When animated, the curves draw from the origin as they scroll into view —
  * the comparator falling away first, then the intervention holding. That is
- * the finding itself performing, which is the point: the motion carries
- * meaning rather than decorating the page.
- *
- * On small screens the figure is simplified rather than scaled: censoring
- * marks and gridlines go, stroke weight rises, only axis extremes stay
- * labelled.
+ * the finding itself performing, which is the point.
  */
 export default function KaplanMeierGraphic({
-  simplified = false,
   animate = false,
   className = "",
 }: Props) {
-  const stroke = simplified ? 2.75 : 2;
   // Path length is roughly the sum of the horizontal and vertical runs; over-
   // estimating is safe, it just means the dash starts fully offset.
   const len = 900;
@@ -49,45 +50,33 @@ export default function KaplanMeierGraphic({
         cent. Curves separate from around month 6 and do not converge.
       </desc>
 
-      {!simplified && (
-        <g stroke="var(--color-rule)" strokeWidth="1">
-          <line x1="56" y1="30" x2="430" y2="30" />
-          <line x1="56" y1="90" x2="430" y2="90" />
-          <line x1="56" y1="150" x2="430" y2="150" />
-          <line x1="56" y1="210" x2="430" y2="210" />
-        </g>
-      )}
-
       <g stroke="var(--color-faint)" strokeWidth="1">
         <line x1="56" y1="30" x2="56" y2="270" />
         <line x1="56" y1="270" x2="430" y2="270" />
       </g>
 
+      {/* Only the extremes are labelled. The scale is what matters, not
+          reading a value off the curve. */}
       <g
-        fontSize="11"
+        fontSize="12"
         fill="var(--color-faint)"
         textAnchor="end"
         fontFamily="var(--font-mono)"
       >
         <text x="48" y="34">1.0</text>
-        {!simplified && <text x="48" y="94">0.875</text>}
-        {!simplified && <text x="48" y="154">0.75</text>}
-        {!simplified && <text x="48" y="214">0.625</text>}
         <text x="48" y="274">0.5</text>
       </g>
 
       <g
-        fontSize="11"
+        fontSize="12"
         fill="var(--color-faint)"
         textAnchor="middle"
         fontFamily="var(--font-mono)"
       >
-        <text x="56" y="290">0</text>
-        {!simplified && <text x="149.5" y="290">6</text>}
-        <text x="243" y="290">12</text>
-        {!simplified && <text x="336.5" y="290">18</text>}
-        <text x="430" y="290">24</text>
-        <text x="243" y="312" fill="var(--color-muted)">
+        <text x="56" y="292">0</text>
+        <text x="243" y="292">12</text>
+        <text x="430" y="292">24</text>
+        <text x="243" y="314" fill="var(--color-muted)">
           Months since index
         </text>
       </g>
@@ -95,7 +84,7 @@ export default function KaplanMeierGraphic({
       <text
         x="14"
         y="150"
-        fontSize="11"
+        fontSize="12"
         fill="var(--color-muted)"
         textAnchor="middle"
         fontFamily="var(--font-mono)"
@@ -115,7 +104,7 @@ export default function KaplanMeierGraphic({
         }
         fill="none"
         stroke="var(--color-series-2)"
-        strokeWidth={stroke}
+        strokeWidth="2.75"
         strokeDasharray={animate ? undefined : "6 3"}
         d={COMPARATOR}
       />
@@ -129,38 +118,16 @@ export default function KaplanMeierGraphic({
         }
         fill="none"
         stroke="var(--color-series-1)"
-        strokeWidth={stroke}
+        strokeWidth="2.75"
         d={INTERVENTION}
       />
 
-      {!simplified && (
-        <g
-          stroke="var(--color-series-1)"
-          strokeWidth="1.5"
-          className={animate ? "fade-part" : undefined}
-          style={
-            animate
-              ? ({ "--fade-delay": "1500ms" } as React.CSSProperties)
-              : undefined
-          }
-        >
-          <line x1="177" y1="58" x2="177" y2="70" />
-          <line x1="270" y1="91" x2="270" y2="103" />
-          <line x1="363" y1="115" x2="363" y2="127" />
-        </g>
-      )}
-
       {/* Series labels sit in a gutter to the right of the plot, aligned to
-          the height each curve ends at. They were previously set inside the
-          plot area, where "Intervention" ran straight through its own curve —
-          the plot is at its most crowded exactly where a curve terminates, so
-          there is no position inside it that stays clear at every width.
-
-          The gutter comes from ending the plot at x=430 rather than widening
-          the canvas: widening would have scaled every label on the figure down
-          with it, and at the 35% column this sits in on Services the tick
-          labels are already near the floor of legibility. Gridlines, both axes
-          and the curves all stop at 430, so nothing can cross these. */}
+          the height each curve ends at. Set inside the plot they ran through
+          the curves they name — a curve is at its most crowded exactly where
+          it terminates. The gutter comes from ending the plot at x=430 rather
+          than widening the canvas, which would have scaled every label down
+          with it. */}
       <g
         className={animate ? "fade-part" : undefined}
         style={
@@ -169,13 +136,11 @@ export default function KaplanMeierGraphic({
             : undefined
         }
       >
-        {/* y is the curve's final value plus ~4, which centres the text on
-            the line rather than hanging it below. */}
         <text
           x="438"
           y="140"
-          fontSize="12"
-          fontWeight="550"
+          fontSize="12.5"
+          fontWeight="600"
           fill="var(--color-series-1)"
           fontFamily="var(--font-sans)"
         >
@@ -184,8 +149,8 @@ export default function KaplanMeierGraphic({
         <text
           x="438"
           y="250"
-          fontSize="12"
-          fontWeight="550"
+          fontSize="12.5"
+          fontWeight="600"
           fill="var(--color-series-2)"
           fontFamily="var(--font-sans)"
         >

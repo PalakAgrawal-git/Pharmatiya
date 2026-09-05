@@ -286,6 +286,42 @@
       border-color 220ms var(--ease-settle);
   }
 
+  /* --- section rules drawing in ------------------------------------------
+     The hairline that runs off the end of a section heading now draws left to
+     right as the heading settles, so the eye is led along the rule into the
+     section instead of the whole header simply appearing. */
+  [data-reveal="shown"] .rule-grow {
+    animation: rule-grow 900ms var(--ease-settle) var(--rule-delay, 250ms) both;
+    transform-origin: left center;
+  }
+  @keyframes rule-grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  /* --- reading progress --------------------------------------------------
+     A hairline under the sticky header that fills as the page scrolls. Driven
+     entirely by a scroll-linked animation timeline, so it costs no JavaScript,
+     no scroll listener and no re-render.
+
+     Where `animation-timeline` is unsupported the bar keeps its base
+     scaleX(0) and is simply never seen — the whole rule lives inside the
+     @supports, so nothing can animate on a wall clock instead. */
+  .read-progress {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  @supports (animation-timeline: scroll()) {
+    .read-progress {
+      animation: read-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+    @keyframes read-progress {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+  }
+
   /* --- plotting-paper ground -------------------------------------------- */
   /* Millimetre paper at the threshold of visibility. On-brand for a research
      practice, and it gives the hero a surface without a gradient. */
@@ -310,7 +346,12 @@
   [data-reveal="shown"] .fade-part,
   [data-reveal="shown"] .grow-x,
   [data-reveal="shown"] .pop-in,
-  [data-reveal="shown"] .fall-in {
+  [data-reveal="shown"] .fall-in,
+  [data-reveal="shown"] .rule-grow {
     animation: none !important;
   }
+
+  /* The progress bar is motion for its own sake, so it goes entirely rather
+     than snapping to full width. */
+  .read-progress { display: none !important; }
 }

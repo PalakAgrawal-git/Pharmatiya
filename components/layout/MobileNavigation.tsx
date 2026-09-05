@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { nav } from "@/lib/site";
@@ -13,6 +14,14 @@ import { nav } from "@/lib/site";
  *
  * Focus is trapped while open, Escape closes, focus returns to the trigger,
  * and background scroll is locked.
+ *
+ * The overlay is portalled to <body> rather than rendered in place. The header
+ * carries a backdrop-filter for its translucency, and backdrop-filter makes an
+ * element a containing block for position:fixed descendants — so an overlay
+ * nested inside the header resolves `inset-0` against the header box, not the
+ * viewport, and collapses to a 375x76 strip with its links unclickable. The
+ * portal takes the overlay out of that subtree so `fixed` means the viewport
+ * again, and the header keeps its blur.
  */
 export default function MobileNavigation() {
   const [open, setOpen] = useState(false);
@@ -98,7 +107,7 @@ export default function MobileNavigation() {
         Menu
       </button>
 
-      {open && (
+      {open && createPortal(
         <div
           id="mobile-menu"
           ref={panelRef}
@@ -149,7 +158,8 @@ export default function MobileNavigation() {
               Book a consultation
             </Link>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );

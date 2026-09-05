@@ -11,14 +11,18 @@ const rows = [
   { label: "High adherence", hr: 0.65, lo: 0.48, hi: 0.88, x: 202.2, xlo: 155.7, xhi: 248.5 },
 ];
 
-const ticks = [
-  { v: "0.25", x: 56 },
-  { v: "0.5", x: 161.9 },
-  { v: "1.0", x: 268 },
-  { v: "2.0", x: 374 },
-  { v: "4.0", x: 480 },
-];
-
+/**
+ * Reduced for a website rather than a manuscript.
+ *
+ * The numeric column ("0.72 (0.61–0.85)") and the five-tick log axis were the
+ * clutter: both are precise-reading furniture, both rendered at roughly five
+ * pixels in a narrow column, and neither is what a visitor takes from a forest
+ * plot. What they take is which intervals clear the line of no effect — so
+ * that line is now labelled and the marks are heavier.
+ *
+ * Every number remains in the accessible description, so nothing is lost to a
+ * screen reader.
+ */
 export default function ForestPlot({
   animate = false,
   className = "",
@@ -28,7 +32,7 @@ export default function ForestPlot({
 }) {
   return (
     <svg
-      viewBox="0 0 520 290"
+      viewBox="0 0 400 250"
       role="img"
       aria-labelledby="fp-title fp-desc"
       className={`w-full ${className}`}
@@ -43,19 +47,29 @@ export default function ForestPlot({
         effect. High adherence 0.65, 0.48 to 0.88, favouring intervention.
       </desc>
 
-      {/* Line of no effect */}
+      {/* Line of no effect, labelled — the single reference a reader needs. */}
       <line
         x1="268"
-        y1="34"
+        y1="20"
         x2="268"
-        y2="250"
+        y2="196"
         stroke="var(--color-rule-firm)"
         strokeWidth="1"
         strokeDasharray="3 3"
       />
+      <text
+        x="268"
+        y="14"
+        fontSize="12"
+        fill="var(--color-faint)"
+        textAnchor="middle"
+        fontFamily="var(--font-mono)"
+      >
+        1.0
+      </text>
 
       {rows.map((row, i) => {
-        const y = 60 + i * 50;
+        const y = 44 + i * 40;
         return (
           <g key={row.label}>
             <text
@@ -67,7 +81,7 @@ export default function ForestPlot({
               }
               x="10"
               y={y + 4}
-              fontSize="11"
+              fontSize="12.5"
               fill="var(--color-muted)"
               fontFamily="var(--font-sans)"
             >
@@ -94,23 +108,23 @@ export default function ForestPlot({
                 x2={row.xhi}
                 y2={y}
                 stroke="var(--color-series-1)"
-                strokeWidth="1.5"
+                strokeWidth="2"
               />
               <line
                 x1={row.xlo}
-                y1={y - 5}
+                y1={y - 6}
                 x2={row.xlo}
-                y2={y + 5}
+                y2={y + 6}
                 stroke="var(--color-series-1)"
-                strokeWidth="1.5"
+                strokeWidth="2"
               />
               <line
                 x1={row.xhi}
-                y1={y - 5}
+                y1={y - 6}
                 x2={row.xhi}
-                y2={y + 5}
+                y2={y + 6}
                 stroke="var(--color-series-1)"
-                strokeWidth="1.5"
+                strokeWidth="2"
               />
             </g>
 
@@ -122,86 +136,36 @@ export default function ForestPlot({
                   ? ({ "--fade-delay": `${150 + i * 130}ms` } as React.CSSProperties)
                   : undefined
               }
-              x={row.x - 5}
-              y={y - 5}
-              width="10"
-              height="10"
+              x={row.x - 6}
+              y={y - 6}
+              width="12"
+              height="12"
               fill={
                 row.hi < 1 ? "var(--color-series-1)" : "var(--color-series-3)"
               }
             />
-
-            <text
-              className={animate ? "fade-part" : undefined}
-              style={
-                animate
-                  ? ({ "--fade-delay": `${700 + i * 130}ms` } as React.CSSProperties)
-                  : undefined
-              }
-              x="510"
-              y={y + 4}
-              fontSize="10.5"
-              fill="var(--color-muted)"
-              textAnchor="end"
-              fontFamily="var(--font-mono)"
-            >
-              {row.hr.toFixed(2)} ({row.lo.toFixed(2)}–{row.hi.toFixed(2)})
-            </text>
           </g>
         );
       })}
 
       <line
         x1="56"
-        y1="250"
-        x2="480"
-        y2="250"
+        y1="196"
+        x2="380"
+        y2="196"
         stroke="var(--color-faint)"
         strokeWidth="1"
       />
 
-      {ticks.map((tick) => (
-        <g key={tick.v}>
-          <line
-            x1={tick.x}
-            y1="250"
-            x2={tick.x}
-            y2="255"
-            stroke="var(--color-faint)"
-            strokeWidth="1"
-          />
-          <text
-            x={tick.x}
-            y="268"
-            fontSize="10.5"
-            fill="var(--color-faint)"
-            textAnchor="middle"
-            fontFamily="var(--font-mono)"
-          >
-            {tick.v}
-          </text>
-        </g>
-      ))}
-
       <text
-        x="160"
-        y="284"
-        fontSize="10.5"
+        x="150"
+        y="218"
+        fontSize="12"
         fill="var(--color-muted)"
         textAnchor="middle"
         fontFamily="var(--font-mono)"
       >
         ← favours intervention
-      </text>
-      <text
-        x="380"
-        y="284"
-        fontSize="10.5"
-        fill="var(--color-muted)"
-        textAnchor="middle"
-        fontFamily="var(--font-mono)"
-      >
-        favours comparator →
       </text>
     </svg>
   );

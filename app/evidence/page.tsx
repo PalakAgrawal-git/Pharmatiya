@@ -51,7 +51,7 @@ export default function EvidencePage() {
           <Reveal>
             <DataLabel as="h2" className="mb-8 flex items-center gap-4">
               Case studies
-              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
             </DataLabel>
           </Reveal>
           <Reveal delay={100}>
@@ -66,7 +66,7 @@ export default function EvidencePage() {
           <Reveal>
             <DataLabel as="h2" className="mb-8 flex items-center gap-4">
               Dataset coverage
-              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
             </DataLabel>
           </Reveal>
           <Reveal delay={100}>
@@ -84,7 +84,7 @@ export default function EvidencePage() {
           <Reveal>
             <h2 className="mb-8 flex items-center gap-4 font-mono text-caption font-normal uppercase tracking-[0.14em] text-white/45">
               Therapeutic expertise
-              <span aria-hidden="true" className="h-px flex-1 bg-white/15" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-white/15" />
             </h2>
           </Reveal>
           <Reveal delay={100}>
@@ -101,7 +101,7 @@ export default function EvidencePage() {
           <Reveal>
             <DataLabel as="h2" className="mb-3 flex items-center gap-4">
               The published record
-              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
             </DataLabel>
             <p className="measure mb-8 text-muted">
               Forty-seven publications, abstracts, posters, a patent and a book
@@ -123,7 +123,7 @@ export default function EvidencePage() {
           <Reveal>
             <DataLabel as="h2" className="mb-8 flex items-center gap-4">
               Methods &amp; analytical capability
-              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
             </DataLabel>
           </Reveal>
 

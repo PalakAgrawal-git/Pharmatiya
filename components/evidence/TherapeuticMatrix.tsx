@@ -1,9 +1,8 @@
 import { therapeuticAreas } from "@/lib/site";
 
 /**
- * Therapeutic-area grid. Only areas corroborated on the current About page
- * appear. The list is deliberately short — additions require client
- * confirmation rather than inference.
+ * Therapeutic-area grid. Every area is backed by entries in
+ * data/publications.json, so each claim traces to a citation.
  */
 export default function TherapeuticMatrix() {
   return (
@@ -20,8 +19,8 @@ export default function TherapeuticMatrix() {
       </ul>
 
       <p className="measure mt-4 text-small text-muted">
-        Each area is evidenced by entries in the published record below.
-        Therapeutic experience outside the published literature is broader.
+        Each area is evidenced by entries in our published record below. Our
+        therapeutic experience outside the published literature is broader.
       </p>
     </div>
   );

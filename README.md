@@ -58,6 +58,21 @@ key should be rotated and restricted, and it is not reproduced here.
 `data/studies.json` is committed empty. The finder shows a clear notice rather
 than fabricated study records until it is populated.
 
+## Adding people to the team
+
+The About page renders `lib/team.ts` in order. To add someone, copy the
+template at the bottom of that file, fill it in, and add it to the `team`
+array -- nothing else changes.
+
+Only `id`, `name`, `role` and `bio` are required. `credentials`, `education`,
+`licensure`, `affiliations`, `credits` and `photo` are all optional and are
+simply not rendered when absent, so a sparse entry still looks finished.
+
+Headshots go in `public/team/` and are referenced as `photo: "/team/name.jpg"`.
+Leave `photo: null` and a typographic panel stands in -- never a stock
+portrait. Set `roleConfirmed: false` to publish a title with a visible
+"to confirm" marker.
+
 ## Published record
 
 The Evidence page carries 47 publications, abstracts, posters, a patent and a

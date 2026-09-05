@@ -139,7 +139,7 @@ export default function PublicationList() {
 
       {results.length === 0 ? (
         <p className="measure mt-4 text-small text-muted">
-          Nothing matches that. Try a broader term — the bibliography spans
+          Nothing matches that. Try a broader term — our published work spans
           infectious disease, cardiology, diabetes, mental health and health
           economics.
         </p>
@@ -222,8 +222,9 @@ export default function PublicationList() {
       )}
 
       <p className="mt-6 border-t border-rule pt-4 text-caption text-faint">
-        <DataLabel as="span">Note</DataLabel> — selected bibliography, 2003 to
-        2022. Entries with a DOI, PMID or patent number link to the source.
+        <DataLabel as="span">Note</DataLabel> — selected bibliography of work
+        authored or co-authored by our team, 2003 to 2022. Entries with a DOI,
+        PMID or patent number link to the source.
       </p>
     </div>
   );

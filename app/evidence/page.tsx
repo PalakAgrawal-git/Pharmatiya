@@ -31,8 +31,8 @@ export default function EvidencePage() {
             title="What we have done, with which data, by which methods."
           />
           <p className="measure mt-6 text-muted">
-            Client work is confidential. What follows is anonymised, and every
-            method described is one we have executed.
+            Our client work is confidential. What follows is anonymised, and
+            every method described is one we have executed ourselves.
           </p>
         </div>
       </section>
@@ -81,9 +81,9 @@ export default function EvidencePage() {
           </DataLabel>
           <p className="measure mb-8 text-muted">
             Forty-seven publications, abstracts, posters, a patent and a book
-            chapter, from 2003 to 2022 — in JAMA, Circulation, Diabetes,
-            Obesity and Metabolism, Vaccine and others. Search it, or filter by
-            type.
+            chapter authored or co-authored by our team between 2003 and 2022 —
+            in JAMA, Circulation, Diabetes, Obesity and Metabolism, Vaccine and
+            others. Search it, or filter by type.
           </p>
           <PublicationList />
         </div>

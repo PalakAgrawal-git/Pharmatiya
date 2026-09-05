@@ -1,0 +1,9 @@
+:HL["/Pharmatiya/_next/static/chunks/172dwtrv_d2ii.css","style"]
+:HL["/Pharmatiya/_next/static/media/03fc1b4a8d284b5e-s.p.0wiir8udbzjvx.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/4e8cb63bdfc89443-s.p.0-zxmgh6g2ro_.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/98f992443ccb276f-s.p.1oxabuqlrz9-_.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/99e609270109b47d-s.p.40sczeszzbjw1.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/9d71b78498c53c0d-s.p.42kv-xe2onlt1.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/c77846bcb3371a93-s.p.17l2q2xazf7qv.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/effe91970fc4db64-s.p.0oace-s_gkfks.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4224,"slots":null}}},"staleTime":300,"buildId":"DHSmidNHfSSW3LrFdbwg2"}

@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { proofFigures } from "@/lib/site";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { DataLabel, Pending } from "@/components/ui/DataLabel";
+import { DataLabel } from "@/components/ui/DataLabel";
 import DatasetMap from "@/components/evidence/DatasetMap";
 import TeamRoster from "@/components/sections/TeamRoster";
+import Milestones from "@/components/sections/Milestones";
 import CTA from "@/components/sections/CTA";
 import Reveal from "@/components/motion/Reveal";
 import CountUp from "@/components/motion/CountUp";
@@ -15,45 +16,6 @@ export const metadata = {
     "A senior evidence team with twenty-five years in health economics, outcomes research and real-world evidence, across payer, provider and claims data.",
   alternates: { canonical: "/about/" },
 };
-
-/**
- * Milestones. Periods are taken from the span of our published record for
- * each phase — the affiliations on those papers are already public — rather
- * than from unpublished employment history. Anything not corroborated that
- * way is marked pending instead of estimated.
- */
-const milestones = [
-  {
-    period: "2003–2011",
-    event: "Hospital epidemiology and outcomes research",
-    detail:
-      "We built our practice inside an integrated health system: infection surveillance, antibiotic utilisation and hospital-associated infection studies, published across IDSA, ICAAC, SHEA and ASM.",
-  },
-  {
-    period: "2011–2014",
-    event: "Pharmacovigilance and clinical trials",
-    detail:
-      "We conceptualised and executed pharmacovigilance and clinical-trials products, including a claims-based sentinel system analysing five million lives. The underlying method is patented — US 8,744,872, filed January 2013, issued June 2014.",
-  },
-  {
-    period: "2014–2019",
-    event: "Payer-side analytics and pragmatic trials",
-    detail:
-      "We ran real-world evidence and pragmatic trials on inpatient clinical data and outpatient claims — including the nationwide mSToPS atrial fibrillation screening trial, published in JAMA in 2018.",
-  },
-  {
-    period: "2019–2022",
-    event: "Machine learning in outcomes research",
-    detail:
-      "We applied machine learning to hospitalisation risk in COVID-19, and published on where machine learning genuinely improves on traditional statistical modelling in healthcare analytics — and where it does not.",
-  },
-  {
-    period: null,
-    event: "Pharmatiya founded",
-    detail:
-      "Independent HEOR and RWE practice, working directly with commercial, medical affairs and market access teams.",
-  },
-];
 
 const expertise = [
   {
@@ -165,32 +127,7 @@ export default function AboutPage() {
             </DataLabel>
           </Reveal>
 
-          {/* Periods are the span of the published record, not estimates.
-              Rows arrive in sequence, which is the one place on the site
-              where stagger carries meaning rather than decoration: this is a
-              chronology, and it reads top to bottom. */}
-          <ol className="border-t border-rule">
-            {milestones.map((milestone, index) => (
-              <Reveal
-                as="li"
-                key={milestone.event}
-                delay={index * 90}
-                className="rule-row grid gap-2 border-b border-rule py-5 lg:grid-cols-[14rem_1fr] lg:gap-10"
-              >
-                <div>
-                  <p className="font-display text-[1.05rem] font-semibold">
-                    {milestone.event}
-                  </p>
-                  <p className="mt-1 font-mono text-caption tabular text-accent">
-                    {milestone.period ?? <Pending>Date to provide</Pending>}
-                  </p>
-                </div>
-                <p className="measure text-small text-muted">
-                  {milestone.detail}
-                </p>
-              </Reveal>
-            ))}
-          </ol>
+<Milestones />
         </div>
       </section>
 

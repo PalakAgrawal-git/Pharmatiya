@@ -286,6 +286,20 @@
       border-color 220ms var(--ease-settle);
   }
 
+  /* --- timeline spine ----------------------------------------------------
+     The chronology's vertical rule draws downward as the block arrives, so
+     the eye travels the years in the order they happened rather than being
+     handed the whole column at once. Paired with a stagger on the entries,
+     which arrive just behind the line reaching them. */
+  [data-reveal="shown"] .spine-draw {
+    animation: spine-draw 700ms var(--ease-settle) var(--spine-delay, 120ms) both;
+    transform-origin: top center;
+  }
+  @keyframes spine-draw {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+
   /* --- section rules drawing in ------------------------------------------
      The hairline that runs off the end of a section heading now draws left to
      right as the heading settles, so the eye is led along the rule into the
@@ -347,7 +361,8 @@
   [data-reveal="shown"] .grow-x,
   [data-reveal="shown"] .pop-in,
   [data-reveal="shown"] .fall-in,
-  [data-reveal="shown"] .rule-grow {
+  [data-reveal="shown"] .rule-grow,
+  [data-reveal="shown"] .spine-draw {
     animation: none !important;
   }
 

@@ -25,7 +25,7 @@ const graphics = [
     caption: "Two-arm survival estimate with separation from month 6.",
   },
   {
-    node: <CohortDiagram animate />,
+    node: <CohortDiagram animate className="mx-auto max-w-[15rem]" />,
     number: "2.2",
     caption: "Attrition from source population to analytic cohort.",
   },

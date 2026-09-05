@@ -33,7 +33,7 @@ export default function NextGenTeaser() {
         </Reveal>
 
         <Reveal delay={140}>
-          <WorkflowDiagram inverted />
+          <WorkflowDiagram inverted compact />
         </Reveal>
       </div>
     </section>

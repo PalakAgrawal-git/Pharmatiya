@@ -63,6 +63,10 @@ export const services = [
     name: "Evidence generation",
     problem:
       "Your trial answered a controlled question. Payers and HTA bodies are asking an uncontrolled one.",
+    // Homepage only. Says what the engagement produces; `problem` says what
+    // the client walked in with. The two pages must not open the same way.
+    teaser:
+      "A protocol, an analysis plan and a result that survives challenge — with feasibility settled before any of it is written.",
     approach:
       "We start with the decision the evidence has to support, not with a study design. Feasibility comes first — whether the question can be answered with data that exists — and only then do we write a protocol. Senior researchers stay on the work from design through interpretation.",
     methodology: [
@@ -86,6 +90,8 @@ export const services = [
     name: "Real-world data analytics",
     problem:
       "You hold claims or EHR data and no analytic capacity to interrogate it.",
+    teaser:
+      "Cohorts, models and the code behind them, so the analysis is reproducible rather than a black box.",
     approach:
       "We build the cohort, run the statistics and hand back something you can act on — including the code, so the work is reproducible rather than a black box. Extraction and analysis are done by the same team, which is why the cohort definition survives contact with the data.",
     methodology: [
@@ -108,6 +114,8 @@ export const services = [
     id: "access-strategy",
     name: "Access & value strategy",
     problem: "You have the evidence. The payer conversation still stalls.",
+    teaser:
+      "The value case built in the terms a plan actually evaluates, by people who have sat on the payer side of the table.",
     approach:
       "Evidence does not move an access decision on its own; it has to be framed for the person making it. We have sat on the payer side of that table, and we build the value case in the terms a plan actually evaluates — clinical and administrative measures that are simple enough to execute and quick enough to show a return.",
     methodology: [

@@ -37,8 +37,13 @@ export default function HomePage() {
       <section className="border-b border-rule">
         <div className="shell py-16 lg:py-24">
           <Reveal className="lg:pl-[14%]">
-            <blockquote className="max-w-[28ch]">
-              <p className="font-display text-[clamp(1.5rem,1.1rem+2.2vw,2.8rem)] leading-[1.15] tracking-[-0.02em]">
+            {/* The measure lives on the <p>, not the <blockquote>. `ch` resolves
+                against the font-size of the element it is set on, and the
+                blockquote inherits body type — so 28ch there meant 28
+                characters of 17px text, capping this quote at 286px and
+                wrapping 45px display type into eleven two-word lines. */}
+            <blockquote>
+              <p className="max-w-[28ch] font-display text-[clamp(1.5rem,1.1rem+2.2vw,2.8rem)] leading-[1.15] tracking-[-0.02em]">
                 Twenty-five years in outcomes research — including building an
                 organic Outcomes Research division on the payer side.
               </p>

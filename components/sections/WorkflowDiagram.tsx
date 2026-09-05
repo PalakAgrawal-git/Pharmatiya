@@ -23,8 +23,20 @@ const steps = [
  * as part of the workflow, not as a caveat beneath it. Horizontal on desktop,
  * vertical on mobile — the single adaptation that most affects comprehension
  * of the product on a phone.
+ *
+ * `compact` is the homepage form: stage names and the review guarantee, but
+ * not the question each stage answers. The full diagram was rendering
+ * identically on the homepage and on the product page, so the teaser gave
+ * away the whole of the page it was meant to lead to. The product page keeps
+ * the questions, which are the part worth clicking through for.
  */
-export default function WorkflowDiagram({ inverted = false }: { inverted?: boolean }) {
+export default function WorkflowDiagram({
+  inverted = false,
+  compact = false,
+}: {
+  inverted?: boolean;
+  compact?: boolean;
+}) {
   const border = inverted ? "border-white/20" : "border-rule";
   const surface = inverted ? "bg-white/5" : "bg-surface";
   const hover = inverted ? "lift-inverse" : "lift";
@@ -48,7 +60,9 @@ export default function WorkflowDiagram({ inverted = false }: { inverted?: boole
             >
               {step.name}
             </h3>
-            <p className={`mt-2 text-small ${body}`}>{step.question}</p>
+            {!compact && (
+              <p className={`mt-2 text-small ${body}`}>{step.question}</p>
+            )}
 
             {index < steps.length - 1 && (
               <span
@@ -70,8 +84,9 @@ export default function WorkflowDiagram({ inverted = false }: { inverted?: boole
             : "border-accent bg-accent/8 text-accent"
         }`}
       >
-        Human expert review — required at every stage before output leaves the
-        system. Not optional, not post-hoc.
+        {compact
+          ? "Human expert review at every stage — required, not post-hoc."
+          : "Human expert review — required at every stage before output leaves the system. Not optional, not post-hoc."}
       </p>
     </div>
   );

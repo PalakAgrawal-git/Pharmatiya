@@ -12,7 +12,7 @@ const graphics = [
     caption: "Subgroup hazard ratios with 95% confidence intervals.",
   },
   {
-    node: <CohortDiagram animate />,
+    node: <CohortDiagram animate className="mx-auto max-w-[15rem]" />,
     number: "3",
     caption: "Attrition from source population to analytic cohort.",
   },
@@ -26,6 +26,14 @@ const graphics = [
 /**
  * Three editorial rows on an alternating 65/35 split — deliberately not three
  * identical cards, which the brief rules out and the current site does.
+ *
+ * Each row leads on `teaser`, not `problem`. The Services page opens every
+ * one of its three sections with `problem` set large, and this page was
+ * printing the same three sentences at the same scale, so the two pages read
+ * as the same page twice. The deliverables list went for the same reason: it
+ * was the first three items of a list the Services page prints in full.
+ * The homepage now says what an engagement produces; Services says what the
+ * client arrived with and how the work is done.
  *
  * Each row deep-links to its own anchor on Services; on the live site all
  * three teasers point at the same page. Graphics are dropped below `lg`
@@ -62,20 +70,9 @@ export default function ServiceTeasers() {
                     {service.name}
                   </h3>
 
-                  <p className="measure mb-6 text-lede leading-[1.45] text-muted">
-                    {service.problem}
+                  <p className="measure mb-7 text-lede leading-[1.45] text-muted">
+                    {service.teaser}
                   </p>
-
-                  <ul className="mb-7 flex flex-wrap gap-x-5 gap-y-2 border-t border-rule pt-4">
-                    {service.deliverables.slice(0, 3).map((item) => (
-                      <li
-                        key={item}
-                        className="font-mono text-caption text-faint"
-                      >
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
 
                   <Link
                     href={`/services/#${service.id}`}

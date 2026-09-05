@@ -20,7 +20,7 @@ const spine = [
 export default function CaseStudies() {
   if (caseStudies.length === 0) {
     return (
-      <div className="border border-rule bg-surface p-6 sm:p-8">
+      <div className="lift border border-rule bg-surface p-6 sm:p-8">
         <h3 className="mb-3 text-[1.3rem]">
           Our client work is confidential.
         </h3>
@@ -40,7 +40,10 @@ export default function CaseStudies() {
   return (
     <div className="flex flex-col gap-8">
       {caseStudies.map((study, index) => (
-        <article key={study.id} className="border border-rule bg-surface p-6 sm:p-8">
+        <article
+          key={study.id}
+          className="lift border border-rule bg-surface p-6 sm:p-8"
+        >
           <div className="mb-5 flex flex-wrap items-baseline justify-between gap-3 border-b border-rule pb-4">
             <DataLabel as="h3" className="text-ink">
               Case {String(index + 1).padStart(2, "0")}

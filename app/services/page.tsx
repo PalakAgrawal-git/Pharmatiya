@@ -8,6 +8,8 @@ import Figure from "@/components/evidence/Figure";
 import KaplanMeierGraphic from "@/components/evidence/KaplanMeierGraphic";
 import CohortDiagram from "@/components/evidence/CohortDiagram";
 import CostEffectivenessPlane from "@/components/evidence/CostEffectivenessPlane";
+import Reveal from "@/components/motion/Reveal";
+import GraphGround from "@/components/layout/GraphGround";
 
 export const metadata = {
   title: "Services",
@@ -18,17 +20,17 @@ export const metadata = {
 
 const graphics = [
   {
-    node: <KaplanMeierGraphic />,
+    node: <KaplanMeierGraphic animate />,
     number: "2.1",
     caption: "Two-arm survival estimate with separation from month 6.",
   },
   {
-    node: <CohortDiagram />,
+    node: <CohortDiagram animate />,
     number: "2.2",
     caption: "Attrition from source population to analytic cohort.",
   },
   {
-    node: <CostEffectivenessPlane />,
+    node: <CostEffectivenessPlane animate />,
     number: "2.3",
     caption: "Bootstrap replicates against a willingness-to-pay threshold.",
   },
@@ -37,20 +39,25 @@ const graphics = [
 export default function ServicesPage() {
   return (
     <>
-      <section className="border-b border-rule">
-        <div className="shell grid gap-10 py-14 lg:grid-cols-[6fr_4fr] lg:py-20">
-          <SectionHeader
-            as="h1"
-            eyebrow="Services"
-            title="Three engagement types. Most projects combine two."
-            lede="Each begins with the question you need answered, not with a package."
-          />
+      <section className="relative overflow-hidden border-b border-rule">
+        <GraphGround />
+        <div className="shell relative grid gap-10 py-16 lg:grid-cols-[6fr_4fr] lg:py-24">
+          <Reveal>
+            <SectionHeader
+              as="h1"
+              eyebrow="Services"
+              title="Three engagement types. Most projects combine two."
+              lede="Each begins with the question you need answered, not with a package."
+            />
+          </Reveal>
 
           {/* Landing target for the homepage deep links: a visitor arriving
               at one service can still see the other two exist. */}
-          <nav
+          <Reveal
+            as="nav"
+            delay={120}
             aria-label="On this page"
-            className="self-start border border-rule bg-surface p-5"
+            className="lift self-start border border-rule bg-surface p-5"
           >
             <DataLabel as="h2" className="mb-3">
               On this page
@@ -60,14 +67,17 @@ export default function ServicesPage() {
                 <li key={service.id}>
                   <Link
                     href={`#${service.id}`}
-                    className="text-small text-accent no-underline hover:underline"
+                    className="arrow-link text-small text-accent no-underline hover:underline"
                   >
-                    {service.name}
+                    {service.name}{" "}
+                    <span className="arrow" aria-hidden="true">
+                      →
+                    </span>
                   </Link>
                 </li>
               ))}
             </ul>
-          </nav>
+          </Reveal>
         </div>
       </section>
 
@@ -84,10 +94,12 @@ export default function ServicesPage() {
             }`}
           >
             <div className="shell py-14 lg:py-20">
-              <DataLabel as="h2" className="mb-8 flex items-center gap-4">
-                Service {String(index + 1).padStart(2, "0")} — {service.name}
-                <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-              </DataLabel>
+              <Reveal>
+                <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+                  Service {String(index + 1).padStart(2, "0")} — {service.name}
+                  <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+                </DataLabel>
+              </Reveal>
 
               <div
                 className={`grid items-start gap-10 lg:gap-14 ${
@@ -96,7 +108,7 @@ export default function ServicesPage() {
                     : "lg:grid-cols-[65fr_35fr]"
                 }`}
               >
-                <div className={flipped ? "lg:order-2" : "lg:order-1"}>
+                <Reveal className={flipped ? "lg:order-2" : "lg:order-1"}>
                   <p className="mb-2 font-mono text-caption uppercase tracking-[0.12em] text-faint">
                     The problem
                   </p>
@@ -108,16 +120,19 @@ export default function ServicesPage() {
                     Our approach
                   </p>
                   <p className="measure text-muted">{service.approach}</p>
-                </div>
+                </Reveal>
 
-                <div className={flipped ? "lg:order-1" : "lg:order-2"}>
+                <Reveal
+                  delay={140}
+                  className={flipped ? "lg:order-1" : "lg:order-2"}
+                >
                   <Figure number={graphic.number} caption={graphic.caption}>
                     {graphic.node}
                   </Figure>
-                </div>
+                </Reveal>
               </div>
 
-              <div className="mt-10 grid gap-8 border-t border-rule pt-8 sm:grid-cols-2">
+              <Reveal className="mt-10 grid gap-8 border-t border-rule pt-8 sm:grid-cols-2">
                 <div>
                   <DataLabel as="h4" className="mb-3">
                     Methodology
@@ -148,32 +163,43 @@ export default function ServicesPage() {
                     </p>
                   )}
                 </div>
-              </div>
+              </Reveal>
 
-              <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-rule pt-8">
+              <Reveal
+                delay={80}
+                className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-rule pt-8"
+              >
                 <Button href="/contact/">{service.cta}</Button>
                 <Link
                   href="/evidence/"
-                  className="font-mono text-small text-accent underline underline-offset-4"
+                  className="arrow-link font-mono text-small text-accent underline underline-offset-4"
                 >
-                  See the methods behind this →
+                  See the methods behind this{" "}
+                  <span className="arrow" aria-hidden="true">
+                    →
+                  </span>
                 </Link>
-              </div>
+              </Reveal>
             </div>
           </section>
         );
       })}
 
-      <section className="border-b border-rule">
+      {/* Sunk, so it does not sit on the same ground as the third service
+          above it — and so the CTA below can return to paper. Grounds
+          alternate down the page: paper, sunk, paper, sunk, paper. */}
+      <section className="border-b border-rule bg-sunk">
         <div className="shell py-12 lg:py-16">
-          <DataLabel as="h2" className="mb-3">
-            Engagement model
-          </DataLabel>
-          <p className="measure text-muted">
-            How projects typically start, run and conclude.{" "}
-            <Pending>Pharmatiya to provide</Pending> This section is omitted at
-            launch rather than shipped with placeholder pricing.
-          </p>
+          <Reveal>
+            <DataLabel as="h2" className="mb-3">
+              Engagement model
+            </DataLabel>
+            <p className="measure text-muted">
+              How projects typically start, run and conclude.{" "}
+              <Pending>Pharmatiya to provide</Pending> This section is omitted
+              at launch rather than shipped with placeholder pricing.
+            </p>
+          </Reveal>
         </div>
       </section>
 
@@ -181,6 +207,7 @@ export default function ServicesPage() {
         title="Not sure which of these fits?"
         body="Describe the question you are trying to answer and we will tell you what it would take to answer it — including if the answer is that the data does not exist."
         action="Start a conversation"
+        band={false}
       />
     </>
   );

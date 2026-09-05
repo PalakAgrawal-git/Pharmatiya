@@ -58,6 +58,11 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+
+    /* The header sticks, so an anchored section would otherwise land
+       underneath it. Clears the bar plus a little air, for every in-page
+       anchor at once rather than a scroll-mt on each target. */
+    scroll-padding-top: 6rem;
   }
 
   body {
@@ -201,6 +206,86 @@
   }
   .arrow-link:hover .arrow { transform: translateX(4px); }
 
+  /* --- replicates arriving ---------------------------------------------
+     Scatter clouds settle rather than draw: each point scales up from its
+     own centre, staggered, so the cloud accumulates the way a bootstrap
+     actually does. */
+  [data-reveal="shown"] .pop-in {
+    animation: pop-in 500ms var(--ease-settle) var(--pop-delay, 0ms) both;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  @keyframes pop-in {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* --- attrition steps arriving ----------------------------------------- */
+  [data-reveal="shown"] .fall-in {
+    animation: fall-in 550ms var(--ease-settle) var(--fall-delay, 0ms) both;
+  }
+  @keyframes fall-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* --- hover affordance on bordered panels and list rows -----------------
+     The site is read with a cursor, and until now almost nothing under it
+     responded. The move is deliberately small — a rule firming, a surface
+     lifting a step — which is the same restraint the palette uses, applied
+     to interaction rather than colour. */
+  .lift {
+    transition:
+      background-color 220ms var(--ease-settle),
+      border-color 220ms var(--ease-settle);
+  }
+  .lift:hover {
+    background-color: var(--color-surface);
+    border-color: var(--color-rule-firm);
+  }
+
+  /* Rows that are ruled rather than boxed: the rule on the row under the
+     cursor firms to the accent, so the row the pointer is on is unambiguous
+     in a long list without a background change fighting the page ground.
+
+     Set on all four edges rather than one, because callers rule their rows
+     on whichever edge suits the list — publications on the bottom, the team
+     roster and milestones on the top. Only edges with a width render, so
+     the shorthand is correct in every case. */
+  .rule-row {
+    transition: border-color 220ms var(--ease-settle);
+  }
+  .rule-row:hover {
+    border-color: var(--color-accent);
+  }
+
+  /* Inverted grounds need the mirror of `.lift`. */
+  .lift-inverse {
+    transition:
+      background-color 220ms var(--ease-settle),
+      border-color 220ms var(--ease-settle);
+  }
+  .lift-inverse:hover {
+    background-color: rgb(255 255 255 / 0.08);
+    border-color: rgb(255 255 255 / 0.4);
+  }
+
+  /* A hover class and Reveal frequently land on the SAME element — a panel
+     that both settles in and lifts under the cursor. Both want the
+     `transition` shorthand, and the later declaration would silently drop
+     the other's properties, so an element carrying both would either never
+     settle or never lift. Declaring the union at higher specificity is the
+     only place the two durations can coexist. */
+  [data-reveal="shown"].lift,
+  [data-reveal="shown"].lift-inverse,
+  [data-reveal="shown"].rule-row {
+    transition:
+      opacity 700ms var(--ease-settle) var(--reveal-delay, 0ms),
+      transform 700ms var(--ease-settle) var(--reveal-delay, 0ms),
+      background-color 220ms var(--ease-settle),
+      border-color 220ms var(--ease-settle);
+  }
+
   /* --- plotting-paper ground -------------------------------------------- */
   /* Millimetre paper at the threshold of visibility. On-brand for a research
      practice, and it gives the hero a surface without a gradient. */
@@ -223,7 +308,9 @@
   }
   [data-reveal="shown"] .draw,
   [data-reveal="shown"] .fade-part,
-  [data-reveal="shown"] .grow-x {
+  [data-reveal="shown"] .grow-x,
+  [data-reveal="shown"] .pop-in,
+  [data-reveal="shown"] .fall-in {
     animation: none !important;
   }
 }

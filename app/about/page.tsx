@@ -5,6 +5,8 @@ import { DataLabel, Pending } from "@/components/ui/DataLabel";
 import DatasetMap from "@/components/evidence/DatasetMap";
 import TeamRoster from "@/components/sections/TeamRoster";
 import CTA from "@/components/sections/CTA";
+import Reveal from "@/components/motion/Reveal";
+import GraphGround from "@/components/layout/GraphGround";
 
 export const metadata = {
   title: "About",
@@ -77,9 +79,10 @@ const expertise = [
 export default function AboutPage() {
   return (
     <>
-      <section className="border-b border-rule">
-        <div className="shell grid gap-10 py-14 lg:grid-cols-[6fr_4fr] lg:gap-16 lg:py-20">
-          <div>
+      <section className="relative overflow-hidden border-b border-rule">
+        <GraphGround />
+        <div className="shell relative grid gap-10 py-16 lg:grid-cols-[6fr_4fr] lg:gap-16 lg:py-24">
+          <Reveal>
             <SectionHeader
               as="h1"
               eyebrow="About us"
@@ -98,40 +101,53 @@ export default function AboutPage() {
               have spent enough time on the payer side to know which evidence
               actually moves an access decision.
             </p>
-          </div>
+          </Reveal>
 
           {/* No stock photography substitute — this holds as a typographic
               panel until real photography arrives. */}
-          <div className="flex min-h-[14rem] flex-col items-center justify-center gap-2 border border-dashed border-rule-firm bg-surface p-6 text-center">
+          <Reveal
+            delay={140}
+            className="flex min-h-[14rem] flex-col items-center justify-center gap-2 border border-dashed border-rule-firm bg-surface p-6 text-center"
+          >
             <DataLabel>Office &amp; working photography</DataLabel>
             <p className="text-caption text-faint">
               Pending. No stock imagery will be substituted.
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      <section className="border-b border-rule bg-sunk">
-        <div className="shell py-12 lg:py-16">
-          <DataLabel as="h2" className="mb-8 flex items-center gap-4">
-            Our track record
-            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-          </DataLabel>
+      {/* The same proof figures as the homepage band, on the same inverted
+          ground. They were previously set small and grey on `sunk`, which
+          made the strongest credentials on the page the quietest thing on
+          it — and left the page with no tonal break at all. */}
+      <section className="bg-inverse text-white">
+        <div className="shell py-14 lg:py-20">
+          <Reveal>
+            <h2 className="mb-10 flex items-center gap-4 font-mono text-caption font-normal uppercase tracking-[0.14em] text-white/45">
+              Our track record
+              <span aria-hidden="true" className="h-px flex-1 bg-white/15" />
+            </h2>
+          </Reveal>
 
-          <dl className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-            {proofFigures.map((figure) => (
-              <div key={figure.label}>
-                <dt className="font-display text-[clamp(1.7rem,1.2rem+2vw,2.9rem)] font-semibold leading-none tracking-[-0.02em] text-accent-deep">
+          <dl className="grid grid-cols-2 gap-x-8 gap-y-10 lg:grid-cols-4">
+            {proofFigures.map((figure, index) => (
+              <Reveal
+                key={figure.label}
+                delay={index * 90}
+                className="border-t border-white/20 pt-5"
+              >
+                <dt className="font-display text-[clamp(1.9rem,1.3rem+2.4vw,3.2rem)] font-semibold leading-[0.95] tracking-[-0.03em] tabular text-white">
                   {figure.value ?? (
                     <span className="font-mono text-[1rem] uppercase tracking-[0.06em] text-flag">
                       To provide
                     </span>
                   )}
                 </dt>
-                <dd className="mt-2.5 max-w-[26ch] text-small text-muted">
+                <dd className="mt-3 max-w-[26ch] text-small leading-[1.45] text-white/60">
                   {figure.label}
                 </dd>
-              </div>
+              </Reveal>
             ))}
           </dl>
         </div>
@@ -139,17 +155,24 @@ export default function AboutPage() {
 
       <section className="border-b border-rule">
         <div className="shell py-14 lg:py-20">
-          <DataLabel as="h2" className="mb-8 flex items-center gap-4">
-            How we got here
-            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-          </DataLabel>
+          <Reveal>
+            <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+              How we got here
+              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+            </DataLabel>
+          </Reveal>
 
-          {/* Periods are the span of the published record, not estimates. */}
+          {/* Periods are the span of the published record, not estimates.
+              Rows arrive in sequence, which is the one place on the site
+              where stagger carries meaning rather than decoration: this is a
+              chronology, and it reads top to bottom. */}
           <ol className="border-t border-rule">
-            {milestones.map((milestone) => (
-              <li
+            {milestones.map((milestone, index) => (
+              <Reveal
+                as="li"
                 key={milestone.event}
-                className="grid gap-2 border-b border-rule py-5 lg:grid-cols-[14rem_1fr] lg:gap-10"
+                delay={index * 90}
+                className="rule-row grid gap-2 border-b border-rule py-5 lg:grid-cols-[14rem_1fr] lg:gap-10"
               >
                 <div>
                   <p className="font-display text-[1.05rem] font-semibold">
@@ -162,7 +185,7 @@ export default function AboutPage() {
                 <p className="measure text-small text-muted">
                   {milestone.detail}
                 </p>
-              </li>
+              </Reveal>
             ))}
           </ol>
         </div>
@@ -170,28 +193,38 @@ export default function AboutPage() {
 
       <section id="team" className="scroll-mt-8 border-b border-rule bg-sunk">
         <div className="shell py-14 lg:py-20">
-          <DataLabel as="h2" className="mb-3 flex items-center gap-4">
-            Who we are
-            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-          </DataLabel>
-          <p className="measure mb-8 text-muted">
-            Credentials matter to the people who commission this work, so we
-            list them.
-          </p>
-          <TeamRoster />
+          <Reveal>
+            <DataLabel as="h2" className="mb-3 flex items-center gap-4">
+              Who we are
+              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+            </DataLabel>
+            <p className="measure mb-8 text-muted">
+              Credentials matter to the people who commission this work, so we
+              list them.
+            </p>
+          </Reveal>
+          <Reveal delay={100}>
+            <TeamRoster />
+          </Reveal>
         </div>
       </section>
 
       <section className="border-b border-rule">
         <div className="shell py-14 lg:py-20">
-          <DataLabel as="h2" className="mb-8 flex items-center gap-4">
-            What we do
-            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-          </DataLabel>
+          <Reveal>
+            <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+              What we do
+              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+            </DataLabel>
+          </Reveal>
 
           <div className="grid gap-8 sm:grid-cols-2">
-            {expertise.map((group) => (
-              <div key={group.title} className="border-t border-rule-firm pt-4">
+            {expertise.map((group, index) => (
+              <Reveal
+                key={group.title}
+                delay={index * 110}
+                className="border-t border-rule-firm pt-4"
+              >
                 <h3 className="mb-3 font-mono text-caption uppercase tracking-[0.12em] text-ink">
                   {group.title}
                 </h3>
@@ -202,11 +235,11 @@ export default function AboutPage() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </Reveal>
             ))}
           </div>
 
-          <div className="mt-10 border-t border-rule pt-6">
+          <Reveal className="mt-10 border-t border-rule pt-6">
             <DataLabel as="h3" className="mb-4">
               The data we work in
             </DataLabel>
@@ -214,12 +247,15 @@ export default function AboutPage() {
             <p className="mt-6">
               <Link
                 href="/evidence/"
-                className="font-mono text-small text-accent underline underline-offset-4"
+                className="arrow-link font-mono text-small text-accent underline underline-offset-4"
               >
-                Our full methods and published record →
+                Our full methods and published record{" "}
+                <span className="arrow" aria-hidden="true">
+                  →
+                </span>
               </Link>
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 

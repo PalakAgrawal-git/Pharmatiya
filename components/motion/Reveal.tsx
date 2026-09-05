@@ -16,6 +16,13 @@ type Props = {
   threshold?: number;
   as?: ElementType;
   className?: string;
+  /**
+   * Anything else is forwarded to the rendered element. Reveal is often the
+   * outermost node of a landmark — `as="nav"` with an `aria-label`, `as="ol"`,
+   * a section `id` used as an anchor target — and a closed prop type would
+   * force a redundant wrapper div around every one of those.
+   */
+  [key: string]: unknown;
 };
 
 /**
@@ -41,6 +48,7 @@ export default function Reveal({
   threshold = 0.04,
   as: Tag = "div",
   className = "",
+  ...rest
 }: Props) {
   const ref = useRef<HTMLElement>(null);
   const [state, setState] = useState<"idle" | "armed" | "shown">("idle");
@@ -75,6 +83,7 @@ export default function Reveal({
 
   return (
     <Tag
+      {...rest}
       ref={ref}
       data-reveal={state}
       style={delay ? ({ "--reveal-delay": `${delay}ms` } as CSSProperties) : undefined}

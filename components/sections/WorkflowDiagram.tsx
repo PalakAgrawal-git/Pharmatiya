@@ -27,6 +27,7 @@ const steps = [
 export default function WorkflowDiagram({ inverted = false }: { inverted?: boolean }) {
   const border = inverted ? "border-white/20" : "border-rule";
   const surface = inverted ? "bg-white/5" : "bg-surface";
+  const hover = inverted ? "lift-inverse" : "lift";
   const title = inverted ? "text-white" : "text-ink";
   const body = inverted ? "text-white/70" : "text-muted";
   const numeral = inverted ? "text-white/40" : "text-faint";
@@ -37,7 +38,7 @@ export default function WorkflowDiagram({ inverted = false }: { inverted?: boole
         {steps.map((step, index) => (
           <li
             key={step.name}
-            className={`relative rounded-[2px] border ${border} ${surface} p-4`}
+            className={`relative rounded-[2px] border ${hover} ${border} ${surface} p-4`}
           >
             <span className={`font-mono text-caption ${numeral}`}>
               {step.n}

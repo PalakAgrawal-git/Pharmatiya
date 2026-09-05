@@ -3,6 +3,8 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { DataLabel, Pending } from "@/components/ui/DataLabel";
 import ContactRouting from "@/components/sections/ContactRouting";
 import DigestSignup from "@/components/sections/DigestSignup";
+import Reveal from "@/components/motion/Reveal";
+import GraphGround from "@/components/layout/GraphGround";
 
 export const metadata = {
   title: "Contact",
@@ -14,25 +16,30 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <>
-      <section className="border-b border-rule">
-        <div className="shell py-14 lg:py-20">
-          <SectionHeader
-            as="h1"
-            eyebrow="Contact"
-            title="Tell us which applies and the enquiry reaches the right person directly."
-          />
+      <section className="relative overflow-hidden border-b border-rule">
+        <GraphGround />
+        <div className="shell relative py-16 lg:py-24">
+          <Reveal>
+            <SectionHeader
+              as="h1"
+              eyebrow="Contact"
+              title="Tell us which applies and the enquiry reaches the right person directly."
+            />
+          </Reveal>
         </div>
       </section>
 
       <section className="border-b border-rule">
         <div className="shell py-14 lg:py-20">
-          <ContactRouting />
+          <Reveal>
+            <ContactRouting />
+          </Reveal>
         </div>
       </section>
 
       <section id="demo" className="scroll-mt-8 border-b border-rule bg-sunk">
         <div className="shell grid gap-8 py-14 lg:grid-cols-2 lg:py-20">
-          <div className="border border-rule bg-surface p-6">
+          <Reveal className="lift border border-rule bg-surface p-6">
             <DataLabel as="h2" className="mb-3">
               Book directly
             </DataLabel>
@@ -50,9 +57,9 @@ export default function ContactPage() {
                 field in the form above.
               </p>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="border border-rule bg-surface p-6">
+          <Reveal delay={120} className="lift border border-rule bg-surface p-6">
             <DataLabel as="h2" className="mb-3">
               Direct contact
             </DataLabel>
@@ -78,13 +85,15 @@ export default function ContactPage() {
               </a>
               .
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       <section className="border-b border-rule">
         <div className="shell py-14 lg:py-20">
-          <DigestSignup />
+          <Reveal>
+            <DigestSignup />
+          </Reveal>
         </div>
       </section>
     </>

@@ -12,12 +12,12 @@ const graphics = [
     caption: "Subgroup hazard ratios with 95% confidence intervals.",
   },
   {
-    node: <CohortDiagram />,
+    node: <CohortDiagram animate />,
     number: "3",
     caption: "Attrition from source population to analytic cohort.",
   },
   {
-    node: <CostEffectivenessPlane />,
+    node: <CostEffectivenessPlane animate />,
     number: "4",
     caption: "Bootstrap replicates against a willingness-to-pay threshold.",
   },

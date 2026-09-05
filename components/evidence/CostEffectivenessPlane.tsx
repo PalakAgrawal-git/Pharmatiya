@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 /** Bootstrap replicates, positioned around a point estimate in the
  *  north-east quadrant: more effective, more costly, below threshold. */
 const cloud = [
@@ -7,9 +9,19 @@ const cloud = [
   [338, 92], [310, 172], [272, 128], [352, 172], [330, 128], [316, 138],
 ];
 
+/**
+ * Cost-effectiveness plane.
+ *
+ * When animated the axes and threshold arrive first, then the bootstrap cloud
+ * accumulates point by point, and the point estimate lands last. That ordering
+ * is the argument the figure makes: the replicates are what the estimate rests
+ * on, so they precede it.
+ */
 export default function CostEffectivenessPlane({
+  animate = false,
   className = "",
 }: {
+  animate?: boolean;
   className?: string;
 }) {
   return (
@@ -27,7 +39,9 @@ export default function CostEffectivenessPlane({
         threshold line, indicating cost-effectiveness at that threshold.
       </desc>
 
-      {/* Willingness-to-pay threshold */}
+      {/* Willingness-to-pay threshold. Not drawn with `.draw` — the dash
+          pattern is load-bearing here (it marks the line as a threshold, not
+          a fitted curve) and stroke-dasharray animation would override it. */}
       <line
         x1="230"
         y1="270"
@@ -36,6 +50,10 @@ export default function CostEffectivenessPlane({
         stroke="var(--color-series-3)"
         strokeWidth="1.5"
         strokeDasharray="5 3"
+        className={animate ? "fade-part" : undefined}
+        style={
+          animate ? ({ "--fade-delay": "120ms" } as CSSProperties) : undefined
+        }
       />
       <text
         x="436"
@@ -60,19 +78,34 @@ export default function CostEffectivenessPlane({
           r="3.2"
           fill="var(--color-series-1)"
           fillOpacity="0.28"
+          className={animate ? "pop-in" : undefined}
+          style={
+            animate
+              ? ({ "--pop-delay": `${300 + i * 26}ms` } as CSSProperties)
+              : undefined
+          }
         />
       ))}
 
-      {/* Point estimate */}
-      <circle cx="322" cy="130" r="5" fill="var(--color-series-1)" />
-      <circle
-        cx="322"
-        cy="130"
-        r="9"
-        fill="none"
-        stroke="var(--color-series-1)"
-        strokeWidth="1"
-      />
+      {/* Point estimate — last, once the cloud it summarises is complete. */}
+      <g
+        className={animate ? "pop-in" : undefined}
+        style={
+          animate
+            ? ({ "--pop-delay": `${300 + cloud.length * 26 + 120}ms` } as CSSProperties)
+            : undefined
+        }
+      >
+        <circle cx="322" cy="130" r="5" fill="var(--color-series-1)" />
+        <circle
+          cx="322"
+          cy="130"
+          r="9"
+          fill="none"
+          stroke="var(--color-series-1)"
+          strokeWidth="1"
+        />
+      </g>
 
       <g fontSize="10" fill="var(--color-faint)" fontFamily="var(--font-mono)">
         <text x="436" y="166" textAnchor="end">

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/motion/Reveal";
 import KaplanMeierGraphic from "@/components/evidence/KaplanMeierGraphic";
+import GraphGround from "@/components/layout/GraphGround";
 
 /**
  * Homepage hero.
@@ -19,20 +20,7 @@ import KaplanMeierGraphic from "@/components/evidence/KaplanMeierGraphic";
 export default function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-rule">
-      <div
-        aria-hidden="true"
-        className="graph-ground pointer-events-none absolute inset-0"
-      />
-      {/* Fades the grid out toward the baseline so it never competes with the
-          proof band below. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-paper"
-        style={{
-          maskImage: "linear-gradient(to top, black, transparent)",
-          WebkitMaskImage: "linear-gradient(to top, black, transparent)",
-        }}
-      />
+      <GraphGround />
 
       <div className="shell relative py-16 lg:py-24">
         <Reveal>

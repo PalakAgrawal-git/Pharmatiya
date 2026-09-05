@@ -29,7 +29,7 @@ export default function TeamRoster() {
         <article
           key={member.id}
           id={member.id}
-          className="grid gap-6 border-t border-rule py-8 first:border-t-0 first:pt-0 lg:grid-cols-[14rem_1fr] lg:gap-10"
+          className="rule-row grid gap-6 border-t border-rule py-8 first:border-t-0 first:pt-0 lg:grid-cols-[14rem_1fr] lg:gap-10"
         >
           <div>
             {member.photo ? (

@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 const steps = [
   { label: "Source population", n: "1,284,000", y: 20 },
   { label: "Meets index criteria", n: "146,220", y: 82 },
@@ -16,10 +18,18 @@ const exclusions = [
  * Cohort attrition diagram — the CONSORT-style figure that shows how a source
  * population narrows to an analytic cohort. This is the graphic that most
  * clearly signals methodological seriousness to an HEOR reader.
+ *
+ * When animated, the boxes arrive top to bottom and each exclusion fades in
+ * after the box it removes from. The figure therefore performs the attrition
+ * rather than presenting it finished — the population visibly narrows. Off
+ * states live in the keyframes, so without JavaScript the diagram renders
+ * complete.
  */
 export default function CohortDiagram({
+  animate = false,
   className = "",
 }: {
+  animate?: boolean;
   className?: string;
 }) {
   return (
@@ -37,7 +47,15 @@ export default function CohortDiagram({
       </desc>
 
       {steps.map((step, i) => (
-        <g key={step.label}>
+        <g
+          key={step.label}
+          className={animate ? "fall-in" : undefined}
+          style={
+            animate
+              ? ({ "--fall-delay": `${i * 160}ms` } as CSSProperties)
+              : undefined
+          }
+        >
           <rect
             x="8"
             y={step.y}
@@ -90,8 +108,16 @@ export default function CohortDiagram({
         </g>
       ))}
 
-      {exclusions.map((exclusion) => (
-        <g key={exclusion.text}>
+      {exclusions.map((exclusion, i) => (
+        <g
+          key={exclusion.text}
+          className={animate ? "fade-part" : undefined}
+          style={
+            animate
+              ? ({ "--fade-delay": `${360 + i * 160}ms` } as CSSProperties)
+              : undefined
+          }
+        >
           <line
             x1="133"
             y1={exclusion.y}

@@ -148,7 +148,7 @@ export default function PublicationList() {
           {shown.map((item) => (
             <li
               key={item.id}
-              className="grid gap-2 border-b border-rule py-5 lg:grid-cols-[7rem_minmax(0,1fr)] lg:gap-8"
+              className="rule-row grid gap-2 border-b border-rule py-5 lg:grid-cols-[7rem_minmax(0,1fr)] lg:gap-8"
             >
               <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1">
                 <span className="font-display text-[1.15rem] font-semibold tabular text-accent-deep">

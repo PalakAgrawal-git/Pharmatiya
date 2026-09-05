@@ -6,6 +6,8 @@ import DatasetMap from "@/components/evidence/DatasetMap";
 import TherapeuticMatrix from "@/components/evidence/TherapeuticMatrix";
 import PublicationList from "@/components/evidence/PublicationList";
 import CTA from "@/components/sections/CTA";
+import Reveal from "@/components/motion/Reveal";
+import GraphGround from "@/components/layout/GraphGround";
 
 export const metadata = {
   title: "Evidence",
@@ -23,50 +25,71 @@ const methodGroups = [
 export default function EvidencePage() {
   return (
     <>
-      <section className="border-b border-rule">
-        <div className="shell py-14 lg:py-20">
-          <SectionHeader
-            as="h1"
-            eyebrow="Evidence"
-            title="What we have done, with which data, by which methods."
-          />
-          <p className="measure mt-6 text-muted">
-            Our client work is confidential. What follows is anonymised, and
-            every method described is one we have executed ourselves.
-          </p>
+      <section className="relative overflow-hidden border-b border-rule">
+        <GraphGround />
+        <div className="shell relative py-16 lg:py-24">
+          <Reveal>
+            <SectionHeader
+              as="h1"
+              eyebrow="Evidence"
+              title="What we have done, with which data, by which methods."
+            />
+          </Reveal>
+          <Reveal delay={100}>
+            <p className="measure mt-6 text-muted">
+              Our client work is confidential. What follows is anonymised, and
+              every method described is one we have executed ourselves.
+            </p>
+          </Reveal>
         </div>
       </section>
 
       {/* Worked examples persuade before capability lists do, so they come
           first. */}
-      <section className="border-b border-rule">
+      <section className="border-b border-rule bg-sunk">
         <div className="shell py-14 lg:py-20">
-          <DataLabel as="h2" className="mb-8 flex items-center gap-4">
-            Case studies
-            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-          </DataLabel>
-          <CaseStudies />
+          <Reveal>
+            <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+              Case studies
+              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+            </DataLabel>
+          </Reveal>
+          <Reveal delay={100}>
+            <CaseStudies />
+          </Reveal>
         </div>
       </section>
 
       {/* Coverage follows because it is the disqualifying question. */}
-      <section className="border-b border-rule bg-sunk">
+      <section className="border-b border-rule">
         <div className="shell py-14 lg:py-20">
-          <DataLabel as="h2" className="mb-8 flex items-center gap-4">
-            Dataset coverage
-            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-          </DataLabel>
-          <DatasetMap />
+          <Reveal>
+            <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+              Dataset coverage
+              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+            </DataLabel>
+          </Reveal>
+          <Reveal delay={100}>
+            <DatasetMap />
+          </Reveal>
         </div>
       </section>
 
-      <section className="border-b border-rule">
+      {/* The one tonal break on a long page. Six ruled sections in a row is
+          what made this page read as a document rather than a site; the
+          therapeutic grid is the section that carries inversion best because
+          it is a field of short labels, not running text. */}
+      <section className="bg-inverse text-white">
         <div className="shell py-14 lg:py-20">
-          <DataLabel as="h2" className="mb-8 flex items-center gap-4">
-            Therapeutic expertise
-            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-          </DataLabel>
-          <TherapeuticMatrix />
+          <Reveal>
+            <h2 className="mb-8 flex items-center gap-4 font-mono text-caption font-normal uppercase tracking-[0.14em] text-white/45">
+              Therapeutic expertise
+              <span aria-hidden="true" className="h-px flex-1 bg-white/15" />
+            </h2>
+          </Reveal>
+          <Reveal delay={100}>
+            <TherapeuticMatrix inverted />
+          </Reveal>
         </div>
       </section>
 
@@ -75,17 +98,21 @@ export default function EvidencePage() {
           anything — the linkable entries carry a DOI, PMID or patent number. */}
       <section className="border-b border-rule">
         <div className="shell py-14 lg:py-20">
-          <DataLabel as="h2" className="mb-3 flex items-center gap-4">
-            The published record
-            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-          </DataLabel>
-          <p className="measure mb-8 text-muted">
-            Forty-seven publications, abstracts, posters, a patent and a book
-            chapter authored or co-authored by our team between 2003 and 2022 —
-            in JAMA, Circulation, Diabetes, Obesity and Metabolism, Vaccine and
-            others. Search it, or filter by type.
-          </p>
-          <PublicationList />
+          <Reveal>
+            <DataLabel as="h2" className="mb-3 flex items-center gap-4">
+              The published record
+              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+            </DataLabel>
+            <p className="measure mb-8 text-muted">
+              Forty-seven publications, abstracts, posters, a patent and a book
+              chapter authored or co-authored by our team between 2003 and
+              2022 — in JAMA, Circulation, Diabetes, Obesity and Metabolism,
+              Vaccine and others. Search it, or filter by type.
+            </p>
+          </Reveal>
+          <Reveal delay={100}>
+            <PublicationList />
+          </Reveal>
         </div>
       </section>
 
@@ -93,14 +120,20 @@ export default function EvidencePage() {
           that reader will read them wherever they are. */}
       <section className="border-b border-rule bg-sunk">
         <div className="shell py-14 lg:py-20">
-          <DataLabel as="h2" className="mb-8 flex items-center gap-4">
-            Methods &amp; analytical capability
-            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-          </DataLabel>
+          <Reveal>
+            <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+              Methods &amp; analytical capability
+              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+            </DataLabel>
+          </Reveal>
 
           <div className="grid gap-8 sm:grid-cols-3">
-            {methodGroups.map((group) => (
-              <div key={group.title} className="border-t border-rule-firm pt-4">
+            {methodGroups.map((group, index) => (
+              <Reveal
+                key={group.title}
+                delay={index * 110}
+                className="border-t border-rule-firm pt-4"
+              >
                 <h3 className="mb-3 font-mono text-caption uppercase tracking-[0.12em] text-ink">
                   {group.title}
                 </h3>
@@ -111,7 +144,7 @@ export default function EvidencePage() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -119,7 +152,7 @@ export default function EvidencePage() {
 
       <section className="border-b border-rule">
         <div className="shell py-12 lg:py-16">
-          <div className="border border-rule bg-surface p-6 sm:p-8">
+          <Reveal className="lift border border-rule bg-surface p-6 sm:p-8">
             <h2 className="mb-3 text-[1.3rem]">
               See the shape of what you receive.
             </h2>
@@ -133,7 +166,7 @@ export default function EvidencePage() {
               This section is omitted at launch rather than shipped
               non-functional.
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 

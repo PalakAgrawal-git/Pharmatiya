@@ -108,7 +108,15 @@ export default function CostEffectivenessPlane({
       </g>
 
       <g fontSize="10" fill="var(--color-faint)" fontFamily="var(--font-mono)">
-        <text x="436" y="166" textAnchor="end">
+        {/* Dropped clear of the axis rather than sitting tight under it. At
+            its old y=166 the dashed threshold line crossed straight through
+            this label and two replicates touched it: the line meets the
+            horizontal axis at x=350, so the strip just beneath the axis is
+            exactly where the line and the densest part of the cloud both sit.
+            By y=190 the line has moved left to x≈308 and the lowest replicate
+            is 15px above, so the label clears both — without widening the
+            canvas, which would have scaled every label on the figure down. */}
+        <text x="452" y="190" textAnchor="end">
           Incremental effect →
         </text>
         <text x="236" y="30">

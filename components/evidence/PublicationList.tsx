@@ -148,9 +148,9 @@ export default function PublicationList() {
           {shown.map((item) => (
             <li
               key={item.id}
-              className="grid gap-2 border-b border-rule py-5 lg:grid-cols-[7rem_1fr] lg:gap-8"
+              className="grid gap-2 border-b border-rule py-5 lg:grid-cols-[7rem_minmax(0,1fr)] lg:gap-8"
             >
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1">
                 <span className="font-display text-[1.15rem] font-semibold tabular text-accent-deep">
                   {item.year ?? "—"}
                 </span>
@@ -159,10 +159,10 @@ export default function PublicationList() {
                 </span>
               </div>
 
-              <div>
-                <p className="text-small text-ink">{item.citation}</p>
+              <div className="min-w-0">
+                <p className="text-small break-words text-ink">{item.citation}</p>
 
-                <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+                <div className="mt-2 flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1">
                   {item.venue && (
                     <span className="font-mono text-caption text-muted">
                       {item.venue}

@@ -1,53 +1,97 @@
 import Link from "next/link";
 import Button from "@/components/ui/Button";
-import Figure from "@/components/evidence/Figure";
+import Reveal from "@/components/motion/Reveal";
 import KaplanMeierGraphic from "@/components/evidence/KaplanMeierGraphic";
 
 /**
- * Homepage hero. 60/40 split on desktop.
+ * Homepage hero.
  *
- * On mobile the figure moves BELOW the copy and CTA (order-2), so the
- * positioning statement and primary action are both visible without
- * scrolling on a 320px screen.
+ * The composition is deliberately asymmetric and overlapping: the headline
+ * runs wide, the figure sits lower-right and breaks out of the text column
+ * on large screens. The ground is plotting paper — millimetre grid at the
+ * threshold of visibility — which gives the section a surface without the
+ * gradient the brief rules out.
+ *
+ * On mobile the figure moves below the copy and CTA, so the positioning
+ * statement and the primary action are both visible without scrolling on a
+ * 320px screen.
  */
 export default function Hero() {
   return (
-    <section className="border-b border-rule">
-      <div className="shell grid items-center gap-10 py-14 lg:grid-cols-[6fr_4fr] lg:gap-16 lg:py-20">
-        <div className="order-1">
-          <p className="mb-5 font-mono text-caption uppercase tracking-[0.14em] text-faint">
-            HEOR · RWE · Market access
-          </p>
+    <section className="relative overflow-hidden border-b border-rule">
+      <div
+        aria-hidden="true"
+        className="graph-ground pointer-events-none absolute inset-0"
+      />
+      {/* Fades the grid out toward the baseline so it never competes with the
+          proof band below. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-paper"
+        style={{
+          maskImage: "linear-gradient(to top, black, transparent)",
+          WebkitMaskImage: "linear-gradient(to top, black, transparent)",
+        }}
+      />
 
-          <h1 className="mb-6 max-w-[18ch] text-[clamp(1.75rem,1.1rem+3.4vw,3.9rem)]">
-            Health economics and real-world evidence for teams that have to
-            defend the result.
+      <div className="shell relative py-16 lg:py-24">
+        <Reveal>
+          <p className="mb-6 font-mono text-caption uppercase tracking-[0.18em] text-accent">
+            Health economics · Real-world evidence · Market access
+          </p>
+        </Reveal>
+
+        <Reveal delay={80}>
+          <h1 className="max-w-[15ch] text-[clamp(2.4rem,1.2rem+5.4vw,5.4rem)] leading-[0.98] tracking-[-0.03em]">
+            Evidence that holds up
+            <br className="hidden sm:block" />{" "}
+            <span className="text-accent">when it is challenged.</span>
           </h1>
+        </Reveal>
 
-          <p className="measure mb-8 text-lede leading-[1.5] text-muted">
-            Twenty-five years designing HEOR and RWE studies across payer,
-            provider and claims data — protocol through interpretation, for
-            commercial, medical affairs and market access teams.
-          </p>
+        <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-16">
+          <div>
+            <Reveal delay={160}>
+              <p className="text-lede leading-[1.5] text-muted">
+                Twenty-five years designing HEOR and RWE studies across payer,
+                provider and claims data — protocol through interpretation, for
+                commercial, medical affairs and market access teams.
+              </p>
+            </Reveal>
 
-          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-            <Button href="/contact/">Book a consultation</Button>
-            <Link
-              href="/evidence/"
-              className="font-mono text-small text-accent underline underline-offset-4"
-            >
-              Explore the evidence →
-            </Link>
+            <Reveal delay={240}>
+              <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+                <Button href="/contact/">Book a consultation</Button>
+                <Link
+                  href="/evidence/"
+                  className="arrow-link font-mono text-small text-accent underline underline-offset-4"
+                >
+                  See the published record{" "}
+                  <span className="arrow" aria-hidden="true">
+                    →
+                  </span>
+                </Link>
+              </div>
+            </Reveal>
           </div>
-        </div>
 
-        <div className="order-2">
-          <Figure
-            number="1"
-            caption="Two-arm survival estimate over 24 months. Curves separate from month 6 and do not converge."
-          >
-            <KaplanMeierGraphic />
-          </Figure>
+          {/* The figure breaks the right margin on wide screens so the hero
+              does not read as two tidy columns. */}
+          <Reveal delay={200} className="lg:-mr-[6%]">
+            <figure>
+              <KaplanMeierGraphic animate />
+              <figcaption className="mt-4 flex flex-wrap items-baseline gap-x-3 border-l-2 border-accent pl-4 text-caption text-faint">
+                <span className="font-mono text-ink">Fig. 1</span>
+                <span className="text-muted">
+                  Two-arm survival estimate over 24 months. Curves separate from
+                  month 6 and do not converge.
+                </span>
+                <span className="font-mono uppercase tracking-[0.08em] text-flag">
+                  Illustrative data
+                </span>
+              </figcaption>
+            </figure>
+          </Reveal>
         </div>
       </div>
     </section>

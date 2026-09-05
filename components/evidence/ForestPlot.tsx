@@ -19,7 +19,13 @@ const ticks = [
   { v: "4.0", x: 480 },
 ];
 
-export default function ForestPlot({ className = "" }: { className?: string }) {
+export default function ForestPlot({
+  animate = false,
+  className = "",
+}: {
+  animate?: boolean;
+  className?: string;
+}) {
   return (
     <svg
       viewBox="0 0 520 290"
@@ -53,6 +59,12 @@ export default function ForestPlot({ className = "" }: { className?: string }) {
         return (
           <g key={row.label}>
             <text
+              className={animate ? "fade-part" : undefined}
+              style={
+                animate
+                  ? ({ "--fade-delay": `${100 + i * 130}ms` } as React.CSSProperties)
+                  : undefined
+              }
               x="10"
               y={y + 4}
               fontSize="11"
@@ -62,34 +74,54 @@ export default function ForestPlot({ className = "" }: { className?: string }) {
               {row.label}
             </text>
 
-            {/* Confidence interval with end caps */}
-            <line
-              x1={row.xlo}
-              y1={y}
-              x2={row.xhi}
-              y2={y}
-              stroke="var(--color-series-1)"
-              strokeWidth="1.5"
-            />
-            <line
-              x1={row.xlo}
-              y1={y - 5}
-              x2={row.xlo}
-              y2={y + 5}
-              stroke="var(--color-series-1)"
-              strokeWidth="1.5"
-            />
-            <line
-              x1={row.xhi}
-              y1={y - 5}
-              x2={row.xhi}
-              y2={y + 5}
-              stroke="var(--color-series-1)"
-              strokeWidth="1.5"
-            />
+            {/* Confidence interval with end caps. When animated it grows
+                outward from the point estimate, which is how the interval is
+                actually read. */}
+            <g
+              className={animate ? "grow-x" : undefined}
+              style={
+                animate
+                  ? ({
+                      "--origin": `${row.x}px`,
+                      "--grow-delay": `${250 + i * 130}ms`,
+                    } as React.CSSProperties)
+                  : undefined
+              }
+            >
+              <line
+                x1={row.xlo}
+                y1={y}
+                x2={row.xhi}
+                y2={y}
+                stroke="var(--color-series-1)"
+                strokeWidth="1.5"
+              />
+              <line
+                x1={row.xlo}
+                y1={y - 5}
+                x2={row.xlo}
+                y2={y + 5}
+                stroke="var(--color-series-1)"
+                strokeWidth="1.5"
+              />
+              <line
+                x1={row.xhi}
+                y1={y - 5}
+                x2={row.xhi}
+                y2={y + 5}
+                stroke="var(--color-series-1)"
+                strokeWidth="1.5"
+              />
+            </g>
 
             {/* Point estimate — square, area conventionally weighted by n */}
             <rect
+              className={animate ? "fade-part" : undefined}
+              style={
+                animate
+                  ? ({ "--fade-delay": `${150 + i * 130}ms` } as React.CSSProperties)
+                  : undefined
+              }
               x={row.x - 5}
               y={y - 5}
               width="10"
@@ -100,6 +132,12 @@ export default function ForestPlot({ className = "" }: { className?: string }) {
             />
 
             <text
+              className={animate ? "fade-part" : undefined}
+              style={
+                animate
+                  ? ({ "--fade-delay": `${700 + i * 130}ms` } as React.CSSProperties)
+                  : undefined
+              }
               x="510"
               y={y + 4}
               fontSize="10.5"

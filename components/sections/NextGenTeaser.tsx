@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
 import WorkflowDiagram from "./WorkflowDiagram";
+import Reveal from "@/components/motion/Reveal";
 
 /**
- * The only inverted panel on the homepage.
+ * The product panel — the second of two inverted grounds on the homepage,
+ * separated from the proof band by two lighter sections so the alternation
+ * reads as rhythm rather than repetition.
  *
  * Tonal inversion marks a different kind of offering without resorting to a
  * gradient or a glow. Trust markers appear at first mention because
@@ -12,12 +15,12 @@ import WorkflowDiagram from "./WorkflowDiagram";
 export default function NextGenTeaser() {
   return (
     <section className="bg-inverse text-white">
-      <div className="shell grid gap-10 py-14 lg:grid-cols-[4fr_6fr] lg:gap-16 lg:py-20">
-        <div>
+      <div className="shell grid gap-12 py-16 lg:grid-cols-[4fr_6fr] lg:gap-16 lg:py-24">
+        <Reveal>
           <p className="mb-5 font-mono text-caption uppercase tracking-[0.14em] text-white/50">
             {site.productName}
           </p>
-          <h2 className="mb-6 max-w-[20ch] text-[clamp(1.6rem,1.2rem+1.8vw,2.5rem)] text-white">
+          <h2 className="mb-7 max-w-[18ch] text-[clamp(1.7rem,1.2rem+2.2vw,3rem)] leading-[1.08] tracking-[-0.025em] text-white">
             AI-assisted evidence synopses, reviewed by the people who would
             have written them.
           </h2>
@@ -27,11 +30,11 @@ export default function NextGenTeaser() {
           >
             Explore {site.productName}
           </Link>
-        </div>
+        </Reveal>
 
-        <div>
+        <Reveal delay={140}>
           <WorkflowDiagram inverted />
-        </div>
+        </Reveal>
       </div>
     </section>
   );

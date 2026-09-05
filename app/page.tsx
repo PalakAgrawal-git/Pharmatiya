@@ -2,10 +2,11 @@ import Link from "next/link";
 import Hero from "@/components/sections/Hero";
 import Proof from "@/components/sections/Proof";
 import ServiceTeasers from "@/components/sections/ServiceTeasers";
+import CoverageBand from "@/components/sections/CoverageBand";
 import NextGenTeaser from "@/components/sections/NextGenTeaser";
 import CTA from "@/components/sections/CTA";
-import DatasetMap from "@/components/evidence/DatasetMap";
-import { DataLabel, Pending } from "@/components/ui/DataLabel";
+import Reveal from "@/components/motion/Reveal";
+import { Pending } from "@/components/ui/DataLabel";
 
 export const metadata = {
   title: "Pharmatiya Health — Health economics and real-world evidence",
@@ -14,54 +15,47 @@ export const metadata = {
   alternates: { canonical: "/" },
 };
 
+/**
+ * Homepage.
+ *
+ * The section rhythm is deliberate and never repeats two grounds in a row:
+ * plotting-paper hero → inverted proof band → open editorial rows → sunk
+ * coverage → inverted product panel → open pull-quote → closing CTA. That
+ * alternation is what keeps a restrained palette from reading as flat.
+ */
 export default function HomePage() {
   return (
     <>
       <Hero />
       <Proof />
       <ServiceTeasers />
-
-      {/* Coverage answers the most common disqualifying question on the
-          homepage, so a qualified buyer does not bounce assuming they are
-          not served. */}
-      <section className="border-b border-rule bg-sunk">
-        <div className="shell py-14 lg:py-20">
-          <DataLabel as="h2" className="mb-8 flex items-center gap-4">
-            Data &amp; therapeutic coverage
-            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-          </DataLabel>
-
-          <DatasetMap compact />
-
-          <div className="mt-10 border-t border-rule pt-5">
-            <Link
-              href="/evidence/"
-              className="font-mono text-small text-accent underline underline-offset-4"
-            >
-              Full coverage detail and therapeutic areas →
-            </Link>
-          </div>
-        </div>
-      </section>
-
+      <CoverageBand />
       <NextGenTeaser />
 
-      {/* Narrow offset editorial column — the single strongest credential. */}
+      {/* Editorial pull-quote. The single strongest credential, set at scale
+          with nothing competing for attention. */}
       <section className="border-b border-rule">
-        <div className="shell py-14 lg:py-20">
-          <div className="lg:max-w-[46ch] lg:pl-[8%]">
-            <p className="mb-4 font-display text-[clamp(1.15rem,1rem+0.7vw,1.5rem)] leading-[1.4]">
-              Twenty-five years in HEOR and outcomes research, including
-              building the organic Outcomes Research division at{" "}
-              <Pending>Name pending client clearance</Pending>.
+        <div className="shell py-16 lg:py-24">
+          <Reveal className="lg:pl-[14%]">
+            <blockquote className="max-w-[28ch]">
+              <p className="font-display text-[clamp(1.5rem,1.1rem+2.2vw,2.8rem)] leading-[1.15] tracking-[-0.02em]">
+                Twenty-five years in outcomes research — including building an
+                organic Outcomes Research division on the payer side.
+              </p>
+            </blockquote>
+            <p className="mt-6 text-small text-muted">
+              Organisation <Pending>Name pending client clearance</Pending>
             </p>
             <Link
               href="/about/"
-              className="font-mono text-small text-accent underline underline-offset-4"
+              className="arrow-link mt-5 inline-block font-mono text-small text-accent underline underline-offset-4"
             >
-              About Pharmatiya →
+              About us{" "}
+              <span className="arrow" aria-hidden="true">
+                →
+              </span>
             </Link>
-          </div>
+          </Reveal>
         </div>
       </section>
 

@@ -74,6 +74,7 @@ export default function RootLayout({
       className={`${spectral.variable} ${plexSans.variable} ${plexMono.variable}`}
     >
       <body className="flex min-h-screen flex-col">
+
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:left-0 focus:top-0 focus:z-50 focus:bg-ink focus:px-5 focus:py-3 focus:text-paper"

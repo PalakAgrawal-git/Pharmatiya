@@ -1,4 +1,5 @@
 import Button from "@/components/ui/Button";
+import Reveal from "@/components/motion/Reveal";
 import { site } from "@/lib/site";
 
 type Props = {
@@ -23,25 +24,28 @@ export default function CTA({
 }: Props) {
   return (
     <section className={band ? "border-t border-rule bg-sunk" : "border-t border-rule"}>
-      <div className="shell grid items-center gap-8 py-12 lg:grid-cols-[6fr_4fr] lg:py-16">
-        <div>
-          <h2 className="mb-3 max-w-[24ch] text-[clamp(1.4rem,1.15rem+1.2vw,2.1rem)]">
+      <div className="shell grid items-center gap-10 py-16 lg:grid-cols-[6fr_4fr] lg:py-20">
+        <Reveal>
+          <h2 className="mb-4 max-w-[22ch] text-[clamp(1.6rem,1.2rem+1.8vw,2.7rem)] leading-[1.1] tracking-[-0.02em]">
             {title}
           </h2>
-          <p className="measure text-muted">{body}</p>
-        </div>
+          <p className="measure text-lede leading-[1.45] text-muted">{body}</p>
+        </Reveal>
 
-        <div className="flex flex-col items-start gap-4">
+        <Reveal delay={120} className="flex flex-col items-start gap-4">
           <Button href={href} full>
             {action}
           </Button>
           <a
             href={`mailto:${site.email}`}
-            className="font-mono text-small text-accent underline underline-offset-4"
+            className="arrow-link font-mono text-small text-accent underline underline-offset-4"
           >
-            Or email us directly →
+            Or email us directly{" "}
+            <span className="arrow" aria-hidden="true">
+              →
+            </span>
           </a>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

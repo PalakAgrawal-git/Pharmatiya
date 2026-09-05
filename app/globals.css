@@ -127,3 +127,103 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================================================
+   Motion
+   The subject matter animates, not decoration: survival curves draw, figures
+   settle in.
+
+   Every "off" state lives inside a @keyframes `from`, never in the base
+   style. That means without JavaScript — or with animations suppressed —
+   the page renders complete: curves drawn, labels present, nothing hidden.
+   ========================================================================== */
+
+@theme {
+  /* Expo-out. Fast departure, long settle — reads considered, not bouncy. */
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer utilities {
+  /* --- scroll reveal ---------------------------------------------------
+     "armed" is applied only to elements below the fold, so hiding them is
+     never visible. Anything on screen at load goes straight to "shown". */
+  [data-reveal="armed"] {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  [data-reveal="shown"] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 700ms var(--ease-settle) var(--reveal-delay, 0ms),
+      transform 700ms var(--ease-settle) var(--reveal-delay, 0ms);
+  }
+
+  /* --- line drawing ----------------------------------------------------- */
+  [data-reveal="shown"] .draw {
+    animation: draw-line 1600ms var(--ease-settle) var(--draw-delay, 0ms) both;
+  }
+  @keyframes draw-line {
+    from {
+      stroke-dasharray: var(--len, 1200);
+      stroke-dashoffset: var(--len, 1200);
+    }
+    to {
+      stroke-dasharray: var(--len, 1200);
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* --- chart furniture arriving after the curves ------------------------ */
+  [data-reveal="shown"] .fade-part {
+    animation: fade-part 600ms var(--ease-settle) var(--fade-delay, 800ms) both;
+  }
+  @keyframes fade-part {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* --- confidence intervals growing out from the point estimate --------- */
+  [data-reveal="shown"] .grow-x {
+    animation: grow-x 800ms var(--ease-settle) var(--grow-delay, 0ms) both;
+    transform-origin: var(--origin, center);
+  }
+  @keyframes grow-x {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  /* --- directional links ------------------------------------------------ */
+  .arrow-link .arrow {
+    display: inline-block;
+    transition: transform 300ms var(--ease-settle);
+  }
+  .arrow-link:hover .arrow { transform: translateX(4px); }
+
+  /* --- plotting-paper ground -------------------------------------------- */
+  /* Millimetre paper at the threshold of visibility. On-brand for a research
+     practice, and it gives the hero a surface without a gradient. */
+  .graph-ground {
+    background-image:
+      linear-gradient(to right, var(--color-rule) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-rule) 1px, transparent 1px);
+    background-size: 2.5rem 2.5rem;
+    background-position: center;
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal="armed"],
+  [data-reveal="shown"] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  [data-reveal="shown"] .draw,
+  [data-reveal="shown"] .fade-part,
+  [data-reveal="shown"] .grow-x {
+    animation: none !important;
+  }
+}

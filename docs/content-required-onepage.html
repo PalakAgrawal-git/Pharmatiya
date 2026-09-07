@@ -1,0 +1,147 @@
+<title>Pharmatiya One Page Request</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=IBM+Plex+Sans:wght@400;450;600&family=IBM+Plex+Mono:wght@500&display=swap">
+
+<style>
+:root{
+  --paper:#ffffff; --band:#f4f7f5;
+  --ink:#151b1a; --muted:#4d5854; --faint:#7b8682;
+  --rule:#d5dcd8; --rule-firm:#a9b3ae;
+  --accent:#0e5a5e; --star:#8c3a2b;
+  --display:'Spectral','Sitka Text',Cambria,Georgia,serif;
+  --text:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Cascadia Mono',Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:15.5px;line-height:1.45}
+.page{width:min(100% - 2.5rem,48rem);margin-inline:auto;padding-block:2.5rem 3rem}
+
+header{display:flex;flex-wrap:wrap;align-items:flex-end;gap:.6rem 2rem;border-bottom:2px solid var(--ink);padding-bottom:.8rem;margin-bottom:1rem}
+.kicker{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 .35rem}
+h1{font-family:var(--display);font-weight:600;font-size:2.5rem;line-height:1;letter-spacing:-.025em;margin:0}
+.meta{margin-left:auto;font-family:var(--mono);font-size:.66rem;color:var(--faint);text-align:right;line-height:1.6}
+
+.lede{font-size:.98rem;color:var(--muted);max-width:72ch;margin:0 0 .9rem}
+.lede b{color:var(--ink);font-weight:600}
+
+.start{background:var(--band);border-left:3px solid var(--star);padding:.6rem .9rem;margin:0 0 1.15rem;font-size:.9rem}
+.start b{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--star);display:block;margin-bottom:.25rem}
+
+.group{margin-bottom:1.15rem;break-inside:avoid}
+.inline-list{margin:0;font-size:.9rem;color:var(--muted)}
+.inline-list b{color:var(--ink);font-weight:600}
+.group > h2{
+  font-family:var(--display);font-weight:600;font-size:1.32rem;letter-spacing:-.015em;
+  margin:0 0 .1rem;display:flex;align-items:baseline;gap:.6rem;
+}
+.group > h2 .n{font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:500}
+.group > .how{font-family:var(--mono);font-size:.68rem;color:var(--faint);margin:0 0 .55rem;padding-bottom:.4rem;border-bottom:1px solid var(--rule)}
+
+ul{list-style:none;margin:0;padding:0}
+li{display:grid;grid-template-columns:1.15rem 1fr;gap:.55rem;padding:.22rem 0;font-size:.92rem}
+li i.tick{width:.8rem;height:.8rem;border:1.3px solid var(--rule-firm);border-radius:2px;margin-top:.28rem;display:block}
+li .t{font-weight:600}
+li .d{color:var(--muted);font-weight:400}
+li.key .t::after{content:" ★";color:var(--star);font-size:.8em;vertical-align:.15em}
+
+.ps{border-top:2px solid var(--ink);margin-top:1.3rem;padding-top:.8rem;display:flex;flex-wrap:wrap;gap:.5rem 2rem;align-items:baseline}
+.ps p{margin:0;font-size:.86rem;color:var(--muted);max-width:60ch}
+.ps p b{color:var(--ink)}
+.ps .sig{margin-left:auto;font-family:var(--mono);font-size:.7rem;color:var(--faint);text-align:right;line-height:1.6}
+
+@media print{
+  @page{size:A4;margin:10mm 12mm}
+  html,body{background:#fff;font-size:9.3pt}
+  .page{width:100%;padding:0}
+  *,*::before,*::after{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  h1{font-size:23pt}
+  .group,li,.start,.ps{break-inside:avoid}
+}
+</style>
+
+<div class="page">
+
+<header>
+  <div>
+    <p class="kicker">Pharmatiya Health &middot; Website</p>
+    <h1>What we need from you</h1>
+  </div>
+  <div class="meta">Vaelo Creative<br>7 September 2026</div>
+</header>
+
+<p class="lede">
+  The website is <b>built and finished</b>. To fill it with your real material rather than placeholders,
+  we need the items below. Nothing is published without your approval, and nothing has been invented &mdash;
+  where something is missing, that part of the site says so or is left out.
+</p>
+
+<div class="start">
+  <b>If you do nothing else</b>
+  Answer the three starred questions and send us your logo and team photos. That alone finishes most of the site.
+</div>
+
+<div class="group">
+  <h2><span class="n">01</span> Answer five questions</h2>
+  <p class="how">A reply to this email is enough &mdash; about ten minutes</p>
+  <ul>
+    <li class="key"><i class="tick"></i><span><span class="t">Is the product called NextGen AI or RWE&nbsp;-&nbsp;Builder?</span> <span class="d">Your brief and your current site disagree. We need one public name.</span></span></li>
+    <li class="key"><i class="tick"></i><span><span class="t">Can we name your data partners publicly?</span> <span class="d">Yes or no for Aetna/CVS, Cigna, Select Health, MedStar, Express Scripts, Komodo, Intermountain.</span></span></li>
+    <li class="key"><i class="tick"></i><span><span class="t">Who should receive enquiries?</span> <span class="d">One inbox, or separate ones for new clients, existing clients and press.</span></span></li>
+    <li><i class="tick"></i><span><span class="t">How long does an internal compliance review take?</span> <span class="d">Just the timing, so we can plan around it.</span></span></li>
+    <li><i class="tick"></i><span><span class="t">Where should the site be hosted?</span> <span class="d">It can go anywhere &mdash; we will recommend an option if you would like.</span></span></li>
+  </ul>
+</div>
+
+<div class="group">
+  <h2><span class="n">02</span> Send us some files</h2>
+  <p class="how">However suits &mdash; email, a shared drive, or a link</p>
+  <ul>
+    <li class="key"><i class="tick"></i><span><span class="t">Your logo as a vector file</span> <span class="d">SVG, AI or EPS. The current one is a low-resolution image and looks blurry on modern screens.</span></span></li>
+    <li class="key"><i class="tick"></i><span><span class="t">Team photographs</span> <span class="d">Headshots of the people who do the work. Phone photos in good light are fine. We will not use stock images.</span></span></li>
+    <li><i class="tick"></i><span><span class="t">Two or three anonymised case studies</span> <span class="d">No client names needed. If writing them is the hard part, we will interview you and draft them for your approval.</span></span></li>
+    <li><i class="tick"></i><span><span class="t">Screenshots of NextGen AI</span> <span class="d">With any real patient data blurred out.</span></span></li>
+    <li><i class="tick"></i><span><span class="t">Your study list</span> <span class="d">A spreadsheet export. We have rebuilt the search from your current site &mdash; it works now, but has nothing to search.</span></span></li>
+  </ul>
+</div>
+
+<div class="group">
+  <h2><span class="n">03</span> Check what we have written</h2>
+  <p class="how">We drafted it from your documents &mdash; we need you to confirm it is accurate</p>
+  <ul>
+    <li><i class="tick"></i><span><span class="t">Your three service descriptions</span> <span class="d">Including the four stages we have written describing how each engagement runs.</span></span></li>
+    <li><i class="tick"></i><span><span class="t">What clients actually receive</span> <span class="d">The deliverables listed under each service.</span></span></li>
+    <li><i class="tick"></i><span><span class="t">Your therapeutic areas</span> <span class="d">We listed twelve from your published papers. Add any we have missed.</span></span></li>
+  </ul>
+</div>
+
+<div class="group">
+  <h2><span class="n">04</span> Tell us about NextGen AI</h2>
+  <p class="how">This is the only page we cannot write for you &mdash; every line is a claim about your product</p>
+  <ul>
+    <li><i class="tick"></i><span><span class="t">What it does, in one sentence</span></span></li>
+    <li><i class="tick"></i><span><span class="t">How patient data is handled</span> <span class="d">Your own wording, internally reviewed. This is what buyers will question first.</span></span></li>
+    <li><i class="tick"></i><span><span class="t">Which AI model it uses, and the version</span> <span class="d">Your brief asked for open disclosure rather than a disclaimer.</span></span></li>
+    <li><i class="tick"></i><span><span class="t">What it does not do</span> <span class="d">Being upfront about limits builds trust with this audience.</span></span></li>
+  </ul>
+</div>
+
+<div class="group minor">
+  <h2><span class="n">05</span> And a few small ones</h2>
+  <p class="how">Useful, but the site works without them</p>
+  <p class="inline-list">
+    Job title and the year Pharmatiya was founded &middot; confirmation that
+    <b>admin@pharmatiya.net</b> is the right public address &middot; a booking calendar link, if you want clients
+    to book a call themselves &middot; what the Quarterly Insights Digest covers and how often it goes out
+    &middot; a photograph or two of the office.
+  </p>
+</div>
+
+<div class="ps">
+  <p><b>One security note, unrelated to the above:</b> the access key for your study-list spreadsheet is visible
+  in your current website's code &mdash; anyone viewing the page can read it and reach the sheet. Worth replacing
+  whether or not you send us the list.</p>
+  <p class="sig">Vaelo Creative<br>hello@vaelocreative.com</p>
+</div>
+
+</div>

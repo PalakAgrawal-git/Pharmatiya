@@ -30,7 +30,7 @@ const figures = [
     sub: "95% confidence interval",
   },
   {
-    node: <CohortDiagram animate className="mx-auto max-w-[17rem]" />,
+    node: <CohortDiagram animate />,
     number: "03",
     title: "Cohort attrition",
     sub: "Source population to analytic cohort",
@@ -71,12 +71,12 @@ export default function ServiceTeasers() {
         </Reveal>
 
         {/* 01 — text left, figure right, numeral set large behind the head. */}
-        <div className="mt-20 grid gap-x-16 gap-y-12 lg:mt-28 lg:grid-cols-12">
-          <Reveal className="relative lg:col-span-5">
-            <span aria-hidden="true" className="ghost absolute -left-2 -top-16 hidden lg:block">
+        <div className="mt-20 grid items-start gap-x-16 gap-y-12 lg:mt-28 lg:grid-cols-12">
+          <Reveal className="lg:col-span-5">
+            <span aria-hidden="true" className="ghost mb-4 block">
               01
             </span>
-            <h3 className="relative text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.05]">
+            <h3 className="text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.05]">
               {a.name}
             </h3>
             <p className="mt-8 text-lede leading-[1.55] text-muted">{a.teaser}</p>
@@ -97,15 +97,15 @@ export default function ServiceTeasers() {
         </div>
 
         {/* 02 — mirrored: the figure leads. */}
-        <div className="mt-28 grid gap-x-16 gap-y-12 lg:mt-40 lg:grid-cols-12">
-          <Reveal className="hidden lg:col-span-6 lg:block">
+        <div className="mt-28 grid items-start gap-x-16 gap-y-12 lg:mt-40 lg:grid-cols-12">
+          <Reveal className="hidden lg:col-span-4 lg:block">
             <Plate index={1} />
           </Reveal>
-          <Reveal delay={120} className="relative lg:col-span-5 lg:col-start-8">
-            <span aria-hidden="true" className="ghost absolute -left-2 -top-16 hidden lg:block">
+          <Reveal delay={120} className="lg:col-span-6 lg:col-start-7">
+            <span aria-hidden="true" className="ghost mb-4 block">
               02
             </span>
-            <h3 className="relative max-w-[12ch] text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.05]">
+            <h3 className="max-w-[12ch] text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.05]">
               {b.name}
             </h3>
             <p className="mt-8 text-lede leading-[1.55] text-muted">{b.teaser}</p>
@@ -124,16 +124,16 @@ export default function ServiceTeasers() {
 
         {/* 03 — a third structure: heading alone in four, body and figure
             sharing the remaining seven. */}
-        <div className="mt-28 grid gap-x-16 gap-y-12 lg:mt-40 lg:grid-cols-12">
-          <Reveal className="relative lg:col-span-4">
-            <span aria-hidden="true" className="ghost absolute -left-2 -top-16 hidden lg:block">
+        <div className="mt-28 grid items-start gap-x-16 gap-y-12 lg:mt-40 lg:grid-cols-12">
+          <Reveal className="lg:col-span-3">
+            <span aria-hidden="true" className="ghost mb-4 block">
               03
             </span>
-            <h3 className="relative max-w-[10ch] text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.05]">
+            <h3 className="max-w-[12ch] text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.05]">
               {c.name}
             </h3>
           </Reveal>
-          <Reveal delay={100} className="lg:col-span-3 lg:col-start-6">
+          <Reveal delay={100} className="lg:col-span-4 lg:col-start-5">
             <p className="text-lede leading-[1.55] text-muted">{c.teaser}</p>
             <ul className="mt-8 flex flex-col gap-2 border-t border-rule pt-5">
               {c.methodology.slice(0, 3).map((m) => (

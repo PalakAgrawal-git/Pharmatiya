@@ -135,13 +135,17 @@
     letter-spacing: 0.18em;
   }
 
-  /* An oversized, faint section numeral set behind a heading. Restrained:
-     one per section at most, and never over running text. */
+  /* A large, faint section numeral above a heading. One per section at most.
+     It sits in the flow rather than behind the text: set as an absolute
+     overlay it collided with the heading even at 6% ink, and at 13rem it
+     pushed every heading a third of the way down its column. Sized to read as
+     a mark, not as the loudest object in the row. */
   .ghost {
     font-family: var(--font-mono);
-    font-size: clamp(5rem, 3rem + 12vw, 13rem);
-    line-height: 0.78;
-    color: color-mix(in srgb, var(--color-ink) 6%, transparent);
+    font-size: clamp(3rem, 2rem + 3.4vw, 5.5rem);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: color-mix(in srgb, var(--color-ink) 11%, transparent);
     user-select: none;
   }
 

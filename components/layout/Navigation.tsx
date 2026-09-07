@@ -53,7 +53,7 @@ export default function Navigation() {
         href={onProductPage ? "/contact/#demo" : "/contact/"}
         className="group inline-flex items-baseline gap-2 text-small font-medium text-ink no-underline"
       >
-        <span className="border-b border-ink/35 pb-0.5 transition-colors duration-200 group-hover:border-accent">
+        <span className="border-b border-transparent pb-0.5 transition-colors duration-200 group-hover:border-accent">
           {onProductPage ? "Request a demo" : "Book a consultation"}
         </span>
         <span

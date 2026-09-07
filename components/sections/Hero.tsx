@@ -23,17 +23,16 @@ import KaplanMeierGraphic from "@/components/evidence/KaplanMeierGraphic";
 export default function Hero() {
   return (
     <section className="border-b border-rule">
-      <div className="shell grid grid-cols-1 items-end gap-x-16 gap-y-16 pb-24 pt-20 lg:grid-cols-12 lg:pb-32 lg:pt-28">
+      <div className="shell grid grid-cols-1 items-end gap-x-16 gap-y-16 pb-24 pt-14 lg:grid-cols-12 lg:pb-28 lg:pt-20">
         <div className="lg:col-span-7">
           <Reveal>
-            <p className="label-sm max-w-[26ch] leading-[1.9] text-faint">
-              Independent health economics
-              <br />&amp; outcomes research
+            <p className="label-sm text-faint">
+              Independent health economics &amp; outcomes research
             </p>
           </Reveal>
 
           <Reveal delay={90}>
-            <h1 className="mt-12 text-[clamp(2.5rem,1.2rem+4.8vw,4.75rem)] leading-[1.04]">
+            <h1 className="mt-10 max-w-[16ch] text-[clamp(2.25rem,1.2rem+3.9vw,4rem)] font-normal leading-[1.1] tracking-[-0.02em]">
               Evidence that holds up
               <br />
               <span className="display italic text-accent">
@@ -43,7 +42,7 @@ export default function Hero() {
           </Reveal>
 
           <Reveal delay={170}>
-            <p className="measure mt-12 text-lede leading-[1.55] text-muted">
+            <p className="measure mt-10 text-lede leading-[1.55] text-muted">
               Twenty-five years designing HEOR and RWE studies across payer,
               provider and claims data — protocol through interpretation, for
               commercial, medical affairs and market access teams.
@@ -51,7 +50,7 @@ export default function Hero() {
           </Reveal>
 
           <Reveal delay={250}>
-            <div className="mt-14 flex flex-wrap items-center gap-x-10 gap-y-5">
+            <div className="mt-12 flex flex-wrap items-center gap-x-10 gap-y-5">
               <Button href="/contact/">Book a consultation</Button>
               <ArrowLink href="/evidence/">View published record</ArrowLink>
             </div>

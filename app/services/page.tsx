@@ -4,11 +4,8 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { DataLabel, Pending } from "@/components/ui/DataLabel";
 import Button from "@/components/ui/Button";
 import CTA from "@/components/sections/CTA";
-import Figure from "@/components/evidence/Figure";
-import KaplanMeierGraphic from "@/components/evidence/KaplanMeierGraphic";
-import CohortDiagram from "@/components/evidence/CohortDiagram";
-import CostEffectivenessPlane from "@/components/evidence/CostEffectivenessPlane";
 import Reveal from "@/components/motion/Reveal";
+import ServiceProcess from "@/components/sections/ServiceProcess";
 import GraphGround from "@/components/layout/GraphGround";
 
 export const metadata = {
@@ -17,24 +14,6 @@ export const metadata = {
     "Evidence generation, real-world data analytics, and access and value strategy. Each engagement framed around the question you need answered, with named methods and deliverables.",
   alternates: { canonical: "/services/" },
 };
-
-const graphics = [
-  {
-    node: <KaplanMeierGraphic animate />,
-    number: "2.1",
-    caption: "Two-arm survival estimate with separation from month 6.",
-  },
-  {
-    node: <CohortDiagram animate className="mx-auto max-w-[15rem]" />,
-    number: "2.2",
-    caption: "Attrition from source population to analytic cohort.",
-  },
-  {
-    node: <CostEffectivenessPlane animate />,
-    number: "2.3",
-    caption: "Bootstrap replicates against a willingness-to-pay threshold.",
-  },
-];
 
 export default function ServicesPage() {
   return (
@@ -82,7 +61,6 @@ export default function ServicesPage() {
       </section>
 
       {services.map((service, index) => {
-        const graphic = graphics[index];
         const flipped = index % 2 === 1;
 
         return (
@@ -101,37 +79,36 @@ export default function ServicesPage() {
                 </DataLabel>
               </Reveal>
 
-              <div
-                className={`grid items-start gap-10 lg:gap-14 ${
-                  flipped
-                    ? "lg:grid-cols-[40fr_60fr]"
-                    : "lg:grid-cols-[60fr_40fr]"
-                }`}
-              >
-                <Reveal className={flipped ? "lg:order-2" : "lg:order-1"}>
+              <div className="grid items-start gap-10 lg:grid-cols-[5fr_7fr] lg:gap-16">
+                <Reveal>
                   <p className="mb-2 font-mono text-caption uppercase tracking-[0.12em] text-faint">
                     The problem
                   </p>
-                  <h3 className="mb-6 max-w-[24ch] text-[clamp(1.3rem,1.1rem+1.1vw,2rem)]">
+                  <h3 className="max-w-[22ch] text-[clamp(1.4rem,1.1rem+1.3vw,2.2rem)] leading-[1.1] tracking-[-0.02em]">
                     {service.problem}
                   </h3>
+                </Reveal>
 
+                <Reveal delay={100}>
                   <p className="mb-2 font-mono text-caption uppercase tracking-[0.12em] text-faint">
                     Our approach
                   </p>
-                  <p className="measure text-muted">{service.approach}</p>
+                  <p className="measure text-lede leading-[1.5] text-muted">
+                    {service.approach}
+                  </p>
                 </Reveal>
+              </div>
 
-                <Reveal
-                  delay={140}
-                  className={`hidden lg:block ${
-                    flipped ? "lg:order-1" : "lg:order-2"
-                  }`}
-                >
-                  <Figure number={graphic.number} caption={graphic.caption}>
-                    {graphic.node}
-                  </Figure>
+              {/* How the engagement runs. Unique to this page — the homepage
+                  carries the result figures, this carries the process. */}
+              <div className="mt-12">
+                <Reveal>
+                  <p className="mb-5 flex items-center gap-4 font-mono text-caption uppercase tracking-[0.12em] text-faint">
+                    How it runs
+                    <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
+                  </p>
                 </Reveal>
+                <ServiceProcess stages={service.stages} />
               </div>
 
               <Reveal className="mt-10 grid gap-8 border-t border-rule pt-8 sm:grid-cols-2">

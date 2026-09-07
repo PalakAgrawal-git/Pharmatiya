@@ -83,6 +83,26 @@ export const services = [
       "Results report with interpretation",
     ],
     deliverablesPending: true,
+    // Services page only. The homepage shows what an engagement produces;
+    // this is how it runs. Draft copy — covered by client input 3.
+    stages: [
+      {
+        label: "Feasibility",
+        detail: "Whether the question can be answered with data that already exists, before anyone writes a protocol.",
+      },
+      {
+        label: "Protocol & SAP",
+        detail: "Design, endpoints and the analysis plan agreed and fixed in writing before any analysis is run.",
+      },
+      {
+        label: "Execution",
+        detail: "Cohort built, analysis run, results checked against the plan rather than against expectations.",
+      },
+      {
+        label: "Interpretation",
+        detail: "What the result supports, what it does not, and how it holds up when a payer pushes back.",
+      },
+    ],
     cta: "Discuss an evidence-generation project",
   },
   {
@@ -108,6 +128,24 @@ export const services = [
       "Results and interpretation",
     ],
     deliverablesPending: true,
+    stages: [
+      {
+        label: "Data assessment",
+        detail: "What is actually in the source, what is missing, and which questions it can carry.",
+      },
+      {
+        label: "Cohort definition",
+        detail: "Inclusion and exclusion applied step by step, with every drop accounted for.",
+      },
+      {
+        label: "Analysis",
+        detail: "Models fitted, assumptions tested, sensitivity analyses run before anything is reported.",
+      },
+      {
+        label: "Handover",
+        detail: "Results, interpretation and the code behind them, so your team can re-run and extend the work.",
+      },
+    ],
     cta: "Discuss an analytics project",
   },
   {
@@ -130,6 +168,24 @@ export const services = [
       "Payer-ready summary",
     ],
     deliverablesPending: true,
+    stages: [
+      {
+        label: "Evidence review",
+        detail: "What you already hold, where the gaps are, and which of them actually matter to the decision.",
+      },
+      {
+        label: "Value framing",
+        detail: "The case rebuilt in the terms a plan evaluates, not the terms the trial was designed around.",
+      },
+      {
+        label: "Contract design",
+        detail: "Measures simple enough to execute and quick enough to show a return on both sides.",
+      },
+      {
+        label: "Payer-ready output",
+        detail: "A dossier and a summary that survive being forwarded without you in the room.",
+      },
+    ],
     cta: "Discuss an access engagement",
   },
 ] as const;

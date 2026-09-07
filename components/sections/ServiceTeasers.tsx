@@ -7,20 +7,26 @@ import CohortDiagram from "@/components/evidence/CohortDiagram";
 import CostEffectivenessPlane from "@/components/evidence/CostEffectivenessPlane";
 
 /**
- * Three services, three different compositions.
+ * Three services, set as entries in an index.
  *
- * This is the section that most made the page read as a template, because
- * three identical rows are three cards however they are styled. Each now has
- * its own arrangement:
+ * The previous arrangement gave each service its own composition, which was
+ * the right instinct and the wrong result: three different asymmetric splits
+ * left large dead areas inside every row, the figure floating away from the
+ * text it belonged to, and no shared edge to read down.
  *
- *   01  text 5 / figure 6, the number oversized behind the heading
- *   02  figure 6 first / text 5, the mirror
- *   03  heading 4 wide, body and figure sharing 7, a third structure
+ * This is a single structure repeated three times, and the discipline is what
+ * makes it read as a document: a rule across the full measure, the number and
+ * the name in the left column, the argument in the middle, the plate on the
+ * right. Every row starts on the same three edges, so the eye runs down the
+ * page instead of hunting across it.
  *
- * The figures are the identity, so they are given real width and hung on a
- * rule with a figure number — a journal plate, not a widget. They drop below
- * `lg` rather than scaling: a forest plot at 390px is illegible, and shipping
- * it as decoration costs bandwidth for no comprehension.
+ * Variation comes from the figures themselves — a forest plot, an attrition
+ * diagram and a cost-effectiveness plane are three very different shapes —
+ * rather than from moving the furniture around them.
+ *
+ * Plates drop below `lg` rather than scaling: a forest plot at 390px is
+ * illegible, and shipping it as decoration costs bandwidth for no
+ * comprehension.
  */
 const figures = [
   {
@@ -30,7 +36,9 @@ const figures = [
     sub: "95% confidence interval",
   },
   {
-    node: <CohortDiagram animate />,
+    // Capped: this canvas is tall and narrow, so at full column width it would
+    // run half again as deep as the other two and break the row rhythm.
+    node: <CohortDiagram animate className="max-w-[19rem]" />,
     number: "03",
     title: "Cohort attrition",
     sub: "Source population to analytic cohort",
@@ -43,24 +51,7 @@ const figures = [
   },
 ];
 
-function Plate({ index }: { index: number }) {
-  const f = figures[index];
-  return (
-    <figure>
-      {f.node}
-      <figcaption className="mt-6 border-t border-rule pt-4">
-        <p className="label-sm text-ink">
-          Fig. {f.number} / {f.title}
-        </p>
-        <p className="label-sm mt-2 text-faint">{f.sub}</p>
-      </figcaption>
-    </figure>
-  );
-}
-
 export default function ServiceTeasers() {
-  const [a, b, c] = services;
-
   return (
     <section className="border-b border-rule">
       <div className="shell section">
@@ -70,85 +61,61 @@ export default function ServiceTeasers() {
           </SectionLabel>
         </Reveal>
 
-        {/* 01 — text left, figure right, numeral set large behind the head. */}
-        <div className="mt-20 grid items-start gap-x-16 gap-y-12 lg:mt-28 lg:grid-cols-12">
-          <Reveal className="lg:col-span-5">
-            <span aria-hidden="true" className="ghost mb-4 block">
-              01
-            </span>
-            <h3 className="text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.05]">
-              {a.name}
-            </h3>
-            <p className="mt-8 text-lede leading-[1.55] text-muted">{a.teaser}</p>
-            <ul className="mt-8 flex flex-col gap-2 border-t border-rule pt-5">
-              {a.methodology.slice(0, 3).map((m) => (
-                <li key={m} className="label-sm text-faint">
-                  {m}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-9">
-              <ArrowLink href={`/services/#${a.id}`}>See this service</ArrowLink>
-            </div>
-          </Reveal>
-          <Reveal delay={120} className="hidden lg:col-span-6 lg:col-start-7 lg:block">
-            <Plate index={0} />
-          </Reveal>
-        </div>
+        <div className="mt-14 lg:mt-20">
+          {services.map((service, index) => {
+            const figure = figures[index];
 
-        {/* 02 — mirrored: the figure leads. */}
-        <div className="mt-28 grid items-start gap-x-16 gap-y-12 lg:mt-40 lg:grid-cols-12">
-          <Reveal className="hidden lg:col-span-4 lg:block">
-            <Plate index={1} />
-          </Reveal>
-          <Reveal delay={120} className="lg:col-span-6 lg:col-start-7">
-            <span aria-hidden="true" className="ghost mb-4 block">
-              02
-            </span>
-            <h3 className="max-w-[12ch] text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.05]">
-              {b.name}
-            </h3>
-            <p className="mt-8 text-lede leading-[1.55] text-muted">{b.teaser}</p>
-            <ul className="mt-8 flex flex-col gap-2 border-t border-rule pt-5">
-              {b.methodology.slice(0, 3).map((m) => (
-                <li key={m} className="label-sm text-faint">
-                  {m}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-9">
-              <ArrowLink href={`/services/#${b.id}`}>See this service</ArrowLink>
-            </div>
-          </Reveal>
-        </div>
+            return (
+              <div
+                key={service.id}
+                className="grid items-start gap-x-10 gap-y-8 border-t border-ink/20 pb-16 pt-9 last:pb-0 lg:grid-cols-12 lg:gap-y-0 lg:pb-20 lg:pt-10"
+              >
+                <Reveal className="lg:col-span-3">
+                  <p className="label tabular text-accent">
+                    {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <h3 className="mt-5 max-w-[11ch] text-[clamp(1.6rem,1.2rem+1.5vw,2.3rem)] leading-[1.08]">
+                    {service.name}
+                  </h3>
+                </Reveal>
 
-        {/* 03 — a third structure: heading alone in four, body and figure
-            sharing the remaining seven. */}
-        <div className="mt-28 grid items-start gap-x-16 gap-y-12 lg:mt-40 lg:grid-cols-12">
-          <Reveal className="lg:col-span-3">
-            <span aria-hidden="true" className="ghost mb-4 block">
-              03
-            </span>
-            <h3 className="max-w-[12ch] text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.05]">
-              {c.name}
-            </h3>
-          </Reveal>
-          <Reveal delay={100} className="lg:col-span-4 lg:col-start-5">
-            <p className="text-lede leading-[1.55] text-muted">{c.teaser}</p>
-            <ul className="mt-8 flex flex-col gap-2 border-t border-rule pt-5">
-              {c.methodology.slice(0, 3).map((m) => (
-                <li key={m} className="label-sm text-faint">
-                  {m}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-9">
-              <ArrowLink href={`/services/#${c.id}`}>See this service</ArrowLink>
-            </div>
-          </Reveal>
-          <Reveal delay={180} className="hidden lg:col-span-4 lg:col-start-9 lg:block">
-            <Plate index={2} />
-          </Reveal>
+                <Reveal delay={100} className="lg:col-span-4 lg:col-start-5">
+                  <p className="text-[1.0625rem] leading-[1.6] text-muted">
+                    {service.teaser}
+                  </p>
+
+                  <ul className="mt-8 flex flex-col gap-2.5 border-t border-rule pt-5">
+                    {service.methodology.slice(0, 3).map((method) => (
+                      <li key={method} className="label-sm text-faint">
+                        {method}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-8">
+                    <ArrowLink href={`/services/#${service.id}`}>
+                      See this service
+                    </ArrowLink>
+                  </div>
+                </Reveal>
+
+                <Reveal
+                  delay={180}
+                  className="hidden lg:col-span-4 lg:col-start-9 lg:block"
+                >
+                  <figure>
+                    {figure.node}
+                    <figcaption className="mt-6 border-t border-rule pt-4">
+                      <p className="label-sm text-ink">
+                        Fig. {figure.number} / {figure.title}
+                      </p>
+                      <p className="label-sm mt-2 text-faint">{figure.sub}</p>
+                    </figcaption>
+                  </figure>
+                </Reveal>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

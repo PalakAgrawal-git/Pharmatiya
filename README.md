@@ -6,10 +6,16 @@ architecture and wireframes.
 ## Stack
 
 Next.js (App Router) · React · TypeScript · Tailwind CSS v4 · statically
-exported. No client-side JavaScript beyond the mobile menu and the contact
-form's conditional fields. Charts are hand-authored inline SVG rather than a
-charting library — they are fixed figures, not live data, so a runtime
-dependency would cost hundreds of kilobytes for nothing.
+exported. Charts are hand-authored inline SVG rather than a charting library —
+they are fixed figures, not live data, so a runtime dependency would cost
+hundreds of kilobytes for nothing.
+
+Client-side JavaScript is limited to the mobile menu, the contact form's
+conditional fields, the study finder, the publication list, and two small
+motion helpers (`Reveal`, `CountUp`). Every one of those is progressive
+enhancement: the server renders the finished state, so with JavaScript off the
+page is complete — nothing hidden, figures drawn, numbers already counted. All
+motion is suppressed under `prefers-reduced-motion`.
 
 ## Commands
 
@@ -18,6 +24,7 @@ npm install
 npm run dev        # http://localhost:3000
 npm run build      # static export to ./out
 npm run typecheck
+./scripts/build-pages.sh   # build AND publish into the repo root (see Deployment)
 ```
 
 ## Structure
@@ -28,12 +35,32 @@ components/layout/    Header, Navigation, MobileNavigation, Footer
 components/ui/        Button, Field, SectionHeader, DataLabel
 components/evidence/  ForestPlot, KaplanMeierGraphic, CohortDiagram,
                       CostEffectivenessPlane, DatasetMap, TherapeuticMatrix,
-                      CaseStudies, Figure
-components/sections/  Hero, Proof, ServiceTeasers, NextGenTeaser,
-                      WorkflowDiagram, ContactRouting, DigestSignup, CTA
+                      CaseStudies, PublicationList, Figure
+components/sections/  Hero, Proof, ServiceTeasers, ServiceProcess,
+                      NextGenTeaser, WorkflowDiagram, CoverageBand,
+                      Milestones, TeamRoster, StudyFinder, ContactRouting,
+                      DigestSignup, CTA
+components/motion/    Reveal (scroll reveal), CountUp (counting figures)
+components/layout/    …plus GraphGround, the plotting-paper page ground
 lib/site.ts           all copy, figures and pending-input flags
-docs/                 architecture, wireframes, roadmap, client report
+lib/team.ts           the team roster
+docs/                 architecture, wireframes, roadmap, client report,
+                      and the client content request (HTML, PDF, DOCX)
 ```
+
+### Which figure belongs to which page
+
+Home and Evidence show **results** — forest plot, cohort attrition,
+cost-effectiveness plane, survival curves. Services shows **process**, via
+`ServiceProcess`, because it is the only page answering "what actually happens
+if we hire you". They previously shared two of the same three charts, so a
+visitor clicking a homepage teaser was shown the same figure twice. Keep that
+split when adding figures: a chart on Services that also appears on Home makes
+the two pages read as one page twice.
+
+Copy has the same rule. Each service carries both a `problem` (Services: what
+the client arrived with) and a `teaser` (Home: what the engagement produces).
+They must not be interchangeable.
 
 `lib/site.ts` is the single place to change content. Anything awaiting client
 input is flagged there with the input number from the architecture document.
@@ -125,6 +152,93 @@ rather than filled with invented content:
 Two decisions are also open: the public product name (NextGen AI vs
 RWE - Builder, set in `lib/site.ts`) and confirmation of the "1,000+ synopses"
 figure.
+
+## Motion and conventions
+
+All motion is defined once in `app/globals.css` and driven by an ancestor
+carrying `data-reveal="shown"`, which `Reveal` sets when the element scrolls
+into view. Every "off" state lives inside a `@keyframes from`, never in a base
+style, so without JavaScript the page renders complete rather than blank.
+
+| Class | Used for |
+|---|---|
+| `draw` | Stroke drawing along a path — survival curves |
+| `grow-x` | Growing from one edge — confidence intervals, timeline duration bars |
+| `pop-in` | Scaling up from centre — scatter replicates |
+| `fall-in` | Arriving from above — cohort boxes, timeline entries, process stages |
+| `rule-grow` | Section heading hairlines drawing left to right |
+| `spine-draw` | Vertical connectors on the About timeline |
+| `lift` / `lift-inverse` / `rule-row` | Hover affordance on panels and list rows |
+
+Two conventions worth keeping: a **hollow marker** means an endpoint or an
+unknown (the undated founding entry, the final process stage), against filled
+markers for evidenced steps; and a figure's **accessible description carries
+the full numbers** even where the drawn figure has been simplified, so nothing
+is lost to a screen reader.
+
+Anything set at a scale — a timeline bar, a plotted point — is derived from the
+underlying number rather than positioned by eye. A label and a graphic reading
+from separate sources is a figure waiting to contradict itself.
+
+### Two traps already paid for
+
+- **`backdrop-filter` makes an element a containing block for
+  `position: fixed` descendants.** The header carries a blur, so the mobile
+  menu nested inside it resolved `inset-0` against the header box and collapsed
+  to a 375×76 strip with unclickable links. It is now portalled to `<body>`.
+- **`ch` units resolve against the font-size of the element they are set on.**
+  `max-w-[28ch]` on a `<blockquote>` meant 28 characters of inherited 17px body
+  text, capping the homepage pull-quote at 286px and wrapping 45px display type
+  into eleven two-word lines. Put the measure on the element that carries the
+  type.
+
+## Deployment
+
+GitHub Pages for this repository is set to **Deploy from a branch**, which
+serves the repository's own files — not a build artifact. `next build` writes
+to `./out`, which `.gitignore` excludes, so the built site is invisible to that
+setting. With no `index.html` at the repository root, Pages falls back to
+Jekyll and publishes `README.md` as the homepage. That is what the site URL
+served for some time, while `.github/workflows/deploy.yml` built and uploaded a
+correct artifact on every push that nothing ever served: with a branch source,
+those deployments are created and then ignored.
+
+So the build is committed into the repository root:
+
+```bash
+./scripts/build-pages.sh    # then commit the result
+```
+
+Run it after **any** content or component change, or the live site keeps
+serving the previous build.
+
+`.nojekyll` at the root is load-bearing. Without it Pages runs Jekyll, and
+Jekyll skips directories beginning with an underscore — which drops `_next/`
+and takes every stylesheet and script with it.
+
+To verify a change the way Pages will serve it, copy only the tracked files
+under a `/Pharmatiya/` path and serve that; the base path matters, as assets
+are prefixed with it.
+
+**The tidier alternative:** switching Settings → Pages → Source to
+**GitHub Actions** makes the existing workflow the live deployment and removes
+the need to commit build output at all. Nothing else has to change.
+
+### Everything tracked at the root is published
+
+Because the root is the served directory, every tracked file there is
+downloadable from the site. That currently includes:
+
+| File | |
+|---|---|
+| `Rajesh Mehta Resumeh.docx` | **Contains the personal phone number, personal email, licence numbers, named client engagements and revenue figures that the Disclosure boundary below says are deliberately kept off the site.** |
+| `MehtaRR_Publications.pdf` | Bibliography — already public record. |
+| `Pharmatiya_Phase1_Summary.docx` | Internal Phase 1 summary. |
+| `Pharmatiya_Content_Request.pdf` | Client content request. |
+
+The resume in particular should be removed from the repository (or moved out
+of the published tree) before launch — publishing it undercuts the disclosure
+decision the rest of the site is built around.
 
 ## Before launch
 

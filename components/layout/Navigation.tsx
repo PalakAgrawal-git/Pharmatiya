@@ -7,6 +7,11 @@ import { nav } from "@/lib/site";
 /**
  * Desktop navigation, carried entirely by type and spacing.
  *
+ * The full `nav` list, Home included. Relying on the wordmark alone to get
+ * back to the homepage is a convention some visitors know and others do not,
+ * and it left the desktop bar showing five items where the mobile menu and
+ * the footer both showed six.
+ *
  * No filled CTA in the bar. A consultation is the one thing this site wants,
  * and setting it as a text link with an arrow — the same treatment every
  * other action gets — is what keeps the masthead quiet. A pill here would be
@@ -27,7 +32,7 @@ export default function Navigation() {
   return (
     <nav aria-label="Primary" className="ml-auto hidden items-center gap-12 lg:flex">
       <ul className="flex items-center gap-9">
-        {nav.slice(1).map(({ href, label }) => (
+        {nav.map(({ href, label }) => (
           <li key={href}>
             <Link
               href={href}

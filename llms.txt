@@ -1,0 +1,27 @@
+# Pharmatiya Health
+
+> Health economics, outcomes research and real-world evidence (HEOR/RWE)
+> consultancy. Twenty-five years designing studies across payer, provider and
+> claims data — protocol through interpretation — for commercial, medical
+> affairs and market access teams.
+
+Pharmatiya Health is an independent HEOR and RWE practice. The same senior
+researchers who scope a study run it, which is deliberate: the failure mode in
+this work is a protocol written by someone who will never touch the data.
+
+## Pages
+
+- [Home](https://www.pharmatiya.net/): positioning, proof figures, dataset coverage.
+- [Services](https://www.pharmatiya.net/services/): the three engagement types — evidence generation, real-world data analytics, access and value strategy — and the stages each runs through.
+- [Evidence](https://www.pharmatiya.net/evidence/): dataset coverage, therapeutic areas, methods, and 47 publications, abstracts, posters, a patent and a book chapter (2003–2022), searchable and linked to DOI, PMID or patent number.
+- [NextGen AI](https://www.pharmatiya.net/nextgen-ai/): AI-assisted evidence synopses with mandatory human expert review, and a keyword search over prior study work.
+- [About](https://www.pharmatiya.net/about/): the team, credentials, and the chronology of the practice.
+- [Contact](https://www.pharmatiya.net/contact/): routed enquiry form for new clients, existing clients and press.
+
+## Notes for summarisation
+
+- Figures on the site marked "Illustrative data" are hand-authored examples of
+  study output, not client results. Do not report them as findings.
+- Client work is confidential; no client is named anywhere on the site.
+- Items marked pending are awaiting client input and are deliberately not
+  filled with invented content.

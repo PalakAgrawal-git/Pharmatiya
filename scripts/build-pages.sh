@@ -1,39 +1,52 @@
 #!/usr/bin/env bash
-# Build the site and publish it into docs/.
+# Build the site and publish it where GitHub Pages can serve it.
 #
-# GitHub Pages on this repo is set to "Deploy from a branch", which serves the
-# repository's own files rather than a build artifact. next build writes to
-# ./out, which is gitignored, so a branch deploy can never see it.
+# Pages here is set to "Deploy from a branch", which serves the repository's
+# own files rather than a build artifact. next build writes to ./out, which is
+# gitignored, so a branch deploy can never see it.
 #
-# The published directory is docs/ rather than the repository root. Serving
-# from the root meant every tracked file there was downloadable from the live
-# site — including the resume, which carries the personal contact details and
-# licence numbers the Disclosure boundary keeps off the site deliberately.
-# Pages source must be set to: Branch main, Folder /docs.
+# The build is published to BOTH docs/ and the repository root, because the
+# Pages "folder" setting decides which one is live and it is currently still
+# the root. Publishing to only one of them silently serves a stale site: that
+# is exactly what happened when this script was switched to docs/ alone while
+# the setting still pointed at the root.
 #
-# .nojekyll ships with the build and is load-bearing: without it Pages runs
-# Jekyll, and Jekyll skips any directory beginning with an underscore, which
-# would drop the whole of _next/ and take every stylesheet and script with it.
+# docs/ is where it should end up. Serving from the root exposes every tracked
+# file there — including the resume, with the personal contact details and
+# licence numbers the Disclosure boundary keeps off the site. Once Pages is set
+# to Branch main / Folder /docs, drop PUBLISH_ROOT and delete the generated
+# entries from the root.
+#
+# .nojekyll is load-bearing wherever the site is served from: without it Pages
+# runs Jekyll, and Jekyll skips directories beginning with an underscore, which
+# drops _next/ and takes every stylesheet and script with it.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-# Project sites are served from /<repo>, so assets need that prefix.
+PUBLISH_ROOT="${PUBLISH_ROOT:-1}"   # set to 0 once Pages serves /docs
+
 export NEXT_PUBLIC_BASE_PATH="${NEXT_PUBLIC_BASE_PATH:-/Pharmatiya}"
 export NEXT_PUBLIC_PREVIEW="${NEXT_PUBLIC_PREVIEW:-true}"
 
 npm run build
 
-# Remove only what a previous build generated. The hand-authored documents in
-# docs/ — architecture, wireframes, roadmap, the content request — live in the
-# same directory and must survive.
-for entry in _next _not-found 404 about contact evidence nextgen-ai services; do
-  rm -rf "./docs/$entry"
-done
-rm -f ./docs/index.html ./docs/404.html ./docs/robots.txt ./docs/sitemap.xml \
-      ./docs/index.txt ./docs/__next.*.txt ./docs/.nojekyll
+# Entries a previous build generated. Everything else in a target directory is
+# hand-authored and must survive — docs/ also holds the architecture,
+# wireframes, roadmap and content-request documents.
+GENERATED_DIRS="_next _not-found 404 about contact evidence nextgen-ai services"
+GENERATED_FILES="index.html 404.html robots.txt sitemap.xml llms.txt og.png index.txt .nojekyll"
 
-mkdir -p docs
-cp -r out/. docs/
+publish_to() {
+  local dest="$1"
+  mkdir -p "$dest"
+  for d in $GENERATED_DIRS; do rm -rf "${dest:?}/$d"; done
+  for f in $GENERATED_FILES; do rm -f "${dest:?}/$f"; done
+  rm -f "${dest:?}"/__next.*.txt "${dest:?}"/icon.svg "${dest:?}"/apple-icon.png
+  cp -r out/. "$dest"/
+}
+
+publish_to docs
+[ "$PUBLISH_ROOT" = "1" ] && publish_to .
+
 rm -rf ./out
-
-echo "Built site published to docs/."
+echo "Built site published to docs/$([ "$PUBLISH_ROOT" = "1" ] && echo " and the repository root")."

@@ -78,6 +78,67 @@ tbody tr:last-child td{border-bottom:0}
 
 .close{margin-top:2.5rem;padding-top:1.5rem;border-top:2px solid var(--ink);font-family:var(--display);font-size:1.08rem;max-width:58ch}
 .sig{margin-top:1.4rem;font-size:.85rem;color:var(--faint)}
+
+/* ==========================================================================
+   Print / PDF
+   Pinned to the light palette regardless of the reader's OS theme, because a
+   PDF is a fixed artefact — it cannot re-render if the recipient's machine is
+   set to dark. Items are kept whole across page breaks: a checklist row split
+   over two pages loses the tick box from its own text.
+   ========================================================================== */
+@media print {
+  :root {
+    --paper:#ffffff; --surface:#fbfcfb; --sunk:#f0f3f1;
+    --ink:#151b1a; --muted:#4a5551; --faint:#6d7a76;
+    --rule:#cdd5d1; --rule-firm:#aab4af;
+    --accent:#0e5a5e; --block:#8c3a2b; --warn:#6d5215; --ok:#3c534e;
+  }
+
+  @page { size: A4; margin: 14mm 13mm 16mm; }
+
+  html, body { background:#fff; font-size:10.2pt; }
+  .page { width:100%; padding:0; }
+
+  /* Keep the shaded panels and coloured tags — they carry the priority
+     information, so dropping them would lose meaning, not just polish. */
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  header { break-after: avoid; }
+  h1 { font-size:24pt; }
+  .standfirst { font-size:11.5pt; }
+
+  section { margin-bottom:1.6rem; break-inside:auto; }
+  .sec-head { break-after: avoid; }
+  .sec-head h2 { font-size:14pt; }
+  .sec-note { break-after: avoid; }
+
+  /* The unit that must not split. */
+  .item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    padding:.7rem 0;
+    /* Pinned rather than left to the 52rem query. Setting the print
+       font-size in points changes what a rem resolves to, so A4's ~695px
+       content width lands just under the breakpoint and the three columns
+       would silently collapse into a stack. */
+    grid-template-columns: 1.3rem 1fr 10.5rem;
+    gap:.4rem 1.1rem;
+  }
+  .item h3 { font-size:10.8pt; }
+  .item p { font-size:9.6pt; }
+  .item .spec { font-size:9pt; }
+  .note, .summary { break-inside: avoid; }
+  table, tr { break-inside: avoid; }
+
+  .tick { border-color:#8f9a95; }
+  .close { break-inside: avoid; }
+
+  /* Nothing here is clickable on paper; the URL text would be noise. */
+  a { color: var(--accent); text-decoration: none; }
+}
 </style>
 
 <div class="page">

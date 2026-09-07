@@ -197,48 +197,44 @@ from separate sources is a figure waiting to contradict itself.
 GitHub Pages for this repository is set to **Deploy from a branch**, which
 serves the repository's own files — not a build artifact. `next build` writes
 to `./out`, which `.gitignore` excludes, so the built site is invisible to that
-setting. With no `index.html` at the repository root, Pages falls back to
+setting. With no `index.html` in the published directory, Pages falls back to
 Jekyll and publishes `README.md` as the homepage. That is what the site URL
 served for some time, while `.github/workflows/deploy.yml` built and uploaded a
 correct artifact on every push that nothing ever served: with a branch source,
 those deployments are created and then ignored.
 
-So the build is committed into the repository root:
+**Pages source must be: Branch `main`, Folder `/docs`.**
+
+So the build is committed into `docs/`:
 
 ```bash
 ./scripts/build-pages.sh    # then commit the result
 ```
 
 Run it after **any** content or component change, or the live site keeps
-serving the previous build.
+serving the previous build. The script removes only what a previous build
+generated, so the hand-authored documents in `docs/` — architecture,
+wireframes, roadmap, the content request — survive it.
 
-`.nojekyll` at the root is load-bearing. Without it Pages runs Jekyll, and
-Jekyll skips directories beginning with an underscore — which drops `_next/`
-and takes every stylesheet and script with it.
+`docs/.nojekyll` is load-bearing. Without it Pages runs Jekyll, and Jekyll
+skips directories beginning with an underscore — which drops `_next/` and takes
+every stylesheet and script with it.
 
-To verify a change the way Pages will serve it, copy only the tracked files
-under a `/Pharmatiya/` path and serve that; the base path matters, as assets
-are prefixed with it.
+Publishing from `docs/` rather than the repository root is deliberate. The
+served directory exposes every tracked file in it, and serving from the root
+meant `Rajesh Mehta Resumeh.docx` — personal phone number, email, licence
+numbers, named engagements, revenue figures — was downloadable from the live
+site, contradicting the Disclosure boundary above. Those files stay in the
+repository and are no longer published. Anything genuinely meant to be public
+belongs in `docs/`.
+
+To verify a change the way Pages will serve it, copy the tracked contents of
+`docs/` under a `/Pharmatiya/` path and serve that; the base path matters, as
+assets are prefixed with it.
 
 **The tidier alternative:** switching Settings → Pages → Source to
 **GitHub Actions** makes the existing workflow the live deployment and removes
 the need to commit build output at all. Nothing else has to change.
-
-### Everything tracked at the root is published
-
-Because the root is the served directory, every tracked file there is
-downloadable from the site. That currently includes:
-
-| File | |
-|---|---|
-| `Rajesh Mehta Resumeh.docx` | **Contains the personal phone number, personal email, licence numbers, named client engagements and revenue figures that the Disclosure boundary below says are deliberately kept off the site.** |
-| `MehtaRR_Publications.pdf` | Bibliography — already public record. |
-| `Pharmatiya_Phase1_Summary.docx` | Internal Phase 1 summary. |
-| `Pharmatiya_Content_Request.pdf` | Client content request. |
-
-The resume in particular should be removed from the repository (or moved out
-of the published tree) before launch — publishing it undercuts the disclosure
-decision the rest of the site is built around.
 
 ## Before launch
 

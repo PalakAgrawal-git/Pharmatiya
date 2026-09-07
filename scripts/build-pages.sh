@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
-# Build the site and sync it into the repository root.
+# Build the site and publish it into docs/.
 #
 # GitHub Pages on this repo is set to "Deploy from a branch", which serves the
-# repository's own files rather than a build artifact. The Next.js build lands
-# in ./out, which is gitignored, so a branch deploy could never see it — the
-# repo root had no index.html, and Pages fell back to rendering README.md
-# through Jekyll. Copying the build to the root is what makes the branch
-# deploy serve the actual site.
+# repository's own files rather than a build artifact. next build writes to
+# ./out, which is gitignored, so a branch deploy can never see it.
 #
-# .nojekyll comes with it and matters: without it Pages runs Jekyll, and Jekyll
-# skips any directory beginning with an underscore, which would drop the whole
-# of _next/ and take every stylesheet and script with it.
+# The published directory is docs/ rather than the repository root. Serving
+# from the root meant every tracked file there was downloadable from the live
+# site — including the resume, which carries the personal contact details and
+# licence numbers the Disclosure boundary keeps off the site deliberately.
+# Pages source must be set to: Branch main, Folder /docs.
+#
+# .nojekyll ships with the build and is load-bearing: without it Pages runs
+# Jekyll, and Jekyll skips any directory beginning with an underscore, which
+# would drop the whole of _next/ and take every stylesheet and script with it.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -20,13 +23,17 @@ export NEXT_PUBLIC_PREVIEW="${NEXT_PUBLIC_PREVIEW:-true}"
 
 npm run build
 
-# Replace only the generated entries, so nothing in the source tree is touched.
+# Remove only what a previous build generated. The hand-authored documents in
+# docs/ — architecture, wireframes, roadmap, the content request — live in the
+# same directory and must survive.
 for entry in _next _not-found 404 about contact evidence nextgen-ai services; do
-  rm -rf "./$entry"
+  rm -rf "./docs/$entry"
 done
-rm -f ./index.html ./404.html ./robots.txt ./sitemap.xml ./index.txt ./__next.*.txt
+rm -f ./docs/index.html ./docs/404.html ./docs/robots.txt ./docs/sitemap.xml \
+      ./docs/index.txt ./docs/__next.*.txt ./docs/.nojekyll
 
-cp -r out/. .
+mkdir -p docs
+cp -r out/. docs/
 rm -rf ./out
 
-echo "Built site synced to the repository root."
+echo "Built site published to docs/."

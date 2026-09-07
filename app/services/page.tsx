@@ -3,10 +3,11 @@ import { services } from "@/lib/site";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { DataLabel, Pending } from "@/components/ui/DataLabel";
 import Button from "@/components/ui/Button";
+import ArrowLink from "@/components/ui/ArrowLink";
 import CTA from "@/components/sections/CTA";
 import Reveal from "@/components/motion/Reveal";
+import SectionLabel from "@/components/ui/SectionLabel";
 import ServiceProcess from "@/components/sections/ServiceProcess";
-import GraphGround from "@/components/layout/GraphGround";
 
 export const metadata = {
   title: "Services",
@@ -18,8 +19,7 @@ export const metadata = {
 export default function ServicesPage() {
   return (
     <>
-      <section className="relative overflow-hidden border-b border-rule">
-        <GraphGround />
+      <section className="border-b border-rule">
         <div className="shell relative grid gap-10 py-16 lg:grid-cols-[6fr_4fr] lg:py-24">
           <Reveal>
             <SectionHeader
@@ -38,7 +38,7 @@ export default function ServicesPage() {
             as="nav"
             delay={120}
             aria-label="On this page"
-            className="lift self-start border border-rule bg-surface p-5"
+            className="self-start border-t border-rule pt-5 lg:sticky lg:top-28"
           >
             <DataLabel as="h2" className="mb-3">
               On this page
@@ -113,12 +113,10 @@ export default function ServicesPage() {
                 <ServiceProcess stages={service.stages} />
               </div>
 
-              <Reveal className="mt-10 grid gap-8 border-t border-rule pt-8 sm:grid-cols-2">
+              <Reveal className="mt-16 grid gap-x-16 gap-y-10 border-t border-rule pt-10 sm:grid-cols-2">
                 <div>
-                  <DataLabel as="h4" className="mb-3">
-                    Methodology
-                  </DataLabel>
-                  <ul className="flex flex-col gap-1.5">
+                  <p className="label-sm mb-5 text-faint">Methodology</p>
+                  <ul className="flex flex-col gap-2.5">
                     {service.methodology.map((item) => (
                       <li key={item} className="text-small text-muted">
                         {item}
@@ -128,10 +126,8 @@ export default function ServicesPage() {
                 </div>
 
                 <div>
-                  <DataLabel as="h4" className="mb-3">
-                    Deliverables
-                  </DataLabel>
-                  <ul className="flex flex-col gap-1.5">
+                  <p className="label-sm mb-5 text-faint">Deliverables</p>
+                  <ul className="flex flex-col gap-2.5">
                     {service.deliverables.map((item) => (
                       <li key={item} className="text-small text-muted">
                         {item}
@@ -143,18 +139,12 @@ export default function ServicesPage() {
 
               <Reveal
                 delay={80}
-                className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-rule pt-8"
+                className="mt-14 flex flex-wrap items-center gap-x-10 gap-y-5 border-t border-rule pt-10"
               >
                 <Button href="/contact/">{service.cta}</Button>
-                <Link
-                  href="/evidence/"
-                  className="arrow-link font-mono text-small text-accent underline underline-offset-4"
-                >
-                  See the methods behind this{" "}
-                  <span className="arrow" aria-hidden="true">
-                    →
-                  </span>
-                </Link>
+                <ArrowLink href="/evidence/">
+                  See the methods behind this
+                </ArrowLink>
               </Reveal>
             </div>
           </section>

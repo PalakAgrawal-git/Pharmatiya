@@ -55,7 +55,7 @@ const longest = Math.max(
 );
 
 /**
- * The practice's chronology.
+ * The practice's chronology, set on a single vertical axis.
  *
  * Previously a ruled two-column list, which did nothing with the one thing
  * that makes this content a timeline: the eras are different lengths. Each
@@ -78,78 +78,49 @@ export default function Milestones() {
         const span =
           milestone.start && milestone.end ? milestone.end - milestone.start : null;
         const dated = span !== null;
-
         const last = index === milestones.length - 1;
 
         return (
           <li
             key={milestone.event}
-            className="fall-in relative grid gap-x-10 gap-y-2 py-6 pl-10 lg:grid-cols-[11rem_1fr]"
+            className="fall-in relative grid gap-x-14 gap-y-4 pb-16 pl-8 lg:grid-cols-[9rem_1fr] lg:pl-12"
             style={{ "--fall-delay": `${index * 120}ms` } as CSSProperties}
           >
-            {/* Square node, the same mark the forest plot uses for a point
-                estimate. Filled where the period is evidenced, hollow where
-                the date is still outstanding. */}
-            <span
-              aria-hidden="true"
-              className={`absolute left-0 top-[26px] h-[15px] w-[15px] rounded-[1px] border-2 border-accent ${
-                dated ? "bg-accent" : "bg-paper"
-              }`}
-            />
-
-            {/* One connector per gap rather than a single rule behind the
-                whole list: it runs from this node to the next one, so the
-                chronology ends exactly at the last node instead of trailing
-                past it. Each grows as its entry arrives, so the line reaches
-                a node just before the node appears. */}
+            {/* The axis is drawn per gap rather than as one rule behind the
+                list, so the chronology ends exactly at the last entry instead
+                of trailing past it into empty space. */}
             {!last && (
               <span
                 aria-hidden="true"
-                className="spine-draw absolute left-[7px] top-[41px] -bottom-[26px] w-px bg-rule-firm"
+                className="spine-draw absolute bottom-0 left-[3px] top-3 w-px bg-rule-firm"
                 style={
                   { "--spine-delay": `${index * 120 + 220}ms` } as CSSProperties
                 }
               />
             )}
+            <span
+              aria-hidden="true"
+              className={`absolute left-0 top-[7px] h-[7px] w-[7px] rounded-full ${
+                dated ? "bg-accent" : "border border-accent bg-paper"
+              }`}
+            />
 
             <div>
-              <p className="font-mono text-caption tabular text-accent">
-                {dated ? `${milestone.start}–${milestone.end}` : "Today"}
+              <p className="label tabular text-ink">
+                {dated ? milestone.start : "Today"}
               </p>
-
               {dated && (
-                <>
-                  {/* Width is the era's length against the longest era, so the
-                      bars are a scale rather than an ornament. */}
-                  {/* The wrapper caps the scale at the width the years
-                      column has on large screens. Without it the bars are a
-                      percentage of a full-width stacked column below lg, so
-                      the eight-year era stretched to 667px on a tablet and
-                      the comparison stopped reading as a scale. */}
-                  <span aria-hidden="true" className="mt-2.5 block max-w-[11rem]">
-                    <span
-                      className="grow-x block h-[3px] bg-accent/35"
-                      style={
-                        {
-                          width: `${(span / longest) * 100}%`,
-                          "--origin": "left",
-                          "--grow-delay": `${300 + index * 120}ms`,
-                        } as CSSProperties
-                      }
-                    />
-                  </span>
-                  <p className="mt-2 font-mono text-[0.8rem] tabular text-faint">
-                    {span} {span === 1 ? "year" : "years"}
-                  </p>
-                </>
+                <p className="label-sm mt-2.5 text-faint">
+                  {milestone.end} · {span} yrs
+                </p>
               )}
             </div>
 
-            <div>
-              <p className="text-[1.05rem] font-medium leading-snug">
+            <div className="max-w-[46ch]">
+              <h3 className="text-[clamp(1.15rem,1rem+0.5vw,1.45rem)] font-normal leading-[1.25]">
                 {milestone.event}
-              </p>
-              <p className="measure mt-2 text-small text-muted">
+              </h3>
+              <p className="mt-4 text-small leading-[1.65] text-muted">
                 {milestone.detail}
               </p>
             </div>

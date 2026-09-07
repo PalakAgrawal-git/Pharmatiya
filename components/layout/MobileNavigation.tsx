@@ -99,7 +99,7 @@ export default function MobileNavigation() {
         onClick={() => setOpen(true)}
         aria-expanded={open}
         aria-controls="mobile-menu"
-        className="flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-sm border border-rule bg-surface px-3 font-mono text-caption text-ink"
+        className="label-sm flex min-h-11 items-center gap-2 border-b border-ink/30 pb-0.5 text-ink"
       >
         <span aria-hidden="true" className="text-[1rem] leading-none">
           ☰
@@ -126,7 +126,7 @@ export default function MobileNavigation() {
                 close();
                 triggerRef.current?.focus();
               }}
-              className="ml-auto flex min-h-11 min-w-11 items-center justify-center rounded-sm border border-rule bg-surface px-3 font-mono text-caption text-ink"
+              className="label-sm ml-auto flex min-h-11 items-center border-b border-ink/30 pb-0.5 text-ink"
             >
               Close
             </button>

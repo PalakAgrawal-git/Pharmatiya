@@ -5,7 +5,6 @@ import Button from "@/components/ui/Button";
 import ContactRouting from "@/components/sections/ContactRouting";
 import DigestSignup from "@/components/sections/DigestSignup";
 import Reveal from "@/components/motion/Reveal";
-import GraphGround from "@/components/layout/GraphGround";
 
 export const metadata = {
   title: "Contact",
@@ -17,9 +16,8 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <>
-      <section className="relative overflow-hidden border-b border-rule">
-        <GraphGround />
-        <div className="shell relative section">
+      <section className="border-b border-rule">
+        <div className="shell section">
           <Reveal>
             <SectionHeader
               as="h1"
@@ -31,9 +29,18 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section id="enquiry" className="scroll-mt-24 border-b border-rule">
-        <div className="shell section">
-          <Reveal>
+      <section id="enquiry" className="scroll-mt-28 border-b border-rule">
+        <div className="shell section grid gap-x-16 gap-y-14 lg:grid-cols-12">
+          <Reveal className="lg:col-span-4">
+            <h2 className="text-[clamp(1.6rem,1.2rem+1.6vw,2.4rem)] leading-[1.1]">
+              Start a conversation
+            </h2>
+            <p className="mt-7 text-small leading-[1.7] text-muted">
+              Tell us what you are working on. The enquiry is routed to the
+              person who would run the work, not to a sales desk.
+            </p>
+          </Reveal>
+          <Reveal delay={120} className="lg:col-span-7 lg:col-start-6">
             <ContactRouting />
           </Reveal>
         </div>

@@ -1,52 +1,49 @@
-import Link from "next/link";
 import Button from "@/components/ui/Button";
+import ArrowLink from "@/components/ui/ArrowLink";
 import Reveal from "@/components/motion/Reveal";
 import KaplanMeierGraphic from "@/components/evidence/KaplanMeierGraphic";
-import GraphGround from "@/components/layout/GraphGround";
 
 /**
- * Homepage hero, composed as the opening spread of a report.
+ * The opening spread.
  *
- * The statement sits in a 7-column measure on the left and the figure runs in
- * the remaining 5 on the right, breaking the margin — an asymmetry that does
- * the work a centred hero cannot. The headline is set in the serif because
- * this is the one sentence carrying the identity; everything else on the page
- * is sans, which is what keeps the serif meaning something.
+ * Seven columns of article introduction, five of figure, and nothing between
+ * them but the grid — no card, no frame, no shadow. The figure is hung on a
+ * rule with its number and caption beneath, which is how a journal places a
+ * figure beside an introduction, and it is what makes the chart read as
+ * evidence rather than as an illustration of evidence.
  *
- * The figure is presented as a publication figure and not as a product
- * screenshot: no card, no frame, no shadow. Its caption carries a figure
- * number and the illustrative-data marker, exactly as it would in print.
+ * The headline is mostly sans; only the closing clause is in the serif. That
+ * single switch is the whole typographic idea of the site — the sentence
+ * turns at the moment it becomes a claim.
  *
- * On mobile the figure moves below the copy and the CTA, so the positioning
- * statement and the primary action are both reachable without scrolling.
+ * On mobile the figure moves below the copy and the action, so the
+ * positioning statement and the primary CTA are both reachable without
+ * scrolling on a 390px screen.
  */
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden border-b border-rule">
-      <GraphGround />
-
-      <div className="shell relative grid items-center gap-x-16 gap-y-14 py-20 lg:grid-cols-12 lg:py-32">
+    <section className="border-b border-rule">
+      <div className="shell grid grid-cols-1 items-end gap-x-16 gap-y-16 pb-24 pt-20 lg:grid-cols-12 lg:pb-32 lg:pt-28">
         <div className="lg:col-span-7">
           <Reveal>
-            <p className="label flex flex-wrap items-center gap-x-3 gap-y-1 text-accent">
-              <span>Health economics</span>
-              <span aria-hidden="true" className="text-rule-firm">/</span>
-              <span>Real-world evidence</span>
-              <span aria-hidden="true" className="text-rule-firm">/</span>
-              <span>Market access</span>
+            <p className="label-sm max-w-[26ch] leading-[1.9] text-faint">
+              Independent health economics
+              <br />&amp; outcomes research
             </p>
           </Reveal>
 
           <Reveal delay={90}>
-            <h1 className="display mt-8 text-[clamp(2.6rem,1.4rem+4.6vw,5rem)] leading-[1.02]">
+            <h1 className="mt-12 text-[clamp(2.5rem,1.2rem+4.8vw,4.75rem)] leading-[1.04]">
               Evidence that holds up
-              <br className="hidden sm:block" />{" "}
-              <span className="text-accent">when it is challenged.</span>
+              <br />
+              <span className="display italic text-accent">
+                when it is challenged.
+              </span>
             </h1>
           </Reveal>
 
           <Reveal delay={170}>
-            <p className="measure mt-9 text-lede leading-[1.5] text-muted">
+            <p className="measure mt-12 text-lede leading-[1.55] text-muted">
               Twenty-five years designing HEOR and RWE studies across payer,
               provider and claims data — protocol through interpretation, for
               commercial, medical affairs and market access teams.
@@ -54,32 +51,22 @@ export default function Hero() {
           </Reveal>
 
           <Reveal delay={250}>
-            <div className="mt-11 flex flex-wrap items-center gap-x-9 gap-y-4">
+            <div className="mt-14 flex flex-wrap items-center gap-x-10 gap-y-5">
               <Button href="/contact/">Book a consultation</Button>
-              <Link
-                href="/evidence/"
-                className="arrow-link text-small text-ink underline decoration-rule-firm underline-offset-[6px] transition-colors hover:decoration-accent"
-              >
-                See the published record{" "}
-                <span className="arrow" aria-hidden="true">
-                  →
-                </span>
-              </Link>
+              <ArrowLink href="/evidence/">View published record</ArrowLink>
             </div>
           </Reveal>
         </div>
 
-        <Reveal delay={210} className="lg:col-span-5 lg:-mr-[8%]">
+        <Reveal delay={210} className="lg:col-span-5">
           <figure>
             <KaplanMeierGraphic animate />
-            <figcaption className="mt-5 border-t border-rule pt-3">
-              <span className="label text-ink">Fig. 01</span>
-              <p className="mt-1.5 text-caption leading-relaxed text-muted">
-                Two-arm survival estimate over 24 months. Curves separate from
-                month 6 and do not converge.
-              </p>
-              <p className="label mt-2 text-[0.7rem] text-faint">
-                Illustrative data
+            <figcaption className="mt-6 border-t border-rule pt-4">
+              <p className="label-sm text-ink">Fig. 01 / Survival estimate</p>
+              <p className="label-sm mt-2 text-faint">24-month follow-up</p>
+              <p className="mt-4 max-w-[38ch] text-caption leading-relaxed text-muted">
+                Two arms, separating from month 6 and not converging.
+                Illustrative data.
               </p>
             </figcaption>
           </figure>

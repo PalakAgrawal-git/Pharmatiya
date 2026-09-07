@@ -18,8 +18,8 @@ import Wordmark from "./Wordmark";
  */
 export default function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-rule bg-paper/88 backdrop-blur-[8px] supports-[not(backdrop-filter:blur(0))]:bg-paper">
-      <div className="shell flex items-center gap-8 py-5">
+    <header className="sticky top-0 z-40 bg-paper/90 backdrop-blur-[10px] supports-[not(backdrop-filter:blur(0))]:bg-paper">
+      <div className="shell flex h-[4.75rem] items-center gap-8">
         <Link
           href="/"
           className="flex min-h-11 shrink-0 items-center"
@@ -32,11 +32,18 @@ export default function Header() {
         <MobileNavigation />
       </div>
 
-      {/* Reading progress, sitting on the header's own bottom rule. Pure CSS
-          scroll-linked animation — no listener, no state, no re-render. */}
+      {/* The bar carries no rule at the top of the page and grows one as
+          soon as it starts overlapping content, so the masthead sits on open
+          paper rather than in a boxed strip. Both this and the reading
+          progress are scroll-linked CSS animations — no listener, no state,
+          no re-render. */}
       <div
         aria-hidden="true"
-        className="read-progress absolute inset-x-0 bottom-[-1px] h-[2px] bg-accent"
+        className="header-rule absolute inset-x-0 bottom-0 h-px bg-rule"
+      />
+      <div
+        aria-hidden="true"
+        className="read-progress absolute inset-x-0 bottom-0 h-px bg-accent"
       />
     </header>
   );

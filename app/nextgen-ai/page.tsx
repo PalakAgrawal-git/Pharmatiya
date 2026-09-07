@@ -5,7 +5,7 @@ import Button from "@/components/ui/Button";
 import WorkflowDiagram from "@/components/sections/WorkflowDiagram";
 import StudyFinder from "@/components/sections/StudyFinder";
 import Reveal from "@/components/motion/Reveal";
-import GraphGround from "@/components/layout/GraphGround";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 export const metadata = {
   title: `${site.productName}`,
@@ -49,9 +49,8 @@ const trust = [
 export default function NextGenPage() {
   return (
     <>
-      <section className="relative overflow-hidden border-b border-rule">
-        <GraphGround />
-        <div className="shell relative section">
+      <section className="border-b border-rule">
+        <div className="shell section">
           <Reveal>
             <SectionHeader
               as="h1"
@@ -88,10 +87,9 @@ export default function NextGenPage() {
       <section className="border-b border-rule bg-sunk">
         <div className="shell section">
           <Reveal>
-            <DataLabel as="h2" className="mb-3 flex items-center gap-4">
+            <SectionLabel as="h2" index="01">
               Try it — search prior work
-              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
-            </DataLabel>
+            </SectionLabel>
             <p className="measure mb-6 text-muted">
               Feasibility starts with a question most teams cannot answer
               quickly: has this been looked at before, in which data? Type a
@@ -124,10 +122,9 @@ export default function NextGenPage() {
       <section className="border-b border-rule">
         <div className="shell section">
           <Reveal>
-            <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+            <SectionLabel as="h2" index="03">
               Where AI is used — and where it is not
-              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
-            </DataLabel>
+            </SectionLabel>
           </Reveal>
 
           {/* Deliberately unequal. The researcher column is wider, set on the
@@ -172,10 +169,9 @@ export default function NextGenPage() {
       <section className="border-b border-rule bg-sunk">
         <div className="shell section">
           <Reveal>
-            <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+            <SectionLabel as="h2" index="04">
               Trust
-              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
-            </DataLabel>
+            </SectionLabel>
           </Reveal>
 
           <div className="grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">

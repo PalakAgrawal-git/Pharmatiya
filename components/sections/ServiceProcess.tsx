@@ -6,54 +6,46 @@ type Stage = { label: string; detail: string };
 /**
  * How an engagement runs, stage by stage.
  *
- * This exists to stop Services being the homepage again. The homepage shows
- * what an engagement produces — forest plot, cohort attrition, cost-
- * effectiveness — and Services was showing two of those same three figures
- * renumbered, so a visitor who clicked through was shown the same charts a
- * second time. Results belong on Home and Evidence; this page is the only one
- * that answers "what actually happens if we hire you", and that is a process,
- * not a result.
+ * This exists to stop Services being the homepage again: the homepage shows
+ * what an engagement produces, and Services was showing two of the same three
+ * figures renumbered. Results belong on Home and Evidence; this page is the
+ * only one that answers "what actually happens if we hire you", and that is a
+ * process, not a result.
  *
- * The visual language is deliberately different from the other diagrams on
- * the site: no axes and no data, because there is none here to plot. A rail
- * with numbered gates, read left to right on desktop and top to bottom on
- * mobile — closer to a project plan than to a figure.
- *
- * Numbering is real information: these stages are sequential and each gates
- * the next, which is the case where numbered markers earn their place.
+ * Four numbers on four rules. Numbering is information here — the stages are
+ * sequential and each gates the next — which is the case where a numeral
+ * earns its place. No boxes: the rule and the number carry the structure, and
+ * the last stage takes a hollow marker, the endpoint convention the About
+ * timeline uses.
  */
 export default function ServiceProcess({ stages }: { stages: readonly Stage[] }) {
   return (
-    <Reveal as="ol" className="grid gap-px bg-rule sm:grid-cols-2 lg:grid-cols-4">
+    <Reveal as="ol" className="grid gap-x-12 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
       {stages.map((stage, index) => (
         <li
           key={stage.label}
-          className="fall-in relative bg-paper p-5"
+          className="fall-in border-t border-rule-firm pt-6"
           style={{ "--fall-delay": `${index * 110}ms` } as CSSProperties}
         >
-          {/* The gate marker. Filled for every stage but the last, which is
-              hollow — the same convention the timeline uses for an endpoint
-              rather than a step. */}
-          <span aria-hidden="true" className="mb-4 flex items-center gap-2">
+          <span className="flex items-center gap-3">
             <span
-              className={`size-2.5 shrink-0 ${
+              aria-hidden="true"
+              className={`h-[6px] w-[6px] rounded-full ${
                 index === stages.length - 1
-                  ? "border border-accent bg-paper"
+                  ? "border border-accent bg-transparent"
                   : "bg-accent"
               }`}
             />
-            <span className="h-px flex-1 bg-rule" />
+            <span className="label tabular text-faint">
+              {String(index + 1).padStart(2, "0")}
+            </span>
           </span>
 
-          <p className="font-mono text-caption text-faint">
-            {String(index + 1).padStart(2, "0")}
-          </p>
-
-          <h4 className="mt-1 text-[1.05rem] font-medium leading-tight">
+          <h4 className="mt-6 text-[1.2rem] font-normal leading-tight">
             {stage.label}
           </h4>
 
-          <p className="mt-2.5 text-small leading-[1.5] text-muted">
+          <p className="mt-4 text-small leading-[1.65] text-muted">
             {stage.detail}
           </p>
         </li>

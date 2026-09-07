@@ -7,7 +7,7 @@ import TherapeuticMatrix from "@/components/evidence/TherapeuticMatrix";
 import PublicationList from "@/components/evidence/PublicationList";
 import CTA from "@/components/sections/CTA";
 import Reveal from "@/components/motion/Reveal";
-import GraphGround from "@/components/layout/GraphGround";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 export const metadata = {
   title: "Evidence",
@@ -25,9 +25,8 @@ const methodGroups = [
 export default function EvidencePage() {
   return (
     <>
-      <section className="relative overflow-hidden border-b border-rule">
-        <GraphGround />
-        <div className="shell relative section">
+      <section className="border-b border-rule">
+        <div className="shell section">
           <Reveal>
             <SectionHeader
               as="h1"
@@ -51,10 +50,9 @@ export default function EvidencePage() {
       <section className="border-b border-rule bg-sunk">
         <div className="shell section">
           <Reveal>
-            <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+            <SectionLabel as="h2" index="01">
               Case studies
-              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
-            </DataLabel>
+            </SectionLabel>
           </Reveal>
           <Reveal delay={100}>
             <CaseStudies />
@@ -66,10 +64,9 @@ export default function EvidencePage() {
       <section className="border-b border-rule">
         <div className="shell section">
           <Reveal>
-            <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+            <SectionLabel as="h2" index="02">
               Dataset coverage
-              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
-            </DataLabel>
+            </SectionLabel>
           </Reveal>
           <Reveal delay={100}>
             <DatasetMap />
@@ -101,10 +98,9 @@ export default function EvidencePage() {
       <section className="border-b border-rule">
         <div className="shell section">
           <Reveal>
-            <DataLabel as="h2" className="mb-3 flex items-center gap-4">
+            <SectionLabel as="h2" index="04">
               The published record
-              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
-            </DataLabel>
+            </SectionLabel>
             <p className="measure mb-8 text-muted">
               Forty-seven publications, abstracts, posters, a patent and a book
               chapter authored or co-authored by our team between 2003 and
@@ -123,10 +119,9 @@ export default function EvidencePage() {
       <section className="border-b border-rule bg-sunk">
         <div className="shell section">
           <Reveal>
-            <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+            <SectionLabel as="h2" index="05">
               Methods &amp; analytical capability
-              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
-            </DataLabel>
+            </SectionLabel>
           </Reveal>
 
           <div className="grid gap-8 sm:grid-cols-3">

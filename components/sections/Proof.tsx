@@ -1,59 +1,53 @@
-import Link from "next/link";
 import { proofFigures } from "@/lib/site";
 import Reveal from "@/components/motion/Reveal";
 import CountUp from "@/components/motion/CountUp";
+import SectionLabel from "@/components/ui/SectionLabel";
+import ArrowLink from "@/components/ui/ArrowLink";
 
 /**
- * The record — a statistics strip, not four cards.
+ * The record — two rows of two, on paper.
  *
- * These are the strongest credibility signals on the site, so they are set at
- * genuine display scale on the one inverted ground the homepage uses. The
- * figures sit on a single hairline with the label beneath each, which is how a
- * results table is set; boxing them would make four small things out of one
- * large one.
+ * Four boxes would make four small things out of one large one, and a dark
+ * band here would spend the site's single tonal break before the section that
+ * needs it. So this stays on paper and gets scale and air instead: numerals
+ * at display size against a hairline, the label set small and cool beneath,
+ * and a great deal of room between them.
  *
- * Numerals are in the serif. It is the only place on the page besides the
- * hero where it appears, and large numerals are what it is for.
+ * Two rows rather than four columns is deliberate. At four across, each
+ * figure gets a quarter of the measure and reads as a statistic in a row of
+ * statistics; at two across each one is given a half-spread and reads as a
+ * fact worth stopping on.
  */
 export default function Proof() {
   return (
-    <section className="bg-inverse text-white">
+    <section className="border-b border-rule">
       <div className="shell section">
         <Reveal>
-          <h2 className="label flex items-center gap-5 text-white/45">
+          <SectionLabel as="h2" index="01">
             The record
-            <span aria-hidden="true" className="rule-grow h-px flex-1 bg-white/15" />
-          </h2>
+          </SectionLabel>
         </Reveal>
 
-        <dl className="mt-16 grid grid-cols-2 gap-x-10 gap-y-14 lg:mt-20 lg:grid-cols-4">
+        <dl className="mt-20 grid gap-x-20 gap-y-20 sm:grid-cols-2 lg:mt-28 lg:gap-y-28">
           {proofFigures.map((figure, index) => (
-            <Reveal
-              key={figure.label}
-              delay={index * 90}
-              className="border-t border-white/20 pt-6"
-            >
-              <dt className="display text-[clamp(2.8rem,1.7rem+4vw,5rem)] leading-[0.88] tracking-[-0.03em] tabular text-white">
-                <CountUp value={figure.value} />
-              </dt>
-              <dd className="mt-5 max-w-[22ch] text-small leading-[1.5] text-white/55">
-                {figure.label}
-              </dd>
+            <Reveal key={figure.label} delay={index * 90}>
+              <div className="border-t border-ink/25 pt-7">
+                <dt className="text-[clamp(4rem,2rem+8vw,8.5rem)] font-normal leading-[0.82] tracking-[-0.04em] tabular text-ink">
+                  <CountUp value={figure.value} />
+                </dt>
+                <dd className="label-sm mt-8 max-w-[24ch] leading-[1.9] text-faint">
+                  {figure.label}
+                </dd>
+              </div>
             </Reveal>
           ))}
         </dl>
 
         <Reveal delay={400}>
-          <div className="mt-20 border-t border-white/15 pt-7">
-            <Link
-              href="/evidence/"
-              className="arrow-link text-small text-white underline decoration-white/30 underline-offset-[6px] transition-colors hover:decoration-white"
-            >
-              Every entry, searchable, with sources{" "}
-              <span className="arrow" aria-hidden="true">
-                →
-              </span>
-            </Link>
+          <div className="mt-24">
+            <ArrowLink href="/evidence/">
+              Every entry, searchable, with sources
+            </ArrowLink>
           </div>
         </Reveal>
       </div>

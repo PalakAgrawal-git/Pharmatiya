@@ -7,8 +7,8 @@ import TeamRoster from "@/components/sections/TeamRoster";
 import Milestones from "@/components/sections/Milestones";
 import CTA from "@/components/sections/CTA";
 import Reveal from "@/components/motion/Reveal";
+import SectionLabel from "@/components/ui/SectionLabel";
 import CountUp from "@/components/motion/CountUp";
-import GraphGround from "@/components/layout/GraphGround";
 
 export const metadata = {
   title: "About",
@@ -42,9 +42,8 @@ const expertise = [
 export default function AboutPage() {
   return (
     <>
-      <section className="relative overflow-hidden border-b border-rule">
-        <GraphGround />
-        <div className="shell relative section">
+      <section className="border-b border-rule">
+        <div className="shell section">
           <Reveal>
             <SectionHeader
               as="h1"
@@ -108,10 +107,9 @@ export default function AboutPage() {
       <section className="border-b border-rule">
         <div className="shell section">
           <Reveal>
-            <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+            <SectionLabel as="h2" index="02">
               How we got here
-              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
-            </DataLabel>
+            </SectionLabel>
           </Reveal>
 
 <Milestones />
@@ -121,10 +119,9 @@ export default function AboutPage() {
       <section id="team" className="scroll-mt-8 border-b border-rule bg-sunk">
         <div className="shell section">
           <Reveal>
-            <DataLabel as="h2" className="mb-3 flex items-center gap-4">
+            <SectionLabel as="h2" index="03">
               Who we are
-              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
-            </DataLabel>
+            </SectionLabel>
             <p className="measure mb-8 text-muted">
               Credentials matter to the people who commission this work, so we
               list them.
@@ -139,10 +136,9 @@ export default function AboutPage() {
       <section className="border-b border-rule">
         <div className="shell section">
           <Reveal>
-            <DataLabel as="h2" className="mb-8 flex items-center gap-4">
+            <SectionLabel as="h2" index="04">
               What we do
-              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
-            </DataLabel>
+            </SectionLabel>
           </Reveal>
 
           <div className="grid gap-8 sm:grid-cols-2">

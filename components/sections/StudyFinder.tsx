@@ -100,13 +100,13 @@ export default function StudyFinder() {
             value={term}
             onChange={(event) => setTerm(event.target.value)}
             placeholder="A condition, a data type, a method — e.g. infection"
-            className="min-h-12 w-full rounded-[2px] border border-rule bg-surface px-3.5 py-3 text-body text-ink placeholder:text-faint focus:border-accent"
+            className="min-h-12 w-full rounded-none border-0 border-b border-rule-firm bg-transparent px-0 py-3 text-body text-ink transition-colors placeholder:text-faint focus:border-accent focus:outline-none"
           />
         </div>
 
         <button
           type="submit"
-          className="inline-flex min-h-12 items-center justify-center rounded-[2px] border border-accent bg-accent px-6 font-medium text-paper transition-colors hover:border-accent-deep hover:bg-accent-deep"
+          className="inline-flex min-h-12 items-center justify-center gap-3 rounded-[4px] border border-ink bg-ink px-6 text-small font-medium text-paper transition-colors hover:border-accent hover:bg-accent"
         >
           Search
         </button>
@@ -144,7 +144,7 @@ export default function StudyFinder() {
               matching “{query}”
             </p>
 
-            <div className="scroll-x border border-rule">
+            <div className="scroll-x border-t border-rule">
               <table className="w-full min-w-[44rem] border-collapse text-small">
                 <thead>
                   <tr className="bg-sunk">
@@ -204,7 +204,7 @@ export default function StudyFinder() {
                   type="button"
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page === 0}
-                  className="inline-flex min-h-11 items-center rounded-[2px] border border-rule bg-surface px-4 font-mono text-caption text-ink disabled:opacity-40"
+                  className="label-sm inline-flex min-h-11 items-center border-b border-rule-firm pb-0.5 text-ink transition-colors hover:border-accent disabled:border-transparent disabled:opacity-40"
                 >
                   Previous
                 </button>
@@ -215,7 +215,7 @@ export default function StudyFinder() {
                   type="button"
                   onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
                   disabled={page >= pageCount - 1}
-                  className="inline-flex min-h-11 items-center rounded-[2px] border border-rule bg-surface px-4 font-mono text-caption text-ink disabled:opacity-40"
+                  className="label-sm inline-flex min-h-11 items-center border-b border-rule-firm pb-0.5 text-ink transition-colors hover:border-accent disabled:border-transparent disabled:opacity-40"
                 >
                   Next
                 </button>

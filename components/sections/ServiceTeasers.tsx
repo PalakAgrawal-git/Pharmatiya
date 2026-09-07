@@ -1,120 +1,154 @@
-import Link from "next/link";
 import { services } from "@/lib/site";
 import Reveal from "@/components/motion/Reveal";
+import SectionLabel from "@/components/ui/SectionLabel";
+import ArrowLink from "@/components/ui/ArrowLink";
 import ForestPlot from "@/components/evidence/ForestPlot";
 import CohortDiagram from "@/components/evidence/CohortDiagram";
 import CostEffectivenessPlane from "@/components/evidence/CostEffectivenessPlane";
 
-const graphics = [
+/**
+ * Three services, three different compositions.
+ *
+ * This is the section that most made the page read as a template, because
+ * three identical rows are three cards however they are styled. Each now has
+ * its own arrangement:
+ *
+ *   01  text 5 / figure 6, the number oversized behind the heading
+ *   02  figure 6 first / text 5, the mirror
+ *   03  heading 4 wide, body and figure sharing 7, a third structure
+ *
+ * The figures are the identity, so they are given real width and hung on a
+ * rule with a figure number — a journal plate, not a widget. They drop below
+ * `lg` rather than scaling: a forest plot at 390px is illegible, and shipping
+ * it as decoration costs bandwidth for no comprehension.
+ */
+const figures = [
   {
     node: <ForestPlot animate />,
     number: "02",
-    caption: "Subgroup hazard ratios with 95% confidence intervals.",
+    title: "Adjusted hazard ratios",
+    sub: "95% confidence interval",
   },
   {
-    node: <CohortDiagram animate className="mx-auto max-w-[15rem]" />,
+    node: <CohortDiagram animate className="mx-auto max-w-[17rem]" />,
     number: "03",
-    caption: "Attrition from source population to analytic cohort.",
+    title: "Cohort attrition",
+    sub: "Source population to analytic cohort",
   },
   {
     node: <CostEffectivenessPlane animate />,
     number: "04",
-    caption: "Bootstrap replicates against a willingness-to-pay threshold.",
+    title: "Cost-effectiveness plane",
+    sub: "Bootstrap replicates vs. threshold",
   },
 ];
 
-/**
- * Three chapters, each opened by its own number.
- *
- * The row alternates 7/5 and 5/7 across the twelve-column grid, so the eye
- * crosses the page rather than running down a single edge. The service number
- * is set large in the margin as a chapter mark — the one piece of publication
- * apparatus doing structural work here, since these are sequential and a
- * visitor needs to know there are three.
- *
- * Each row leads on `teaser`, not `problem`: the Services page opens every one
- * of its sections with `problem` set large, and printing the same sentences
- * here made the two pages read as one page twice.
- *
- * Graphics are dropped below `lg` rather than scaled — a forest plot at 375px
- * is illegible, and shipping it as decoration costs bandwidth for no
- * comprehension.
- */
+function Plate({ index }: { index: number }) {
+  const f = figures[index];
+  return (
+    <figure>
+      {f.node}
+      <figcaption className="mt-6 border-t border-rule pt-4">
+        <p className="label-sm text-ink">
+          Fig. {f.number} / {f.title}
+        </p>
+        <p className="label-sm mt-2 text-faint">{f.sub}</p>
+      </figcaption>
+    </figure>
+  );
+}
+
 export default function ServiceTeasers() {
+  const [a, b, c] = services;
+
   return (
     <section className="border-b border-rule">
       <div className="shell section">
         <Reveal>
-          <h2 className="label flex items-center gap-5 text-faint">
+          <SectionLabel as="h2" index="02">
             What we do
-            <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
-          </h2>
+          </SectionLabel>
         </Reveal>
 
-        <div className="mt-16 flex flex-col gap-24 lg:mt-24 lg:gap-36">
-          {services.map((service, index) => {
-            const graphic = graphics[index];
-            const flipped = index % 2 === 1;
+        {/* 01 — text left, figure right, numeral set large behind the head. */}
+        <div className="mt-20 grid gap-x-16 gap-y-12 lg:mt-28 lg:grid-cols-12">
+          <Reveal className="relative lg:col-span-5">
+            <span aria-hidden="true" className="ghost absolute -left-2 -top-16 hidden lg:block">
+              01
+            </span>
+            <h3 className="relative text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.05]">
+              {a.name}
+            </h3>
+            <p className="mt-8 text-lede leading-[1.55] text-muted">{a.teaser}</p>
+            <ul className="mt-8 flex flex-col gap-2 border-t border-rule pt-5">
+              {a.methodology.slice(0, 3).map((m) => (
+                <li key={m} className="label-sm text-faint">
+                  {m}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-9">
+              <ArrowLink href={`/services/#${a.id}`}>See this service</ArrowLink>
+            </div>
+          </Reveal>
+          <Reveal delay={120} className="hidden lg:col-span-6 lg:col-start-7 lg:block">
+            <Plate index={0} />
+          </Reveal>
+        </div>
 
-            return (
-              <div
-                key={service.id}
-                className="grid items-center gap-x-16 gap-y-10 lg:grid-cols-12"
-              >
-                <Reveal
-                  className={
-                    flipped
-                      ? "lg:order-2 lg:col-span-6 lg:col-start-7"
-                      : "lg:order-1 lg:col-span-6"
-                  }
-                >
-                  <p className="label text-faint">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
+        {/* 02 — mirrored: the figure leads. */}
+        <div className="mt-28 grid gap-x-16 gap-y-12 lg:mt-40 lg:grid-cols-12">
+          <Reveal className="hidden lg:col-span-6 lg:block">
+            <Plate index={1} />
+          </Reveal>
+          <Reveal delay={120} className="relative lg:col-span-5 lg:col-start-8">
+            <span aria-hidden="true" className="ghost absolute -left-2 -top-16 hidden lg:block">
+              02
+            </span>
+            <h3 className="relative max-w-[12ch] text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.05]">
+              {b.name}
+            </h3>
+            <p className="mt-8 text-lede leading-[1.55] text-muted">{b.teaser}</p>
+            <ul className="mt-8 flex flex-col gap-2 border-t border-rule pt-5">
+              {b.methodology.slice(0, 3).map((m) => (
+                <li key={m} className="label-sm text-faint">
+                  {m}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-9">
+              <ArrowLink href={`/services/#${b.id}`}>See this service</ArrowLink>
+            </div>
+          </Reveal>
+        </div>
 
-                  <h3 className="mt-4 max-w-[14ch] text-[clamp(1.75rem,1.3rem+1.9vw,2.75rem)] font-medium leading-[1.06]">
-                    {service.name}
-                  </h3>
-
-                  <p className="measure mt-6 text-lede leading-[1.5] text-muted">
-                    {service.teaser}
-                  </p>
-
-                  <Link
-                    href={`/services/#${service.id}`}
-                    className="arrow-link mt-8 inline-block text-small text-ink underline decoration-rule-firm underline-offset-[6px] transition-colors hover:decoration-accent"
-                  >
-                    See this service{" "}
-                    <span className="arrow" aria-hidden="true">
-                      →
-                    </span>
-                  </Link>
-                </Reveal>
-
-                <Reveal
-                  delay={120}
-                  className={`hidden lg:block ${
-                    flipped
-                      ? "lg:order-1 lg:col-span-5 lg:col-start-1"
-                      : "lg:order-2 lg:col-span-5 lg:col-start-8"
-                  }`}
-                >
-                  <figure>
-                    {graphic.node}
-                    <figcaption className="mt-5 border-t border-rule pt-3">
-                      <span className="label text-ink">Fig. {graphic.number}</span>
-                      <p className="mt-1.5 text-caption leading-relaxed text-muted">
-                        {graphic.caption}
-                      </p>
-                      <p className="label mt-2 text-[0.7rem] text-faint">
-                        Illustrative data
-                      </p>
-                    </figcaption>
-                  </figure>
-                </Reveal>
-              </div>
-            );
-          })}
+        {/* 03 — a third structure: heading alone in four, body and figure
+            sharing the remaining seven. */}
+        <div className="mt-28 grid gap-x-16 gap-y-12 lg:mt-40 lg:grid-cols-12">
+          <Reveal className="relative lg:col-span-4">
+            <span aria-hidden="true" className="ghost absolute -left-2 -top-16 hidden lg:block">
+              03
+            </span>
+            <h3 className="relative max-w-[10ch] text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.05]">
+              {c.name}
+            </h3>
+          </Reveal>
+          <Reveal delay={100} className="lg:col-span-3 lg:col-start-6">
+            <p className="text-lede leading-[1.55] text-muted">{c.teaser}</p>
+            <ul className="mt-8 flex flex-col gap-2 border-t border-rule pt-5">
+              {c.methodology.slice(0, 3).map((m) => (
+                <li key={m} className="label-sm text-faint">
+                  {m}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-9">
+              <ArrowLink href={`/services/#${c.id}`}>See this service</ArrowLink>
+            </div>
+          </Reveal>
+          <Reveal delay={180} className="hidden lg:col-span-4 lg:col-start-9 lg:block">
+            <Plate index={2} />
+          </Reveal>
         </div>
       </div>
     </section>

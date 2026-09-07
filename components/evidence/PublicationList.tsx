@@ -151,55 +151,69 @@ export default function PublicationList() {
           economics.
         </p>
       ) : (
-        <ol className="mt-8 border-t border-rule">
-          {shown.map((item) => (
-            <li
-              key={item.id}
-              className="group grid gap-2 border-b border-rule py-6 transition-colors duration-200 hover:bg-surface lg:grid-cols-[8rem_minmax(0,1fr)] lg:gap-10"
-            >
-              <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1 lg:flex-col lg:items-start lg:gap-1.5">
-                <span className="label tabular text-ink">
-                  {item.year ?? "—"}
-                </span>
-                <span className="label text-[0.7rem] text-faint">
-                  {TYPE_LABEL[item.type] ?? item.type}
-                </span>
-              </div>
+        <ol className="mt-10 border-t border-rule">
+          {shown.map((item) => {
+            const Row = item.link ? "a" : "div";
+            return (
+              <li key={item.id} className="border-b border-rule">
+                {/* The whole row is the target where a source exists, so the
+                    hit area matches the visual row rather than a small link at
+                    the end of it. Hover is a hairline of background, the
+                    citation moving three pixels, and the arrow arriving —
+                    nothing that moves the layout. */}
+                <Row
+                  {...(item.link
+                    ? {
+                        href: item.link,
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                      }
+                    : {})}
+                  className={`group grid gap-x-10 gap-y-3 px-1 py-7 no-underline transition-colors duration-200 lg:grid-cols-[6rem_minmax(0,1fr)_9rem_1.5rem] ${
+                    item.link ? "hover:bg-surface focus-visible:bg-surface" : ""
+                  }`}
+                >
+                  <span className="label tabular text-ink">
+                    {item.year ?? "—"}
+                  </span>
 
-              <div className="min-w-0">
-                <p className="break-words text-[1rem] leading-[1.55] text-ink">
-                  {item.citation}
-                </p>
+                  <span className="min-w-0">
+                    <span className="block break-words text-[1.0625rem] leading-[1.5] text-ink transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px]">
+                      {item.citation}
+                    </span>
+                    {item.topics.length > 0 && (
+                      <span className="mt-3 flex flex-wrap gap-x-6 gap-y-1">
+                        {item.topics.map((topic) => (
+                          <span key={topic} className="label-sm text-faint">
+                            {topic}
+                          </span>
+                        ))}
+                      </span>
+                    )}
+                  </span>
 
-                <div className="mt-2 flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1">
-                  {item.venue && (
-                    <span className="label text-[0.7rem] text-muted">
-                      {item.venue}
-                    </span>
-                  )}
-                  {item.topics.map((topic) => (
-                    <span
-                      key={topic}
-                      className="label text-[0.7rem] text-faint"
-                    >
-                      {topic}
-                    </span>
-                  ))}
+                  <span className="label-sm self-start text-faint lg:text-right">
+                    {item.venue ?? TYPE_LABEL[item.type] ?? item.type}
+                  </span>
+
+                  {/* Only rendered where there is something to open. The
+                      grid column still reserves the space, so rows with and
+                      without a source stay aligned. */}
                   {item.link && (
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="label text-[0.7rem] text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent"
+                    <span
+                      aria-hidden="true"
+                      className="self-start text-small text-faint/60 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px] group-hover:text-accent group-focus-visible:translate-x-[3px] group-focus-visible:-translate-y-[3px] group-focus-visible:text-accent"
                     >
-                      Source <span aria-hidden="true">↗</span>
-                      <span className="sr-only"> (opens in a new tab)</span>
-                    </a>
+                      ↗
+                    </span>
                   )}
-                </div>
-              </div>
-            </li>
-          ))}
+                  {item.link && (
+                    <span className="sr-only"> (source, opens in a new tab)</span>
+                  )}
+                </Row>
+              </li>
+            );
+          })}
         </ol>
       )}
 
@@ -212,7 +226,7 @@ export default function PublicationList() {
             type="button"
             onClick={() => setPage((p) => Math.max(0, p - 1))}
             disabled={page === 0}
-            className="inline-flex min-h-11 items-center rounded-[2px] border border-rule bg-surface px-4 font-mono text-caption text-ink disabled:opacity-40"
+            className="label-sm inline-flex min-h-11 items-center border-b border-rule-firm pb-0.5 text-ink transition-colors hover:border-accent disabled:border-transparent disabled:opacity-40"
           >
             Previous
           </button>
@@ -223,7 +237,7 @@ export default function PublicationList() {
             type="button"
             onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
             disabled={page >= pageCount - 1}
-            className="inline-flex min-h-11 items-center rounded-[2px] border border-rule bg-surface px-4 font-mono text-caption text-ink disabled:opacity-40"
+            className="label-sm inline-flex min-h-11 items-center border-b border-rule-firm pb-0.5 text-ink transition-colors hover:border-accent disabled:border-transparent disabled:opacity-40"
           >
             Next
           </button>

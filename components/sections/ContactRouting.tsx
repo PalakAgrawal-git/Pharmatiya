@@ -62,10 +62,13 @@ export default function ContactRouting() {
             return (
               <label
                 key={option.id}
-                className={`cursor-pointer rounded-[2px] border p-4 transition-colors ${
-                  selected
-                    ? "border-accent bg-accent/6 shadow-[inset_0_0_0_1px_var(--color-accent)]"
-                    : "border-rule bg-surface hover:border-rule-firm"
+                /* Three boxes for three choices was the last card set on the
+                   page. The options now sit on a shared rule and the selected
+                   one is marked by that rule thickening to the accent — the
+                   convention the navigation and the archive tabs already use,
+                   so selection reads the same way across the site. */
+                className={`cursor-pointer border-t-2 pt-5 transition-colors duration-200 ${
+                  selected ? "border-accent" : "border-rule hover:border-rule-firm"
                 }`}
               >
                 <input
@@ -77,13 +80,17 @@ export default function ContactRouting() {
                   className="sr-only"
                 />
                 <span
-                  className={`block font-mono text-caption font-medium uppercase tracking-[0.08em] ${
-                    selected ? "text-accent" : "text-ink"
+                  className={`label-sm block ${
+                    selected ? "text-accent" : "text-faint"
                   }`}
                 >
                   {option.label}
                 </span>
-                <span className="mt-1.5 block text-small text-muted">
+                <span
+                  className={`mt-3 block text-small leading-[1.55] ${
+                    selected ? "text-ink" : "text-muted"
+                  }`}
+                >
                   {option.description}
                 </span>
               </label>
@@ -135,7 +142,7 @@ export default function ContactRouting() {
         {/* Conditional fields. Announced on change; focus is never stolen
             mid-typing. */}
         <div
-          className="flex flex-col gap-5 border-l-2 border-accent pl-5"
+          className="flex flex-col gap-6 border-l border-rule pl-8"
           aria-live="polite"
         >
           {route === "new" && (

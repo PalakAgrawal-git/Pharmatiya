@@ -12,22 +12,21 @@ type Props = {
   disabled?: boolean;
   full?: boolean;
   external?: boolean;
-  /** Appends a trailing arrow that shifts on hover. */
   arrow?: boolean;
   className?: string;
 };
 
 /**
- * A compact control, not a pill.
+ * Nearly square, dark, and used sparingly.
  *
- * Radius is 3px — enough that the corner is not sharp, far short of the
- * rounded-rectangle vocabulary that makes a page read as a product site. The
- * fill is ink rather than accent: the accent is spent on emphasis inside the
- * content, and a dark button reads as more considered than a coloured one.
- * The arrow moves 3px on hover; nothing scales, nothing glows.
+ * Radius is 4px, which is enough to soften the corner and nothing like the
+ * pill vocabulary of a product site. Most actions on this site are not
+ * buttons at all — a secondary action is a text link with an arrow, because
+ * putting every action in a filled control flattens the hierarchy between
+ * them. Reserve this for the one thing you want a visitor to do on a page.
  */
 const base =
-  "group inline-flex items-center justify-center gap-2.5 rounded-[--radius-sm] border font-medium no-underline transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-40";
+  "group inline-flex items-center justify-center gap-3 rounded-[4px] border text-small font-medium no-underline transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-40";
 
 const variants: Record<Variant, string> = {
   primary: "border-ink bg-ink text-paper hover:border-accent hover:bg-accent",
@@ -36,8 +35,8 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  sm: "min-h-10 px-4 text-small",
-  md: "min-h-12 px-6 text-small",
+  sm: "min-h-10 px-4",
+  md: "min-h-[3.25rem] px-7",
 };
 
 export default function Button({
@@ -52,13 +51,7 @@ export default function Button({
   arrow = true,
   className = "",
 }: Props) {
-  const classes = [
-    base,
-    variants[variant],
-    sizes[size],
-    full ? "w-full" : "",
-    className,
-  ]
+  const classes = [base, variants[variant], sizes[size], full ? "w-full" : "", className]
     .filter(Boolean)
     .join(" ");
 
@@ -68,9 +61,9 @@ export default function Button({
       {arrow && (
         <span
           aria-hidden="true"
-          className="translate-x-0 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px]"
+          className="text-[0.9em] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[4px] group-hover:-translate-y-[2px]"
         >
-          →
+          ↗
         </span>
       )}
     </>

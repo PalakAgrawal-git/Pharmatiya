@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Sans, Instrument_Serif, IBM_Plex_Mono } from "next/font/google";
+import { IBM_Plex_Sans, Newsreader, IBM_Plex_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
@@ -7,33 +7,34 @@ import { site } from "@/lib/site";
 import "./globals.css";
 
 /**
- * Three faces, each with one job.
+ * Three faces, each with one job, and the contrast between them is the
+ * hierarchy — which is why none of them is ever set heavier than 600.
  *
- * Instrument Sans carries navigation, body, data and labels — a grotesque
- * with enough character to avoid reading as a default UI font, and enough
- * restraint to disappear behind the content.
+ * IBM Plex Sans carries navigation, body, forms, listings and most UI. It is
+ * a typeface designed for technical documentation, which is exactly the
+ * register: precise without being cold.
  *
- * Instrument Serif appears only at display sizes: the hero statement, the
- * pull-quote, chapter openings. One weight, because it is only ever set
- * large. Making the whole site serif would read as a magazine rather than a
- * research practice.
+ * Newsreader is the editorial serif and appears only at display size, on
+ * selected lines — a hero clause, a pull-quote, one section opening. Setting
+ * the site in it would make a magazine; using it once a page makes it mean
+ * something.
  *
- * IBM Plex Mono is the scientific voice and is deliberately kept: figure
- * numbers, axis labels and section markers are where the site gets its
- * publication register, and a mono face is what makes them read as apparatus
- * rather than decoration.
+ * IBM Plex Mono is the scientific voice, used sparingly: figure numbers,
+ * section marks, publication years, axis labels. It is the detail that makes
+ * the page read as a document rather than a screen.
  */
-const instrumentSans = Instrument_Sans({
+const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
-  variable: "--font-instrument-sans",
+  variable: "--font-plex-sans",
   display: "swap",
 });
 
-const instrumentSerif = Instrument_Serif({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-instrument-serif",
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
+  variable: "--font-newsreader",
   display: "swap",
 });
 
@@ -144,7 +145,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSans.variable} ${instrumentSerif.variable} ${plexMono.variable}`}
+      className={`${plexSans.variable} ${newsreader.variable} ${plexMono.variable}`}
     >
       <body className="flex min-h-screen flex-col">
 

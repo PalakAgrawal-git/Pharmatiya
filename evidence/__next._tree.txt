@@ -1,6 +1,7 @@
-:HL["/Pharmatiya/_next/static/chunks/0z4z98n_nyxom.css","style"]
+:HL["/Pharmatiya/_next/static/chunks/21dcpd6qd3r7b.css","style"]
+:HL["/Pharmatiya/_next/static/media/03fc1b4a8d284b5e-s.p.0wiir8udbzjvx.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/5f402bd2d8eef81a-s.p.40bho2kviej2o.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/9433d1a810498265-s.p.1hij5ex6k3v9q.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/Pharmatiya/_next/static/media/99e609270109b47d-s.p.40sczeszzbjw1.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/Pharmatiya/_next/static/media/e41d5df559864f9e-s.p.1g73gv09-xcb6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/Pharmatiya/_next/static/media/effe91970fc4db64-s.p.0oace-s_gkfks.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/Pharmatiya/_next/static/media/f06bf9da926bae75-s.p.2874ccu1_u7jf.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"evidence","param":null,"prefetchHints":4160,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"RdH_00miC4fjt3tSlKdpW"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"evidence","param":null,"prefetchHints":4160,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"S8IHx3w3fm4oPitSjntEd"}

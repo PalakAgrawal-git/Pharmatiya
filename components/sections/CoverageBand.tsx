@@ -1,6 +1,7 @@
-import Link from "next/link";
 import { datasetCoverage } from "@/lib/site";
 import Reveal from "@/components/motion/Reveal";
+import SectionLabel from "@/components/ui/SectionLabel";
+import ArrowLink from "@/components/ui/ArrowLink";
 
 /**
  * Dataset coverage as an index, not a card set.
@@ -18,45 +19,40 @@ export default function CoverageBand() {
     <section className="border-b border-rule bg-sunk">
       <div className="shell section">
         <div className="grid gap-x-16 gap-y-12 lg:grid-cols-12">
-          <Reveal className="lg:col-span-4">
-            <h2 className="label flex items-center gap-4 text-faint">
+          <Reveal className="lg:col-span-3">
+            <SectionLabel as="h2" index="03" rule={false}>
               Data coverage
-              <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule-firm" />
-            </h2>
-            <p className="mt-7 text-[clamp(1.4rem,1.1rem+1.3vw,2rem)] font-medium leading-[1.14]">
+            </SectionLabel>
+            <p className="mt-10 text-[clamp(1.5rem,1.1rem+1.5vw,2.25rem)] leading-[1.12]">
               Payer, provider and claims data — for twenty-five years.
             </p>
             <p className="measure mt-6 text-muted">
               If your question sits in one of these sources, we have almost
               certainly answered a version of it before.
             </p>
-            <Link
-              href="/evidence/"
-              className="arrow-link mt-8 inline-block text-small text-ink underline decoration-rule-firm underline-offset-[6px] transition-colors hover:decoration-accent"
-            >
-              Full coverage and therapeutic areas{" "}
-              <span className="arrow" aria-hidden="true">
-                →
-              </span>
-            </Link>
+            <div className="mt-10">
+              <ArrowLink href="/evidence/">
+                Full coverage and therapeutic areas
+              </ArrowLink>
+            </div>
           </Reveal>
 
-          <div className="flex flex-col lg:col-span-7 lg:col-start-6">
+          <div className="flex flex-col lg:col-span-8 lg:col-start-5">
             {datasetCoverage.map((group, index) => (
               <Reveal
                 key={group.group}
                 delay={index * 110}
-                className="grid gap-x-10 gap-y-4 border-b border-rule-firm py-8 first:border-t first:pt-0 lg:grid-cols-[13rem_1fr] lg:first:pt-8"
+                className="grid gap-x-12 gap-y-5 border-b border-rule py-9 first:border-t lg:grid-cols-[14rem_1fr]"
               >
-                <div>
-                  <p className="label text-faint">
+                <div className="flex items-baseline gap-4">
+                  <span className="label tabular text-accent">
                     {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <h3 className="mt-2 text-[1.15rem] font-medium leading-tight">
+                  </span>
+                  <h3 className="text-[1.2rem] font-normal leading-tight">
                     {group.group}
                   </h3>
                 </div>
-                <ul className="flex flex-col gap-2">
+                <ul className="flex flex-wrap gap-x-10 gap-y-2">
                   {group.types.map((type) => (
                     <li key={type} className="text-small text-muted">
                       {type}

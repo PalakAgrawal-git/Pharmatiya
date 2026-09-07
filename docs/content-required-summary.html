@@ -1,0 +1,307 @@
+<title>Pharmatiya Content Request</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=IBM+Plex+Sans:wght@400;450;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --paper:#ffffff; --sunk:#eef1ef; --band:#f7f9f8;
+  --ink:#151b1a; --muted:#4d5854; --faint:#78837f;
+  --rule:#d2d9d5; --rule-firm:#aeb8b3;
+  --accent:#0e5a5e; --now:#8c3a2b; --soon:#6d5215;
+  --display:'Spectral','Sitka Text',Cambria,Georgia,serif;
+  --text:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Cascadia Mono',Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:15px;line-height:1.5}
+.page{width:min(100% - 2.5rem,54rem);margin-inline:auto;padding-block:2.5rem 4rem}
+
+header{display:flex;flex-wrap:wrap;align-items:flex-end;gap:1rem 2rem;border-bottom:2px solid var(--ink);padding-bottom:1rem;margin-bottom:1.1rem}
+.kicker{font-family:var(--mono);font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin:0 0 .5rem}
+h1{font-family:var(--display);font-weight:600;font-size:2.3rem;line-height:1.02;letter-spacing:-.02em;margin:0}
+.meta{margin-left:auto;font-family:var(--mono);font-size:.68rem;color:var(--faint);text-align:right;line-height:1.7}
+.meta b{color:var(--muted);font-weight:500}
+
+.intro{font-size:.95rem;color:var(--muted);max-width:74ch;margin:0 0 1.3rem}
+.intro b{color:var(--ink);font-weight:600}
+
+.key{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.55rem 0;margin-bottom:1.5rem;font-family:var(--mono);font-size:.66rem;color:var(--faint)}
+.key span{display:inline-flex;align-items:center;gap:.4rem}
+.pip{width:.55rem;height:.55rem;border-radius:50%;display:inline-block}
+.p-now{background:var(--now)} .p-soon{background:var(--soon)} .p-opt{background:var(--rule-firm)}
+
+h2{font-family:var(--mono);font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);font-weight:500;
+   display:flex;align-items:center;gap:.8rem;margin:1.5rem 0 .3rem}
+h2::after{content:"";flex:1;height:1px;background:var(--rule)}
+h2:first-of-type{margin-top:0}
+
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+td{padding:.42rem .5rem .42rem 0;border-bottom:1px solid var(--rule);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.box{width:1.4rem;padding-left:0}
+.tick{display:block;width:.85rem;height:.85rem;border:1.4px solid var(--rule-firm);border-radius:2px;margin-top:.22rem}
+td.what{font-weight:600;width:16rem}
+td.what span{display:block;font-weight:400;color:var(--muted);font-size:.82rem;margin-top:.1rem}
+td.need{color:var(--muted)}
+td.pri{width:1.2rem;padding-right:0}
+td.pri .pip{margin-top:.35rem}
+
+.band{background:var(--band);border:1px solid var(--rule);border-left:3px solid var(--accent);padding:.75rem .95rem;margin:1.4rem 0;font-size:.88rem;color:var(--muted)}
+.band b{color:var(--ink)}
+
+.foot{margin-top:1.6rem;padding-top:.9rem;border-top:2px solid var(--ink);display:flex;flex-wrap:wrap;gap:.6rem 2rem;align-items:baseline}
+.foot p{margin:0;font-size:.85rem;color:var(--muted);max-width:62ch}
+.foot .sig{margin-left:auto;font-family:var(--mono);font-size:.72rem;color:var(--faint);text-align:right;line-height:1.6}
+
+@media print{
+  @page{size:A4;margin:12mm 12mm 12mm}
+  html,body{background:#fff;font-size:9.6pt}
+  .page{width:100%;padding:0}
+  *,*::before,*::after{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  h1{font-size:21pt}
+  tr,td{break-inside:avoid}
+  h2{break-after:avoid}
+  .band,.foot{break-inside:avoid}
+}
+</style>
+
+<div class="page">
+
+<header>
+  <div>
+    <p class="kicker">Pharmatiya Health &middot; Website</p>
+    <h1>What we need from you</h1>
+  </div>
+  <div class="meta">
+    <b>Vaelo Creative</b><br>
+    7 September 2026<br>
+    31 items
+  </div>
+</header>
+
+<p class="intro">
+  The website is <b>built and working</b> &mdash; every page is finished. The items below are the ones only Pharmatiya
+  can supply. Where we have drafted copy ourselves, we need you to <b>confirm it is accurate</b>, not write it.
+  Nothing is published without your sign-off, and nothing has been invented to fill a gap: where material is
+  missing, that section carries a visible marker or is left out.
+</p>
+
+<div class="key">
+  <span><i class="pip p-now"></i> Needed now &mdash; holds up more than one page</span>
+  <span><i class="pip p-soon"></i> Needed before launch</span>
+  <span><i class="pip p-opt"></i> Optional &mdash; section omitted if not supplied</span>
+</div>
+
+<h2>Decisions &mdash; one-line answers, no files</h2>
+<table>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">The product's public name</td>
+    <td class="need">Your brief says <b>NextGen AI</b>; your site's menu says <b>RWE&nbsp;-&nbsp;Builder</b>. One name, please &mdash; it sets the menu, the page address and every button.</td>
+    <td class="pri"><i class="pip p-now"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Dataset name clearance</td>
+    <td class="need">Yes or no to naming each publicly: Aetna/CVS, Cigna, Select Health, MedStar, Express Scripts, Komodo, Intermountain. Without clearance we show data <em>types</em> only.</td>
+    <td class="pri"><i class="pip p-now"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Where enquiries should go</td>
+    <td class="need">Destination inbox for new clients, existing clients, and press. One address for all three is a fine answer.</td>
+    <td class="pri"><i class="pip p-now"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Compliance review turnaround</td>
+    <td class="need">How many days an internal review of a factual claim takes. We need the timing, not the review itself.</td>
+    <td class="pri"><i class="pip p-now"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">The Outcomes Research division<span>which organisation</span></td>
+    <td class="need">Your strongest single credential. Unnamed, the homepage currently reads &ldquo;pending clearance&rdquo; in the middle of it.</td>
+    <td class="pri"><i class="pip p-now"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Hosting, and where forms send</td>
+    <td class="need">The site can go anywhere. It needs a form handler &mdash; we will recommend one. <b>Until this lands the contact form and Digest signup are deliberately disabled.</b></td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Public email address</td>
+    <td class="need">Confirm <b>admin@pharmatiya.net</b> is right, or give us another.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Role title &amp; founding year</td>
+    <td class="need">Neither document states a role at Pharmatiya, or the year it was founded. Both currently show a &ldquo;to confirm&rdquo; marker.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Patent number</td>
+    <td class="need">Your r&eacute;sum&eacute; gives two: <b>8,744,872</b> (twice) and <b>10489717</b> (once). We used the first. If both are real, say so and the figures gain &ldquo;2 US patents&rdquo;.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Calendar booking link</td>
+    <td class="need">If you want visitors to book themselves. Without it the panel becomes a &ldquo;request a time&rdquo; field instead.</td>
+    <td class="pri"><i class="pip p-opt"></i></td>
+  </tr>
+</table>
+
+<h2>Copy for you to check &mdash; we wrote it, you confirm it</h2>
+<table>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">The three service descriptions</td>
+    <td class="need">Problem, approach, methods, deliverables, and the four-stage &ldquo;how it runs&rdquo; sequence for each. The stages are newly drafted and most likely to need correcting.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Full deliverables per service</td>
+    <td class="need">What a client actually receives at the end. Currently three or four items each, flagged &ldquo;to be confirmed&rdquo;.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Therapeutic areas</td>
+    <td class="need">Twelve are listed, each backed by a citation from your bibliography. Tell us which to add where your experience is broader.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Quarterly Insights Digest</td>
+    <td class="need">Frequency, subject matter, who writes it. This will be its first working signup.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Engagement model</td>
+    <td class="need">How projects start, run and conclude &mdash; and pricing if you will publish it. Omitted entirely rather than shipped with placeholder figures.</td>
+    <td class="pri"><i class="pip p-opt"></i></td>
+  </tr>
+</table>
+
+<h2>NextGen AI &mdash; the least complete page, and your biggest differentiator</h2>
+<table>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">How patient data is handled</td>
+    <td class="need">Your precise, internally reviewed wording. The page states no PHI is uploaded; this is the claim most likely to be challenged in procurement.</td>
+    <td class="pri"><i class="pip p-now"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">What the product is<span>one sentence</span></td>
+    <td class="need">The page opens with a headline we wrote and a &ldquo;definition to be confirmed&rdquo; marker beneath it.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">The model, and its version</td>
+    <td class="need">Your brief asks for disclosure rather than a disclaimer, so there is a slot for naming it &mdash; and for what happens when it changes.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">What the model does / what a researcher does</td>
+    <td class="need">Both columns are drafted. Confirm, correct, and add anything missing.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">What the tool does <em>not</em> do</td>
+    <td class="need">Three or four points. Stating limits plainly is a trust asset with this audience, not a weakness.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Product screenshots</td>
+    <td class="need">PNG, 1600px wide or more, real data blurred. We will not mock up a fake interface.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">The study list</td>
+    <td class="need">CSV export of the <span style="font-family:var(--mono)">studylist</span> sheet, or read access. We rebuilt the search &mdash; it works now, but indexes nothing without the data.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+</table>
+
+<h2>Assets</h2>
+<table>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Team photographs</td>
+    <td class="need">Headshots, 1000px+ short edge. Phone photos in good light are fine. <b>No stock portraits will be substituted</b> &mdash; without these the section ships as names and credentials in type only.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Logo as a vector file</td>
+    <td class="need">SVG, AI or EPS. The current logo is a low-resolution JPEG and looks soft on modern screens. Confirms your exact brand colours too.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Typeface approval</td>
+    <td class="need">We will propose two or three. Roughly $200&ndash;500 one-time, paid by Pharmatiya.</td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">The rest of the team</td>
+    <td class="need">Name, credentials, role and two or three sentences each. Any number.</td>
+    <td class="pri"><i class="pip p-opt"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Office or working photography</td>
+    <td class="need">One or two images, landscape, 2000px+. Not posed.</td>
+    <td class="pri"><i class="pip p-opt"></i></td>
+  </tr>
+</table>
+
+<h2>Evidence &mdash; the two that matter most</h2>
+<table>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">Two or three case studies<span>anonymised</span></td>
+    <td class="need">The challenge, dataset, method, approach and outcome. No client names needed. <b>If writing them is the blocker, we will run a 90-minute interview and draft them for your approval.</b></td>
+    <td class="pri"><i class="pip p-soon"></i></td>
+  </tr>
+  <tr>
+    <td class="box"><i class="tick"></i></td>
+    <td class="what">One sample deliverable</td>
+    <td class="need">A redacted synopsis or report, so a prospective client can judge the output before commissioning any.</td>
+    <td class="pri"><i class="pip p-opt"></i></td>
+  </tr>
+</table>
+
+<div class="band">
+  <b>If you only do five things:</b> dataset clearance (15 minutes, unblocks three pages) &middot; hosting and form
+  destination (the site can then receive an enquiry at all) &middot; product name and NextGen AI detail &middot;
+  team photographs and the vector logo &middot; case studies.
+</div>
+
+<div class="band" style="border-left-color:var(--now)">
+  <b>Separately, and worth acting on either way:</b> the Google Sheets API key for your study list is readable in
+  your current homepage's page source. Anyone can view it and query the sheet. We would rotate and restrict it.
+</div>
+
+<div class="foot">
+  <p>Everything here fails safely. If an item never arrives the site still launches &mdash; that section carries a
+  visible marker or is removed. What you lose is persuasive weight, not a working website.</p>
+  <p class="sig">Vaelo Creative<br>hello@vaelocreative.com</p>
+</div>
+
+</div>

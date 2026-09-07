@@ -1,0 +1,495 @@
+<title>Pharmatiya Content Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;450;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root {
+  --paper:#f2f4f2; --surface:#fbfcfb; --sunk:#e7ebe8;
+  --ink:#151b1a; --muted:#55625e; --faint:#7d8985;
+  --rule:#d2d9d5; --rule-firm:#b6c0bb;
+  --accent:#0e5a5e; --block:#8c3a2b; --warn:#7d5f18; --ok:#46605a;
+  --display:'Spectral','Sitka Text',Cambria,Georgia,serif;
+  --text:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Cascadia Mono',Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0f1413; --surface:#161d1b; --sunk:#1c2523;
+  --ink:#e6ebe8; --muted:#a3b0ab; --faint:#7c8a88;
+  --rule:#2b3633; --rule-firm:#3d4a46;
+  --accent:#5fb8bb; --block:#d98a76; --warn:#c9a44e; --ok:#8fada6;
+}}
+:root[data-theme="dark"]{
+  --paper:#0f1413; --surface:#161d1b; --sunk:#1c2523;
+  --ink:#e6ebe8; --muted:#a3b0ab; --faint:#7c8a88;
+  --rule:#2b3633; --rule-firm:#3d4a46;
+  --accent:#5fb8bb; --block:#d98a76; --warn:#c9a44e; --ok:#8fada6;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.6}
+.page{width:min(100% - 2.5rem,62rem);margin-inline:auto;padding-block:3.5rem 6rem}
+
+header{border-bottom:2px solid var(--ink);padding-bottom:1.6rem;margin-bottom:2.5rem}
+.kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin:0 0 1rem}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,1.4rem+2.8vw,3.2rem);line-height:1.05;letter-spacing:-.02em;margin:0 0 .7rem;text-wrap:balance}
+.standfirst{font-family:var(--display);font-style:italic;font-size:clamp(1.05rem,1rem+.5vw,1.25rem);color:var(--muted);max-width:52ch;margin:0 0 1.3rem}
+.meta{display:flex;flex-wrap:wrap;gap:.3rem 2rem;font-family:var(--mono);font-size:.74rem;color:var(--faint)}
+.meta b{color:var(--muted);font-weight:500}
+
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));gap:1.5rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding-block:1.4rem;margin-bottom:2.5rem}
+.summary b{display:block;font-family:var(--display);font-size:2rem;line-height:1;font-weight:600;color:var(--accent)}
+.summary span{display:block;font-family:var(--mono);font-size:.66rem;color:var(--faint);margin-top:.4rem}
+
+section{margin-bottom:3.2rem}
+.sec-head{display:flex;align-items:baseline;gap:1rem;border-bottom:1px solid var(--rule-firm);padding-bottom:.6rem;margin-bottom:.5rem}
+.sec-head h2{font-family:var(--display);font-weight:600;font-size:clamp(1.35rem,1.15rem+.9vw,1.85rem);margin:0;letter-spacing:-.015em}
+.sec-num{font-family:var(--mono);font-size:.78rem;color:var(--accent);flex:none}
+.sec-note{font-size:.92rem;color:var(--muted);margin:0 0 1.4rem;max-width:62ch}
+
+.item{border-bottom:1px solid var(--rule);padding:1.15rem 0;display:grid;gap:.5rem 1.5rem}
+@media(min-width:52rem){.item{grid-template-columns:1.6rem 1fr 13rem}}
+.item:last-child{border-bottom:0}
+.tick{width:1.05rem;height:1.05rem;border:1.5px solid var(--rule-firm);border-radius:2px;margin-top:.35rem}
+.item h3{font-family:var(--text);font-size:1.02rem;font-weight:600;margin:0 0 .3rem}
+.item p{margin:0 0 .4rem;font-size:.92rem;color:var(--muted);max-width:60ch}
+.item .where{font-family:var(--mono);font-size:.72rem;color:var(--faint)}
+.item .where b{color:var(--muted);font-weight:500}
+.item .spec{font-size:.86rem;color:var(--muted);background:var(--sunk);border-left:2px solid var(--rule-firm);padding:.45rem .7rem;margin-top:.5rem;max-width:60ch}
+.item .spec b{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:.15rem}
+.side{font-family:var(--mono);font-size:.72rem;color:var(--muted);line-height:1.5}
+.side .no{display:block;color:var(--block);margin-top:.35rem}
+
+.tag{display:inline-block;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.16em .45em;border:1px solid currentColor;border-radius:2px;white-space:nowrap;margin-left:.4rem;vertical-align:.1em}
+.t-block{color:var(--block)}
+.t-soon{color:var(--warn)}
+.t-later{color:var(--ok)}
+
+.note{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--block);padding:1rem 1.2rem;margin:1.5rem 0;font-size:.94rem}
+.note .lbl{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--block);display:block;margin-bottom:.35rem}
+.note p:last-child{margin-bottom:0}
+.note--ok{border-left-color:var(--accent)}
+.note--ok .lbl{color:var(--accent)}
+
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:34rem}
+.scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--surface);margin-bottom:1.2rem}
+th,td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:500;background:var(--sunk)}
+tbody tr:last-child td{border-bottom:0}
+
+.close{margin-top:2.5rem;padding-top:1.5rem;border-top:2px solid var(--ink);font-family:var(--display);font-size:1.08rem;max-width:58ch}
+.sig{margin-top:1.4rem;font-size:.85rem;color:var(--faint)}
+</style>
+
+<div class="page">
+
+<header>
+  <p class="kicker">Pharmatiya Health &middot; Website build</p>
+  <h1>What we still need from you</h1>
+  <p class="standfirst">The site is built. These are the items only Pharmatiya can supply &mdash; each one mapped to exactly where it appears and what happens if it does not arrive.</p>
+  <div class="meta">
+    <span><b>Prepared by</b> Vaelo Creative</span>
+    <span><b>Date</b> 7 September 2026</span>
+    <span><b>Items</b> 31</span>
+  </div>
+</header>
+
+<div class="summary">
+  <div><b>10</b><span>decisions &mdash; answers only</span></div>
+  <div><b>9</b><span>copy to verify</span></div>
+  <div><b>6</b><span>NextGen AI details</span></div>
+  <div><b>6</b><span>assets &amp; media</span></div>
+</div>
+
+<div class="note note--ok">
+  <span class="lbl">How to read this</span>
+  <p>Nothing below is blocking the build &mdash; every page is finished and working. What these items change is whether a section ships <strong>complete</strong>, ships with a visible placeholder, or is <strong>left out entirely</strong>. Where we have drafted copy ourselves, we need you to confirm it is accurate, not to write it. Nothing gets published without your sign-off.</p>
+</div>
+
+<!-- ============ 01 DECISIONS ============ -->
+<section>
+  <div class="sec-head"><span class="sec-num">01</span><h2>Decisions</h2></div>
+  <p class="sec-note">No files or writing needed &mdash; each of these is a one-line answer, and several unblock more than one page.</p>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>The product's public name <span class="tag t-block">Blocking</span></h3>
+      <p>Your brief calls it <strong>NextGen AI</strong>; your current site's menu calls it <strong>RWE&nbsp;-&nbsp;Builder</strong>. We need one name for public use.</p>
+      <p class="where"><b>Appears in</b> main menu &middot; page address /nextgen-ai/ &middot; every button on that page &middot; homepage panel &middot; the redirect list from the old site</p>
+    </div>
+    <div class="side">One word answer.<span class="no">Until then: we are guessing.</span></div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Dataset name clearance <span class="tag t-block">Blocking</span></h3>
+      <p>Your current About page names these organisations. We need a yes or no on each for <em>public</em> use: Aetna&nbsp;/&nbsp;CVS, Cigna, Select Health, MedStar, Express Scripts, Komodo, Intermountain Healthcare.</p>
+      <p class="where"><b>Appears in</b> Evidence &rarr; dataset coverage &middot; About &rarr; data we work in &middot; Home &rarr; coverage band</p>
+    </div>
+    <div class="side">Yes / no per name.<span class="no">Without it: we show data <em>types</em> only. Every name stays hidden.</span></div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Where enquiries should go <span class="tag t-block">Blocking</span></h3>
+      <p>Three routes are built &mdash; new client, existing client, press &amp; partners. We need the destination inbox for each. One address for all three is a valid answer.</p>
+      <p class="where"><b>Appears in</b> Contact &rarr; enquiry routing</p>
+    </div>
+    <div class="side">Up to 3 email addresses.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Compliance review turnaround <span class="tag t-block">Blocking</span></h3>
+      <p>How long does an internal review of a factual claim take? We need the <em>timing</em>, not the review itself, so the NextGen AI trust statements can be scheduled rather than rushed.</p>
+      <p class="where"><b>Appears in</b> NextGen AI &rarr; trust section</p>
+    </div>
+    <div class="side">A number of days.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Hosting, and where the forms should send <span class="tag t-soon">Before launch</span></h3>
+      <p>The site is not tied to Squarespace and can go anywhere. It also needs somewhere to send form submissions &mdash; a form service, or your host's built-in handler. We are happy to recommend one.</p>
+      <p class="where"><b>Appears in</b> Contact form &middot; Quarterly Insights Digest signup</p>
+      <div class="spec"><b>Currently</b> Both the contact form and the Digest signup are <strong>deliberately disabled</strong>, with a visible note saying so. A form that looks like it sends but does not is the exact failure on your current site, and we will not repeat it.</div>
+    </div>
+    <div class="side">Provider name.<span class="no">Without it: no enquiry can be received.</span></div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Public email address</h3>
+      <p>Your footer currently shows <strong>admin@pharmatiya.net</strong>. Confirm that is the right public address, or give us another.</p>
+      <p class="where"><b>Appears in</b> footer &middot; Contact &middot; every &ldquo;email us&rdquo; link</p>
+    </div>
+    <div class="side">Confirm or replace.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Calendar link for direct booking</h3>
+      <p>If you want visitors to book a consultation themselves, we need a scheduling link. Roughly $10&ndash;15 a month for a tool if you do not already have one.</p>
+      <p class="where"><b>Appears in</b> Contact &rarr; book directly</p>
+      <div class="spec"><b>If not supplied</b> The panel becomes a &ldquo;request a time&rdquo; field on the form instead. Nothing breaks.</div>
+    </div>
+    <div class="side">A URL, or &ldquo;skip it&rdquo;.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Role title</h3>
+      <p>Neither document you sent states a role at Pharmatiya, so the About page currently reads <strong>Principal</strong> with a visible &ldquo;title to confirm&rdquo; marker rather than us inventing one.</p>
+      <p class="where"><b>Appears in</b> About &rarr; who we are</p>
+    </div>
+    <div class="side">A job title.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>The year Pharmatiya was founded</h3>
+      <p>Every other era on the About timeline is dated from your published record. The founding entry is the only one still marked &ldquo;date to provide&rdquo;.</p>
+      <p class="where"><b>Appears in</b> About &rarr; how we got here</p>
+    </div>
+    <div class="side">A year.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>The patent number discrepancy</h3>
+      <p>Your r&eacute;sum&eacute; gives two different numbers. The certifications section and the publications PDF both say <strong>US&nbsp;8,744,872</strong>; the career highlights say <strong>10489717</strong>. We used the one two sources agree on.</p>
+      <p class="where"><b>Appears in</b> About &rarr; credits &middot; Evidence &rarr; published record</p>
+      <div class="spec"><b>If these are two separate patents</b> Send confirmation and the proof figures gain &ldquo;2 US patents&rdquo;.</div>
+    </div>
+    <div class="side">Confirm which, or both.</div>
+  </div>
+</section>
+
+<!-- ============ 02 COPY ============ -->
+<section>
+  <div class="sec-head"><span class="sec-num">02</span><h2>Copy for you to verify</h2></div>
+  <p class="sec-note">We have written all of this. We need you to confirm it is accurate &mdash; particularly anything describing method or capability, where we have inferred from your documents rather than been told.</p>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>The three service descriptions <span class="tag t-soon">Before launch</span></h3>
+      <p>For each of Evidence generation, Real-world data analytics, and Access &amp; value strategy: the problem statement, our approach, the methodology list, and the four-stage &ldquo;how it runs&rdquo; sequence.</p>
+      <p class="where"><b>Appears in</b> Services &middot; Home &rarr; what we do</p>
+      <div class="spec"><b>Note</b> The &ldquo;how it runs&rdquo; stages are newly drafted and describe how you work. They are the item most likely to need correcting.</div>
+    </div>
+    <div class="side">Read and mark up.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Full deliverables list per service</h3>
+      <p>Each service currently lists three or four deliverables, drafted from your documents and flagged &ldquo;full list to be confirmed&rdquo;. What does a client actually receive at the end?</p>
+      <p class="where"><b>Appears in</b> Services &rarr; deliverables</p>
+    </div>
+    <div class="side">A list per service.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Engagement model or pricing guidance</h3>
+      <p>How projects typically start, run and conclude &mdash; and price ranges if you are willing to publish them.</p>
+      <p class="where"><b>Appears in</b> Services &rarr; engagement model</p>
+      <div class="spec"><b>If not supplied</b> The section is removed at launch. It will not ship with placeholder pricing.</div>
+    </div>
+    <div class="side">A short description, or &ldquo;omit&rdquo;.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>The Outcomes Research division &mdash; which organisation <span class="tag t-block">Blocking</span></h3>
+      <p>The strongest single credential on the site is that you built an organic Outcomes Research division on the payer side. We cannot name the organisation without clearance, so the homepage currently reads &ldquo;name pending client clearance&rdquo; in the middle of your best claim.</p>
+      <p class="where"><b>Appears in</b> Home &rarr; pull-quote &middot; About</p>
+    </div>
+    <div class="side">Cleared name, or confirm we keep it unnamed.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Therapeutic areas beyond the published record</h3>
+      <p>The Evidence page lists twelve areas, each backed by a citation count from your bibliography. If your experience is broader &mdash; and it almost certainly is &mdash; tell us which areas to add.</p>
+      <p class="where"><b>Appears in</b> Evidence &rarr; therapeutic expertise &middot; proof figure &ldquo;12 therapeutic areas&rdquo;</p>
+    </div>
+    <div class="side">A list.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Quarterly Insights Digest &mdash; what it actually is</h3>
+      <p>Frequency, subject matter, and who writes it. Your current site mentions the Digest twice and captures nothing; this will be its first working signup.</p>
+      <p class="where"><b>Appears in</b> Contact &middot; footer signup</p>
+    </div>
+    <div class="side">Two or three sentences.</div>
+  </div>
+</section>
+
+<!-- ============ 03 NEXTGEN ============ -->
+<section>
+  <div class="sec-head"><span class="sec-num">03</span><h2>NextGen AI</h2></div>
+  <p class="sec-note">This page is the least complete on the site, because almost everything on it is a factual claim about your product that only you can make. It is also your biggest differentiator, so it is worth the time.</p>
+
+  <div class="note">
+    <span class="lbl">Why this page is different</span>
+    <p>Buyers in a regulated field read AI claims adversarially. Every statement here needs to be one you would defend in a procurement review &mdash; which is why the page is built around trust rather than features, and why we will not draft these claims for you.</p>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>What the product actually is, in one sentence <span class="tag t-soon">Before launch</span></h3>
+      <p>The page currently opens with a headline we wrote and a visible &ldquo;precise product definition to be confirmed&rdquo; marker underneath it.</p>
+      <p class="where"><b>Appears in</b> NextGen AI &rarr; opening</p>
+    </div>
+    <div class="side">One sentence.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>What the model does, and what a researcher does</h3>
+      <p>We have drafted both columns &mdash; the model drafts structure, summarises literature, proposes cohort definitions; the researcher approves the question, validates methods, signs off output. Confirm or correct, and add anything missing.</p>
+      <p class="where"><b>Appears in</b> NextGen AI &rarr; where AI is used</p>
+    </div>
+    <div class="side">Two lists.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Exactly how patient data is handled <span class="tag t-block">Blocking</span></h3>
+      <p>The page states that no PHI is uploaded. We need your precise wording, reviewed internally &mdash; this is the single claim most likely to be challenged.</p>
+      <p class="where"><b>Appears in</b> NextGen AI &rarr; trust</p>
+    </div>
+    <div class="side">Reviewed wording.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>The underlying model and version</h3>
+      <p>Your brief asks for disclosure rather than a disclaimer, so the page has a slot for naming the model. We need the name and version, and a commitment on what happens when it changes.</p>
+      <p class="where"><b>Appears in</b> NextGen AI &rarr; trust &rarr; model disclosed</p>
+    </div>
+    <div class="side">Model name + version.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>What the tool does <em>not</em> do</h3>
+      <p>Stating limits plainly is a trust asset with this audience, not a weakness. The section exists and is empty.</p>
+      <p class="where"><b>Appears in</b> NextGen AI &rarr; limitations</p>
+    </div>
+    <div class="side">Three or four points.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Product screenshots</h3>
+      <p>The page holds a marked empty panel where the interface should be. We will not mock up a fake interface.</p>
+      <p class="where"><b>Appears in</b> NextGen AI &rarr; opening panel</p>
+      <div class="spec"><b>Format</b> PNG, at least 1600px wide, taken at a normal browser size. Blur or replace any real patient or client data before sending.</div>
+    </div>
+    <div class="side">1&ndash;3 images.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>The study list <span class="tag t-soon">Before launch</span></h3>
+      <p>We rebuilt the keyword search from your current homepage &mdash; it works now, where the live one does not. It currently indexes <strong>zero studies</strong>, because we do not have the data.</p>
+      <p class="where"><b>Appears in</b> NextGen AI &rarr; search prior work</p>
+      <div class="spec"><b>Format</b> Either export the <code>studylist</code> sheet as CSV and send it, or give us read access to the Google Sheet. <strong>Please also rotate the API key</strong> currently embedded in your live homepage &mdash; anyone viewing the page source can read it and query the sheet.</div>
+    </div>
+    <div class="side">CSV or sheet access.<span class="no">Without it: the search finds nothing.</span></div>
+  </div>
+</section>
+
+<!-- ============ 04 ASSETS ============ -->
+<section>
+  <div class="sec-head"><span class="sec-num">04</span><h2>Assets &amp; media</h2></div>
+  <p class="sec-note">The site is built to degrade honestly &mdash; where an asset is missing, the space holds with a marked panel rather than filling with stock. That is deliberate, but it is not how you want to launch.</p>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Team photographs <span class="tag t-soon">Before launch</span></h3>
+      <p>Real headshots of the people who do the work. The referral visitor &mdash; someone who arrived because a colleague recommended you &mdash; answers &ldquo;is this a real firm?&rdquo; visually in about a second.</p>
+      <p class="where"><b>Appears in</b> About &rarr; who we are</p>
+      <div class="spec"><b>Format</b> JPG or PNG, at least 1000px on the short edge, plain or working background. Phone photos in good light are fine. <strong>No stock portraits will be substituted</strong> &mdash; without these the section ships as names and credentials in type only.</div>
+    </div>
+    <div class="side">One per person.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Office or working photography</h3>
+      <p>One or two images of the environment &mdash; a desk, a screen with analysis on it, the office. Not posed.</p>
+      <p class="where"><b>Appears in</b> About &rarr; opening panel</p>
+      <div class="spec"><b>Format</b> JPG, at least 2000px wide, landscape.</div>
+    </div>
+    <div class="side">1&ndash;2 images.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>The rest of the team</h3>
+      <p>Name, post-nominals, role and two or three sentences each. The page is built to take any number &mdash; adding someone is one entry in one file.</p>
+      <p class="where"><b>Appears in</b> About &rarr; who we are</p>
+    </div>
+    <div class="side">Per person.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Your logo as a vector file <span class="tag t-soon">Before launch</span></h3>
+      <p>The logo on your current site is a low-resolution JPEG. It looks soft on modern screens, which costs you credibility at exactly the moment a buyer is forming an impression.</p>
+      <p class="where"><b>Appears in</b> header &middot; footer &middot; browser tab icon</p>
+      <div class="spec"><b>Format</b> SVG, AI or EPS. Whoever designed it will have the original.</div>
+    </div>
+    <div class="side">One file.<span class="no">Currently: text wordmark stands in.</span></div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Typeface decision</h3>
+      <p>The site is set in a placeholder pairing. A licensed display face is what stops it looking like every other template &mdash; we will propose two or three options.</p>
+      <p class="where"><b>Appears in</b> every page</p>
+      <div class="spec"><b>Cost</b> Roughly $200&ndash;500 one-time, paid by Pharmatiya. Swapping it once licensed is a one-line change.</div>
+    </div>
+    <div class="side">Approve an option.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Brand colours</h3>
+      <p>The palette was built to sit with your existing identity, but we matched it by eye from a compressed JPEG. The vector logo will let us confirm the exact values.</p>
+      <p class="where"><b>Appears in</b> every page</p>
+    </div>
+    <div class="side">Comes with the logo.</div>
+  </div>
+</section>
+
+<!-- ============ 05 EVIDENCE ============ -->
+<section>
+  <div class="sec-head"><span class="sec-num">05</span><h2>Evidence &mdash; the two big ones</h2></div>
+  <p class="sec-note">Evidence is the page your primary buyer came for. Your published record already carries it &mdash; 47 entries, verifiable by DOI. These two items would make it much stronger.</p>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>Two or three anonymised case studies <span class="tag t-soon">Before launch</span></h3>
+      <p>For each: the challenge the client could not answer, the dataset used, the method, how the work was sequenced, and what it enabled. No client names needed.</p>
+      <p class="where"><b>Appears in</b> Evidence &rarr; case studies</p>
+      <div class="spec"><b>Currently</b> The section renders an honest statement that client work is confidential, plus a route to ask for material under NDA. It is <strong>not</strong> filled with invented cases and never will be.</div>
+      <div class="spec"><b>If writing these is the blocker</b> We will run a 90-minute interview and draft them from your recollection for your approval. That is usually faster than a blank page.</div>
+    </div>
+    <div class="side">2&ndash;3 studies.</div>
+  </div>
+
+  <div class="item">
+    <span class="tick" aria-hidden="true"></span>
+    <div>
+      <h3>One sample deliverable</h3>
+      <p>A redacted synopsis or analysis report, so a prospective client can judge the output before commissioning any. This is a strong, low-commitment conversion route.</p>
+      <p class="where"><b>Appears in</b> Evidence &rarr; sample deliverable</p>
+      <div class="spec"><b>If not supplied</b> The section is removed at launch rather than shipped non-functional.</div>
+    </div>
+    <div class="side">One PDF.</div>
+  </div>
+</section>
+
+<!-- ============ ORDER ============ -->
+<section>
+  <div class="sec-head"><span class="sec-num">&mdash;</span><h2>If you only do five things</h2></div>
+  <p class="sec-note">In order of what unblocks the most.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Item</th><th>Unblocks</th><th>Effort</th></tr></thead>
+      <tbody>
+        <tr><td>1. Dataset name clearance</td><td>Three pages stop hiding your strongest coverage claims</td><td>15 minutes</td></tr>
+        <tr><td>2. Hosting and form destination</td><td>The site can receive an enquiry at all</td><td>One decision</td></tr>
+        <tr><td>3. Product name and NextGen AI detail</td><td>Your biggest differentiator becomes a finished page</td><td>An hour</td></tr>
+        <tr><td>4. Team photographs and vector logo</td><td>About stops reading as unfinished; the logo stops looking soft</td><td>Half a day</td></tr>
+        <tr><td>5. Case studies</td><td>Evidence gains the proof your buyer actually came for</td><td>90-minute call with us</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<p class="close">
+  Everything here is designed to fail safely. If an item never arrives, the site still launches &mdash; that section either carries a visible marker or is removed, and nothing is invented to fill the gap. What you lose is persuasive weight, not a working website.
+</p>
+
+<p class="sig">
+  Vaelo Creative &middot; hello@vaelocreative.com<br>
+  Send files however suits &mdash; shared drive, email, or a link.
+</p>
+
+</div>

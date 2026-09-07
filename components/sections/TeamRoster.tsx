@@ -14,12 +14,10 @@ import { DataLabel, Pending } from "@/components/ui/DataLabel";
 export default function TeamRoster() {
   if (team.length === 0) {
     return (
-      <div className="border border-dashed border-rule-firm bg-surface p-6 sm:p-8">
-        <p className="measure text-muted">
-          Team profiles — names, credentials and specialisms.{" "}
-          <Pending>Pending</Pending>
-        </p>
-      </div>
+      <p className="measure text-muted">
+        Team profiles are being finalised. Ask us directly and we will tell you
+        who would run your study.
+      </p>
     );
   }
 
@@ -29,9 +27,9 @@ export default function TeamRoster() {
         <article
           key={member.id}
           id={member.id}
-          className="rule-row grid gap-6 border-t border-rule py-8 first:border-t-0 first:pt-0 lg:grid-cols-[14rem_1fr] lg:gap-10"
+          className="grid gap-x-16 gap-y-8 border-t border-rule py-12 first:border-t-0 first:pt-0 lg:grid-cols-12"
         >
-          <div>
+          <div className="lg:col-span-3">
             {member.photo ? (
               <Image
                 src={member.photo}
@@ -41,31 +39,39 @@ export default function TeamRoster() {
                 className="w-full max-w-[14rem] object-cover"
               />
             ) : (
-              <div className="flex min-h-[11rem] flex-col items-center justify-center gap-2 border border-dashed border-rule-firm bg-surface p-5 text-center">
-                <DataLabel>Photograph</DataLabel>
-                <p className="text-caption text-faint">Pending</p>
+              /* No portrait supplied yet (client input 1). A dashed box
+                 announcing that to visitors reads as unfinished, so the
+                 position holds as a typographic panel instead: initials set
+                 large on a rule, the way a journal sets a contributor mark.
+                 Replaced by the real photograph the moment one exists. */
+              <div className="flex min-h-[13rem] items-end border-t border-ink/70 bg-transparent px-1 pb-4">
+                <span
+                  aria-hidden="true"
+                  className="display text-[clamp(3rem,2rem+3vw,4.25rem)] leading-none text-ink/85"
+                >
+                  {member.name
+                    .split(" ")
+                    .map((part) => part[0])
+                    .join("")
+                    .slice(0, 3)}
+                </span>
               </div>
             )}
           </div>
 
-          <div>
-            <h3 className="text-[1.35rem]">
+          <div className="lg:col-span-8 lg:col-start-5">
+            <h3 className="text-[clamp(1.4rem,1.1rem+1vw,1.9rem)] font-medium leading-tight">
               {member.name}
               {member.credentials && (
                 <span className="text-muted">, {member.credentials}</span>
               )}
             </h3>
 
-            <p className="mt-1 flex flex-wrap items-center gap-2 font-mono text-caption uppercase tracking-[0.1em] text-faint">
-              {member.role}
-              {member.roleConfirmed === false && (
-                <Pending>Title to confirm</Pending>
-              )}
-            </p>
+            <p className="label mt-3 text-accent">{member.role}</p>
 
-            <p className="measure mt-4 text-muted">{member.bio}</p>
+            <p className="measure mt-7 text-muted">{member.bio}</p>
 
-            <dl className="mt-6 grid gap-x-10 gap-y-4 sm:grid-cols-2">
+            <dl className="mt-9 grid gap-x-12 gap-y-7 border-t border-rule pt-7 sm:grid-cols-2">
               {member.education && member.education.length > 0 && (
                 <Detail label="Education" items={member.education} />
               )}
@@ -77,10 +83,8 @@ export default function TeamRoster() {
               )}
               {member.credits && member.credits.length > 0 && (
                 <div>
-                  <dt className="font-mono text-caption uppercase tracking-[0.1em] text-faint">
-                    Credits
-                  </dt>
-                  <dd className="mt-1 text-small text-muted">
+                  <dt className="label text-faint">Credits</dt>
+                  <dd className="mt-2.5 text-small leading-[1.6] text-muted">
                     {member.credits.map((credit) => (
                       <span key={credit.label} className="block">
                         {credit.href ? (
@@ -105,7 +109,7 @@ export default function TeamRoster() {
         </article>
       ))}
 
-      <p className="mt-8 border-t border-rule pt-5 text-small text-muted">
+      <p className="mt-10 border-t border-rule pt-6 text-small text-muted">
         Our published work, in full, is on the{" "}
         <Link href="/evidence/" className="text-accent underline underline-offset-4">
           Evidence page
@@ -119,10 +123,8 @@ export default function TeamRoster() {
 function Detail({ label, items }: { label: string; items: string[] }) {
   return (
     <div>
-      <dt className="font-mono text-caption uppercase tracking-[0.1em] text-faint">
-        {label}
-      </dt>
-      <dd className="mt-1 text-small text-muted">
+      <dt className="label text-faint">{label}</dt>
+      <dd className="mt-2.5 text-small leading-[1.6] text-muted">
         {items.map((item) => (
           <span key={item} className="block">
             {item}

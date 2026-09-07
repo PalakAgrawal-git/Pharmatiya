@@ -35,7 +35,7 @@ export default function HomePage() {
       {/* Editorial pull-quote. The single strongest credential, set at scale
           with nothing competing for attention. */}
       <section className="border-b border-rule">
-        <div className="shell py-16 lg:py-24">
+        <div className="shell section">
           <Reveal className="lg:pl-[14%]">
             {/* The measure lives on the <p>, not the <blockquote>. `ch` resolves
                 against the font-size of the element it is set on, and the
@@ -43,14 +43,11 @@ export default function HomePage() {
                 characters of 17px text, capping this quote at 286px and
                 wrapping 45px display type into eleven two-word lines. */}
             <blockquote>
-              <p className="max-w-[28ch] font-display text-[clamp(1.5rem,1.1rem+2.2vw,2.8rem)] leading-[1.15] tracking-[-0.02em]">
+              <p className="display max-w-[26ch] text-[clamp(1.6rem,1.1rem+2.4vw,3rem)] leading-[1.14]">
                 Twenty-five years in outcomes research — including building an
                 organic Outcomes Research division on the payer side.
               </p>
             </blockquote>
-            <p className="mt-6 text-small text-muted">
-              Organisation <Pending>Name pending client clearance</Pending>
-            </p>
             <Link
               href="/about/"
               className="arrow-link mt-5 inline-block font-mono text-small text-accent underline underline-offset-4"

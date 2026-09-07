@@ -7,7 +7,7 @@
  */
 export default function Wordmark() {
   return (
-    <span className="font-display text-[1.3rem] font-semibold leading-none tracking-[-0.02em] text-ink">
+    <span className="display text-[1.35rem] leading-none text-ink">
       Pharmatiya
       <span className="ml-[0.35em] font-normal text-faint">Health</span>
     </span>

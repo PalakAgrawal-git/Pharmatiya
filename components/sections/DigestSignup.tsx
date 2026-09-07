@@ -18,14 +18,14 @@ export default function DigestSignup({
   const footer = variant === "footer";
 
   return (
-    <div className={footer ? "" : "border border-rule bg-surface p-6 sm:p-8"}>
-      <DataLabel as={footer ? "h2" : "h3"} className="mb-2">
+    <div className={footer ? "" : "border-t border-rule pt-8"}>
+      <DataLabel as={footer ? "h2" : "h3"} className={`mb-3 ${footer ? "text-white/45" : ""}`}>
         Quarterly Insights Digest
       </DataLabel>
 
       <p
-        className={`mb-4 ${
-          footer ? "text-small text-muted" : "measure text-muted"
+        className={`mb-6 ${
+          footer ? "text-small text-white/55" : "measure text-muted"
         }`}
       >
         Four issues a year on HEOR and RWE method, evidence and access.
@@ -39,7 +39,7 @@ export default function DigestSignup({
         <div className="flex min-w-[12rem] flex-1 flex-col gap-1.5">
           <label
             htmlFor={`digest-email-${variant}`}
-            className="font-mono text-caption text-muted"
+            className={`label ${footer ? "text-white/45" : "text-faint"}`}
           >
             Work email
           </label>
@@ -49,17 +49,30 @@ export default function DigestSignup({
             type="email"
             autoComplete="email"
             inputMode="email"
-            className="min-h-12 w-full rounded-[2px] border border-rule bg-paper px-3.5 py-3 text-body text-ink placeholder:text-faint focus:border-accent"
+            className={`min-h-12 w-full rounded-none border-0 border-b bg-transparent px-0 py-3 text-body transition-colors focus:outline-none ${
+              footer
+                ? "border-white/25 text-white focus:border-white"
+                : "border-rule-firm text-ink focus:border-accent"
+            }`}
           />
         </div>
 
+        {/* Disabled until an email platform is configured. It stays visible
+            and inert rather than appearing to subscribe and silently failing;
+            the disabled state is the honest signal, without a note explaining
+            it to visitors. */}
         <button
           type="submit"
           disabled
           aria-disabled="true"
-          className="inline-flex min-h-12 items-center justify-center rounded-[2px] border border-accent bg-accent px-6 font-medium text-paper disabled:cursor-not-allowed disabled:opacity-40"
+          className={`inline-flex min-h-12 items-center gap-2.5 rounded-[--radius-sm] border px-6 text-small font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
+            footer
+              ? "border-white/25 text-white"
+              : "border-ink bg-ink text-paper"
+          }`}
         >
           Subscribe
+          <span aria-hidden="true">→</span>
         </button>
       </form>
     </div>

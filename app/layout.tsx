@@ -1,25 +1,39 @@
 import type { Metadata } from "next";
-import { Spectral, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Instrument_Sans, Instrument_Serif, IBM_Plex_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-// No italic: nothing in the markup sets it (the only occurrence of "italic"
-// in the codebase is Tailwind's `not-italic`), and carrying it doubled the
-// number of Spectral files shipped.
-const spectral = Spectral({
+/**
+ * Three faces, each with one job.
+ *
+ * Instrument Sans carries navigation, body, data and labels — a grotesque
+ * with enough character to avoid reading as a default UI font, and enough
+ * restraint to disappear behind the content.
+ *
+ * Instrument Serif appears only at display sizes: the hero statement, the
+ * pull-quote, chapter openings. One weight, because it is only ever set
+ * large. Making the whole site serif would read as a magazine rather than a
+ * research practice.
+ *
+ * IBM Plex Mono is the scientific voice and is deliberately kept: figure
+ * numbers, axis labels and section markers are where the site gets its
+ * publication register, and a mono face is what makes them read as apparatus
+ * rather than decoration.
+ */
+const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-spectral",
+  weight: ["400", "500", "600"],
+  variable: "--font-instrument-sans",
   display: "swap",
 });
 
-const plexSans = IBM_Plex_Sans({
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-plex-sans",
+  weight: ["400"],
+  variable: "--font-instrument-serif",
   display: "swap",
 });
 
@@ -130,7 +144,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spectral.variable} ${plexSans.variable} ${plexMono.variable}`}
+      className={`${instrumentSans.variable} ${instrumentSerif.variable} ${plexMono.variable}`}
     >
       <body className="flex min-h-screen flex-col">
 

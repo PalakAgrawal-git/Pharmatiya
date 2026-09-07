@@ -1,34 +1,38 @@
 const steps = [
   {
-    n: "1",
+    n: "01",
     name: "Feasibility",
     question: "Can this question be answered with the data available?",
   },
   {
-    n: "2",
+    n: "02",
     name: "Retrospective",
     question: "What does existing data already show?",
   },
   {
-    n: "3",
+    n: "03",
     name: "Pragmatic outreach",
     question: "Who should be approached, and how?",
   },
 ];
 
 /**
- * The three-stage workflow.
+ * The three-stage workflow, drawn as a numbered rail.
  *
- * The human-review bar spans all three stages deliberately: review is drawn
- * as part of the workflow, not as a caveat beneath it. Horizontal on desktop,
- * vertical on mobile — the single adaptation that most affects comprehension
- * of the product on a phone.
+ * Stages sit on a shared rule with the number as the anchor, because they are
+ * sequential and each gates the next — the case where numbering is
+ * information rather than ornament. No boxes: the rule and the numbers carry
+ * the structure.
+ *
+ * The human-review line spans the full width deliberately and is set as a
+ * statement rather than a footnote. Review is part of the workflow, not a
+ * caveat beneath it, and that is the single claim this component exists to
+ * make.
  *
  * `compact` is the homepage form: stage names and the review guarantee, but
  * not the question each stage answers. The full diagram was rendering
  * identically on the homepage and on the product page, so the teaser gave
- * away the whole of the page it was meant to lead to. The product page keeps
- * the questions, which are the part worth clicking through for.
+ * away the whole of the page it was meant to lead to.
  */
 export default function WorkflowDiagram({
   inverted = false,
@@ -37,56 +41,40 @@ export default function WorkflowDiagram({
   inverted?: boolean;
   compact?: boolean;
 }) {
-  const border = inverted ? "border-white/20" : "border-rule";
-  const surface = inverted ? "bg-white/5" : "bg-surface";
-  const hover = inverted ? "lift-inverse" : "lift";
-  const title = inverted ? "text-white" : "text-ink";
-  const body = inverted ? "text-white/70" : "text-muted";
+  const rule = inverted ? "border-white/20" : "border-rule-firm";
   const numeral = inverted ? "text-white/40" : "text-faint";
+  const title = inverted ? "text-white" : "text-ink";
+  const body = inverted ? "text-white/60" : "text-muted";
 
   return (
     <div>
-      <ol className="grid gap-3 lg:grid-cols-3">
-        {steps.map((step, index) => (
-          <li
-            key={step.name}
-            className={`relative rounded-[2px] border ${hover} ${border} ${surface} p-4`}
-          >
-            <span className={`font-mono text-caption ${numeral}`}>
-              {step.n}
-            </span>
-            <h3
-              className={`mt-1 font-mono text-small font-medium uppercase tracking-[0.08em] ${title}`}
-            >
+      <ol className="grid gap-x-8 gap-y-8 sm:grid-cols-3">
+        {steps.map((step) => (
+          <li key={step.name} className={`border-t ${rule} pt-4`}>
+            <span className={`label ${numeral}`}>{step.n}</span>
+            <h3 className={`mt-3 text-[1.05rem] font-medium leading-tight ${title}`}>
               {step.name}
             </h3>
             {!compact && (
-              <p className={`mt-2 text-small ${body}`}>{step.question}</p>
-            )}
-
-            {index < steps.length - 1 && (
-              <span
-                aria-hidden="true"
-                className={`pointer-events-none absolute font-mono ${numeral} left-1/2 -bottom-3 -translate-x-1/2 lg:left-auto lg:-right-2.5 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2 lg:translate-x-0`}
-              >
-                <span className="lg:hidden">↓</span>
-                <span className="hidden lg:inline">→</span>
-              </span>
+              <p className={`mt-2.5 text-small leading-[1.5] ${body}`}>
+                {step.question}
+              </p>
             )}
           </li>
         ))}
       </ol>
 
       <p
-        className={`mt-4 rounded-[2px] border px-4 py-3 font-mono text-caption ${
-          inverted
-            ? "border-white/30 bg-white/10 text-white"
-            : "border-accent bg-accent/8 text-accent"
+        className={`mt-10 border-t pt-5 text-small leading-[1.5] ${rule} ${
+          inverted ? "text-white/85" : "text-ink"
         }`}
       >
+        <span className={`label mb-2 block ${inverted ? "text-white/45" : "text-accent"}`}>
+          Human review
+        </span>
         {compact
-          ? "Human expert review at every stage — required, not post-hoc."
-          : "Human expert review — required at every stage before output leaves the system. Not optional, not post-hoc."}
+          ? "Required at every stage, before any output leaves the system."
+          : "Required at every stage, before any output leaves the system. Not optional, and not post-hoc."}
       </p>
     </div>
   );

@@ -13,7 +13,7 @@ type BaseProps = {
 };
 
 const control =
-  "min-h-12 w-full rounded-[2px] border border-rule bg-surface px-3.5 py-3 text-body text-ink transition-colors placeholder:text-faint focus:border-accent aria-[invalid=true]:border-flag";
+  "min-h-12 w-full rounded-none border-0 border-b border-rule-firm bg-transparent px-0 py-3 text-body text-ink transition-colors placeholder:text-faint focus:border-accent focus:outline-none aria-[invalid=true]:border-flag";
 
 /**
  * Labels are always above and always visible — never a placeholder standing
@@ -38,7 +38,7 @@ export function Field({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="font-mono text-caption text-muted">
+      <label htmlFor={id} className="label text-faint">
         {label}
         {required && (
           <span className="text-flag" aria-hidden="true">
@@ -91,7 +91,7 @@ export function TextArea({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="font-mono text-caption text-muted">
+      <label htmlFor={id} className="label text-faint">
         {label}
         {required && (
           <span className="text-flag" aria-hidden="true">
@@ -141,7 +141,7 @@ export function Select({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="font-mono text-caption text-muted">
+      <label htmlFor={id} className="label text-faint">
         {label}
       </label>
       {/* Native select: correct behaviour on mobile, accessible for free. */}

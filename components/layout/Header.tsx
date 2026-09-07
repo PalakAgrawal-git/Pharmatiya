@@ -18,8 +18,8 @@ import Wordmark from "./Wordmark";
  */
 export default function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-rule bg-paper/85 backdrop-blur-[6px] supports-[not(backdrop-filter:blur(0))]:bg-paper">
-      <div className="shell flex items-center gap-6 py-4">
+    <header className="sticky top-0 z-40 border-b border-rule bg-paper/88 backdrop-blur-[8px] supports-[not(backdrop-filter:blur(0))]:bg-paper">
+      <div className="shell flex items-center gap-8 py-5">
         <Link
           href="/"
           className="flex min-h-11 shrink-0 items-center"

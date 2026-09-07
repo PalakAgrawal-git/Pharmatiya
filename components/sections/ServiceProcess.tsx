@@ -49,7 +49,7 @@ export default function ServiceProcess({ stages }: { stages: readonly Stage[] })
             {String(index + 1).padStart(2, "0")}
           </p>
 
-          <h4 className="mt-1 font-display text-[1.15rem] font-semibold leading-tight">
+          <h4 className="mt-1 text-[1.05rem] font-medium leading-tight">
             {stage.label}
           </h4>
 

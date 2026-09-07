@@ -2,56 +2,85 @@
 
 /* ==========================================================================
    Pharmatiya Health — design tokens
-   Approved in the Phase 1 architecture document, section 17.
-   Restrained clinical register. No gradients, no decorative icons.
+
+   "Evidence, precisely presented." The register is a well-set scientific
+   journal, not a product site: neutrals carry the page, the accent is used
+   at roughly five per cent, and structure comes from hairlines and space
+   rather than boxes and shadow.
    ========================================================================== */
 
 @theme {
-  /* Surfaces — neutrals carry a slight green-cool bias so they sit with the
-     primary rather than reading as generic grey. */
-  --color-paper: #f2f4f2;
-  --color-surface: #fbfcfb;
-  --color-sunk: #e7ebe8;
-  --color-inverse: #10201f;
+  /* --- surfaces ---------------------------------------------------------
+     Warm bone rather than cool grey. Paper is the page; surface lifts a
+     panel by one step; sunk drops a band by one; inverse is the single
+     dark ground used for contrast moments. */
+  --color-paper: #f5f5f1;
+  --color-surface: #fbfbf8;
+  --color-sunk: #edede6;
+  --color-inverse: #0b1717;
 
-  /* Text */
-  --color-ink: #151b1a;
-  --color-muted: #55625e;
-  --color-faint: #7d8985;
+  /* --- ink -------------------------------------------------------------- */
+  --color-ink: #101918;
+  --color-muted: #56615f;
+  /* Contrast-led, not eyeballed: at #8a918e this measured 2.95:1 on paper and
+     failed AA outright, while carrying real content — figure captions, entry
+     counts, every mono label. #626b69 clears 4.5:1 on paper and on the sunk
+     band both, keeping the green-cool bias of the ramp. */
+  --color-faint: #626b69;
 
-  /* Lines */
-  --color-rule: #d2d9d5;
-  --color-rule-firm: #b6c0bb;
+  /* --- rules ------------------------------------------------------------
+     Hairlines do the structural work everywhere, so they are tuned to sit
+     just above the threshold of visibility on bone. */
+  --color-rule: #e0e0d7;
+  --color-rule-firm: #c6c6ba;
 
-  /* Brand — pending confirmation against the vector logo (client input 8) */
-  --color-accent: #0e5a5e;
-  --color-accent-deep: #0a3f47;
-  --color-accent-lift: #12777c;
+  /* --- accent -----------------------------------------------------------
+     One muted petrol green. Used for emphasis, never for decoration. */
+  --color-accent: #185c59;
+  --color-accent-deep: #0f3e3c;
+  --color-accent-lift: #217f7a;
 
-  /* Data-visualisation accents. Distinguishable under common colour-vision
-     deficiencies and legible in greyscale print. */
-  --color-series-1: #0e5a5e;
-  --color-series-2: #8c3a2b;
-  --color-series-3: #6b6f4e;
+  /* --- data visualisation ----------------------------------------------
+     Distinguishable under common colour-vision deficiencies and legible in
+     greyscale print, which is the standard these figures are held to. */
+  --color-series-1: #185c59;
+  --color-series-2: #8c4a32;
+  --color-series-3: #6e7050;
 
-  /* Semantic */
+  /* --- semantic --------------------------------------------------------- */
   --color-flag: #7d5f18;
 
-  /* Typography. Display face is a placeholder pending client input 7
-     (licensed typeface, ~$200-500). Swapping it is a one-line change. */
-  --font-display: var(--font-spectral), "Sitka Text", Cambria, Georgia, serif;
-  --font-sans: var(--font-plex-sans), "Segoe UI", system-ui, sans-serif;
+  /* --- typography -------------------------------------------------------
+     Sans carries navigation, body, data and labels. The serif appears only
+     at display sizes, for statements that carry the identity. Mono is the
+     scientific voice: figure numbers, axis labels, section markers. */
+  --font-display: var(--font-instrument-serif), "Sitka Text", Cambria, Georgia, serif;
+  --font-sans: var(--font-instrument-sans), "Segoe UI", system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), "Cascadia Mono", Consolas, monospace;
 
-  /* Type scale — section 17 */
-  --text-caption: 0.875rem;
+  --text-caption: 0.8125rem;
   --text-small: 0.9375rem;
   --text-body: 1.0625rem;
-  --text-lede: 1.1875rem;
+  --text-lede: 1.25rem;
 
-  /* Layout */
-  --spacing-gutter: clamp(1.25rem, 4vw, 3rem);
-  --container-shell: 76rem;
+  /* --- space ------------------------------------------------------------
+     A single vertical rhythm for section padding, so the page breathes
+     consistently instead of each section inventing its own value. */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 7.5rem;
+
+  /* --- layout ----------------------------------------------------------- */
+  --spacing-gutter: clamp(1.25rem, 5vw, 4.5rem);
+  --container-shell: 80rem;
+
+  /* --- radius -----------------------------------------------------------
+     Restrained by intent. Editorial sections carry none at all; only
+     controls get a radius, and only a small one. */
+  --radius-sm: 3px;
+  --radius-md: 6px;
 }
 
 @layer base {
@@ -70,21 +99,20 @@
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: var(--text-body);
-    line-height: 1.62;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
+  /* Headings are set tight and are never bolder than they need to be —
+     hierarchy comes from size, measure and space, not weight. */
   h1, h2, h3, h4 {
-    font-family: var(--font-display);
-    font-weight: 600;
-    line-height: 1.12;
-    letter-spacing: -0.015em;
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: -0.021em;
     text-wrap: balance;
   }
 
-  /* Visible focus on every interactive element — WCAG AA, and never
-     removed for mouse users. */
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
@@ -109,9 +137,29 @@
     margin-inline: auto;
   }
 
+  /* Section rhythm. Two values, applied deliberately, rather than a padding
+     invented per section. */
+  .section { padding-block: clamp(4.5rem, 3rem + 7vw, 11rem); }
+  .section-tight { padding-block: clamp(3.5rem, 2.5rem + 4vw, 7rem); }
+
   /* Running text stays near 68 characters. */
   .measure { max-width: 68ch; }
   .measure-tight { max-width: 46ch; }
+
+  /* The editorial serif, used only where a statement carries the identity. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+  }
+
+  /* The scientific voice: figure numbers, section markers, axis labels. */
+  .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
 
   .tabular { font-variant-numeric: tabular-nums; }
 

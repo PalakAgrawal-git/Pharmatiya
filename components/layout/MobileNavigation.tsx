@@ -139,7 +139,7 @@ export default function MobileNavigation() {
                   <Link
                     href={href}
                     aria-current={isCurrent(href) ? "page" : undefined}
-                    className={`flex min-h-14 items-center font-display text-[1.25rem] no-underline ${
+                    className={`flex min-h-14 items-center text-[1.2rem] font-medium no-underline ${
                       isCurrent(href) ? "text-accent" : "text-ink"
                     }`}
                   >

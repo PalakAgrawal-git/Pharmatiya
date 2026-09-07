@@ -44,11 +44,12 @@ export default function AboutPage() {
     <>
       <section className="relative overflow-hidden border-b border-rule">
         <GraphGround />
-        <div className="shell relative grid gap-10 py-16 lg:grid-cols-[6fr_4fr] lg:gap-16 lg:py-24">
+        <div className="shell relative section">
           <Reveal>
             <SectionHeader
               as="h1"
-              eyebrow="About us"
+              display
+              eyebrow="About / Pharmatiya"
               title="A senior evidence team, not a staffing model."
             />
             <p className="measure mt-6 text-muted">
@@ -66,17 +67,9 @@ export default function AboutPage() {
             </p>
           </Reveal>
 
-          {/* No stock photography substitute — this holds as a typographic
-              panel until real photography arrives. */}
-          <Reveal
-            delay={140}
-            className="flex min-h-[14rem] flex-col items-center justify-center gap-2 border border-dashed border-rule-firm bg-surface p-6 text-center"
-          >
-            <DataLabel>Office &amp; working photography</DataLabel>
-            <p className="text-caption text-faint">
-              Pending. No stock imagery will be substituted.
-            </p>
-          </Reveal>
+          {/* Office and working photography goes here once supplied
+              (client input 1). No stock imagery stands in, and no panel
+              announces the gap to visitors — the column simply closes up. */}
         </div>
       </section>
 
@@ -85,7 +78,7 @@ export default function AboutPage() {
           made the strongest credentials on the page the quietest thing on
           it — and left the page with no tonal break at all. */}
       <section className="bg-inverse text-white">
-        <div className="shell py-14 lg:py-20">
+        <div className="shell section">
           <Reveal>
             <h2 className="mb-10 flex items-center gap-4 font-mono text-caption font-normal uppercase tracking-[0.14em] text-white/45">
               Our track record
@@ -100,14 +93,8 @@ export default function AboutPage() {
                 delay={index * 90}
                 className="border-t border-white/20 pt-5"
               >
-                <dt className="font-display text-[clamp(1.9rem,1.3rem+2.4vw,3.2rem)] font-semibold leading-[0.95] tracking-[-0.03em] tabular text-white">
-                  {figure.value ? (
-                    <CountUp value={figure.value} />
-                  ) : (
-                    <span className="font-mono text-[1rem] uppercase tracking-[0.06em] text-flag">
-                      To provide
-                    </span>
-                  )}
+                <dt className="display text-[clamp(2rem,1.4rem+2.6vw,3.4rem)] leading-[0.92] tracking-[-0.03em] tabular text-white">
+                  <CountUp value={figure.value} />
                 </dt>
                 <dd className="mt-3 max-w-[26ch] text-small leading-[1.45] text-white/60">
                   {figure.label}
@@ -119,7 +106,7 @@ export default function AboutPage() {
       </section>
 
       <section className="border-b border-rule">
-        <div className="shell py-14 lg:py-20">
+        <div className="shell section">
           <Reveal>
             <DataLabel as="h2" className="mb-8 flex items-center gap-4">
               How we got here
@@ -132,7 +119,7 @@ export default function AboutPage() {
       </section>
 
       <section id="team" className="scroll-mt-8 border-b border-rule bg-sunk">
-        <div className="shell py-14 lg:py-20">
+        <div className="shell section">
           <Reveal>
             <DataLabel as="h2" className="mb-3 flex items-center gap-4">
               Who we are
@@ -150,7 +137,7 @@ export default function AboutPage() {
       </section>
 
       <section className="border-b border-rule">
-        <div className="shell py-14 lg:py-20">
+        <div className="shell section">
           <Reveal>
             <DataLabel as="h2" className="mb-8 flex items-center gap-4">
               What we do

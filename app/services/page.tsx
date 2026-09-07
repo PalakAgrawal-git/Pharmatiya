@@ -24,7 +24,9 @@ export default function ServicesPage() {
           <Reveal>
             <SectionHeader
               as="h1"
+              display
               eyebrow="Services"
+              index="01–03"
               title="Three engagement types. Most projects combine two."
               lede="Each begins with the question you need answered, not with a package."
             />
@@ -71,7 +73,7 @@ export default function ServicesPage() {
               flipped ? "bg-sunk" : ""
             }`}
           >
-            <div className="shell py-14 lg:py-20">
+            <div className="shell section">
               <Reveal>
                 <DataLabel as="h2" className="mb-8 flex items-center gap-4">
                   Service {String(index + 1).padStart(2, "0")} — {service.name}
@@ -136,11 +138,6 @@ export default function ServicesPage() {
                       </li>
                     ))}
                   </ul>
-                  {service.deliverablesPending && (
-                    <p className="mt-3 text-caption text-faint">
-                      <Pending>Full list to be confirmed</Pending>
-                    </p>
-                  )}
                 </div>
               </Reveal>
 
@@ -163,24 +160,6 @@ export default function ServicesPage() {
           </section>
         );
       })}
-
-      {/* Sunk, so it does not sit on the same ground as the third service
-          above it — and so the CTA below can return to paper. Grounds
-          alternate down the page: paper, sunk, paper, sunk, paper. */}
-      <section className="border-b border-rule bg-sunk">
-        <div className="shell py-12 lg:py-16">
-          <Reveal>
-            <DataLabel as="h2" className="mb-3">
-              Engagement model
-            </DataLabel>
-            <p className="measure text-muted">
-              How projects typically start, run and conclude.{" "}
-              <Pending>Pharmatiya to provide</Pending> This section is omitted
-              at launch rather than shipped with placeholder pricing.
-            </p>
-          </Reveal>
-        </div>
-      </section>
 
       <CTA
         title="Not sure which of these fits?"

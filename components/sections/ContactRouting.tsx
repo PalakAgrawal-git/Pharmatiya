@@ -209,20 +209,9 @@ export default function ContactRouting() {
           <Button type="submit" disabled>
             Send enquiry
           </Button>
-          <p className="mt-3 text-caption text-faint">
-            Form endpoint <Pending>Pending input 10 — hosting</Pending>{" "}
-            Submission is disabled until a handler is configured, rather than
-            appearing to send and silently failing.
-          </p>
         </div>
       </form>
 
-      <div className="mt-10 border-t border-rule pt-5">
-        <DataLabel className="mb-2">Where enquiries go</DataLabel>
-        <p className="measure text-small text-muted">
-          Routing destinations <Pending>Pending input 6</Pending>
-        </p>
-      </div>
     </div>
   );
 }

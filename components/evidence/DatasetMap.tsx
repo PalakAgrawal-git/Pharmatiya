@@ -41,7 +41,7 @@ export default function DatasetMap({ compact = false }: { compact?: boolean }) {
             <p className="measure text-small text-muted">
               We hold direct experience with named payer, PBM and provider
               organisations. Naming them publicly is subject to client
-              clearance. <Pending>Pending client clearance</Pending>
+              clearance.
             </p>
           )}
         </div>

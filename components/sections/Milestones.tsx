@@ -114,11 +114,7 @@ export default function Milestones() {
 
             <div>
               <p className="font-mono text-caption tabular text-accent">
-                {dated ? (
-                  `${milestone.start}–${milestone.end}`
-                ) : (
-                  <Pending>Date to provide</Pending>
-                )}
+                {dated ? `${milestone.start}–${milestone.end}` : "Today"}
               </p>
 
               {dated && (
@@ -150,7 +146,7 @@ export default function Milestones() {
             </div>
 
             <div>
-              <p className="font-display text-[1.15rem] font-semibold leading-snug">
+              <p className="text-[1.05rem] font-medium leading-snug">
                 {milestone.event}
               </p>
               <p className="measure mt-2 text-small text-muted">

@@ -113,17 +113,15 @@ export default function StudyFinder() {
       </form>
 
       <div aria-live="polite" className="mt-6">
+        {/* The empty state is populated by `npm run studies` at build time.
+            Until then it says what the search covers, rather than reporting a
+            build step to visitors. */}
         {studies.length === 0 ? (
-          <div className="border border-dashed border-rule-firm bg-surface p-5">
-            <p className="measure text-small text-muted">
-              The study list has not been loaded into this build yet.{" "}
-              <Pending>Run npm run studies</Pending>
-            </p>
-            <p className="measure mt-2 text-small text-faint">
-              It reads the same spreadsheet the current site uses, at build
-              time rather than in the browser.
-            </p>
-          </div>
+          <p className="measure text-small text-muted">
+            The searchable index is being prepared. In the meantime, tell us
+            the condition or data source you are asking about and we will
+            confirm what prior work exists.
+          </p>
         ) : !query ? (
           <p className="text-small text-faint">
             {studies.length} studies indexed. Search a condition, a data type

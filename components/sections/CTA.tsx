@@ -24,21 +24,21 @@ export default function CTA({
 }: Props) {
   return (
     <section className={band ? "border-t border-rule bg-sunk" : "border-t border-rule"}>
-      <div className="shell grid items-center gap-10 py-16 lg:grid-cols-[6fr_4fr] lg:py-20">
-        <Reveal>
-          <h2 className="mb-4 max-w-[22ch] text-[clamp(1.6rem,1.2rem+1.8vw,2.7rem)] leading-[1.1] tracking-[-0.02em]">
+      <div className="shell section-tight grid items-center gap-x-16 gap-y-10 lg:grid-cols-12">
+        <Reveal className="lg:col-span-7">
+          <h2 className="mb-5 max-w-[20ch] text-[clamp(1.6rem,1.2rem+1.8vw,2.6rem)] font-medium leading-[1.1]">
             {title}
           </h2>
           <p className="measure text-lede leading-[1.45] text-muted">{body}</p>
         </Reveal>
 
-        <Reveal delay={120} className="flex flex-col items-start gap-4">
+        <Reveal delay={120} className="flex flex-col items-start gap-5 lg:col-span-4 lg:col-start-9">
           <Button href={href} full>
             {action}
           </Button>
           <a
             href={`mailto:${site.email}`}
-            className="arrow-link font-mono text-small text-accent underline underline-offset-4"
+            className="arrow-link text-small text-ink underline decoration-rule-firm underline-offset-[6px] transition-colors hover:decoration-accent"
           >
             Or email us directly{" "}
             <span className="arrow" aria-hidden="true">

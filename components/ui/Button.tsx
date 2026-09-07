@@ -12,26 +12,32 @@ type Props = {
   disabled?: boolean;
   full?: boolean;
   external?: boolean;
+  /** Appends a trailing arrow that shifts on hover. */
+  arrow?: boolean;
   className?: string;
 };
 
 /**
- * Radius is 2px throughout — enough to avoid harshness, far short of the pill
- * and large-radius vocabulary the brief rules out. Minimum hit area is 44px.
+ * A compact control, not a pill.
+ *
+ * Radius is 3px — enough that the corner is not sharp, far short of the
+ * rounded-rectangle vocabulary that makes a page read as a product site. The
+ * fill is ink rather than accent: the accent is spent on emphasis inside the
+ * content, and a dark button reads as more considered than a coloured one.
+ * The arrow moves 3px on hover; nothing scales, nothing glows.
  */
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-[2px] border font-medium no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-40";
+  "group inline-flex items-center justify-center gap-2.5 rounded-[--radius-sm] border font-medium no-underline transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-40";
 
 const variants: Record<Variant, string> = {
-  primary:
-    "border-accent bg-accent text-paper hover:border-accent-deep hover:bg-accent-deep",
+  primary: "border-ink bg-ink text-paper hover:border-accent hover:bg-accent",
   secondary:
-    "border-accent bg-transparent text-accent hover:bg-accent hover:text-paper",
+    "border-rule-firm bg-transparent text-ink hover:border-ink hover:bg-ink hover:text-paper",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "min-h-11 px-4 text-small",
-  md: "min-h-12 px-6 text-body",
+  sm: "min-h-10 px-4 text-small",
+  md: "min-h-12 px-6 text-small",
 };
 
 export default function Button({
@@ -43,6 +49,7 @@ export default function Button({
   disabled,
   full,
   external,
+  arrow = true,
   className = "",
 }: Props) {
   const classes = [
@@ -55,29 +62,38 @@ export default function Button({
     .filter(Boolean)
     .join(" ");
 
+  const content = (
+    <>
+      {children}
+      {arrow && (
+        <span
+          aria-hidden="true"
+          className="translate-x-0 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px]"
+        >
+          →
+        </span>
+      )}
+    </>
+  );
+
   if (href && !disabled) {
     if (external) {
       return (
-        <a
-          href={href}
-          className={classes}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          {children}
+        <a href={href} className={classes} rel="noopener noreferrer" target="_blank">
+          {content}
         </a>
       );
     }
     return (
       <Link href={href} className={classes}>
-        {children}
+        {content}
       </Link>
     );
   }
 
   return (
     <button type={type} disabled={disabled} aria-disabled={disabled} className={classes}>
-      {children}
+      {content}
     </button>
   );
 }

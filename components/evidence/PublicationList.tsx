@@ -87,7 +87,7 @@ export default function PublicationList() {
     <div>
       <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
         <div className="flex min-w-[15rem] flex-1 flex-col gap-1.5">
-          <label htmlFor={inputId} className="font-mono text-caption text-muted">
+          <label htmlFor={inputId} className="label text-faint">
             Filter by keyword
           </label>
           <input
@@ -96,12 +96,19 @@ export default function PublicationList() {
             value={term}
             onChange={(event) => reset(() => setTerm(event.target.value))}
             placeholder="e.g. atrial fibrillation, claims, machine learning"
-            className="min-h-12 w-full rounded-[2px] border border-rule bg-surface px-3.5 py-3 text-body text-ink placeholder:text-faint focus:border-accent"
+            className="min-h-12 w-full rounded-none border-0 border-b border-rule-firm bg-transparent px-0 py-3 text-body text-ink transition-colors placeholder:text-faint focus:border-accent focus:outline-none"
           />
         </div>
       </div>
 
-      <div className="mt-5 flex flex-wrap gap-2" role="group" aria-label="Filter by type">
+      {/* Typographic tabs rather than pills: an archive is browsed, and a row
+          of filled capsules reads as a toolbar. The active tab is marked by a
+          rule under it and by ink, the same convention the navigation uses. */}
+      <div
+        className="mt-8 flex flex-wrap gap-x-7 gap-y-3 border-b border-rule pb-3"
+        role="group"
+        aria-label="Filter by type"
+      >
         {filters.map((filter) => {
           const active = type === filter.id;
           const count =
@@ -117,14 +124,14 @@ export default function PublicationList() {
               type="button"
               aria-pressed={active}
               onClick={() => reset(() => setType(filter.id))}
-              className={`inline-flex min-h-11 items-center gap-2 rounded-[2px] border px-3.5 font-mono text-caption transition-colors ${
+              className={`group relative inline-flex min-h-9 items-baseline gap-2 text-small transition-colors after:absolute after:inset-x-0 after:-bottom-[13px] after:h-px after:transition-colors ${
                 active
-                  ? "border-accent bg-accent text-paper"
-                  : "border-rule bg-surface text-muted hover:border-rule-firm hover:text-ink"
+                  ? "text-ink after:bg-accent"
+                  : "text-muted after:bg-transparent hover:text-ink"
               }`}
             >
               {filter.label}
-              <span className={active ? "text-paper/70" : "text-faint"}>
+              <span className={`label text-[0.7rem] tabular ${active ? "text-accent" : "text-faint"}`}>
                 {count}
               </span>
             </button>
@@ -132,7 +139,7 @@ export default function PublicationList() {
         })}
       </div>
 
-      <p className="mt-5 font-mono text-caption text-faint" aria-live="polite">
+      <p className="label mt-6 tabular text-faint" aria-live="polite">
         {results.length} of {publications.length} entries
         {term && ` matching “${term}”`}
       </p>
@@ -144,34 +151,36 @@ export default function PublicationList() {
           economics.
         </p>
       ) : (
-        <ol className="mt-4 border-t border-rule">
+        <ol className="mt-8 border-t border-rule">
           {shown.map((item) => (
             <li
               key={item.id}
-              className="rule-row grid gap-2 border-b border-rule py-5 lg:grid-cols-[7rem_minmax(0,1fr)] lg:gap-8"
+              className="group grid gap-2 border-b border-rule py-6 transition-colors duration-200 hover:bg-surface lg:grid-cols-[8rem_minmax(0,1fr)] lg:gap-10"
             >
-              <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-display text-[1.15rem] font-semibold tabular text-accent-deep">
+              <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1 lg:flex-col lg:items-start lg:gap-1.5">
+                <span className="label tabular text-ink">
                   {item.year ?? "—"}
                 </span>
-                <span className="font-mono text-[0.7rem] uppercase tracking-[0.08em] text-faint">
+                <span className="label text-[0.7rem] text-faint">
                   {TYPE_LABEL[item.type] ?? item.type}
                 </span>
               </div>
 
               <div className="min-w-0">
-                <p className="text-small break-words text-ink">{item.citation}</p>
+                <p className="break-words text-[1rem] leading-[1.55] text-ink">
+                  {item.citation}
+                </p>
 
                 <div className="mt-2 flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1">
                   {item.venue && (
-                    <span className="font-mono text-caption text-muted">
+                    <span className="label text-[0.7rem] text-muted">
                       {item.venue}
                     </span>
                   )}
                   {item.topics.map((topic) => (
                     <span
                       key={topic}
-                      className="font-mono text-[0.7rem] text-faint"
+                      className="label text-[0.7rem] text-faint"
                     >
                       {topic}
                     </span>
@@ -181,9 +190,9 @@ export default function PublicationList() {
                       href={item.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-caption text-accent underline underline-offset-4"
+                      className="label text-[0.7rem] text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent"
                     >
-                      Source
+                      Source <span aria-hidden="true">↗</span>
                       <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   )}

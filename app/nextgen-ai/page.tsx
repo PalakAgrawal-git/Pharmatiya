@@ -51,17 +51,15 @@ export default function NextGenPage() {
     <>
       <section className="relative overflow-hidden border-b border-rule">
         <GraphGround />
-        <div className="shell relative grid gap-10 py-16 lg:grid-cols-[6fr_4fr] lg:gap-16 lg:py-24">
+        <div className="shell relative section">
           <Reveal>
             <SectionHeader
               as="h1"
+              display
               eyebrow={site.productName}
+              index="Human-reviewed"
               title="Evidence synopses drafted in hours, reviewed by the researchers who would have written them."
             />
-            <p className="measure mt-6 text-muted">
-              <Pending>Precise product definition to be confirmed</Pending>
-            </p>
-
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
               <Button href="/contact/#demo">Request a demo</Button>
               <a
@@ -76,17 +74,10 @@ export default function NextGenPage() {
             </div>
           </Reveal>
 
-          {/* No product mockup is invented. The position holds until a real
-              screenshot arrives. */}
-          <Reveal
-            delay={140}
-            className="flex min-h-[14rem] flex-col items-center justify-center gap-2 border border-dashed border-rule-firm bg-surface p-6 text-center"
-          >
-            <DataLabel>Product interface</DataLabel>
-            <p className="text-caption text-faint">
-              Screenshot pending. No mockup will be invented in its place.
-            </p>
-          </Reveal>
+          {/* The product interface goes here once a real screenshot exists
+              (client input 5). Nothing stands in for it: an empty panel
+              announcing a missing asset is worse than a hero that simply runs
+              to one column, and inventing a dashboard would be worse still. */}
         </div>
       </section>
 
@@ -95,7 +86,7 @@ export default function NextGenPage() {
           demonstration of what the product does — a visitor can try it
           before reading anything. */}
       <section className="border-b border-rule bg-sunk">
-        <div className="shell py-14 lg:py-20">
+        <div className="shell section">
           <Reveal>
             <DataLabel as="h2" className="mb-3 flex items-center gap-4">
               Try it — search prior work
@@ -117,7 +108,7 @@ export default function NextGenPage() {
           the same figure in both places, so it should not change ground
           between them — and this page needed a tonal break of its own. */}
       <section className="bg-inverse text-white">
-        <div className="shell py-14 lg:py-20">
+        <div className="shell section">
           <Reveal>
             <h2 className="mb-8 flex items-center gap-4 font-mono text-caption font-normal uppercase tracking-[0.14em] text-white/45">
               How it works
@@ -131,7 +122,7 @@ export default function NextGenPage() {
       </section>
 
       <section className="border-b border-rule">
-        <div className="shell py-14 lg:py-20">
+        <div className="shell section">
           <Reveal>
             <DataLabel as="h2" className="mb-8 flex items-center gap-4">
               Where AI is used — and where it is not
@@ -139,30 +130,27 @@ export default function NextGenPage() {
             </DataLabel>
           </Reveal>
 
-          <div className="grid gap-6 sm:grid-cols-2">
-            <Reveal className="lift border border-rule bg-surface p-5">
-              <h3 className="mb-3 font-mono text-caption uppercase tracking-[0.1em] text-ink">
-                The model does
-              </h3>
-              <ul className="flex flex-col gap-2">
+          {/* Deliberately unequal. The researcher column is wider, set on the
+              accent rule and listed in heavier type, because the asymmetry is
+              the argument: the model drafts, a person is accountable. Two
+              matched cards would have said the opposite. */}
+          <div className="grid gap-x-16 gap-y-12 lg:grid-cols-12">
+            <Reveal className="border-t border-rule pt-5 lg:col-span-4">
+              <h3 className="label text-faint">The model does</h3>
+              <ul className="mt-5 flex flex-col gap-3">
                 {division.model.map((item) => (
                   <li key={item} className="text-small text-muted">
                     {item}
                   </li>
                 ))}
-                <li className="text-small">
-                  <Pending>Further detail to confirm</Pending>
-                </li>
               </ul>
             </Reveal>
 
-            <Reveal delay={120} className="lift border border-rule bg-surface p-5">
-              <h3 className="mb-3 font-mono text-caption uppercase tracking-[0.1em] text-ink">
-                A researcher does
-              </h3>
-              <ul className="flex flex-col gap-2">
+            <Reveal delay={120} className="border-t-2 border-accent pt-5 lg:col-span-7 lg:col-start-6">
+              <h3 className="label text-accent">A researcher does</h3>
+              <ul className="mt-5 flex flex-col gap-3">
                 {division.researcher.map((item) => (
-                  <li key={item} className="text-small text-muted">
+                  <li key={item} className="text-[1.05rem] leading-[1.5] text-ink">
                     {item}
                   </li>
                 ))}
@@ -171,7 +159,7 @@ export default function NextGenPage() {
           </div>
 
           <Reveal delay={200}>
-            <p className="measure mt-5 text-small text-faint">
+            <p className="measure mt-12 text-small text-faint">
               The right-hand column is longer than the left, and that is the
               point.
             </p>
@@ -182,7 +170,7 @@ export default function NextGenPage() {
       {/* Trust is designed as page structure, not fine print — a buyer in a
           regulated environment reads AI claims adversarially. */}
       <section className="border-b border-rule bg-sunk">
-        <div className="shell py-14 lg:py-20">
+        <div className="shell section">
           <Reveal>
             <DataLabel as="h2" className="mb-8 flex items-center gap-4">
               Trust
@@ -190,42 +178,33 @@ export default function NextGenPage() {
             </DataLabel>
           </Reveal>
 
-          <div className="grid gap-5 lg:grid-cols-3">
+          <div className="grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
             {trust.map((item, index) => (
               <Reveal
                 key={item.title}
                 delay={index * 110}
-                className="lift border border-rule bg-surface p-5"
+                className="border-t border-rule-firm pt-5"
               >
-                <h3 className="mb-2 font-mono text-caption uppercase tracking-[0.1em] text-ink">
+                <p className="label tabular text-faint">
+                  {String(index + 1).padStart(2, "0")}
+                </p>
+                <h3 className="mt-3 text-[1.05rem] font-medium leading-tight">
                   {item.title}
                 </h3>
-                <p className="text-small text-muted">{item.body}</p>
-                {item.pending && (
-                  <p className="mt-3">
-                    <Pending>{item.pending}</Pending>
-                  </p>
-                )}
+                <p className="mt-3 text-small leading-[1.5] text-muted">
+                  {item.body}
+                </p>
               </Reveal>
             ))}
           </div>
 
-          <Reveal className="mt-10 border-t border-rule pt-6">
-            <DataLabel as="h3" className="mb-2">
-              Limitations
-            </DataLabel>
-            <p className="measure text-small text-muted">
-              What the tool does not do.{" "}
-              <Pending>Pharmatiya to provide</Pending> Stating limits plainly
-              is a trust asset with this audience, not a weakness.
-            </p>
-          </Reveal>
+
         </div>
       </section>
 
       <section className="border-t border-rule">
-        <div className="shell py-12 lg:py-16">
-          <Reveal className="lift border border-rule bg-surface p-6 sm:p-8">
+        <div className="shell section-tight">
+          <Reveal className="border-t border-rule pt-10">
             <h2 className="mb-2 text-[1.4rem]">Request a demo</h2>
             <p className="measure mb-5 text-muted">
               A 30-minute walkthrough with the team that built it — including

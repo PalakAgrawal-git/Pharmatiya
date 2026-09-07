@@ -8,31 +8,39 @@ import Reveal from "@/components/motion/Reveal";
  * separated from the proof band by two lighter sections so the alternation
  * reads as rhythm rather than repetition.
  *
- * Tonal inversion marks a different kind of offering without resorting to a
- * gradient or a glow. Trust markers appear at first mention because
- * scepticism about AI forms immediately in a regulated context.
+ * Nothing here is futuristic. No neon, no circuitry, no glow: a buyer in a
+ * regulated environment reads AI claims adversarially, and the design has to
+ * agree with the copy that this is a supervised instrument rather than an
+ * autonomous one. Tonal inversion alone marks it as a different kind of
+ * offering.
  */
 export default function NextGenTeaser() {
   return (
     <section className="bg-inverse text-white">
-      <div className="shell grid gap-12 py-16 lg:grid-cols-[4fr_6fr] lg:gap-16 lg:py-24">
-        <Reveal>
-          <p className="mb-5 font-mono text-caption uppercase tracking-[0.14em] text-white/50">
-            {site.productName}
-          </p>
-          <h2 className="mb-7 max-w-[18ch] text-[clamp(1.7rem,1.2rem+2.2vw,3rem)] leading-[1.08] tracking-[-0.025em] text-white">
+      <div className="shell section grid gap-x-16 gap-y-14 lg:grid-cols-12">
+        <Reveal className="lg:col-span-5">
+          <p className="label text-white/45">{site.productName}</p>
+
+          <h2 className="mt-8 max-w-[17ch] text-[clamp(1.8rem,1.3rem+2.2vw,3rem)] font-medium leading-[1.08] text-white">
             AI-assisted evidence synopses, reviewed by the people who would
             have written them.
           </h2>
+
           <Link
             href="/nextgen-ai/"
-            className="inline-flex min-h-12 items-center justify-center rounded-[2px] border border-white bg-white px-6 font-medium text-inverse no-underline transition-colors hover:bg-white/85"
+            className="group mt-10 inline-flex min-h-12 items-center gap-2.5 rounded-[--radius-sm] border border-white/25 px-6 text-small font-medium text-white no-underline transition-colors duration-200 hover:border-white hover:bg-white hover:text-inverse"
           >
             Explore {site.productName}
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px]"
+            >
+              →
+            </span>
           </Link>
         </Reveal>
 
-        <Reveal delay={140}>
+        <Reveal delay={140} className="lg:col-span-6 lg:col-start-7">
           <WorkflowDiagram inverted compact />
         </Reveal>
       </div>

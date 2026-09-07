@@ -192,7 +192,7 @@ export default function PublicationList() {
                     )}
                   </span>
 
-                  <span className="label-sm self-start text-faint lg:text-right">
+                  <span className="label-sm self-start text-faint">
                     {item.venue ?? TYPE_LABEL[item.type] ?? item.type}
                   </span>
 

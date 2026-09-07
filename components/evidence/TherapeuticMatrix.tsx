@@ -58,7 +58,7 @@ export default function TherapeuticMatrix({
               </span>
 
               <span
-                className={`label shrink-0 tabular lg:order-3 lg:text-right ${
+                className={`label shrink-0 tabular lg:order-3 ${
                   count
                     ? inverted
                       ? "text-white/70"

@@ -70,13 +70,25 @@ export default function ServiceTeasers() {
                 key={service.id}
                 className="grid items-start gap-x-10 gap-y-8 border-t border-ink/20 pb-16 pt-9 last:pb-0 lg:grid-cols-12 lg:gap-y-0 lg:pb-20 lg:pt-10"
               >
+                {/* The title block takes the dark ground the record band
+                    uses, so the three services read as headed chapters rather
+                    than as three headings floating on open paper. It also
+                    gives the narrow layout something to hold the eye where
+                    the figure column drops out below lg. */}
                 <Reveal className="lg:col-span-3">
-                  <p className="label tabular text-accent">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <h3 className="mt-5 max-w-[11ch] text-[clamp(1.6rem,1.2rem+1.5vw,2.3rem)] leading-[1.08]">
-                    {service.name}
-                  </h3>
+                  <div className="bg-inverse px-6 py-7 text-white lg:px-7 lg:py-8">
+                    <p className="label tabular text-white/45">
+                      {String(index + 1).padStart(2, "0")}
+                    </p>
+                    {/* 11ch was narrow enough that "Real-world" broke at its
+                        own hyphen, giving "Real-" / "world data" / "analytics".
+                        Widened so the compound holds, and balanced so the
+                        remaining lines divide evenly rather than leaving one
+                        word alone. */}
+                    <h3 className="mt-5 max-w-[14ch] text-balance text-[clamp(1.6rem,1.2rem+1.5vw,2.3rem)] leading-[1.08] text-white">
+                      {service.name}
+                    </h3>
+                  </div>
                 </Reveal>
 
                 <Reveal delay={100} className="lg:col-span-4 lg:col-start-5">

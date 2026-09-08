@@ -1,3 +1,4 @@
+import AxisRule from "@/components/ui/AxisRule";
 type Props = {
   /** Two-digit section mark, e.g. "02". */
   index?: string;
@@ -27,7 +28,6 @@ export default function SectionLabel({
 }: Props) {
   const ink = tone === "dark" ? "text-white/45" : "text-faint";
   const mark = tone === "dark" ? "text-white/70" : "text-accent";
-  const line = tone === "dark" ? "bg-white/15" : "bg-rule";
 
   return (
     <Tag className={`label flex items-center gap-4 ${ink} ${className}`}>
@@ -40,9 +40,7 @@ export default function SectionLabel({
         </>
       )}
       <span>{children}</span>
-      {rule && (
-        <span aria-hidden="true" className={`rule-grow h-px flex-1 ${line}`} />
-      )}
+      {rule && <AxisRule tone={tone} />}
     </Tag>
   );
 }

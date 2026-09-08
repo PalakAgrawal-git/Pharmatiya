@@ -78,7 +78,20 @@ export default function Reveal({
     );
 
     observer.observe(node);
-    return () => observer.disconnect();
+
+    /* IntersectionObserver delivers nothing while the frame is not being
+       rendered — a backgrounded or occluded tab, where requestAnimationFrame
+       also stops. Static content still paints in that state, so armed
+       elements would sit at opacity 0 indefinitely while everything around
+       them is visible. This reveals anything still armed after a grace
+       period, so the failure mode is "no animation" rather than "no
+       content". */
+    const failsafe = window.setTimeout(() => setState("shown"), 2000);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(failsafe);
+    };
   }, [threshold]);
 
   return (

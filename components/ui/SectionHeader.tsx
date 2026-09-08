@@ -1,3 +1,4 @@
+import AxisRule from "@/components/ui/AxisRule";
 type Props = {
   eyebrow?: string;
   /** Small right-hand marker, e.g. "01–03". Sits opposite the eyebrow. */
@@ -32,9 +33,14 @@ export default function SectionHeader({
   return (
     <div className={className}>
       {(eyebrow || index) && (
-        <div className="mb-8 flex items-baseline justify-between gap-6 border-t border-rule pt-3">
-          {eyebrow && <p className="label text-accent">{eyebrow}</p>}
-          {index && <p className="label tabular text-faint">{index}</p>}
+        /* The axis carries the rule here as it does in SectionLabel, so the
+           mark appears on page openings too rather than only inside
+           sections. Without it Services and Contact were the two pages with
+           no trace of the site's own device. */
+        <div className="mb-8 flex items-center gap-6 pt-3">
+          {eyebrow && <p className="label shrink-0 text-accent">{eyebrow}</p>}
+          <AxisRule />
+          {index && <p className="label tabular shrink-0 text-faint">{index}</p>}
         </div>
       )}
 

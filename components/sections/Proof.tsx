@@ -22,14 +22,18 @@ import ArrowLink from "@/components/ui/ArrowLink";
 export default function Proof() {
   return (
     <section className="bg-inverse text-white">
-      <div className="shell section">
+      {/* section-tight rather than section. Four figures and a link do not
+          need 180px of padding above and below them — at full section
+          spacing the band was mostly empty ground, and its height made it
+          read as a bigger claim on the page than the record itself is. */}
+      <div className="shell section-tight">
         <Reveal>
           <SectionLabel as="h2" index="01" tone="dark">
             The record
           </SectionLabel>
         </Reveal>
 
-        <dl className="mt-16 grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4 lg:gap-x-12">
+        <dl className="mt-11 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:gap-x-12">
           {proofFigures.map((figure, index) => (
             <Reveal key={figure.label} delay={index * 90}>
               <div className="border-t border-white/25 pt-6">
@@ -45,7 +49,7 @@ export default function Proof() {
         </dl>
 
         <Reveal delay={400}>
-          <div className="mt-16">
+          <div className="mt-12">
             <ArrowLink href="/evidence/" tone="dark">
               Every entry, searchable, with sources
             </ArrowLink>

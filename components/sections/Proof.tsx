@@ -22,25 +22,27 @@ import ArrowLink from "@/components/ui/ArrowLink";
 export default function Proof() {
   return (
     <section className="bg-inverse text-white">
-      {/* section-tight rather than section. Four figures and a link do not
-          need 180px of padding above and below them — at full section
-          spacing the band was mostly empty ground, and its height made it
-          read as a bigger claim on the page than the record itself is. */}
-      <div className="shell section-tight">
+      {/* Tighter than either shared spacing utility. Four figures and a
+          link do not need the 180px of .section, and even .section-tight's
+          120px left the band mostly empty ground — its height was making it
+          read as a bigger claim on the page than the record itself is. Set
+          here rather than by editing .section-tight, which every other
+          section on the site relies on. */}
+      <div className="shell py-[clamp(2.25rem,1.5rem+3vw,4.25rem)]">
         <Reveal>
           <SectionLabel as="h2" index="01" tone="dark">
             The record
           </SectionLabel>
         </Reveal>
 
-        <dl className="mt-11 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:gap-x-12">
+        <dl className="mt-8 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:mt-10 lg:grid-cols-4 lg:gap-x-12">
           {proofFigures.map((figure, index) => (
             <Reveal key={figure.label} delay={index * 90}>
-              <div className="border-t border-white/25 pt-6">
+              <div className="border-t border-white/25 pt-5">
                 <dt className="text-[clamp(2.5rem,1.5rem+2.6vw,4rem)] font-normal leading-[0.9] tracking-[-0.035em] tabular text-white">
                   <CountUp value={figure.value} />
                 </dt>
-                <dd className="mt-5 max-w-[22ch] text-small leading-[1.5] text-white/55">
+                <dd className="mt-4 max-w-[22ch] text-small leading-[1.5] text-white/55">
                   {figure.label}
                 </dd>
               </div>
@@ -49,7 +51,7 @@ export default function Proof() {
         </dl>
 
         <Reveal delay={400}>
-          <div className="mt-12">
+          <div className="mt-9">
             <ArrowLink href="/evidence/" tone="dark">
               Every entry, searchable, with sources
             </ArrowLink>

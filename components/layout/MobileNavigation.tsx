@@ -91,6 +91,15 @@ export default function MobileNavigation() {
   const isCurrent = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
+  /* Same as the desktop bar: tapping the page you are already on closes the
+     menu and returns to the top, rather than closing onto the same scroll
+     position and looking like nothing happened. */
+  const backToTopIfCurrent = (href: string) => {
+    if (!isCurrent(href)) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+  };
+
   return (
     <div className="ml-auto lg:hidden">
       <button
@@ -138,6 +147,7 @@ export default function MobileNavigation() {
                 <li key={href} className="border-b border-rule">
                   <Link
                     href={href}
+                    onClick={() => backToTopIfCurrent(href)}
                     aria-current={isCurrent(href) ? "page" : undefined}
                     className={`flex min-h-14 items-center text-[1.2rem] font-medium no-underline ${
                       isCurrent(href) ? "text-accent" : "text-ink"

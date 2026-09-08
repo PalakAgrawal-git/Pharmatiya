@@ -99,9 +99,24 @@ export default function CountUp({
       { threshold: 0.2 },
     );
     observer.observe(node);
+
+    /* The figure has already been zeroed by the layout effect above, so if
+       the observer never fires this reads "0 publications" for ever — not a
+       missing animation but a wrong number, on the one section of the site
+       whose whole job is credibility. IntersectionObserver delivers nothing
+       while a frame is not being rendered, which a backgrounded tab does,
+       and requestAnimationFrame stops with it, so the count cannot be
+       trusted to arrive. Snap to the finished value instead of animating to
+       it: if we got here the animation was never going to be seen anyway. */
+    const failsafe = window.setTimeout(() => {
+      observer.disconnect();
+      setShown(value);
+    }, 2000);
+
     return () => {
       observer.disconnect();
       cancelAnimationFrame(frame);
+      window.clearTimeout(failsafe);
     };
   }, [target, value, duration]);
 

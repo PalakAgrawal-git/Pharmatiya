@@ -29,6 +29,23 @@ export default function Navigation() {
 
   const onProductPage = pathname.startsWith("/nextgen-ai");
 
+  /* A Link to the route you are already on is a no-op in the App Router: no
+     navigation happens, so no scroll reset happens either. Clicking "Home"
+     from halfway down the homepage therefore did nothing at all, which reads
+     as the link being broken — you are left looking at whatever section you
+     had reached. Every nav item has the same problem; Home is just where it
+     is most obvious, because the record band sits right below the fold.
+
+     Returning to the top is what the click means in that case. Honours
+     reduced-motion by jumping rather than sliding. */
+  const backToTopIfCurrent = (href: string) => (event: React.MouseEvent) => {
+    if (!isCurrent(href)) return;
+    event.preventDefault();
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+  };
+
+
   return (
     <nav aria-label="Primary" className="ml-auto hidden items-center gap-12 lg:flex">
       <ul className="flex items-center gap-9">
@@ -36,6 +53,7 @@ export default function Navigation() {
           <li key={href}>
             <Link
               href={href}
+              onClick={backToTopIfCurrent(href)}
               aria-current={isCurrent(href) ? "page" : undefined}
               className={`relative py-1 text-small no-underline transition-colors duration-200 after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:origin-left after:scale-x-0 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.16,1,0.3,1)] hover:after:scale-x-100 ${
                 isCurrent(href)

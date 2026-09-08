@@ -1,28 +1,50 @@
-/**
- * Subgroup hazard ratios with 95% confidence intervals, on a log scale.
- * Positions are computed from the values below so the geometry is honest:
- * x = 56 + (ln(v) + ln 4) * 152.93, giving 0.25 at the left axis and 4 at
- * the right.
- */
-const rows = [
-  { label: "Overall", hr: 0.72, lo: 0.61, hi: 0.85, x: 217.7, xlo: 192.4, xhi: 243.1 },
-  { label: "Age ≥ 65", hr: 0.88, lo: 0.74, hi: 1.05, x: 248.5, xlo: 222.0, xhi: 275.4 },
-  { label: "Prior therapy", hr: 1.14, lo: 0.93, hi: 1.4, x: 287.9, xlo: 256.8, xhi: 319.4 },
-  { label: "High adherence", hr: 0.65, lo: 0.48, hi: 0.88, x: 202.2, xlo: 155.7, xhi: 248.5 },
-];
+import type { CSSProperties } from "react";
 
 /**
- * Reduced for a website rather than a manuscript.
+ * Subgroup hazard ratios with 95% confidence intervals.
  *
- * The numeric column ("0.72 (0.61–0.85)") and the five-tick log axis were the
- * clutter: both are precise-reading furniture, both rendered at roughly five
- * pixels in a narrow column, and neither is what a visitor takes from a forest
- * plot. What they take is which intervals clear the line of no effect — so
- * that line is now labelled and the marks are heavier.
+ * The previous version dropped the numeric column and the tick axis as
+ * clutter. That went too far: a forest plot with no scale and no values is
+ * not a simplified forest plot, it is an undecodable one — the marks sit at
+ * positions that mean nothing, and the only cue left was a single "favours
+ * intervention" arrow. This restores the scale and the numbers, and adds the
+ * one thing a manuscript figure assumes you already know.
  *
- * Every number remains in the accessible description, so nothing is lost to a
- * screen reader.
+ * That addition is the plain reading of each row. A specialist sees an
+ * interval crossing 1.0 and knows it means the difference is not established;
+ * nobody else does. So each row says which it is, in words, beside the
+ * numbers. It is the difference between a chart you decode and a chart you
+ * read.
+ *
+ * Positions are computed from the values rather than hard-coded, so the
+ * geometry cannot drift from the data it claims to plot.
  */
+
+type Row = { label: string; hr: number; lo: number; hi: number };
+
+const rows: Row[] = [
+  { label: "Overall", hr: 0.72, lo: 0.61, hi: 0.85 },
+  { label: "Age ≥ 65", hr: 0.88, lo: 0.74, hi: 1.05 },
+  { label: "Prior therapy", hr: 1.14, lo: 0.93, hi: 1.4 },
+  { label: "High adherence", hr: 0.65, lo: 0.48, hi: 0.88 },
+];
+
+/* Log scale: ratios are multiplicative, so halving and doubling must occupy
+   the same distance either side of 1.0. Domain runs 0.4 to 2.0, which holds
+   every interval above with room to spare. */
+const MIN = 0.4;
+const MAX = 2.0;
+const PLOT_X = 132;
+const PLOT_W = 198;
+const x = (v: number) =>
+  PLOT_X + ((Math.log(v) - Math.log(MIN)) / (Math.log(MAX) - Math.log(MIN))) * PLOT_W;
+
+const ROW_Y = (i: number) => 46 + i * 40;
+const AXIS_Y = 202;
+const ticks = [0.5, 1.0, 2.0];
+
+const fmt = (v: number) => v.toFixed(2);
+
 export default function ForestPlot({
   animate = false,
   className = "",
@@ -32,140 +54,193 @@ export default function ForestPlot({
 }) {
   return (
     <svg
-      viewBox="0 0 400 250"
+      viewBox="0 0 470 268"
       role="img"
       aria-labelledby="fp-title fp-desc"
       className={`w-full ${className}`}
     >
       <title id="fp-title">
-        Forest plot of hazard ratios across four subgroups
+        Hazard ratios with 95% confidence intervals across four subgroups
       </title>
       <desc id="fp-desc">
-        Overall hazard ratio 0.72, confidence interval 0.61 to 0.85, favouring
-        intervention. Age 65 and over 0.88, 0.74 to 1.05, crossing the line of
-        no effect. Prior therapy 1.14, 0.93 to 1.40, crossing the line of no
-        effect. High adherence 0.65, 0.48 to 0.88, favouring intervention.
+        Overall 0.72, confidence interval 0.61 to 0.85 — favours intervention.
+        Age 65 and over 0.88, 0.74 to 1.05 — crosses 1.0, so no clear
+        difference. Prior therapy 1.14, 0.93 to 1.40 — crosses 1.0, so no
+        clear difference. High adherence 0.65, 0.48 to 0.88 — favours
+        intervention. A ratio below 1.0 means fewer events on the
+        intervention arm.
       </desc>
 
-      {/* Line of no effect, labelled — the single reference a reader needs. */}
+      {/* Column headings, so the numbers are not unlabelled. */}
+      <g
+        fontSize="9.5"
+        fill="var(--color-faint)"
+        fontFamily="var(--font-mono)"
+        letterSpacing="0.08em"
+      >
+        <text x="0" y="18">SUBGROUP</text>
+        <text x="342" y="18">HAZARD RATIO (95% CI)</text>
+      </g>
+      <line x1="0" y1="26" x2="470" y2="26" stroke="var(--color-rule)" strokeWidth="1" />
+
+      {/* Line of no effect, labelled in words rather than left as a bare
+          dashed rule that only a specialist reads. */}
       <line
-        x1="268"
-        y1="20"
-        x2="268"
-        y2="196"
+        x1={x(1)}
+        y1="32"
+        x2={x(1)}
+        y2={AXIS_Y}
         stroke="var(--color-rule-firm)"
         strokeWidth="1"
         strokeDasharray="3 3"
       />
-      <text
-        x="268"
-        y="14"
-        fontSize="12"
-        fill="var(--color-faint)"
-        textAnchor="middle"
-        fontFamily="var(--font-mono)"
-      >
-        1.0
-      </text>
 
       {rows.map((row, i) => {
-        const y = 44 + i * 40;
+        const y = ROW_Y(i);
+        const crosses = row.lo <= 1 && row.hi >= 1;
+        const colour = crosses ? "var(--color-series-3)" : "var(--color-series-1)";
+
         return (
           <g key={row.label}>
             <text
+              x="0"
+              y={y + 4}
+              fontSize="12"
+              fill="var(--color-ink)"
+              fontFamily="var(--font-sans)"
               className={animate ? "fade-part" : undefined}
               style={
                 animate
-                  ? ({ "--fade-delay": `${100 + i * 130}ms` } as React.CSSProperties)
+                  ? ({ "--fade-delay": `${100 + i * 120}ms` } as CSSProperties)
                   : undefined
               }
-              x="10"
-              y={y + 4}
-              fontSize="12.5"
-              fill="var(--color-muted)"
-              fontFamily="var(--font-sans)"
             >
               {row.label}
             </text>
 
-            {/* Confidence interval with end caps. When animated it grows
-                outward from the point estimate, which is how the interval is
-                actually read. */}
+            {/* The interval, growing out from the estimate — which is how it
+                is read: the point first, then how far it could be wrong. */}
             <g
               className={animate ? "grow-x" : undefined}
               style={
                 animate
                   ? ({
-                      "--origin": `${row.x}px`,
-                      "--grow-delay": `${250 + i * 130}ms`,
-                    } as React.CSSProperties)
+                      "--origin": `${x(row.hr)}px`,
+                      "--grow-delay": `${240 + i * 120}ms`,
+                    } as CSSProperties)
                   : undefined
               }
             >
               <line
-                x1={row.xlo}
+                x1={x(row.lo)}
                 y1={y}
-                x2={row.xhi}
+                x2={x(row.hi)}
                 y2={y}
-                stroke="var(--color-series-1)"
-                strokeWidth="2"
+                stroke={colour}
+                strokeWidth="1.5"
               />
-              <line
-                x1={row.xlo}
-                y1={y - 6}
-                x2={row.xlo}
-                y2={y + 6}
-                stroke="var(--color-series-1)"
-                strokeWidth="2"
-              />
-              <line
-                x1={row.xhi}
-                y1={y - 6}
-                x2={row.xhi}
-                y2={y + 6}
-                stroke="var(--color-series-1)"
-                strokeWidth="2"
-              />
+              <line x1={x(row.lo)} y1={y - 5} x2={x(row.lo)} y2={y + 5} stroke={colour} strokeWidth="1.5" />
+              <line x1={x(row.hi)} y1={y - 5} x2={x(row.hi)} y2={y + 5} stroke={colour} strokeWidth="1.5" />
             </g>
 
-            {/* Point estimate — square, area conventionally weighted by n */}
             <rect
+              x={x(row.hr) - 4.5}
+              y={y - 4.5}
+              width="9"
+              height="9"
+              fill={colour}
               className={animate ? "fade-part" : undefined}
               style={
                 animate
-                  ? ({ "--fade-delay": `${150 + i * 130}ms` } as React.CSSProperties)
+                  ? ({ "--fade-delay": `${160 + i * 120}ms` } as CSSProperties)
                   : undefined
               }
-              x={row.x - 6}
-              y={y - 6}
-              width="12"
-              height="12"
-              fill={
-                row.hi < 1 ? "var(--color-series-1)" : "var(--color-series-3)"
-              }
             />
+
+            {/* Numbers, and then what they mean. */}
+            <g
+              className={animate ? "fade-part" : undefined}
+              style={
+                animate
+                  ? ({ "--fade-delay": `${560 + i * 120}ms` } as CSSProperties)
+                  : undefined
+              }
+            >
+              <text
+                x="342"
+                y={y + 1}
+                fontSize="11.5"
+                fill="var(--color-ink)"
+                fontFamily="var(--font-mono)"
+              >
+                {fmt(row.hr)} ({fmt(row.lo)}–{fmt(row.hi)})
+              </text>
+              <text
+                x="342"
+                y={y + 14}
+                fontSize="10"
+                fill={crosses ? "var(--color-faint)" : "var(--color-series-1)"}
+                fontFamily="var(--font-sans)"
+              >
+                {crosses ? "No clear difference" : "Favours intervention"}
+              </text>
+            </g>
           </g>
         );
       })}
 
+      {/* Axis with a real scale. Without ticks the marks sit at positions
+          that carry no information. */}
       <line
-        x1="56"
-        y1="196"
-        x2="380"
-        y2="196"
+        x1={PLOT_X}
+        y1={AXIS_Y}
+        x2={PLOT_X + PLOT_W}
+        y2={AXIS_Y}
         stroke="var(--color-faint)"
         strokeWidth="1"
       />
+      {ticks.map((t) => (
+        <g key={t}>
+          <line x1={x(t)} y1={AXIS_Y} x2={x(t)} y2={AXIS_Y + 5} stroke="var(--color-faint)" strokeWidth="1" />
+          <text
+            x={x(t)}
+            y={AXIS_Y + 18}
+            fontSize="10.5"
+            fill="var(--color-faint)"
+            textAnchor="middle"
+            fontFamily="var(--font-mono)"
+          >
+            {t.toFixed(1)}
+          </text>
+        </g>
+      ))}
 
+      {/* Both directions named, on their own line — set alongside the
+          centre annotation they collided with it, since the plot is only
+          198 units wide. Previously only the left arrow survived, so the
+          scale had no stated meaning at all. */}
+      <text x={PLOT_X} y={AXIS_Y + 32} fontSize="10" fill="var(--color-muted)" fontFamily="var(--font-sans)">
+        ← fewer events
+      </text>
       <text
-        x="150"
-        y="218"
-        fontSize="12"
+        x={PLOT_X + PLOT_W}
+        y={AXIS_Y + 32}
+        fontSize="10"
         fill="var(--color-muted)"
-        textAnchor="middle"
-        fontFamily="var(--font-mono)"
+        textAnchor="end"
+        fontFamily="var(--font-sans)"
       >
-        ← favours intervention
+        more events →
+      </text>
+      <text
+        x={x(1)}
+        y={AXIS_Y + 48}
+        fontSize="10"
+        fill="var(--color-faint)"
+        textAnchor="middle"
+        fontFamily="var(--font-sans)"
+      >
+        1.0 = no difference
       </text>
     </svg>
   );

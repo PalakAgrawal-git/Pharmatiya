@@ -63,7 +63,19 @@
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
-    scroll-behavior: smooth;
+    /* Deliberately NOT smooth here.
+
+       The App Router resets scroll on navigation with window.scrollTo(0, 0).
+       Global smooth turns that into an animation of several hundred
+       milliseconds, and anything touching scroll while it runs — fonts
+       settling, the incoming page mounting, the router's focus management —
+       interrupts it and leaves you partway down the new page. Going from
+       Services to Home that landed in the record band, which read as the
+       Home link jumping to the statistics.
+
+       Smooth is applied below only where it is actually wanted: in-page
+       anchors, and the back-to-top handlers, which pass it explicitly. */
+    scroll-behavior: auto;
     scroll-padding-top: 7rem;
   }
 
@@ -99,6 +111,15 @@
 }
 
 @layer utilities {
+  /* Jumping to an anchor within a page — "See this service", the skip link,
+     the contact CTA — still glides. A :target only exists while a hash is
+     active, so this cannot apply during a route change. */
+  @media (prefers-reduced-motion: no-preference) {
+    :root:has(:target) {
+      scroll-behavior: smooth;
+    }
+  }
+
   .shell {
     width: min(100% - (var(--spacing-gutter) * 2), var(--container-shell));
     margin-inline: auto;
@@ -156,6 +177,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  :root:has(:target) { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

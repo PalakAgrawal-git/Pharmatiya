@@ -23,6 +23,13 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# Git Bash and MSYS rewrite anything that looks like a Unix path when it is
+# passed to a native binary, so NEXT_PUBLIC_BASE_PATH=/Pharmatiya reached Next
+# as "C:/Program Files/Git/Pharmatiya" and the build aborted. Harmless
+# everywhere else; without it this script simply cannot run on Windows.
+export MSYS_NO_PATHCONV=1
+export MSYS2_ARG_CONV_EXCL='*' 
+
 PUBLISH_ROOT="${PUBLISH_ROOT:-1}"   # set to 0 once Pages serves /docs
 
 export NEXT_PUBLIC_BASE_PATH="${NEXT_PUBLIC_BASE_PATH:-/Pharmatiya}"

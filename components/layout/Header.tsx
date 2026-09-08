@@ -1,7 +1,6 @@
-import Link from "next/link";
 import Navigation from "./Navigation";
 import MobileNavigation from "./MobileNavigation";
-import Wordmark from "./Wordmark";
+import HomeLink from "./HomeLink";
 
 /**
  * Site header. The consultation CTA is persistent on desktop so the referral
@@ -20,13 +19,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 bg-paper/90 backdrop-blur-[10px] supports-[not(backdrop-filter:blur(0))]:bg-paper">
       <div className="shell flex h-[4.75rem] items-center gap-8">
-        <Link
-          href="/"
-          className="flex min-h-11 shrink-0 items-center"
-          aria-label="Pharmatiya Health — home"
-        >
-          <Wordmark />
-        </Link>
+        <HomeLink />
 
         <Navigation />
         <MobileNavigation />

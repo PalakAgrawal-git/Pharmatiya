@@ -1,0 +1,44 @@
+1:"$Sreact.fragment"
+2:I[54350,["/Pharmatiya/_next/static/chunks/299cvst09q_90.js","/Pharmatiya/_next/static/chunks/3i1yhrphnvi23.js"],"default"]
+3:I[3997,["/Pharmatiya/_next/static/chunks/299cvst09q_90.js","/Pharmatiya/_next/static/chunks/3i1yhrphnvi23.js"],"default"]
+4:I[22016,["/Pharmatiya/_next/static/chunks/299cvst09q_90.js","/Pharmatiya/_next/static/chunks/3i1yhrphnvi23.js"],""]
+5:I[45802,["/Pharmatiya/_next/static/chunks/299cvst09q_90.js","/Pharmatiya/_next/static/chunks/3i1yhrphnvi23.js"],"default"]
+6:I[97367,["/Pharmatiya/_next/static/chunks/299cvst09q_90.js"],"OutletBoundary"]
+7:"$Sreact.suspense"
+b:I[97367,["/Pharmatiya/_next/static/chunks/299cvst09q_90.js"],"ViewportBoundary"]
+c:I[97367,["/Pharmatiya/_next/static/chunks/299cvst09q_90.js"],"MetadataBoundary"]
+a:X
+23:X
+23:C
+0:{"buildId":"C-qYIfIAvG9mvRg70v3eR","data":[{"rsc":["$","$1","c",{"children":[[["$","section",null,{"className":"border-b border-rule","children":["$","div",null,{"className":"shell section","children":["$","$L2",null,{"children":["$","div",null,{"className":"","children":[["$","div",null,{"className":"mb-8 flex items-baseline justify-between gap-6 border-t border-rule pt-3","children":[["$","p",null,{"className":"label text-accent","children":"Contact"}],"$undefined"]}],["$","h1",null,{"className":"display text-[clamp(2.3rem,1.5rem+3.4vw,4.25rem)] leading-[1.04] max-w-[18ch]","children":"Tell us which applies and the enquiry reaches the right person directly."}],"$undefined"]}]}]}]}],["$","section",null,{"id":"enquiry","className":"scroll-mt-28 border-b border-rule","children":["$","div",null,{"className":"shell section grid gap-x-16 gap-y-14 lg:grid-cols-12","children":[["$","$L2",null,{"className":"lg:col-span-4","children":[["$","h2",null,{"className":"text-[clamp(1.6rem,1.2rem+1.6vw,2.4rem)] leading-[1.1]","children":"Start a conversation"}],["$","p",null,{"className":"mt-7 text-small leading-[1.7] text-muted","children":"Tell us what you are working on. The enquiry is routed to the person who would run the work, not to a sales desk."}]]}],["$","$L2",null,{"delay":120,"className":"lg:col-span-7 lg:col-start-6","children":["$","$L3",null,{}]}]]}]}],["$","section",null,{"id":"demo","className":"scroll-mt-8 border-b border-rule bg-sunk","children":["$","div",null,{"className":"shell section grid gap-x-16 gap-y-12 lg:grid-cols-12","children":[["$","$L2",null,{"className":"border-t border-rule pt-6 lg:col-span-5","children":[["$","h2",null,{"className":"font-mono text-caption uppercase tracking-[0.12em] text-faint mb-4","children":"Book directly"}],["$","p",null,{"className":"mb-5 text-muted","children":"A 30-minute consultation with a senior researcher. No sales team, no discovery call before the discovery call."}],["$","$L4",null,{"href":"#enquiry","className":"group inline-flex items-center justify-center gap-3 rounded-[4px] border text-small font-medium no-underline transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-40 border-rule-firm bg-transparent text-ink hover:border-ink hover:bg-ink hover:text-paper min-h-[3.25rem] px-7","children":["Request a time",["$","span",null,{"aria-hidden":"true","className":"text-[0.9em] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[4px] group-hover:-translate-y-[2px]","children":"↗"}]]}]]}],["$","$L2",null,{"delay":120,"className":"border-t border-rule pt-6 lg:col-span-5 lg:col-start-7","children":[["$","h2",null,{"className":"font-mono text-caption uppercase tracking-[0.12em] text-faint mb-4","children":"Direct contact"}],["$","p",null,{"className":"mb-4","children":["$","a",null,{"href":"mailto:admin@pharmatiya.net","className":"text-accent underline underline-offset-4","children":"admin@pharmatiya.net"}]}],["$","address",null,{"className":"not-italic text-muted","children":["Pharmatiya LLC",["$","br",null,{}],"New York",", ","NY"," ","10280"]}],["$","p",null,{"className":"mt-5 text-caption text-faint","children":["Existing users of ","RWE - Builder"," can reach the application directly at"," ",["$","a",null,{"href":"https://app.pharmatiya.net","className":"text-accent underline","children":"app.pharmatiya.net"}],"."]}]]}]]}]}],["$","section",null,{"className":"border-b border-rule","children":["$","div",null,{"className":"shell section","children":["$","$L2",null,{"children":["$","$L5",null,{}]}]}]}]],[["$","script","script-0",{"src":"/Pharmatiya/_next/static/chunks/3i1yhrphnvi23.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":"$@9","staleTime":"$a","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$Lb",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$Lc",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Contact — Pharmatiya Health"}],["$","meta","1",{"name":"description","content":"Separate routes for new clients, existing clients and press, so enquiries reach the right person. Book a 30-minute consultation with a senior researcher."}],"$Ld","$Le","$Lf","$L10","$L11","$L12","$L13","$L14","$L15","$L16","$L17","$L18","$L19","$L1a","$L1b","$L1c","$L1d","$L1e"]}]}]}],"$L1f"]}],"isPartial":"$@20","staleTime":"$a","varyParams":null},{"rsc":"$L21","isPartial":"$@22","staleTime":"$a","varyParams":"$23"}],"isUpgradeableISRFallback":false,"a":"$@24","rootVaryParams":null,"needsRuntimeRequest":"$@25"}
+26:I[27201,["/Pharmatiya/_next/static/chunks/299cvst09q_90.js"],"IconMark"]
+27:I[39756,["/Pharmatiya/_next/static/chunks/299cvst09q_90.js"],"default"]
+28:I[37457,["/Pharmatiya/_next/static/chunks/299cvst09q_90.js"],"default"]
+8:null
+d:["$","meta","2",{"name":"robots","content":"noindex, nofollow"}]
+e:["$","link","3",{"rel":"canonical","href":"https://www.pharmatiya.net/contact/"}]
+f:["$","meta","4",{"property":"og:title","content":"Contact — Pharmatiya Health"}]
+10:["$","meta","5",{"property":"og:description","content":"Separate routes for new clients, existing clients and press, so enquiries reach the right person. Book a 30-minute consultation with a senior researcher."}]
+11:["$","meta","6",{"property":"og:site_name","content":"Pharmatiya Health"}]
+12:["$","meta","7",{"property":"og:locale","content":"en_US"}]
+13:["$","meta","8",{"property":"og:image","content":"https://www.pharmatiya.net/og.png"}]
+14:["$","meta","9",{"property":"og:image:width","content":"1200"}]
+15:["$","meta","10",{"property":"og:image:height","content":"630"}]
+16:["$","meta","11",{"property":"og:image:alt","content":"Pharmatiya Health — evidence that holds up when it is challenged"}]
+17:["$","meta","12",{"property":"og:type","content":"website"}]
+18:["$","meta","13",{"name":"twitter:card","content":"summary_large_image"}]
+19:["$","meta","14",{"name":"twitter:title","content":"Contact — Pharmatiya Health"}]
+1a:["$","meta","15",{"name":"twitter:description","content":"Separate routes for new clients, existing clients and press, so enquiries reach the right person. Book a 30-minute consultation with a senior researcher."}]
+1b:["$","meta","16",{"name":"twitter:image","content":"https://www.pharmatiya.net/og.png"}]
+1c:["$","link","17",{"rel":"icon","href":"/Pharmatiya/icon.svg?icon.3iwnnl8s-j17o.svg","sizes":"any","type":"image/svg+xml"}]
+1d:["$","link","18",{"rel":"apple-touch-icon","href":"/Pharmatiya/apple-icon.png?apple-icon.09acdj28yusrb.png","sizes":"180x180","type":"image/png"}]
+1e:["$","$L26","19",{}]
+1f:["$","meta",null,{"name":"next-size-adjust","content":""}]
+21:["$","$1","c",{"children":[null,["$","$L27",null,{"parallelRouterKey":"children","template":["$","$L28",null,{}]}]]}]
+25:true
+a:300
+a:C
+24:0
+20:"$undefined"
+22:"$undefined"
+9:"$undefined"

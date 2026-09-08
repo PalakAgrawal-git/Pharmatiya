@@ -1,8 +1,7 @@
 import Button from "@/components/ui/Button";
 import ArrowLink from "@/components/ui/ArrowLink";
-import AxisRule from "@/components/ui/AxisRule";
 import Reveal from "@/components/motion/Reveal";
-import KaplanMeierGraphic from "@/components/evidence/KaplanMeierGraphic";
+import SurvivalReadout from "@/components/evidence/SurvivalReadout";
 
 /**
  * The opening spread.
@@ -13,13 +12,9 @@ import KaplanMeierGraphic from "@/components/evidence/KaplanMeierGraphic";
  * figure beside an introduction, and it is what makes the chart read as
  * evidence rather than as an illustration of evidence.
  *
- * The headline turns at the clause that carries the claim, but it turns on
- * colour and an axis mark rather than on a serif italic. Sans headline with
- * an italic-serif accent clause is the single most recognisable signature of
- * a generated site right now, and it was undercutting the one thing this
- * page has to establish, which is that a person made deliberate choices
- * here. The indigo is pole one of the palette, so the emphasis is carried by
- * the identity rather than by a borrowed device.
+ * The headline is mostly sans; only the closing clause is in the serif. That
+ * single switch is the whole typographic idea of the site — the sentence
+ * turns at the moment it becomes a claim.
  *
  * On mobile the figure moves below the copy and the action, so the
  * positioning statement and the primary CTA are both reachable without
@@ -31,20 +26,18 @@ export default function Hero() {
       <div className="shell grid grid-cols-1 items-end gap-x-16 gap-y-16 pb-24 pt-14 lg:grid-cols-12 lg:pb-28 lg:pt-20">
         <div className="lg:col-span-7">
           <Reveal>
-            {/* Sentence case, with the axis mark leading. Tracked-out mono
-                uppercase is the other half of the generated-editorial tell,
-                and at this length it wrapped badly besides. */}
-            <p className="flex items-center gap-3 text-small text-faint">
-              <AxisRule className="max-w-[3.5rem]" />
+            <p className="label-sm text-faint">
               Independent health economics &amp; outcomes research
             </p>
           </Reveal>
 
           <Reveal delay={90}>
-            <h1 className="mt-8 max-w-[15ch] text-[clamp(2.35rem,1.2rem+4.2vw,4.35rem)] font-normal leading-[1.06] tracking-[-0.025em]">
+            <h1 className="mt-10 max-w-[16ch] text-[clamp(2.25rem,1.2rem+3.9vw,4rem)] font-normal leading-[1.1] tracking-[-0.02em]">
               Evidence that holds up
               <br />
-              <span className="text-accent">when it is challenged.</span>
+              <span className="display italic text-accent">
+                when it is challenged.
+              </span>
             </h1>
           </Reveal>
 
@@ -66,7 +59,7 @@ export default function Hero() {
 
         <Reveal delay={210} className="lg:col-span-5">
           <figure>
-            <KaplanMeierGraphic animate />
+            <SurvivalReadout />
             <figcaption className="mt-6 border-t border-rule pt-4">
               <p className="label-sm text-ink">Fig. 01 / Survival estimate</p>
               <p className="label-sm mt-2 text-faint">24-month follow-up</p>

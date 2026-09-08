@@ -37,10 +37,7 @@ export default function NextGenTeaser() {
             <h3 className="text-[clamp(2rem,1.3rem+2.8vw,3.6rem)] leading-[1.06] text-white">
               AI-assisted evidence.
               <br />
-              {/* On the dark ground the emphasis takes the amber pole, the
-                  counterweight to the indigo the hero uses. Same device,
-                  opposite side of the axis. */}
-              <span className="text-signal-on-dark">
+              <span className="display italic text-white/70">
                 Human-reviewed conclusions.
               </span>
             </h3>

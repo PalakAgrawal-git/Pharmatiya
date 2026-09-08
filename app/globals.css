@@ -10,60 +10,34 @@
    ========================================================================== */
 
 @theme {
-  /* ======================================================================
-     Palette — "diverging"
-
-     Taken from the grammar of the work itself. A forest plot resolves onto
-     one axis with two poles: favours intervention on one side, favours
-     comparator on the other. So the identity is two poles — a deep indigo
-     and a warm amber — reading against a cool ground, rather than a single
-     accent spent sparingly on cream.
-
-     The cream-and-petrol scheme this replaces is the most over-produced
-     editorial palette in circulation; it read as a template because it is
-     one. Every value below is measured, not chosen by eye: contrast ratios
-     are noted where they are the reason for the value.
-     ====================================================================== */
-
-  /* --- surfaces: cool, faintly violet. Deliberately not cream. ---------- */
-  --color-paper: #ecedf3;
-  --color-surface: #f7f7fb;
-  --color-sunk: #dedfe9;
-  --color-inverse: #12111b;
+  /* --- surfaces --------------------------------------------------------- */
+  --color-paper: #f5f4ef;
+  --color-surface: #faf9f5;
+  --color-sunk: #eceae1;
+  --color-inverse: #101817;
 
   /* --- ink -------------------------------------------------------------- */
-  --color-ink: #16151f;                /* 15.5:1 on paper */
-  --color-muted: #4a4b5e;              /* 7.3:1 on paper, 6.4:1 on sunk */
-  /* Carries figure captions, entry counts and every mono label, so it is
-     set from the contrast requirement: 5.3:1 on paper, 4.7:1 on sunk. */
-  --color-faint: #5e5f75;
+  --color-ink: #101817;
+  --color-muted: #565d5a;
+  /* Contrast-led: this carries figure captions, entry counts and every mono
+     label, so it is set to clear 4.5:1 on paper and on the sunk band both. */
+  --color-faint: #636a67;
 
   /* --- rules ------------------------------------------------------------ */
-  --color-rule: #d2d3e0;
-  --color-rule-firm: #b2b4c6;
+  --color-rule: #dedbd0;
+  --color-rule-firm: #c3bfb1;
 
-  /* --- pole one: indigo. The structural accent. ------------------------- */
-  --color-accent: #3a3a85;             /* 8.5:1 on paper */
-  --color-accent-deep: #29295f;
-  --color-accent-lift: #5250a6;        /* 5.9:1 on paper */
-  /* Indigo is too dark to read on the inverse ground (2.7:1). This tint is
-     the on-dark equivalent: 7.2:1. */
-  --color-accent-on-dark: #9b99e0;
-
-  /* --- pole two: amber. The counterweight. ------------------------------ */
-  /* Graphics only — 4.0:1 on paper, 3.5:1 on sunk, clearing the 3:1 that
-     non-text contrast requires but not the 4.5:1 that text does. */
-  --color-signal: #b25e1c;
-  --color-signal-on-dark: #c97b2e;     /* 5.7:1 on inverse */
+  /* --- accent: one deep desaturated teal, spent sparingly --------------- */
+  --color-accent: #286762;
+  --color-accent-deep: #1b4c48;
+  --color-accent-lift: #34837c;
 
   /* --- data visualisation ----------------------------------------------- */
-  --color-series-1: #3a3a85;
-  --color-series-2: #b25e1c;
-  --color-series-3: #6e7192;
+  --color-series-1: #286762;
+  --color-series-2: #8c4a32;
+  --color-series-3: #6e7050;
 
-  /* Small text, so it takes the darker amber: 5.6:1 on paper, 4.9:1 on
-     sunk. Distinguishable from --color-signal in print and in greyscale. */
-  --color-flag: #8e4d0e;
+  --color-flag: #7d5f18;
 
   /* --- typography -------------------------------------------------------
      IBM Plex Sans carries navigation, body, forms, listings and most UI.

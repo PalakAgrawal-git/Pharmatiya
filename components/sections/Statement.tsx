@@ -18,7 +18,10 @@ import Reveal from "@/components/motion/Reveal";
 export default function Statement() {
   return (
     <section className="border-b border-rule">
-      <div className="shell section grid gap-x-16 gap-y-10 lg:grid-cols-12">
+      {/* section-tight: this is two short paragraphs, and at full section
+          spacing it occupied nearly as much height as the record band
+          with four figures in it. */}
+      <div className="shell section-tight grid gap-x-16 gap-y-8 lg:grid-cols-12">
         <Reveal className="lg:col-span-9">
           <p className="display text-[clamp(1.75rem,1.1rem+2.8vw,3.25rem)] leading-[1.18]">
             Evidence is only useful when someone can defend it.

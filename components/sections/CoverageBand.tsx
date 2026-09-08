@@ -18,19 +18,19 @@ export default function CoverageBand() {
   return (
     <section className="border-b border-rule bg-sunk">
       <div className="shell section">
-        <div className="grid gap-x-16 gap-y-12 lg:grid-cols-12">
+        <div className="grid gap-x-16 gap-y-10 lg:grid-cols-12">
           <Reveal className="lg:col-span-3">
             <SectionLabel as="h2" index="03" rule={false}>
               Data coverage
             </SectionLabel>
-            <p className="mt-10 text-[clamp(1.5rem,1.1rem+1.5vw,2.25rem)] leading-[1.12]">
+            <p className="mt-7 text-[clamp(1.5rem,1.1rem+1.5vw,2.25rem)] leading-[1.12]">
               Payer, provider and claims data — for twenty-five years.
             </p>
             <p className="measure mt-6 text-muted">
               If your question sits in one of these sources, we have almost
               certainly answered a version of it before.
             </p>
-            <div className="mt-10">
+            <div className="mt-8">
               <ArrowLink href="/evidence/">
                 Full coverage and therapeutic areas
               </ArrowLink>
@@ -42,7 +42,7 @@ export default function CoverageBand() {
               <Reveal
                 key={group.group}
                 delay={index * 110}
-                className="grid gap-x-12 gap-y-5 border-b border-rule py-9 first:border-t lg:grid-cols-[14rem_1fr]"
+                className="grid gap-x-12 gap-y-5 border-b border-rule py-7 first:border-t lg:grid-cols-[14rem_1fr]"
               >
                 <div className="flex items-baseline gap-4">
                   <span className="label tabular text-accent">

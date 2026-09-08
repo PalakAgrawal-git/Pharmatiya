@@ -61,14 +61,14 @@ export default function ServiceTeasers() {
           </SectionLabel>
         </Reveal>
 
-        <div className="mt-14 lg:mt-20">
+        <div className="mt-10 lg:mt-12">
           {services.map((service, index) => {
             const figure = figures[index];
 
             return (
               <div
                 key={service.id}
-                className="grid items-start gap-x-10 gap-y-8 border-t border-ink/20 pb-16 pt-9 last:pb-0 lg:grid-cols-12 lg:gap-y-0 lg:pb-20 lg:pt-10"
+                className="grid items-start gap-x-10 gap-y-8 border-t border-ink/20 pb-12 pt-7 last:pb-0 lg:grid-cols-12 lg:gap-y-0 lg:pb-14 lg:pt-8"
               >
                 {/* The title block takes the dark ground the record band
                     uses, so the three services read as headed chapters rather

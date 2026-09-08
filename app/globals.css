@@ -127,8 +127,11 @@
 
   /* Section rhythm. Generous by intent — 140-180px on desktop for a major
      section, roughly two thirds of that for a minor one. */
-  .section { padding-block: clamp(5rem, 3rem + 8vw, 11.25rem); }
-  .section-tight { padding-block: clamp(3.75rem, 2.5rem + 5vw, 7.5rem); }
+  /* Reduced from 80-180px. At the old values a section with three
+     short rows in it spent more height on padding than on content,
+     and the homepage ran to eight and a half screens. */
+  .section { padding-block: clamp(3.25rem, 2rem + 4.5vw, 6.5rem); }
+  .section-tight { padding-block: clamp(2.5rem, 1.75rem + 3vw, 4.5rem); }
 
   .measure { max-width: 66ch; }
   .measure-tight { max-width: 44ch; }

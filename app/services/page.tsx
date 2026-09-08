@@ -20,7 +20,7 @@ export default function ServicesPage() {
   return (
     <>
       <section className="border-b border-rule">
-        <div className="shell relative grid gap-10 py-16 lg:grid-cols-[6fr_4fr] lg:py-24">
+        <div className="shell relative grid gap-10 py-12 lg:grid-cols-[6fr_4fr] lg:py-16">
           <Reveal>
             <SectionHeader
               as="h1"

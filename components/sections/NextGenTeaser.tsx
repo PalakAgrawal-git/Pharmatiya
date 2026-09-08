@@ -32,7 +32,7 @@ export default function NextGenTeaser() {
           </SectionLabel>
         </Reveal>
 
-        <div className="mt-20 grid gap-x-16 gap-y-16 lg:mt-28 lg:grid-cols-12">
+        <div className="mt-12 grid gap-x-16 gap-y-12 lg:mt-16 lg:grid-cols-12">
           <Reveal className="lg:col-span-7">
             <h3 className="text-[clamp(2rem,1.3rem+2.8vw,3.6rem)] leading-[1.06] text-white">
               AI-assisted evidence.
@@ -57,7 +57,7 @@ export default function NextGenTeaser() {
           </Reveal>
         </div>
 
-        <ol className="mt-24 grid gap-x-16 gap-y-10 lg:mt-32 lg:grid-cols-3">
+        <ol className="mt-16 grid gap-x-16 gap-y-10 lg:mt-20 lg:grid-cols-3">
           {stages.map((stage, index) => (
             <Reveal
               as="li"

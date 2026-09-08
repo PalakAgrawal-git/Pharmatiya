@@ -23,7 +23,7 @@ import SurvivalReadout from "@/components/evidence/SurvivalReadout";
 export default function Hero() {
   return (
     <section className="border-b border-rule">
-      <div className="shell grid grid-cols-1 items-end gap-x-16 gap-y-16 pb-24 pt-14 lg:grid-cols-12 lg:pb-28 lg:pt-20">
+      <div className="shell grid grid-cols-1 items-end gap-x-16 gap-y-12 pb-16 pt-10 lg:grid-cols-12 lg:pb-20 lg:pt-12">
         <div className="lg:col-span-7">
           <Reveal>
             <p className="label-sm text-faint">

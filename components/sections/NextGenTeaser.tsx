@@ -24,15 +24,23 @@ const stages = [
  */
 export default function NextGenTeaser() {
   return (
-    <section className="bg-inverse text-white">
-      <div className="shell section">
+    <section>
+      {/* The running head sits on the paper above the panel, matching the
+          record band. It marks the section; the panel is the content inside
+          it, and a chapter marker set on the same dark ground reads as a
+          label belonging to the panel rather than as the head introducing
+          it. Weighted toward the panel so it groups downward. */}
+      <div className="shell pt-12 pb-7 lg:pt-16 lg:pb-8">
         <Reveal>
-          <SectionLabel as="h2" index="04" tone="dark">
+          <SectionLabel as="h2" index="04">
             {site.productName}
           </SectionLabel>
         </Reveal>
+      </div>
 
-        <div className="mt-12 grid gap-x-16 gap-y-12 lg:mt-16 lg:grid-cols-12">
+      <div className="bg-inverse text-white">
+      <div className="shell py-[clamp(2.5rem,1.75rem+3vw,4.5rem)]">
+        <div className="grid gap-x-16 gap-y-12 lg:mt-16 lg:grid-cols-12">
           <Reveal className="lg:col-span-7">
             <h3 className="text-[clamp(2rem,1.3rem+2.8vw,3.6rem)] leading-[1.06] text-white">
               AI-assisted evidence.
@@ -79,6 +87,7 @@ export default function NextGenTeaser() {
             Required at every stage, before any output leaves the system.
           </p>
         </Reveal>
+      </div>
       </div>
     </section>
   );

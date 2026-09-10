@@ -1,2 +1,2 @@
-:HL["/Pharmatiya/_next/static/chunks/198m4kmrv_gc1.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4160,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"jA2v7HUGG6dk7aaCkiRTo"}
+:HL["/Pharmatiya/_next/static/chunks/0coafce7nvol_.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4160,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"WYGif2kM7Lv9dgpYXAl2g"}

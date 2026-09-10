@@ -55,6 +55,7 @@ export default function ForestPlot({
   return (
     <svg
       viewBox="0 0 470 268"
+      style={{ fontVariantNumeric: "tabular-nums" }}
       role="img"
       aria-labelledby="fp-title fp-desc"
       className={`w-full ${className}`}
@@ -75,7 +76,7 @@ export default function ForestPlot({
       <g
         fontSize="9.5"
         fill="var(--color-faint)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-sans)"
         letterSpacing="0.08em"
       >
         <text x="0" y="18">SUBGROUP</text>
@@ -171,7 +172,7 @@ export default function ForestPlot({
                 y={y + 1}
                 fontSize="11.5"
                 fill="var(--color-ink)"
-                fontFamily="var(--font-mono)"
+                fontFamily="var(--font-sans)"
               >
                 {fmt(row.hr)} ({fmt(row.lo)}–{fmt(row.hi)})
               </text>
@@ -208,7 +209,7 @@ export default function ForestPlot({
             fontSize="10.5"
             fill="var(--color-faint)"
             textAnchor="middle"
-            fontFamily="var(--font-mono)"
+            fontFamily="var(--font-sans)"
           >
             {t.toFixed(1)}
           </text>

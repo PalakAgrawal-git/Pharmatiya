@@ -37,6 +37,7 @@ export default function KaplanMeierGraphic({
   return (
     <svg
       viewBox="0 0 520 320"
+      style={{ fontVariantNumeric: "tabular-nums" }}
       role="img"
       aria-labelledby="km-title km-desc"
       className={`w-full ${className}`}
@@ -61,7 +62,7 @@ export default function KaplanMeierGraphic({
         fontSize="12"
         fill="var(--color-faint)"
         textAnchor="end"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-sans)"
       >
         <text x="48" y="34">1.0</text>
         <text x="48" y="274">0.5</text>
@@ -71,7 +72,7 @@ export default function KaplanMeierGraphic({
         fontSize="12"
         fill="var(--color-faint)"
         textAnchor="middle"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-sans)"
       >
         <text x="56" y="292">0</text>
         <text x="243" y="292">12</text>
@@ -87,7 +88,7 @@ export default function KaplanMeierGraphic({
         fontSize="12"
         fill="var(--color-muted)"
         textAnchor="middle"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-sans)"
         transform="rotate(-90 14 150)"
       >
         Event-free survival

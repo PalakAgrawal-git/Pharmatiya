@@ -134,7 +134,7 @@ export default function SurvivalReadout() {
                 y="292"
                 textAnchor="middle"
                 fontSize="12"
-                fontFamily="var(--font-mono)"
+                fontFamily="var(--font-sans)"
                 fill="var(--color-ink)"
               >
                 {month}
@@ -149,7 +149,7 @@ export default function SurvivalReadout() {
           pointer movement. */}
       <p
         aria-live="polite"
-        className="mt-4 flex min-h-[1.5rem] flex-wrap items-baseline gap-x-6 gap-y-1 font-mono text-caption"
+        className="tabular mt-4 flex min-h-[1.5rem] flex-wrap items-baseline gap-x-6 gap-y-1 text-caption"
       >
         {active ? (
           <>

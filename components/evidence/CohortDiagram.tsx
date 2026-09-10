@@ -34,6 +34,7 @@ export default function CohortDiagram({
   return (
     <svg
       viewBox="0 0 280 320"
+      style={{ fontVariantNumeric: "tabular-nums" }}
       role="img"
       aria-labelledby="cd-title cd-desc"
       className={`w-full ${className}`}
@@ -89,7 +90,7 @@ export default function CohortDiagram({
                 ? "var(--color-series-1)"
                 : "var(--color-ink)"
             }
-            fontFamily="var(--font-mono)"
+            fontFamily="var(--font-sans)"
           >
             n = {step.n}
           </text>

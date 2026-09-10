@@ -98,6 +98,7 @@ export default function Milestones() {
       <Reveal>
         <svg
           viewBox="0 0 700 168"
+          style={{ fontVariantNumeric: "tabular-nums" }}
           role="img"
           aria-labelledby="tl-title tl-desc"
           className="w-full"
@@ -162,7 +163,7 @@ export default function Milestones() {
               fontSize="11"
               fill="var(--color-faint)"
               textAnchor="middle"
-              fontFamily="var(--font-mono)"
+              fontFamily="var(--font-sans)"
             >
               {year}
             </text>
@@ -175,7 +176,7 @@ export default function Milestones() {
             fontSize="11"
             fill="var(--color-series-1)"
             textAnchor="middle"
-            fontFamily="var(--font-mono)"
+            fontFamily="var(--font-sans)"
           >
             {PEAK}
           </text>

@@ -48,6 +48,7 @@ export default function CostEffectivenessPlane({
   return (
     <svg
       viewBox="112 8 348 212"
+      style={{ fontVariantNumeric: "tabular-nums" }}
       role="img"
       aria-labelledby="ce-title ce-desc"
       className={`w-full ${className}`}
@@ -91,7 +92,7 @@ export default function CostEffectivenessPlane({
         fontSize="12"
         fill="var(--color-series-3)"
         textAnchor="end"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-sans)"
       >
         WTP threshold
       </text>
@@ -135,7 +136,7 @@ export default function CostEffectivenessPlane({
 
       {/* The strip below the axis is now free of both the line and the cloud,
           because the corrected threshold rises only into the upper right. */}
-      <g fontSize="12" fill="var(--color-faint)" fontFamily="var(--font-mono)">
+      <g fontSize="12" fill="var(--color-faint)" fontFamily="var(--font-sans)">
         <text x="438" y="172" textAnchor="end">
           Incremental effect →
         </text>

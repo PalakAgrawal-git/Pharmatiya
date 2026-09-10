@@ -1,6 +1,6 @@
 import { methods } from "@/lib/site";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { DataLabel, Pending } from "@/components/ui/DataLabel";
+import { DataLabel } from "@/components/ui/DataLabel";
 import CaseStudies from "@/components/evidence/CaseStudies";
 import DatasetMap from "@/components/evidence/DatasetMap";
 import TherapeuticMatrix from "@/components/evidence/TherapeuticMatrix";
@@ -8,6 +8,7 @@ import PublicationList from "@/components/evidence/PublicationList";
 import CTA from "@/components/sections/CTA";
 import Reveal from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
+import Slot from "@/components/ui/Slot";
 
 export const metadata = {
   title: "Evidence",
@@ -88,6 +89,15 @@ export default function EvidencePage() {
           </Reveal>
           <Reveal delay={100}>
             <TherapeuticMatrix inverted />
+
+            <div className="mt-10 flex flex-col gap-4">
+              <Slot id={15}>
+                Therapeutic areas you work in that are not in the published
+                record. The matrix and the &ldquo;12 therapeutic areas&rdquo;
+                figure are both counted from the bibliography, so anything you
+                cover but have not published in is currently invisible.
+              </Slot>
+            </div>
           </Reveal>
         </div>
       </section>
@@ -110,6 +120,15 @@ export default function EvidencePage() {
           </Reveal>
           <Reveal delay={100}>
             <PublicationList />
+
+            <div className="mt-10">
+              <Slot id={10}>
+                The patent number. The résumé and the publication list give
+                different numbers for what appears to be the same patent; one
+                of them is wrong and we should not publish either until we
+                know which.
+              </Slot>
+            </div>
           </Reveal>
         </div>
       </section>

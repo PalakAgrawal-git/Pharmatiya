@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { team } from "@/lib/team";
-import { DataLabel, Pending } from "@/components/ui/DataLabel";
+import { DataLabel } from "@/components/ui/DataLabel";
+import Slot from "@/components/ui/Slot";
 
 /**
  * Team roster, rendered from lib/team.ts.
@@ -14,10 +15,27 @@ import { DataLabel, Pending } from "@/components/ui/DataLabel";
 export default function TeamRoster() {
   if (team.length === 0) {
     return (
-      <p className="measure text-muted">
-        Team profiles are being finalised. Ask us directly and we will tell you
-        who would run your study.
-      </p>
+      <div>
+        <p className="measure text-muted">
+          Team profiles are being finalised. Ask us directly and we will tell
+          you who would run your study.
+        </p>
+        <div className="mt-8 flex flex-col gap-4">
+          <Slot id={26}>
+            Names, roles and a three-line biography for each person to appear
+            here. The roster is a drop-in: add entries to
+            <code> lib/team.ts </code> and this section fills itself.
+          </Slot>
+          <Slot id={8}>
+            The role title to publish for Dr Mehta. The résumé, the brief and
+            the live site each use a different one.
+          </Slot>
+          <Slot id={24}>
+            A photograph per person, if wanted. Without one the position holds
+            with a typographic panel; stock portraits are not an option here.
+          </Slot>
+        </div>
+      </div>
     );
   }
 
@@ -108,6 +126,23 @@ export default function TeamRoster() {
           </div>
         </article>
       ))}
+
+      {/* The roster is populated, so the empty-state slots above never
+          render — but the outstanding inputs are the same either way. */}
+      <div className="mt-10 flex flex-col gap-4">
+        <Slot id={26}>
+          The rest of the team: name, role and a three-line biography each.
+          Add entries to <code>lib/team.ts</code> and they appear here.
+        </Slot>
+        <Slot id={8}>
+          The role title to publish for Dr Mehta. The résumé, the brief and
+          the current site each give a different one.
+        </Slot>
+        <Slot id={24}>
+          A photograph per person, if wanted. Without one the position holds
+          with a typographic panel — stock portraits are not an option here.
+        </Slot>
+      </div>
 
       <p className="mt-10 border-t border-rule pt-6 text-small text-muted">
         Our published work, in full, is on the{" "}

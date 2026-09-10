@@ -1,11 +1,12 @@
 import { site } from "@/lib/site";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { DataLabel, Pending } from "@/components/ui/DataLabel";
+import { DataLabel } from "@/components/ui/DataLabel";
 import Button from "@/components/ui/Button";
 import WorkflowDiagram from "@/components/sections/WorkflowDiagram";
 import StudyFinder from "@/components/sections/StudyFinder";
 import Reveal from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
+import Slot from "@/components/ui/Slot";
 
 export const metadata = {
   title: `${site.productName}`,
@@ -32,17 +33,17 @@ const trust = [
   {
     title: "No PHI uploaded",
     body: "Protected health information is not uploaded to the system.",
-    pending: "Exact data handling to be confirmed",
+    slot: { id: 19, blocking: true, need: "Exactly how patient data is handled end to end: what is uploaded, what is retained, where it is processed, and by whom. This is the first thing a compliance reviewer asks, and the claim above cannot ship without it." },
   },
   {
     title: "Human review mandatory",
     body: "No output reaches a client without expert sign-off. Review is a stage in the workflow, not a check at the end.",
-    pending: null,
+    slot: null,
   },
   {
     title: "Model disclosed",
     body: "We name the underlying model and its version, and we say when it changes.",
-    pending: "Model and version to be specified",
+    slot: { id: 20, blocking: false, need: "The name and version of the underlying model, and what happens when it changes. The brief asks for disclosure rather than a disclaimer, so this page has a slot for it rather than a hedge." },
   },
 ];
 
@@ -73,10 +74,22 @@ export default function NextGenPage() {
             </div>
           </Reveal>
 
-          {/* The product interface goes here once a real screenshot exists
-              (client input 5). Nothing stands in for it: an empty panel
-              announcing a missing asset is worse than a hero that simply runs
-              to one column, and inventing a dashboard would be worse still. */}
+          {/* Nothing is mocked up in place of the real interface: an invented
+              dashboard on an AI page is the single most misleading thing this
+              site could carry. The slot names the asset instead. */}
+          <div className="mt-12 flex flex-col gap-4">
+            <Slot id={17}>
+              What the product actually is, in one sentence a buyer would
+              recognise — and the public name to use for it. The brief says
+              &ldquo;NextGen AI&rdquo;; the live navigation says &ldquo;RWE -
+              Builder&rdquo;. Both appear on this page today.
+            </Slot>
+            <Slot id={22}>
+              Product screenshots, or permission to show the interface. Until
+              then this opening runs to one column rather than framing a
+              placeholder image.
+            </Slot>
+          </div>
         </div>
       </section>
 
@@ -160,6 +173,13 @@ export default function NextGenPage() {
               The right-hand column is longer than the left, and that is the
               point.
             </p>
+            <Slot id={18} className="mt-8">
+              Confirm or correct both columns. We have drafted them — the
+              model drafts structure, summarises literature and proposes
+              cohort definitions; the researcher approves the question,
+              validates the methods and signs off the output — and anything
+              missing on either side needs adding before launch.
+            </Slot>
           </Reveal>
         </div>
       </section>
@@ -190,11 +210,32 @@ export default function NextGenPage() {
                 <p className="mt-3 text-small leading-[1.5] text-muted">
                   {item.body}
                 </p>
+                {item.slot && (
+                  <Slot
+                    id={item.slot.id}
+                    blocking={item.slot.blocking}
+                    className="mt-4"
+                  >
+                    {item.slot.need}
+                  </Slot>
+                )}
               </Reveal>
             ))}
           </div>
 
-
+          <div className="mt-12 flex flex-col gap-4">
+            <Slot id={4} blocking>
+              Your compliance review turnaround — how long a client should
+              expect sign-off to take. Buyers in regulated environments plan
+              around this number and will ask for it on the first call.
+            </Slot>
+            <Slot id={21}>
+              What the tool explicitly does <strong>not</strong> do. A buyer in
+              a regulated environment reads an AI page for its limits first,
+              and a page that states none reads as one that has not thought
+              about them.
+            </Slot>
+          </div>
         </div>
       </section>
 

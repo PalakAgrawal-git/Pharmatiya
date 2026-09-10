@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Field, TextArea, Select } from "@/components/ui/Field";
 import Button from "@/components/ui/Button";
-import { DataLabel, Pending } from "@/components/ui/DataLabel";
+import { DataLabel } from "@/components/ui/DataLabel";
 
 type Route = "new" | "existing" | "press";
 

@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { services } from "@/lib/site";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { DataLabel, Pending } from "@/components/ui/DataLabel";
+import { DataLabel } from "@/components/ui/DataLabel";
 import Button from "@/components/ui/Button";
 import ArrowLink from "@/components/ui/ArrowLink";
 import CTA from "@/components/sections/CTA";
 import Reveal from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 import ServiceProcess from "@/components/sections/ServiceProcess";
+import Slot from "@/components/ui/Slot";
 
 export const metadata = {
   title: "Services",
@@ -134,8 +135,31 @@ export default function ServicesPage() {
                       </li>
                     ))}
                   </ul>
+                  {service.deliverablesPending && (
+                    <Slot id={12} className="mt-5">
+                      The full deliverables list for this service. What is
+                      above is drafted from the brief — confirm, correct, and
+                      add anything a client actually receives that is missing.
+                    </Slot>
+                  )}
                 </div>
               </Reveal>
+
+              {index === 0 && (
+                <Reveal className="mt-10 flex flex-col gap-4">
+                  <Slot id={11}>
+                    Your own description of each of the three services, in the
+                    words you use with clients. Everything on this page is
+                    drafted from the proposal and needs your sign-off before
+                    launch.
+                  </Slot>
+                  <Slot id={13}>
+                    Engagement model or pricing guidance — retainer, project,
+                    day rate, or a typical range. A buyer who cannot tell
+                    whether you are in their budget often does not ask.
+                  </Slot>
+                </Reveal>
+              )}
 
               <Reveal
                 delay={80}

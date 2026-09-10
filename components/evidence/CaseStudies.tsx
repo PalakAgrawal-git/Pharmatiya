@@ -1,6 +1,7 @@
 import { caseStudies } from "@/lib/site";
 import { DataLabel } from "@/components/ui/DataLabel";
 import Button from "@/components/ui/Button";
+import Slot from "@/components/ui/Slot";
 
 const spine = [
   { key: "challenge", label: "Challenge" },
@@ -33,6 +34,20 @@ export default function CaseStudies() {
         <Button href="/contact/" variant="secondary">
           Ask for anonymised case material
         </Button>
+
+        <div className="mt-8 flex flex-col gap-4">
+          <Slot id={30}>
+            Two or three anonymised case studies: the question, the data used,
+            the method, and what the work enabled. No client name and no
+            outcome we cannot evidence — if a case cannot be told without
+            either, it is better left out and this statement stands.
+          </Slot>
+          <Slot id={31}>
+            One sample deliverable we may show — a redacted protocol, dossier
+            section or slide — so a buyer can see the standard of the work
+            before they commission it.
+          </Slot>
+        </div>
       </div>
     );
   }

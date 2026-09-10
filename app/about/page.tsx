@@ -9,6 +9,7 @@ import CTA from "@/components/sections/CTA";
 import Reveal from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 import CountUp from "@/components/motion/CountUp";
+import Slot from "@/components/ui/Slot";
 
 export const metadata = {
   title: "About",
@@ -113,6 +114,25 @@ export default function AboutPage() {
           </Reveal>
 
 <Milestones />
+
+          <div className="mt-10 flex flex-col gap-4">
+            <Slot id={25}>
+              Office or working photography, if you want any. The page is
+              designed to hold without it — nothing here falls back to stock
+              imagery.
+            </Slot>
+            <Slot id={9}>
+              The year Pharmatiya was founded. The chronology runs to the last
+              published entry and then stops; without a founding year the
+              current period cannot be dated.
+            </Slot>
+            <Slot id={14} blocking>
+              Which organisation the Outcomes Research division belonged to.
+              It is referred to on this page and in the homepage pull-quote
+              without being named, which reads as evasive rather than
+              discreet.
+            </Slot>
+          </div>
         </div>
       </section>
 

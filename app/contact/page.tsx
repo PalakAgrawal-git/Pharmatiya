@@ -1,10 +1,11 @@
 import { site } from "@/lib/site";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { DataLabel, Pending } from "@/components/ui/DataLabel";
+import { DataLabel } from "@/components/ui/DataLabel";
 import Button from "@/components/ui/Button";
 import ContactRouting from "@/components/sections/ContactRouting";
 import DigestSignup from "@/components/sections/DigestSignup";
 import Reveal from "@/components/motion/Reveal";
+import Slot from "@/components/ui/Slot";
 
 export const metadata = {
   title: "Contact",
@@ -42,6 +43,27 @@ export default function ContactPage() {
           </Reveal>
           <Reveal delay={120} className="lg:col-span-7 lg:col-start-6">
             <ContactRouting />
+
+            <div className="mt-10 flex flex-col gap-4">
+              <Slot id={3} blocking>
+                Where each kind of enquiry should go. The routing above sorts
+                them into three streams but every one of them currently ends
+                at the same address.
+              </Slot>
+              <Slot id={5} blocking>
+                Where the form should send, and who hosts it. This is a static
+                site with no server, so until there is an endpoint the form
+                cannot submit anywhere.
+              </Slot>
+              <Slot id={6}>
+                The public email address. The site uses admin@pharmatiya.net,
+                taken from the current site — confirm it or replace it.
+              </Slot>
+              <Slot id={7}>
+                A calendar link, if you want direct booking. Without one the
+                only route is the form.
+              </Slot>
+            </div>
           </Reveal>
         </div>
       </section>

@@ -1,6 +1,7 @@
 "use client";
 
 import { DataLabel } from "@/components/ui/DataLabel";
+import Slot from "@/components/ui/Slot";
 
 /**
  * Quarterly Insights Digest subscription.
@@ -31,6 +32,15 @@ export default function DigestSignup({
         Four issues a year on HEOR and RWE method, evidence and access.
         Unsubscribe in one click.
       </p>
+
+      {!footer && (
+        <Slot id={16} className="mb-6">
+          What the Quarterly Insights Digest actually is, and whether it
+          exists yet. The description above is drafted — confirm the
+          frequency, the subject matter and that you intend to send it. The
+          field below cannot submit anywhere until input 05 is settled.
+        </Slot>
+      )}
 
       <form
         className="flex flex-wrap items-end gap-3"

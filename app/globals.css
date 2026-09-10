@@ -10,43 +10,56 @@
    ========================================================================== */
 
 @theme {
-  /* --- surfaces --------------------------------------------------------- */
-  --color-paper: #f5f4ef;
-  --color-surface: #faf9f5;
-  --color-sunk: #eceae1;
-  --color-inverse: #101817;
+  /* --- surfaces ---------------------------------------------------------
+     A dark ground, but not a black one. Everything here is mixed toward the
+     same deep blue-green so the page reads as one material lit from the top
+     left rather than as panels cut out of black. */
+  --color-paper: #0b1211;
+  --color-surface: #141d1b;
+  --color-sunk: #0e1716;
+  /* The lifted panel. On paper this token was the dark band; inverted, it is
+     the one surface that steps *toward* the light, so every component that
+     asked for `bg-inverse` still gets a figure-ground change and the white
+     text already written on it still reads. */
+  --color-inverse: #1b2725;
 
   /* --- ink -------------------------------------------------------------- */
-  --color-ink: #101817;
-  --color-muted: #565d5a;
-  /* Contrast-led: this carries figure captions, entry counts and every mono
-     label, so it is set to clear 4.5:1 on paper and on the sunk band both. */
-  --color-faint: #636a67;
+  --color-ink: #e9ece9;
+  --color-muted: #a7b1ad;
+  /* Contrast-led, as before: this carries captions, counts and every mono
+     label, so it is set to clear 4.5:1 on the ground and on the lifted panel
+     both — which on a dark ground means going lighter, not darker. */
+  --color-faint: #8f9995;
 
   /* --- rules ------------------------------------------------------------ */
-  --color-rule: #dedbd0;
-  --color-rule-firm: #c3bfb1;
+  --color-rule: #26332f;
+  /* Lifted until it clears 3:1 on the ground: this is the border that is the
+     only thing identifying a secondary button, so it is a control boundary
+     rather than decoration and has to meet the non-text minimum. */
+  --color-rule-firm: #5a6b66;
 
-  /* --- accent: one deep desaturated teal, spent sparingly --------------- */
-  --color-accent: #286762;
-  --color-accent-deep: #1b4c48;
-  --color-accent-lift: #34837c;
+  /* --- accent: the same teal, opened up to carry on a dark ground -------- */
+  --color-accent: #5cc4b2;
+  --color-accent-deep: #3b9a8b;
+  --color-accent-lift: #86dccd;
 
   /* --- data visualisation ----------------------------------------------- */
-  --color-series-1: #286762;
-  --color-series-2: #8c4a32;
-  --color-series-3: #6e7050;
+  --color-series-1: #5cc4b2;
+  --color-series-2: #e0916d;
+  --color-series-3: #bcc08d;
 
-  --color-flag: #7d5f18;
+  --color-flag: #d8b45f;
 
   /* --- typography -------------------------------------------------------
-     IBM Plex Sans carries navigation, body, forms, listings and most UI.
-     Newsreader is the editorial serif and appears only at display size, on
-     selected lines. IBM Plex Mono is the scientific voice and is used
-     sparingly: figure numbers, section marks, years, axis labels. */
-  --font-sans: var(--font-plex-sans), "Segoe UI", system-ui, sans-serif;
-  --font-display: var(--font-newsreader), "Sitka Text", Cambria, Georgia, serif;
-  --font-mono: var(--font-plex-mono), "Cascadia Mono", Consolas, monospace;
+     Manrope carries navigation, body, forms and listings — a humanist
+     geometric that stays open at small sizes on a dark ground, where Plex
+     Sans closed up. Instrument Serif is the display voice: high contrast,
+     narrow, and dramatic at size, which is the licence a creative practice
+     is entitled to. JetBrains Mono is the scientific voice for marks,
+     numbers and labels. */
+  --font-sans: var(--font-manrope), "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-instrument), "Sitka Text", Cambria, Georgia, serif;
+  --font-mono: var(--font-jetbrains), "Cascadia Mono", Consolas, monospace;
 
   --text-caption: 0.8125rem;
   --text-small: 0.9375rem;
@@ -79,8 +92,37 @@
     scroll-padding-top: 7rem;
   }
 
-  body {
+  /* The ground is a gradient, not a flat fill, and it is painted on `html`
+     so that `body::before` can carry an animated aura in front of it while
+     still sitting behind every piece of content. Fixed, so the light stays
+     where it is while the document moves past it — the page reads as one
+     lit surface rather than as a gradient that scrolls away in the first
+     screen and never returns. */
+  html {
     background-color: var(--color-paper);
+    background-image:
+      radial-gradient(
+        115% 75% at 8% -8%,
+        color-mix(in oklab, var(--color-accent) 16%, transparent) 0%,
+        transparent 58%
+      ),
+      radial-gradient(
+        85% 60% at 96% 2%,
+        color-mix(in oklab, var(--color-series-2) 9%, transparent) 0%,
+        transparent 55%
+      ),
+      linear-gradient(
+        180deg,
+        #101c1a 0%,
+        var(--color-paper) 42%,
+        #070d0c 100%
+      );
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  body {
+    background-color: transparent;
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: var(--text-body);
@@ -88,6 +130,43 @@
     line-height: 1.62;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  /* The aura. Two soft pools of colour that drift on a very long cycle —
+     twenty-four seconds out and twenty-four back — so the ground is never
+     quite static but nothing ever appears to move. Negative z-index puts it
+     behind body's own content while staying in front of html's gradient.
+
+     Purely decorative, so it is announced to nothing and removed entirely
+     under prefers-reduced-motion rather than merely frozen. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -25%;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(
+        38% 38% at 22% 18%,
+        color-mix(in oklab, var(--color-accent) 20%, transparent) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        32% 32% at 80% 8%,
+        color-mix(in oklab, var(--color-series-3) 11%, transparent) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        30% 30% at 68% 88%,
+        color-mix(in oklab, var(--color-series-2) 9%, transparent) 0%,
+        transparent 70%
+      );
+    filter: blur(30px);
+    animation: aura-drift 24s var(--ease-settle) infinite alternate;
+  }
+  @keyframes aura-drift {
+    from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
+    to { transform: translate3d(2.5%, 1.5%, 0) scale(1.07); }
   }
 
   /* Headings are never heavier than 500. Hierarchy comes from scale, measure
@@ -107,7 +186,7 @@
 
   p, li, dd { overflow-wrap: break-word; hyphens: auto; }
 
-  ::selection { background: var(--color-accent); color: var(--color-paper); }
+  ::selection { background: var(--color-accent); color: #071110; }
 }
 
 @layer utilities {
@@ -423,6 +502,49 @@
     }
   }
 
+  /* --- headline arriving a word at a time --------------------------------
+     Each word rises out of its own clipping band, staggered, so the sentence
+     assembles in reading order instead of fading in as a block. The mask is
+     what makes it feel typeset rather than animated: nothing crosses the
+     line above it.
+
+     Same contract as everything else here — the "off" state is inside the
+     keyframes, so the finished sentence is what the server renders and what
+     a reader with JavaScript off, or motion suppressed, gets. */
+  .word-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    /* Room for descenders and the serif's italic overhang, which a tight
+       clip would shear off. */
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+  [data-reveal="shown"] .word-rise {
+    display: inline-block;
+    animation: word-rise 900ms var(--ease-settle) var(--word-delay, 0ms) both;
+  }
+  @keyframes word-rise {
+    from { transform: translateY(105%); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+
+  /* --- accent glow -------------------------------------------------------
+     On a dark ground a solid button reads as a hole unless it carries some
+     light of its own. The glow is the ground's own accent at low alpha, so
+     it looks like the surface responding rather than a drop shadow. */
+  .glow {
+    transition:
+      box-shadow 320ms var(--ease-settle),
+      transform 320ms var(--ease-settle);
+  }
+  .glow:hover {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--color-accent) 45%, transparent),
+      0 6px 34px -8px color-mix(in oklab, var(--color-accent) 55%, transparent);
+    transform: translateY(-1px);
+  }
+
   /* --- plotting-paper ground -------------------------------------------- */
   /* Millimetre paper at the threshold of visibility. On-brand for a research
      practice, and it gives the hero a surface without a gradient. */
@@ -450,9 +572,14 @@
   [data-reveal="shown"] .pop-in,
   [data-reveal="shown"] .fall-in,
   [data-reveal="shown"] .rule-grow,
+  [data-reveal="shown"] .word-rise,
   [data-reveal="shown"] .spine-draw {
     animation: none !important;
   }
+
+  /* Decoration rather than information, so it goes rather than freezes. */
+  body::before { display: none !important; }
+  .glow:hover { transform: none !important; }
 
   /* The progress bar is motion for its own sake, so it goes entirely rather
      than snapping to full width. */

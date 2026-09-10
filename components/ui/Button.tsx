@@ -26,7 +26,7 @@ type Props = {
  * them. Reserve this for the one thing you want a visitor to do on a page.
  */
 const base =
-  "group inline-flex items-center justify-center gap-3 rounded-[4px] border text-small font-medium no-underline transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-40";
+  "glow group inline-flex items-center justify-center gap-3 rounded-[4px] border text-small font-medium no-underline transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-40";
 
 const variants: Record<Variant, string> = {
   primary: "border-ink bg-ink text-paper hover:border-accent hover:bg-accent",

@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Button from "@/components/ui/Button";
 import ArrowLink from "@/components/ui/ArrowLink";
 import Reveal from "@/components/motion/Reveal";
@@ -33,10 +34,10 @@ export default function Hero() {
 
           <Reveal delay={90}>
             <h1 className="mt-10 max-w-[16ch] text-[clamp(2.25rem,1.2rem+3.9vw,4rem)] font-normal leading-[1.1] tracking-[-0.02em]">
-              Evidence that holds up
+              <Words text="Evidence that holds up" />
               <br />
               <span className="display italic text-accent">
-                when it is challenged.
+                <Words text="when it is challenged." from={4} />
               </span>
             </h1>
           </Reveal>
@@ -72,5 +73,33 @@ export default function Hero() {
         </Reveal>
       </div>
     </section>
+  );
+}
+
+/**
+ * Splits a line into per-word clipping bands so the headline can assemble a
+ * word at a time. `from` continues the stagger across the line break, so the
+ * two halves of the sentence read as one sequence rather than restarting.
+ *
+ * The words are real text in the markup — this is a wrapper, not a rewrite —
+ * so the h1 is one string to a screen reader and to a crawler, and with the
+ * animation suppressed the sentence is simply set.
+ */
+function Words({ text, from = 0 }: { text: string; from?: number }) {
+  const words = text.split(" ");
+  return (
+    <>
+      {words.map((word, i) => (
+        <span key={`${word}-${i}`} className="word-mask">
+          <span
+            className="word-rise"
+            style={{ "--word-delay": `${(from + i) * 85}ms` } as CSSProperties}
+          >
+            {word}
+          </span>
+          {i < words.length - 1 ? " " : null}
+        </span>
+      ))}
+    </>
   );
 }

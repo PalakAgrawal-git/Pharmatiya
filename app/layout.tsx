@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, Newsreader, IBM_Plex_Mono } from "next/font/google";
+import { Manrope, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
@@ -10,38 +10,38 @@ import "./globals.css";
  * Three faces, each with one job, and the contrast between them is the
  * hierarchy — which is why none of them is ever set heavier than 600.
  *
- * IBM Plex Sans carries navigation, body, forms, listings and most UI. It is
- * a typeface designed for technical documentation, which is exactly the
- * register: precise without being cold.
+ * Manrope carries navigation, body, forms, listings and most UI. It is a
+ * humanist geometric with open apertures and a tall x-height, which is what
+ * a dark ground needs: light text on dark optically thickens and closes up,
+ * and a face with tighter counters turns to mud at caption size.
  *
- * Newsreader is the editorial serif and appears only at display size, on
- * selected lines — a hero clause, a pull-quote, one section opening. Setting
- * the site in it would make a magazine; using it once a page makes it mean
- * something.
+ * Instrument Serif is the display voice and appears only at display size, on
+ * selected lines — a hero clause, a pull-quote, one section opening. It is
+ * high-contrast and narrow, so it is dramatic at 4rem and unusable at 1rem,
+ * which is exactly the discipline we want it to enforce on itself.
  *
- * IBM Plex Mono is the scientific voice, used sparingly: figure numbers,
- * section marks, publication years, axis labels. It is the detail that makes
- * the page read as a document rather than a screen.
+ * JetBrains Mono is the scientific voice, used sparingly: figure numbers,
+ * section marks, publication years, running heads. It carries a little more
+ * character than a neutral mono without tipping into pastiche.
  */
-const plexSans = IBM_Plex_Sans({
+const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-plex-sans",
+  variable: "--font-manrope",
   display: "swap",
 });
 
-const newsreader = Newsreader({
+const instrument = Instrument_Serif({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: "400",
   style: ["normal", "italic"],
-  variable: "--font-newsreader",
+  variable: "--font-instrument",
   display: "swap",
 });
 
-const plexMono = IBM_Plex_Mono({
+const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
-  variable: "--font-plex-mono",
+  variable: "--font-jetbrains",
   display: "swap",
 });
 
@@ -145,7 +145,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${plexSans.variable} ${newsreader.variable} ${plexMono.variable}`}
+      className={`${manrope.variable} ${instrument.variable} ${jetbrains.variable}`}
     >
       <body className="flex min-h-screen flex-col">
 

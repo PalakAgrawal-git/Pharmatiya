@@ -59,81 +59,90 @@ export default function SurvivalReadout() {
   const x = active ? xFor(month!) : 0;
 
   return (
-    <div className="relative">
-      <KaplanMeierGraphic animate />
+    <div>
+      {/* The overlay is positioned against this wrapper, which holds the two
+          SVGs and nothing else. Sharing a container with the readout below
+          made the overlay taller than the chart, and preserveAspectRatio then
+          centred its viewBox in that taller box — dropping every mark by half
+          the difference, so the dots sat off the curve and the month label
+          collided with the axis title. `block` on the chart closes the last
+          gap: an inline SVG leaves descender space beneath it. */}
+      <div className="relative">
+        <KaplanMeierGraphic animate className="block" />
 
-      <svg
-        ref={svgRef}
-        viewBox="0 0 520 320"
-        className="absolute inset-0 h-full w-full cursor-crosshair focus:outline-none"
-        tabIndex={0}
-        role="slider"
-        aria-label="Read the survival estimate at a follow-up month"
-        aria-valuemin={0}
-        aria-valuemax={24}
-        aria-valuenow={month ?? 0}
-        aria-valuetext={
-          active
-            ? `${month} months: intervention ${pct(INTERVENTION[index])}, comparator ${pct(COMPARATOR[index])}`
-            : "No month selected"
-        }
-        onPointerMove={(e) => nearestFromClientX(e.clientX)}
-        onPointerLeave={() => setIndex(null)}
-        onFocus={() => setIndex((c) => c ?? 4)}
-        onBlur={() => setIndex(null)}
-        onKeyDown={(e) => {
-          if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-            e.preventDefault();
-            step(1);
-          } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
-            e.preventDefault();
-            step(-1);
-          } else if (e.key === "Escape") {
-            setIndex(null);
+        <svg
+          ref={svgRef}
+          viewBox="0 0 520 320"
+          className="absolute inset-0 h-full w-full cursor-crosshair focus:outline-none"
+          tabIndex={0}
+          role="slider"
+          aria-label="Read the survival estimate at a follow-up month"
+          aria-valuemin={0}
+          aria-valuemax={24}
+          aria-valuenow={month ?? 0}
+          aria-valuetext={
+            active
+              ? `${month} months: intervention ${pct(INTERVENTION[index])}, comparator ${pct(COMPARATOR[index])}`
+              : "No month selected"
           }
-        }}
-      >
-        {/* A transparent hit area, so the pointer is tracked across the whole
-            plot rather than only where a mark happens to be. */}
-        <rect x={X0} y="20" width={X1 - X0} height="250" fill="transparent" />
+          onPointerMove={(e) => nearestFromClientX(e.clientX)}
+          onPointerLeave={() => setIndex(null)}
+          onFocus={() => setIndex((c) => c ?? 4)}
+          onBlur={() => setIndex(null)}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+              e.preventDefault();
+              step(1);
+            } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+              e.preventDefault();
+              step(-1);
+            } else if (e.key === "Escape") {
+              setIndex(null);
+            }
+          }}
+        >
+          {/* A transparent hit area, so the pointer is tracked across the whole
+              plot rather than only where a mark happens to be. */}
+          <rect x={X0} y="20" width={X1 - X0} height="250" fill="transparent" />
 
-        {active && (
-          <g>
-            <line
-              x1={x}
-              y1="24"
-              x2={x}
-              y2="270"
-              stroke="var(--color-ink)"
-              strokeWidth="1"
-              strokeDasharray="2 3"
-              opacity="0.5"
-            />
+          {active && (
+            <g>
+              <line
+                x1={x}
+                y1="24"
+                x2={x}
+                y2="270"
+                stroke="var(--color-ink)"
+                strokeWidth="1"
+                strokeDasharray="2 3"
+                opacity="0.5"
+              />
 
-            {[
-              { v: INTERVENTION[index], c: "var(--color-series-1)" },
-              { v: COMPARATOR[index], c: "var(--color-series-2)" },
-            ].map((arm) => (
-              <g key={arm.c}>
-                <circle cx={x} cy={yFor(arm.v)} r="5.5" fill="var(--color-paper)" />
-                <circle cx={x} cy={yFor(arm.v)} r="3.25" fill={arm.c} />
-              </g>
-            ))}
+              {[
+                { v: INTERVENTION[index], c: "var(--color-series-1)" },
+                { v: COMPARATOR[index], c: "var(--color-series-2)" },
+              ].map((arm) => (
+                <g key={arm.c}>
+                  <circle cx={x} cy={yFor(arm.v)} r="5.5" fill="var(--color-paper)" />
+                  <circle cx={x} cy={yFor(arm.v)} r="3.25" fill={arm.c} />
+                </g>
+              ))}
 
-            {/* Month, set on the axis where the guideline meets it. */}
-            <text
-              x={x}
-              y="292"
-              textAnchor="middle"
-              fontSize="12"
-              fontFamily="var(--font-mono)"
-              fill="var(--color-ink)"
-            >
-              {month}
-            </text>
-          </g>
-        )}
-      </svg>
+              {/* Month, set on the axis where the guideline meets it. */}
+              <text
+                x={x}
+                y="292"
+                textAnchor="middle"
+                fontSize="12"
+                fontFamily="var(--font-mono)"
+                fill="var(--color-ink)"
+              >
+                {month}
+              </text>
+            </g>
+          )}
+        </svg>
+      </div>
 
       {/* The readout itself. Reserves its line so nothing below shifts when it
           appears, and is announced politely rather than on every pixel of

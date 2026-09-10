@@ -67,12 +67,30 @@ export default function Navigation() {
         ))}
       </ul>
 
+      {/* The action is contextual — on the product page it asks for a demo
+          and deep-links to that section — and the two labels are different
+          lengths. The bar is right-aligned, and this sits at the end of it,
+          so leaving the width to the text made every tab slide sideways on
+          the way in and out of the product page.
+
+          Both labels are stacked in one grid cell with the longer one
+          holding the width open. Measured rather than guessed at with a
+          min-width, so it stays correct if a label is reworded and through
+          the swap from the fallback face to Fira Sans. */}
       <Link
         href={onProductPage ? "/contact/#demo" : "/contact/"}
         className="group inline-flex items-baseline gap-2 text-small font-medium text-ink no-underline"
       >
-        <span className="border-b border-transparent pb-0.5 transition-colors duration-200 group-hover:border-accent">
-          {onProductPage ? "Request a demo" : "Book a consultation"}
+        <span className="grid border-b border-transparent pb-0.5 transition-colors duration-200 group-hover:border-accent">
+          <span
+            aria-hidden="true"
+            className="invisible col-start-1 row-start-1 h-0 overflow-hidden"
+          >
+            Book a consultation
+          </span>
+          <span className="col-start-1 row-start-1">
+            {onProductPage ? "Request a demo" : "Book a consultation"}
+          </span>
         </span>
         <span
           aria-hidden="true"

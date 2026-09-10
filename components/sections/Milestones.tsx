@@ -77,15 +77,45 @@ for (const y of years) counts.set(y, (counts.get(y) ?? 0) + 1);
 const PEAK = Math.max(...counts.values());
 const SPAN = LAST - FIRST + 1;
 
-/* Geometry. One slot per year across the plot, bar centred in its slot. */
+/* Geometry. One slot per year across the plot, the point centred in it. */
 const PLOT_X = 4;
 const PLOT_W = 692;
 const BASELINE = 118;
-const MAX_BAR = 92;
+const MAX_H = 92;
 const SLOT = PLOT_W / SPAN;
-const BAR_W = Math.min(14, SLOT * 0.46);
 const slotX = (year: number) => PLOT_X + (year - FIRST) * SLOT;
-const barH = (n: number) => (n / PEAK) * MAX_BAR;
+const pointX = (year: number) => slotX(year) + SLOT / 2;
+const pointY = (n: number) => BASELINE - (n / PEAK) * MAX_H;
+
+/* Every year in the span, including the empty ones. The line has to fall to
+   the axis in 2009, 2011, 2012 and 2020 rather than skip them — the gaps are
+   part of what the chart is for, and a line drawn only through the years
+   with output would quietly close them up. */
+const series = Array.from({ length: SPAN }, (_, i) => {
+  const year = FIRST + i;
+  const n = counts.get(year) ?? 0;
+  return { year, n, x: pointX(year), y: pointY(n) };
+});
+
+const linePath = series
+  .map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`)
+  .join(" ");
+
+/* Closed back along the axis, so the fill sits under the line without the
+   line itself being a closed shape. */
+const areaPath = `${linePath} L${series[series.length - 1].x.toFixed(1)},${BASELINE} L${series[0].x.toFixed(1)},${BASELINE} Z`;
+
+/* The real length, summed from the coordinates, so the draw animation
+   neither starts partly visible nor stalls at the end on a guess. */
+const LINE_LEN = Math.ceil(
+  series.reduce((total, p, i) => {
+    if (i === 0) return 0;
+    const prev = series[i - 1];
+    return total + Math.hypot(p.x - prev.x, p.y - prev.y);
+  }, 0),
+);
+
+const peakPoint = series.find((p) => p.n === PEAK)!;
 
 const axisYears = [FIRST, 2008, 2013, 2018, LAST];
 const boundaries = eras
@@ -114,7 +144,25 @@ export default function Milestones() {
             {LAST}.
           </desc>
 
-          {/* Period boundaries, drawn behind the bars. */}
+          <defs>
+            {/* The fill is the line's own colour falling away to nothing, so
+                the area reads as the line having weight rather than as a
+                second object with an edge of its own. */}
+            <linearGradient id="tl-fill" x1="0" y1="0" x2="0" y2="1">
+              <stop
+                offset="0%"
+                stopColor="var(--color-series-1)"
+                stopOpacity="0.28"
+              />
+              <stop
+                offset="100%"
+                stopColor="var(--color-series-1)"
+                stopOpacity="0"
+              />
+            </linearGradient>
+          </defs>
+
+          {/* Period boundaries, drawn behind the line. */}
           {boundaries.map((year) => (
             <line
               key={year}
@@ -127,24 +175,49 @@ export default function Milestones() {
             />
           ))}
 
-          {Array.from({ length: SPAN }, (_, i) => FIRST + i).map((year, i) => {
-            const n = counts.get(year) ?? 0;
-            if (n === 0) return null;
-            const h = barH(n);
-            return (
-              <rect
-                key={year}
-                x={slotX(year) + (SLOT - BAR_W) / 2}
-                y={BASELINE - h}
-                width={BAR_W}
-                height={h}
-                fill={n === PEAK ? "var(--color-series-1)" : "var(--color-ink)"}
-                opacity={n === PEAK ? 1 : 0.72}
-                className="grow-y"
-                style={{ "--grow-delay": `${i * 45}ms` } as CSSProperties}
-              />
-            );
-          })}
+          <path
+            className="fade-part"
+            style={{ "--fade-delay": "900ms" } as CSSProperties}
+            d={areaPath}
+            fill="url(#tl-fill)"
+          />
+
+          <path
+            className="draw"
+            style={
+              { "--len": LINE_LEN, "--draw-delay": "120ms" } as CSSProperties
+            }
+            d={linePath}
+            fill="none"
+            stroke="var(--color-series-1)"
+            strokeWidth="2"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
+
+          {/* A mark on every year that has output. The empty years are left
+              as the line touching the axis, which says more than a dot at
+              zero would. */}
+          <g
+            className="fade-part"
+            style={{ "--fade-delay": "1000ms" } as CSSProperties}
+          >
+            {series
+              .filter((p) => p.n > 0)
+              .map((p) => (
+                <circle
+                  key={p.year}
+                  cx={p.x}
+                  cy={p.y}
+                  r={p.n === PEAK ? 4 : 2.5}
+                  fill={
+                    p.n === PEAK ? "var(--color-series-1)" : "var(--color-paper)"
+                  }
+                  stroke="var(--color-series-1)"
+                  strokeWidth="1.5"
+                />
+              ))}
+          </g>
 
           <line
             x1={PLOT_X}
@@ -171,8 +244,10 @@ export default function Milestones() {
 
           {/* The peak is the one point worth naming on the chart itself. */}
           <text
-            x={slotX(2018) + SLOT / 2}
-            y={BASELINE - barH(PEAK) - 8}
+            className="fade-part"
+            style={{ "--fade-delay": "1100ms" } as CSSProperties}
+            x={peakPoint.x}
+            y={peakPoint.y - 11}
             fontSize="11"
             fill="var(--color-series-1)"
             textAnchor="middle"

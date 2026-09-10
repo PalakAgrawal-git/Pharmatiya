@@ -325,19 +325,6 @@
     to { opacity: 1; }
   }
 
-  /* --- bars rising from the baseline ------------------------------------ */
-  /* fill-box so the origin is the bar's own bottom edge rather than a point
-     in the viewBox, which would differ for every bar. */
-  [data-reveal="shown"] .grow-y {
-    animation: grow-y 700ms var(--ease-settle) var(--grow-delay, 0ms) both;
-    transform-box: fill-box;
-    transform-origin: bottom;
-  }
-  @keyframes grow-y {
-    from { transform: scaleY(0); }
-    to { transform: scaleY(1); }
-  }
-
   /* --- confidence intervals growing out from the point estimate --------- */
   [data-reveal="shown"] .grow-x {
     animation: grow-x 800ms var(--ease-settle) var(--grow-delay, 0ms) both;
@@ -570,7 +557,6 @@
   [data-reveal="shown"] .draw,
   [data-reveal="shown"] .fade-part,
   [data-reveal="shown"] .grow-x,
-  [data-reveal="shown"] .grow-y,
   [data-reveal="shown"] .pop-in,
   [data-reveal="shown"] .fall-in,
   [data-reveal="shown"] .rule-grow,

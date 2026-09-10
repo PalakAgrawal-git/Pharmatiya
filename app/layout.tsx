@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Fira_Sans, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
@@ -10,10 +10,11 @@ import "./globals.css";
  * Three faces, each with one job, and the contrast between them is the
  * hierarchy — which is why none of them is ever set heavier than 600.
  *
- * Manrope carries navigation, body, forms, listings and most UI. It is a
- * humanist geometric with open apertures and a tall x-height, which is what
- * a dark ground needs: light text on dark optically thickens and closes up,
- * and a face with tighter counters turns to mud at caption size.
+ * Fira Sans carries navigation, body, forms, listings and most UI. It is a
+ * humanist sans drawn for screen reading at small sizes, with open apertures
+ * and generous counters — which is what a dark ground needs, since light
+ * text on dark optically thickens and a face with tighter counters turns to
+ * mud at caption size.
  *
  * Instrument Serif is the display voice and appears only at display size, on
  * selected lines — a hero clause, a pull-quote, one section opening. It is
@@ -24,9 +25,10 @@ import "./globals.css";
  * section marks, publication years, running heads. It carries a little more
  * character than a neutral mono without tipping into pastiche.
  */
-const manrope = Manrope({
+const firaSans = Fira_Sans({
   subsets: ["latin"],
-  variable: "--font-manrope",
+  weight: ["400", "500", "600"],
+  variable: "--font-fira-sans",
   display: "swap",
 });
 
@@ -145,7 +147,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${manrope.variable} ${instrument.variable} ${jetbrains.variable}`}
+      className={`${firaSans.variable} ${instrument.variable} ${jetbrains.variable}`}
     >
       <body className="flex min-h-screen flex-col">
 

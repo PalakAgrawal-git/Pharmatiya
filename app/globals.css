@@ -51,13 +51,13 @@
   --color-flag: #d8b45f;
 
   /* --- typography -------------------------------------------------------
-     Manrope carries navigation, body, forms and listings — a humanist
-     geometric that stays open at small sizes on a dark ground, where Plex
-     Sans closed up. Instrument Serif is the display voice: high contrast,
+     Fira Sans carries navigation, body, forms and listings — a humanist
+     sans drawn for small-size screen reading, which stays open on a dark
+     ground where a tighter face closes up. Instrument Serif is the display voice: high contrast,
      narrow, and dramatic at size, which is the licence a creative practice
      is entitled to. JetBrains Mono is the scientific voice for marks,
      numbers and labels. */
-  --font-sans: var(--font-manrope), "Segoe UI", system-ui, sans-serif;
+  --font-sans: var(--font-fira-sans), "Segoe UI", system-ui, sans-serif;
   --font-display: var(--font-instrument), "Sitka Text", Cambria, Georgia, serif;
   --font-mono: var(--font-jetbrains), "Cascadia Mono", Consolas, monospace;
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fira_Sans, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Fira_Sans, Fira_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
@@ -7,43 +7,31 @@ import { site } from "@/lib/site";
 import "./globals.css";
 
 /**
- * Three faces, each with one job, and the contrast between them is the
- * hierarchy — which is why none of them is ever set heavier than 600.
+ * One family, three roles.
  *
- * Fira Sans carries navigation, body, forms, listings and most UI. It is a
- * humanist sans drawn for screen reading at small sizes, with open apertures
- * and generous counters — which is what a dark ground needs, since light
- * text on dark optically thickens and a face with tighter counters turns to
- * mud at caption size.
+ * The site is set in Fira throughout. Fira Sans carries navigation, body,
+ * forms, listings and every heading; the display voice is the same face at
+ * 300, set large with the tracking pulled in, so a display line is
+ * distinguished by weight and scale rather than by changing typeface; and
+ * Fira Mono carries the marks, figure numbers and years.
  *
- * Instrument Serif is the display voice and appears only at display size, on
- * selected lines — a hero clause, a pull-quote, one section opening. It is
- * high-contrast and narrow, so it is dramatic at 4rem and unusable at 1rem,
- * which is exactly the discipline we want it to enforce on itself.
- *
- * JetBrains Mono is the scientific voice, used sparingly: figure numbers,
- * section marks, publication years, running heads. It carries a little more
- * character than a neutral mono without tipping into pastiche.
+ * Using one superfamily rather than three unrelated faces means the
+ * hierarchy has to be built from scale, weight and space — which is what
+ * this design has claimed to do all along. It also drops a webfont: two
+ * families load instead of three.
  */
 const firaSans = Fira_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
   variable: "--font-fira-sans",
   display: "swap",
 });
 
-const instrument = Instrument_Serif({
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-instrument",
-  display: "swap",
-});
-
-const jetbrains = JetBrains_Mono({
+const firaMono = Fira_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
-  variable: "--font-jetbrains",
+  variable: "--font-fira-mono",
   display: "swap",
 });
 
@@ -147,7 +135,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${firaSans.variable} ${instrument.variable} ${jetbrains.variable}`}
+      className={`${firaSans.variable} ${firaMono.variable}`}
     >
       <body className="flex min-h-screen flex-col">
 

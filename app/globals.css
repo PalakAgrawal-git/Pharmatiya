@@ -51,15 +51,14 @@
   --color-flag: #d8b45f;
 
   /* --- typography -------------------------------------------------------
-     Fira Sans carries navigation, body, forms and listings — a humanist
-     sans drawn for small-size screen reading, which stays open on a dark
-     ground where a tighter face closes up. Instrument Serif is the display voice: high contrast,
-     narrow, and dramatic at size, which is the licence a creative practice
-     is entitled to. JetBrains Mono is the scientific voice for marks,
-     numbers and labels. */
+     One family. Fira Sans carries navigation, body, forms, listings and
+     every heading. The display voice is the same face at 300, set large
+     with the tracking pulled in — a display line is marked out by weight
+     and scale, not by a change of typeface. Fira Mono is the scientific
+     voice for marks, numbers and running heads. */
   --font-sans: var(--font-fira-sans), "Segoe UI", system-ui, sans-serif;
-  --font-display: var(--font-instrument), "Sitka Text", Cambria, Georgia, serif;
-  --font-mono: var(--font-jetbrains), "Cascadia Mono", Consolas, monospace;
+  --font-display: var(--font-fira-sans), "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-fira-mono), "Cascadia Mono", Consolas, monospace;
 
   --text-caption: 0.8125rem;
   --text-small: 0.9375rem;
@@ -216,11 +215,14 @@
   .measure-tight { max-width: 44ch; }
 
   /* The editorial serif. Display sizes only, on selected lines. */
+  /* Display sizes only. Now that it is the text face rather than a serif,
+     it needs the weight taken out and the tracking pulled in to read as a
+     different voice — at 400 and default tracking a large line would be
+     indistinguishable from a heading. */
   .display {
     font-family: var(--font-display);
-    font-weight: 400;
-    font-optical-sizing: auto;
-    letter-spacing: -0.017em;
+    font-weight: 300;
+    letter-spacing: -0.032em;
   }
 
   /* The scientific voice: section marks, figure numbers, years, axis labels. */

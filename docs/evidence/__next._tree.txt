@@ -1,8 +1,12 @@
-:HL["/Pharmatiya/_next/static/chunks/1l2jsylkdw8k-.css","style"]
-:HL["/Pharmatiya/_next/static/media/051742360c26797e-s.p.1bkzbscqrt8rl.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/chunks/3hasx8ykqe2-5.css","style"]
 :HL["/Pharmatiya/_next/static/media/173b4e1ecbfe6c3b-s.p.2ofae7-v0u79z.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/Pharmatiya/_next/static/media/7ebf22b5a21034f8-s.p.3j3877k49yy0l.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/1a65eaca1af83d2d-s.p.4228si3yhg7mt.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/47164f41cd1aeec0-s.p.0k32b0fmoxkc9.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/6ae4ae507e241e26-s.p.0901gdrk4qke6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/Pharmatiya/_next/static/media/89c2c771ed51f5b8-s.p.1d4i5iktl1egg.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/8f91dfeb76de9ed8-s.p.2_wk546ybs6_c.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/9ce9a4a38ba25966-s.p.0x---2jmbr3lv.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/Pharmatiya/_next/static/media/c76157874a2922f6-s.p.2974edstvwsnt.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/Pharmatiya/_next/static/media/cc75fa3e14c3cd04-s.p.2a3w-b9irc_27.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/Pharmatiya/_next/static/media/e41d5df559864f9e-s.p.1g73gv09-xcb6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"evidence","param":null,"prefetchHints":4160,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"hWlDoskn7utEyLEEbF3LA"}
+:HL["/Pharmatiya/_next/static/media/cfbeec1432aa9326-s.p.0y9-vok35vbxr.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"evidence","param":null,"prefetchHints":4160,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"3XOsM3tj3CWSeG1SfUxvu"}

@@ -24,12 +24,23 @@ const dated = entries
 
 export const record = {
   total: entries.length,
-  peerReviewed: entries.filter((entry) => entry.type === "publication").length,
+  // The supplied bibliography's own "Publications" section. It mixes journal
+  // papers with a preprint and conference items, so it is not labelled
+  // peer-reviewed anywhere on the site.
+  publications: entries.filter((entry) => entry.type === "publication").length,
   dated: dated.length,
   firstYear: Math.min(...dated),
   lastYear: Math.max(...dated),
   areas: new Set(entries.flatMap((entry) => entry.topics)).size,
 };
+
+/** Entries per therapeutic topic, counted from the archive. */
+export const topicCounts: Record<string, number> = entries
+  .flatMap((entry) => entry.topics)
+  .reduce<Record<string, number>>((acc, topic) => {
+    acc[topic] = (acc[topic] ?? 0) + 1;
+    return acc;
+  }, {});
 
 const WORDS = [
   "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",

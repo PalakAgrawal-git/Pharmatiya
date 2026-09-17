@@ -6,6 +6,32 @@ that behaviour has to be recorded here or those documents quietly go stale.
 
 ---
 
+## 2026-09-17 — Evidence page redesigned
+
+- **Hero**: four figures at a glance, counted from the archive (49 entries,
+  15 publications, 12 areas, 20 years), and jump links to each section.
+- **Selected studies** are cards: area, title, the lead figure, the question,
+  with data, method and finding in an expandable panel and the citation at
+  the foot. The null result keeps its badge.
+- **Therapeutic areas** are a ranked bar chart with a count for every area,
+  from the archive. Eight areas previously showed a dash, and the
+  infectious-disease count was stale (26; it is 27 since the ICAAC poster
+  was added).
+- **Data coverage** and **Methods** are card sets with chips.
+- **Published record** entries carry a type badge and their venue.
+- Sections are consistently numbered 01–05 with one heading pattern.
+
+### Correction: "peer-reviewed"
+
+The site labelled all 15 entries in the bibliography's "Publications"
+section as peer-reviewed journal papers — on the homepage band, the About
+band and the archive filter. That section includes an arXiv preprint, an
+ISPOR conference item and entries with no journal named. The label is now
+"publications" everywhere, with JAMA and Circulation named as examples;
+nothing on the site claims peer review.
+
+---
+
 ## 2026-09-17 — the synopsis is a client document
 
 The synopsis is what a client receives, and it was being shown in the

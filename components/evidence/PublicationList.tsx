@@ -19,7 +19,7 @@ const publications = publicationData.publications as Publication[];
 const PER_PAGE = 8;
 
 const TYPE_LABEL: Record<string, string> = {
-  publication: "Peer-reviewed",
+  publication: "Publication",
   poster: "Poster",
   abstract: "Abstract",
   patent: "Patent",
@@ -29,7 +29,7 @@ const TYPE_LABEL: Record<string, string> = {
 
 const filters = [
   { id: "all", label: "All" },
-  { id: "publication", label: "Peer-reviewed" },
+  { id: "publication", label: "Publications" },
   { id: "poster", label: "Posters" },
   { id: "abstract", label: "Abstracts" },
   { id: "patent", label: "Patents" },
@@ -169,7 +169,7 @@ export default function PublicationList() {
                         rel: "noopener noreferrer",
                       }
                     : {})}
-                  className={`group grid gap-x-10 gap-y-3 px-1 py-7 no-underline transition-colors duration-200 lg:grid-cols-[6rem_minmax(0,1fr)_9rem_1.5rem] ${
+                  className={`group grid gap-x-10 gap-y-3 px-1 py-6 no-underline transition-colors duration-200 lg:grid-cols-[6rem_minmax(0,1fr)_9rem_1.5rem] ${
                     item.link ? "hover:bg-surface focus-visible:bg-surface" : ""
                   }`}
                 >
@@ -178,7 +178,7 @@ export default function PublicationList() {
                   </span>
 
                   <span className="min-w-0">
-                    <span className="block break-words text-[1.0625rem] leading-[1.5] text-ink transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px]">
+                    <span className="block break-words text-[0.975rem] leading-[1.55] text-ink transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px]">
                       {item.citation}
                     </span>
                     {item.topics.length > 0 && (
@@ -192,8 +192,19 @@ export default function PublicationList() {
                     )}
                   </span>
 
-                  <span className="label-sm self-start text-faint">
-                    {item.venue ?? TYPE_LABEL[item.type] ?? item.type}
+                  <span className="flex flex-wrap items-center gap-2 self-start lg:flex-col lg:items-start">
+                    <span
+                      className={`rounded-full border px-2.5 py-0.5 text-caption ${
+                        item.type === "publication"
+                          ? "border-accent/50 bg-accent/10 text-accent"
+                          : "border-rule-firm text-muted"
+                      }`}
+                    >
+                      {TYPE_LABEL[item.type] ?? item.type}
+                    </span>
+                    {item.venue && (
+                      <span className="label-sm text-faint">{item.venue}</span>
+                    )}
                   </span>
 
                   {/* Only rendered where there is something to open. The

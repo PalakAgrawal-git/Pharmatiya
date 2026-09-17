@@ -52,7 +52,7 @@ export const proofFigures = [
     value: String(record.total),
     label: `publications, abstracts and posters, ${record.firstYear}–${record.lastYear}`,
   },
-  { value: String(record.peerReviewed), label: "peer-reviewed journal publications" },
+  { value: String(record.publications), label: "full publications, including JAMA and Circulation" },
   { value: String(record.areas), label: "therapeutic areas in the published record" },
 ] as const;
 

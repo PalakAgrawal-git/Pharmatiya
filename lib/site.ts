@@ -25,13 +25,10 @@ export const site = {
   // PENDING input 6 — confirm whether admin@ remains the public address.
   email: "admin@pharmatiya.net",
 
-  // The existing application. Path preserved so current users keep their route.
-  appUrl: "https://app.pharmatiya.net",
-
-  // PENDING — product naming decision. The brief says "NextGen AI"; the live
-  // navigation says "RWE - Builder". Change here to switch it site-wide.
+  // The synopsis builder now lives on the NextGen AI page. It used to be a
+  // separate application at app.pharmatiya.net, which stops resolving once
+  // the domain points at this site.
   productName: "NextGen AI",
-  productLegacyName: "RWE - Builder",
 } as const;
 
 export const nav = [

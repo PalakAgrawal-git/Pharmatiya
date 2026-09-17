@@ -3,7 +3,6 @@
 import { useId, useMemo, useState } from "react";
 import studyData from "@/data/studies.json";
 import { DataLabel } from "@/components/ui/DataLabel";
-import Slot from "@/components/ui/Slot";
 
 type Study = {
   id: string;
@@ -83,11 +82,6 @@ export default function StudyFinder() {
 
   return (
     <div>
-      <Slot id={23} className="mb-6">
-        The study list this searches. It currently reads the published
-        bibliography; if the product searches a different corpus, we need that
-        list and confirmation of what may be shown publicly.
-      </Slot>
 
       <form
         onSubmit={(event) => {

@@ -9,7 +9,6 @@ import CTA from "@/components/sections/CTA";
 import Reveal from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 import CountUp from "@/components/motion/CountUp";
-import Slot from "@/components/ui/Slot";
 
 export const metadata = {
   title: "About",
@@ -134,13 +133,6 @@ export default function AboutPage() {
 
           <Milestones />
 
-          <div className="mt-10 flex flex-col gap-4">
-            <Slot id={9}>
-              The year Pharmatiya was founded. The chronology runs to the last
-              published entry and then stops; without a founding year the
-              current period cannot be dated.
-            </Slot>
-          </div>
         </div>
       </section>
 

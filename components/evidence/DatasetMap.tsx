@@ -1,6 +1,5 @@
 import { datasetCoverage, namedSources } from "@/lib/site";
 import { DataLabel } from "@/components/ui/DataLabel";
-import Slot from "@/components/ui/Slot";
 
 /**
  * Dataset coverage.
@@ -45,13 +44,6 @@ export default function DatasetMap({ compact = false }: { compact?: boolean }) {
                 organisations. Naming them publicly is subject to client
                 clearance.
               </p>
-              <Slot id={2} blocking className="mt-5">
-                Which of the payer, PBM and provider organisations in the
-                record may be named on a public page. Every entry in
-                <code> namedSources </code> is currently held back. Confirm
-                per organisation, or confirm that none may be named and this
-                statement stands as the final copy.
-              </Slot>
             </>
           )}
         </div>

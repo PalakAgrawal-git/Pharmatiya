@@ -14,6 +14,7 @@ type Props = {
   external?: boolean;
   arrow?: boolean;
   className?: string;
+  onClick?: () => void;
 };
 
 /**
@@ -50,6 +51,7 @@ export default function Button({
   external,
   arrow = true,
   className = "",
+  onClick,
 }: Props) {
   const classes = [base, variants[variant], sizes[size], full ? "w-full" : "", className]
     .filter(Boolean)
@@ -85,7 +87,13 @@ export default function Button({
   }
 
   return (
-    <button type={type} disabled={disabled} aria-disabled={disabled} className={classes}>
+    <button
+      type={type}
+      disabled={disabled}
+      aria-disabled={disabled}
+      onClick={onClick}
+      className={classes}
+    >
       {content}
     </button>
   );

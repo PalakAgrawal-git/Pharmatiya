@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
+import { sendMessage, type SendResult } from "@/lib/submit";
 import { Field, TextArea, Select } from "@/components/ui/Field";
 import Button from "@/components/ui/Button";
 import { DataLabel } from "@/components/ui/DataLabel";
@@ -41,13 +42,37 @@ const serviceOptions = [
  * three paths visible — a visitor who cannot see "existing client" assumes
  * there is no route for them.
  *
- * PENDING input 10 — a statically exported site cannot process submissions on
- * its own. `action` needs a real endpoint (form service, serverless function
- * or host handler) before launch. Until then submission is disabled rather
- * than silently failing, which is what the current site effectively does.
+ * Submission goes through lib/submit: a form endpoint when one is configured,
+ * the visitor's mail client otherwise. Required fields are checked before
+ * anything is sent, and the result is announced.
  */
 export default function ContactRouting() {
   const [route, setRoute] = useState<Route>("new");
+  const [state, setState] = useState<"idle" | "invalid" | "sending" | SendResult | "error">("idle");
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (!form.checkValidity()) {
+      setState("invalid");
+      (form.querySelector(":invalid") as HTMLElement | null)?.focus();
+      return;
+    }
+    const data = new FormData(form);
+    const fields: Record<string, string> = {
+      Enquiry: routes.find((r) => r.id === route)?.label ?? route,
+    };
+    data.forEach((value, key) => {
+      fields[key.charAt(0).toUpperCase() + key.slice(1)] =
+        key === "digest" ? "Yes, add me to the digest" : String(value);
+    });
+    setState("sending");
+    try {
+      setState(await sendMessage(`Website enquiry — ${fields.Enquiry}`, fields));
+    } catch {
+      setState("error");
+    }
+  }
 
   return (
     <div>
@@ -101,7 +126,7 @@ export default function ContactRouting() {
 
       <form
         className="flex flex-col gap-5"
-        onSubmit={(event) => event.preventDefault()}
+        onSubmit={onSubmit}
         noValidate
       >
         <div className="grid gap-5 sm:grid-cols-2">
@@ -212,10 +237,18 @@ export default function ContactRouting() {
           </span>
         </label>
 
-        <div>
-          <Button type="submit" disabled>
-            Send enquiry
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+          <Button type="submit" disabled={state === "sending"}>
+            {state === "sending" ? "Sending…" : "Send enquiry"}
           </Button>
+          <p role="status" className="text-small text-muted">
+            {state === "invalid" && "Please fill in the required fields."}
+            {state === "sent" && "Thank you — your enquiry has been sent."}
+            {state === "mail-client" &&
+              "Your email app has opened with the enquiry written — press send to finish."}
+            {state === "error" &&
+              "That did not send. Please email us directly and we will reply."}
+          </p>
         </div>
       </form>
 

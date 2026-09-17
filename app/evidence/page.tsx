@@ -9,7 +9,6 @@ import PublicationList from "@/components/evidence/PublicationList";
 import CTA from "@/components/sections/CTA";
 import Reveal from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
-import Slot from "@/components/ui/Slot";
 import { record, inWords, capitalise } from "@/lib/record";
 
 export const metadata = {
@@ -94,15 +93,6 @@ export default function EvidencePage() {
           </Reveal>
           <Reveal delay={100}>
             <TherapeuticMatrix inverted />
-
-            <div className="mt-10 flex flex-col gap-4">
-              <Slot id={15}>
-                Therapeutic areas you work in that are not in the published
-                record. The matrix and the &ldquo;12 therapeutic areas&rdquo;
-                figure are both counted from the bibliography, so anything you
-                cover but have not published in is currently invisible.
-              </Slot>
-            </div>
           </Reveal>
         </div>
       </section>
@@ -126,15 +116,6 @@ export default function EvidencePage() {
           </Reveal>
           <Reveal delay={100}>
             <PublicationList />
-
-            <div className="mt-10">
-              <Slot id={10}>
-                The patent number. The résumé and the publication list give
-                different numbers for what appears to be the same patent; one
-                of them is wrong and we should not publish either until we
-                know which.
-              </Slot>
-            </div>
           </Reveal>
         </div>
       </section>

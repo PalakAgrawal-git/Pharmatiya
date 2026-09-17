@@ -1,50 +1,62 @@
 import { site } from "@/lib/site";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { DataLabel } from "@/components/ui/DataLabel";
 import Button from "@/components/ui/Button";
+import ArrowLink from "@/components/ui/ArrowLink";
 import WorkflowDiagram from "@/components/sections/WorkflowDiagram";
 import AskFlow from "@/components/sections/AskFlow";
 import StudyFinder from "@/components/sections/StudyFinder";
+import SynopsisBuilder from "@/components/sections/SynopsisBuilder";
 import Reveal from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
-import Slot from "@/components/ui/Slot";
 
 export const metadata = {
   title: `${site.productName}`,
   description:
-    "AI-assisted evidence synopses with mandatory human expert review. Feasibility, retrospective and pragmatic outreach — no PHI uploaded, and the underlying model disclosed.",
+    "Build an HEOR or RWE study synopsis from a plain-language problem statement — feasibility, retrospective study and pragmatic outreach — with mandatory expert review and no patient data.",
   alternates: { canonical: "/nextgen-ai/" },
 };
 
+/* What the product does, in the terms the live product uses for its own
+   three steps. Nothing here goes beyond what it demonstrably produces. */
 const division = {
   model: [
-    "Drafts synopsis structure",
-    "Summarises literature",
-    "Proposes cohort definitions",
+    "Structures a plain-language problem into a synopsis",
+    "Drafts cohort logic and claims / EHR code families",
+    "Proposes objectives, endpoints, cost and statistical plans",
+    "Outlines the outreach workflow and dashboards",
   ],
   researcher: [
     "Approves the study question",
     "Validates every method choice",
+    "Confirms code lists and sample sizes against the data",
     "Signs off all output before it leaves",
     "Retains professional responsibility",
   ],
 };
 
+/* Set at build time. When a model-backed service is connected the page says
+   so; until then it describes what actually happens, which is that the draft
+   is built in the visitor's browser. See lib/synopsis.ts. */
+const serviceConnected = Boolean(process.env.NEXT_PUBLIC_SYNOPSIS_API);
+
 const trust = [
   {
-    title: "No PHI uploaded",
-    body: "Protected health information is not uploaded to the system.",
-    slot: { id: 19, blocking: true, need: "Exactly how patient data is handled end to end: what is uploaded, what is retained, where it is processed, and by whom. This is the first thing a compliance reviewer asks, and the claim above cannot ship without it." },
+    title: "No patient data",
+    body: "The builder needs the question, not the patient. A statement that contains an identifier is refused before anything is drafted.",
   },
   {
-    title: "Human review mandatory",
-    body: "No output reaches a client without expert sign-off. Review is a stage in the workflow, not a check at the end.",
-    slot: null,
+    title: "Human review, every time",
+    body: "No synopsis reaches a client without expert sign-off. Review is a stage in the workflow, not a check at the end.",
   },
   {
-    title: "Model disclosed",
-    body: "We name the underlying model and its version, and we say when it changes.",
-    slot: { id: 20, blocking: false, need: "The name and version of the underlying model, and what happens when it changes. The brief asks for disclosure rather than a disclaimer, so this page has a slot for it rather than a hedge." },
+    title: "Where your question goes",
+    body: serviceConnected
+      ? "Your problem statement is sent to Pharmatiya's own drafting service, which uses a language model to produce the synopsis. Nothing is published."
+      : "On this site the synopsis is drafted in your browser. Your problem statement is not sent anywhere or stored.",
+  },
+  {
+    title: "What it does not do",
+    body: "It does not decide whether a study is feasible, fix final code lists or sample sizes, or write the protocol. It drafts the structure; a researcher decides.",
   },
 ];
 
@@ -60,53 +72,38 @@ export default function NextGenPage() {
               eyebrow={site.productName}
               index="Human-reviewed"
               title="Evidence synopses drafted in hours, reviewed by the researchers who would have written them."
+              lede="Describe the problem in a sentence. The builder structures it into a payer-, provider- and pharma-ready synopsis in our three-step framework — then a researcher reviews it."
             />
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-              <Button href="/contact/#demo">Request a demo</Button>
-              <a
-                href={site.appUrl}
-                className="arrow-link font-mono text-small text-accent underline underline-offset-4"
-              >
-                Already a user? Open {site.productLegacyName}{" "}
-                <span className="arrow" aria-hidden="true">
-                  →
-                </span>
-              </a>
+              <Button href="#builder" arrow={false}>
+                Build a synopsis ↓
+              </Button>
+              <ArrowLink href="/contact/#demo">Request a demo</ArrowLink>
             </div>
           </Reveal>
-
-          {/* Nothing is mocked up in place of the real interface: an invented
-              dashboard on an AI page is the single most misleading thing this
-              site could carry. The slot names the asset instead. */}
-          <div className="mt-12 flex flex-col gap-4">
-            <Slot id={17}>
-              The public name for the product. The brief says &ldquo;NextGen
-              AI&rdquo;, the live navigation says &ldquo;RWE - Builder&rdquo;,
-              and the product deck uses neither &mdash; it presents the tool
-              under the Pharmatiya name. How it works is now described below,
-              from that deck.
-            </Slot>
-            <Slot id={22}>
-              Screenshots of the working interface. The product deck is a
-              concept mock-up built from stock icons, so it cannot stand in
-              for the real thing; until we have screens, this opening runs to
-              one column.
-            </Slot>
-          </div>
         </div>
       </section>
 
-      {/* The keyword study search from the current homepage, rebuilt and
-          working. It sits directly under the hero because it is the clearest
-          demonstration of what the product does — a visitor can try it
-          before reading anything. */}
-      <section className="border-b border-rule bg-sunk">
+      {/* The product, on the page. It was a link to app.pharmatiya.net, which
+          stops resolving when the domain moves here. */}
+      <section id="builder" className="scroll-mt-24 border-b border-rule bg-sunk">
         <div className="shell section">
           <Reveal>
-            <SectionLabel as="h2" index="01">
-              Try it — search prior work
+            <SectionLabel as="h2" index="01" className="mb-8">
+              Build a synopsis
             </SectionLabel>
-            <p className="measure mb-6 text-muted">
+          </Reveal>
+          <SynopsisBuilder />
+        </div>
+      </section>
+
+      <section className="border-b border-rule">
+        <div className="shell section">
+          <Reveal>
+            <SectionLabel as="h2" index="02">
+              Search prior work
+            </SectionLabel>
+            <p className="measure mb-6 mt-6 text-muted">
               Feasibility starts with a question most teams cannot answer
               quickly: has this been looked at before, in which data? Type a
               condition, a data type or a method.
@@ -120,7 +117,7 @@ export default function NextGenPage() {
 
       {/* Inverted, as the workflow is on the homepage teaser. The diagram is
           the same figure in both places, so it should not change ground
-          between them — and this page needed a tonal break of its own. */}
+          between them. */}
       <section className="bg-inverse text-white">
         <div className="shell section">
           <Reveal>
@@ -132,9 +129,7 @@ export default function NextGenPage() {
           <AskFlow />
 
           <Reveal className="mt-16 border-t border-white/15 pt-10">
-            <p className="label mb-8 text-white/45">
-              The studies it supports
-            </p>
+            <p className="label mb-8 text-white/45">The framework</p>
             <WorkflowDiagram inverted />
           </Reveal>
         </div>
@@ -143,15 +138,14 @@ export default function NextGenPage() {
       <section className="border-b border-rule">
         <div className="shell section">
           <Reveal>
-            <SectionLabel as="h2" index="03">
+            <SectionLabel as="h2" index="03" className="mb-8">
               Where AI is used — and where it is not
             </SectionLabel>
           </Reveal>
 
           {/* Deliberately unequal. The researcher column is wider, set on the
               accent rule and listed in heavier type, because the asymmetry is
-              the argument: the model drafts, a person is accountable. Two
-              matched cards would have said the opposite. */}
+              the argument: the model drafts, a person is accountable. */}
           <div className="grid gap-x-16 gap-y-12 lg:grid-cols-12">
             <Reveal className="border-t border-rule pt-5 lg:col-span-4">
               <h3 className="label text-faint">The model does</h3>
@@ -181,13 +175,6 @@ export default function NextGenPage() {
               The right-hand column is longer than the left, and that is the
               point.
             </p>
-            <Slot id={18} className="mt-8">
-              Confirm or correct both columns. We have drafted them — the
-              model drafts structure, summarises literature and proposes
-              cohort definitions; the researcher approves the question,
-              validates the methods and signs off the output — and anything
-              missing on either side needs adding before launch.
-            </Slot>
           </Reveal>
         </div>
       </section>
@@ -197,12 +184,12 @@ export default function NextGenPage() {
       <section className="border-b border-rule bg-sunk">
         <div className="shell section">
           <Reveal>
-            <SectionLabel as="h2" index="04">
+            <SectionLabel as="h2" index="04" className="mb-8">
               Trust
             </SectionLabel>
           </Reveal>
 
-          <div className="grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {trust.map((item, index) => (
               <Reveal
                 key={item.title}
@@ -215,34 +202,11 @@ export default function NextGenPage() {
                 <h3 className="mt-3 text-[1.05rem] font-medium leading-tight">
                   {item.title}
                 </h3>
-                <p className="mt-3 text-small leading-[1.5] text-muted">
+                <p className="mt-3 text-small leading-[1.55] text-muted">
                   {item.body}
                 </p>
-                {item.slot && (
-                  <Slot
-                    id={item.slot.id}
-                    blocking={item.slot.blocking}
-                    className="mt-4"
-                  >
-                    {item.slot.need}
-                  </Slot>
-                )}
               </Reveal>
             ))}
-          </div>
-
-          <div className="mt-12 flex flex-col gap-4">
-            <Slot id={4} blocking>
-              Your compliance review turnaround — how long a client should
-              expect sign-off to take. Buyers in regulated environments plan
-              around this number and will ask for it on the first call.
-            </Slot>
-            <Slot id={21}>
-              What the tool explicitly does <strong>not</strong> do. A buyer in
-              a regulated environment reads an AI page for its limits first,
-              and a page that states none reads as one that has not thought
-              about them.
-            </Slot>
           </div>
         </div>
       </section>
@@ -252,8 +216,8 @@ export default function NextGenPage() {
           <Reveal className="border-t border-rule pt-10">
             <h2 className="mb-2 text-[1.4rem]">Request a demo</h2>
             <p className="measure mb-5 text-muted">
-              A 30-minute walkthrough with the team that built it — including
-              what it does not do.
+              Thirty minutes with the team that built it — including what it
+              does not do.
             </p>
             <Button href="/contact/#demo">Request a demo</Button>
           </Reveal>

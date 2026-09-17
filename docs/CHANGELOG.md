@@ -6,6 +6,67 @@ that behaviour has to be recorded here or those documents quietly go stale.
 
 ---
 
+## 2026-09-17 — the synopsis builder moves into the site; placeholders removed
+
+The old site is being replaced by this one, and the domain will move with it.
+The "Open RWE - Builder" link pointed at `app.pharmatiya.net`, which would stop
+resolving at that point — so the product now lives on the NextGen AI page.
+
+### The builder
+
+- **Same interaction as the live product.** One problem statement in, one
+  structured synopsis out, in Pharmatiya's three-step framework: Step 0
+  Feasibility, Step 1 Retrospective Study, Step 2 Pragmatic Outreach. Three
+  worked examples start it in one click. Copy and download (.txt) included.
+- **How the live product actually works**, read from its public code: it
+  requires a login, allows free users three synopses a week, and sends the
+  statement to its own server at `/api/generate-synopsis`, which calls
+  **OpenAI**. The model and version are not visible from outside.
+- **Why the AI can't simply be dropped in here.** This site is static. A
+  model call needs an API key, and a key placed in a static site is readable
+  by every visitor. So the builder has two modes (`lib/synopsis.ts`):
+  - **Now:** the synopsis is drafted in the visitor's browser from the
+    framework — condition, data sources, audience and outcomes are read from
+    the statement, with ICD-10-CM code families for about forty conditions.
+    Nothing is sent or stored, and the page says exactly that.
+  - **Later:** set `NEXT_PUBLIC_SYNOPSIS_API` at build time to the
+    model-backed endpoint. The builder uses the live product's contract
+    unchanged (`{ problem }` in, `{ synopsis }` out) and the trust copy on
+    the page switches to describe it. The endpoint must allow requests from
+    the new domain (CORS).
+- **Patient data is refused.** Statements containing a social security
+  number, medical record number, date of birth, email, phone number or a
+  patient name are rejected before anything is drafted.
+
+### Page corrections that came with it
+
+- *How it works* now describes the real flow — describe, structure,
+  review — not the concept deck's data-source picker, which the shipped
+  product does not have.
+- *The model does* now lists what the product demonstrably does. "Summarises
+  literature" is gone; nothing in the product shows it.
+- *Trust* has four statements, all true of this build: no patient data,
+  review every time, where the question goes, and what the tool does not do.
+
+### Forms now send
+
+- The contact form's submit button was disabled, and the digest signup did
+  nothing. Both now go through `lib/submit.ts`: a form service when
+  `NEXT_PUBLIC_FORM_ENDPOINT` is set, otherwise the visitor's email app opens
+  with the message written and addressed. Required fields are checked and the
+  result is announced.
+
+### Placeholders
+
+- **All client-input placeholders are removed** from every page, along with
+  the component that drew them. The outstanding items are still listed in
+  `docs/content-required.html`; the site no longer shows them.
+- The *Illustrative data* captions on the homepage figures stay. They are not
+  placeholders — they say the figures show the form of the output rather
+  than results.
+
+---
+
 ## 2026-09-17 — client materials incorporated
 
 Seven files supplied by Pharmatiya: the Pharmatiya product deck, the Avalere

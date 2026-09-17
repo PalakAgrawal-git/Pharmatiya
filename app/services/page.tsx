@@ -8,6 +8,8 @@ import CTA from "@/components/sections/CTA";
 import Reveal from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 import ServiceProcess from "@/components/sections/ServiceProcess";
+import Stakeholders from "@/components/sections/Stakeholders";
+import StudyDesigns from "@/components/evidence/StudyDesigns";
 import Slot from "@/components/ui/Slot";
 
 export const metadata = {
@@ -63,6 +65,24 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* Who the evidence is for comes before what we do, because a reader
+          decides whether this page concerns them before reading it. */}
+      <section className="border-b border-rule">
+        <div className="shell section-tight">
+          <Reveal>
+            <SectionLabel as="h2" className="mb-6">
+              Who uses real-world evidence
+            </SectionLabel>
+            <p className="measure mb-8 text-muted">
+              The same data answers different questions depending on who is
+              asking. We have worked on the payer, provider and manufacturer
+              side of each of these.
+            </p>
+          </Reveal>
+          <Stakeholders />
+        </div>
+      </section>
+
       {services.map((service, index) => {
         const flipped = index % 2 === 1;
 
@@ -113,6 +133,25 @@ export default function ServicesPage() {
                 </Reveal>
                 <ServiceProcess stages={service.stages} />
               </div>
+
+              {service.id === "rwe-analytics" && (
+                <Reveal className="mt-14">
+                  <p className="mb-5 flex items-center gap-4 font-mono text-caption uppercase tracking-[0.12em] text-faint">
+                    Three retrospective designs
+                    <span aria-hidden="true" className="rule-grow h-px flex-1 bg-rule" />
+                  </p>
+                  <p className="measure mb-8 text-small text-muted">
+                    Each runs on the same spine — baseline data, an event or
+                    intervention, outcomes data — and is built for a
+                    different purpose.
+                  </p>
+                  <div className="scroll-x">
+                    <div className="min-w-[36rem]">
+                      <StudyDesigns animate />
+                    </div>
+                  </div>
+                </Reveal>
+              )}
 
               <Reveal className="mt-16 grid gap-x-16 gap-y-10 border-t border-rule pt-10 sm:grid-cols-2">
                 <div>

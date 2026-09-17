@@ -2,6 +2,7 @@ import { methods } from "@/lib/site";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { DataLabel } from "@/components/ui/DataLabel";
 import CaseStudies from "@/components/evidence/CaseStudies";
+import SelectedStudies from "@/components/evidence/SelectedStudies";
 import DatasetMap from "@/components/evidence/DatasetMap";
 import TherapeuticMatrix from "@/components/evidence/TherapeuticMatrix";
 import PublicationList from "@/components/evidence/PublicationList";
@@ -9,6 +10,7 @@ import CTA from "@/components/sections/CTA";
 import Reveal from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 import Slot from "@/components/ui/Slot";
+import { record, inWords, capitalise } from "@/lib/record";
 
 export const metadata = {
   title: "Evidence",
@@ -39,8 +41,10 @@ export default function EvidencePage() {
           </Reveal>
           <Reveal delay={100}>
             <p className="measure mt-6 text-muted">
-              Our client work is confidential. What follows is anonymised, and
-              every method described is one we have executed ourselves.
+              Our client work is confidential. What follows is our published
+              record — the studies, the data they used and the methods behind
+              them — and every method described is one we have executed
+              ourselves.
             </p>
           </Reveal>
         </div>
@@ -52,10 +56,11 @@ export default function EvidencePage() {
         <div className="shell section">
           <Reveal>
             <SectionLabel as="h2" index="01">
-              Case studies
+              Selected studies
             </SectionLabel>
           </Reveal>
-          <Reveal delay={100}>
+          <SelectedStudies />
+          <Reveal delay={100} className="mt-14">
             <CaseStudies />
           </Reveal>
         </div>
@@ -112,9 +117,10 @@ export default function EvidencePage() {
               The published record
             </SectionLabel>
             <p className="measure mb-8 text-muted">
-              Forty-seven publications, abstracts, posters, a patent and a book
-              chapter authored or co-authored by our team between 2003 and
-              2022 — in JAMA, Circulation, Diabetes, Obesity and Metabolism,
+              {capitalise(inWords(record.total))} publications, abstracts,
+              posters, a patent and a book chapter authored or co-authored by
+              our team between {record.firstYear} and {record.lastYear} — in
+              JAMA, Circulation, Diabetes, Obesity and Metabolism,
               Vaccine and others. Search it, or filter by type.
             </p>
           </Reveal>

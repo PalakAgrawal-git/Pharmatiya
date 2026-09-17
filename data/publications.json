@@ -1,16 +1,16 @@
 {
   "generatedAt": null,
-  "source": "MehtaRR_Publications.pdf, supplied by Pharmatiya",
+  "source": "MehtaRR_Publications.pdf, supplied by Pharmatiya. p49 from the citation list in RWE-Presentation-RRM (Oct 2025); p50 from the supplied ICAAC poster file.",
   "note": "Published record only. Derived from the supplied bibliography; no personal contact details, licence numbers or unpublished client engagements are included.",
   "counts": {
-    "publication": 14,
-    "poster": 11,
+    "publication": 15,
+    "poster": 12,
     "patent": 1,
     "abstract": 17,
     "presentation": 3,
     "book chapter": 1
   },
-  "total": 47,
+  "total": 49,
   "publications": [
     {
       "id": "p1",
@@ -616,6 +616,35 @@
         "Trauma"
       ],
       "methods": []
+    },
+    {
+      "id": "p49",
+      "citation": "Mehta RR, Edwards AM, Rajpathak S, Sharma A, Snow KJ, Iglay K. Effects of conformance to type 2 diabetes guidelines on health care resource utilization, clinical outcomes, and cost: A retrospective claims analysis. J Clin Transl Endocrinol. 2020;19:100215. (Publication)",
+      "year": 2020,
+      "type": "publication",
+      "venue": "J Clin Transl Endocrinol",
+      "link": "https://doi.org/10.1016/j.jcte.2020.100215",
+      "topics": [
+        "Type 2 diabetes"
+      ],
+      "methods": [
+        "Retrospective claims analysis"
+      ]
+    },
+    {
+      "id": "p50",
+      "citation": "Mehta RR, Burke JP, Pombo DJ. “Comparison of Clinical and Financial Benefits of Two Bacterial Identification Systems.” ICAAC, poster D-697. LDS Hospital, Intermountain Health Care. (Poster)",
+      "year": null,
+      "type": "poster",
+      "venue": "ICAAC",
+      "link": null,
+      "topics": [
+        "Infectious disease"
+      ],
+      "methods": [
+        "Matched case-control",
+        "Survival analysis"
+      ]
     }
   ]
 }

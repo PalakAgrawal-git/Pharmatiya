@@ -1,15 +1,24 @@
 import type { CSSProperties } from "react";
 
+/* The mSToPS participant flow, as published: Steinhubl SR, Waalen J,
+   Edwards AM, et al. JAMA 2018;320(2):146-155 — figure 1, supplied by
+   Pharmatiya in the RWE presentation deck. Our principal is an author.
+   The actively monitored count is the two arms combined (906 + 832). */
 const steps = [
-  { label: "Source population", n: "1,284,000", y: 16 },
-  { label: "Meets index criteria", n: "146,220", y: 78 },
-  { label: "Continuous enrolment ≥ 12 months", n: "94,780", y: 140 },
-  { label: "No prior exposure", n: "61,405", y: 202 },
-  { label: "Final analytic cohort", n: "58,912", y: 264 },
+  { label: "Plan members assessed for eligibility", n: "1,039,862", y: 16 },
+  { label: "Met eligibility criteria", n: "359,161", y: 78 },
+  { label: "Invited by mail or email", n: "102,553", y: 140 },
+  { label: "Randomised", n: "2,659", y: 202 },
+  { label: "Monitored, with 12-month follow-up", n: "1,738", y: 264 },
 ];
 
 /**
- * Cohort attrition from a source population to an analytic cohort.
+ * Cohort attrition, from a real trial rather than an invented one.
+ *
+ * This figure used to carry made-up counts. It now draws the published
+ * participant flow of the mSToPS trial — a health plan's claims used to find
+ * the people worth screening, which is the real-world-data work the service
+ * beside it describes.
  *
  * Reduced for a website. The dashed exclusion callouts down the right-hand
  * side ("−1,137,780 no qualifying event") were manuscript apparatus: they
@@ -39,12 +48,16 @@ export default function CohortDiagram({
       aria-labelledby="cd-title cd-desc"
       className={`w-full ${className}`}
     >
-      <title id="cd-title">Cohort attrition from source population to analytic cohort</title>
+      <title id="cd-title">Participant flow in the mSToPS trial</title>
       <desc id="cd-desc">
-        A source population of 1,284,000 narrows through four criteria to a
-        final analytic cohort of 58,912. In turn: 1,137,780 excluded for no
-        qualifying index event, 51,440 for a gap in continuous enrolment, and
-        33,375 for prior exposure.
+        1,039,862 health plan members were assessed. 680,701 were excluded —
+        470,094 did not meet the inclusion criteria and 210,607 met an
+        exclusion criterion — leaving 359,161 eligible. 102,553 were invited,
+        50,000 by mail and 52,553 by email; 2,820 consented, 161 were then
+        found ineligible, and 2,659 were randomised: 1,366 to immediate and
+        1,293 to delayed monitoring. 1,738 were actively monitored with
+        12-month follow-up. A further 3,476 matched observational controls
+        were followed. Source: Steinhubl et al., JAMA 2018.
       </desc>
 
       {steps.map((step, i) => (

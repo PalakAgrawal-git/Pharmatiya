@@ -28,26 +28,33 @@ import CostEffectivenessPlane from "@/components/evidence/CostEffectivenessPlane
  * illegible, and shipping it as decoration costs bandwidth for no
  * comprehension.
  */
+/* `source` says where each figure's numbers come from. Only the cohort
+   figure is real data; the other two are drawn to show the form of the
+   output and say so, because a hazard ratio on a research firm's homepage
+   reads as a result unless it is labelled otherwise. */
 const figures = [
   {
     node: <ForestPlot animate />,
     number: "02",
     title: "Adjusted hazard ratios",
     sub: "95% confidence interval",
+    source: "Illustrative data",
   },
   {
     // Capped: this canvas is tall and narrow, so at full column width it would
     // run half again as deep as the other two and break the row rhythm.
     node: <CohortDiagram animate className="max-w-[19rem]" />,
     number: "03",
-    title: "Cohort attrition",
-    sub: "Source population to analytic cohort",
+    title: "Participant flow",
+    sub: "mSToPS randomised trial",
+    source: "Steinhubl et al., JAMA 2018",
   },
   {
     node: <CostEffectivenessPlane animate />,
     number: "04",
     title: "Cost-effectiveness plane",
     sub: "Bootstrap replicates vs. threshold",
+    source: "Illustrative data",
   },
 ];
 
@@ -122,6 +129,9 @@ export default function ServiceTeasers() {
                         Fig. {figure.number} / {figure.title}
                       </p>
                       <p className="label-sm mt-2 text-faint">{figure.sub}</p>
+                      <p className="mt-3 text-caption text-muted">
+                        {figure.source}.
+                      </p>
                     </figcaption>
                   </figure>
                 </Reveal>

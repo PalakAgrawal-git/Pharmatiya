@@ -170,6 +170,20 @@ removed = len(records) - len(deduped)
 records = deduped
 print("duplicates removed:", removed)
 
+path = r"C:\Users\Palak Agrawal\Desktop\pharmatiya\data\publications.json"
+
+# Entries that are not in the PDF but were supplied separately. Rerunning this
+# script used to rebuild the file from the PDF alone and drop them, so they
+# are carried forward from the existing file by id.
+#   p49 - citation list in RWE-Presentation-RRM (Oct 2025)
+#   p50 - the ICAAC poster file (Poster1_Vitek_Poster_ICAAC)
+SUPPLEMENTARY = {"p49", "p50"}
+try:
+    existing = json.load(io.open(path, encoding="utf8"))["publications"]
+    records += [r for r in existing if r["id"] in SUPPLEMENTARY]
+except FileNotFoundError:
+    print("no existing file: supplementary entries not carried forward")
+
 records.sort(key=lambda r: (r["year"] or 0), reverse=True)
 
 counts = {}
@@ -178,7 +192,9 @@ for r in records:
 
 out = {
     "generatedAt": None,
-    "source": "MehtaRR_Publications.pdf, supplied by Pharmatiya",
+    "source": "MehtaRR_Publications.pdf, supplied by Pharmatiya. p49 from the "
+              "citation list in RWE-Presentation-RRM (Oct 2025); p50 from the "
+              "supplied ICAAC poster file.",
     "note": "Published record only. Derived from the supplied bibliography; "
             "no personal contact details, licence numbers or unpublished "
             "client engagements are included.",
@@ -187,7 +203,6 @@ out = {
     "publications": records,
 }
 
-path = r"C:\Users\Palak Agrawal\Desktop\pharmatiya\data\publications.json"
 io.open(path, "w", encoding="utf8", newline="\n").write(
     json.dumps(out, indent=2, ensure_ascii=False) + "\n"
 )

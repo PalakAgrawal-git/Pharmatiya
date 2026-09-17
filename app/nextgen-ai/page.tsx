@@ -3,6 +3,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { DataLabel } from "@/components/ui/DataLabel";
 import Button from "@/components/ui/Button";
 import WorkflowDiagram from "@/components/sections/WorkflowDiagram";
+import AskFlow from "@/components/sections/AskFlow";
 import StudyFinder from "@/components/sections/StudyFinder";
 import Reveal from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
@@ -79,15 +80,17 @@ export default function NextGenPage() {
               site could carry. The slot names the asset instead. */}
           <div className="mt-12 flex flex-col gap-4">
             <Slot id={17}>
-              What the product actually is, in one sentence a buyer would
-              recognise — and the public name to use for it. The brief says
-              &ldquo;NextGen AI&rdquo;; the live navigation says &ldquo;RWE -
-              Builder&rdquo;. Both appear on this page today.
+              The public name for the product. The brief says &ldquo;NextGen
+              AI&rdquo;, the live navigation says &ldquo;RWE - Builder&rdquo;,
+              and the product deck uses neither &mdash; it presents the tool
+              under the Pharmatiya name. How it works is now described below,
+              from that deck.
             </Slot>
             <Slot id={22}>
-              Product screenshots, or permission to show the interface. Until
-              then this opening runs to one column rather than framing a
-              placeholder image.
+              Screenshots of the working interface. The product deck is a
+              concept mock-up built from stock icons, so it cannot stand in
+              for the real thing; until we have screens, this opening runs to
+              one column.
             </Slot>
           </div>
         </div>
@@ -126,7 +129,12 @@ export default function NextGenPage() {
               <span aria-hidden="true" className="rule-grow h-px flex-1 bg-white/15" />
             </h2>
           </Reveal>
-          <Reveal delay={100}>
+          <AskFlow />
+
+          <Reveal className="mt-16 border-t border-white/15 pt-10">
+            <p className="label mb-8 text-white/45">
+              The studies it supports
+            </p>
             <WorkflowDiagram inverted />
           </Reveal>
         </div>

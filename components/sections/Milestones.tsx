@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import publicationData from "@/data/publications.json";
 import Reveal from "@/components/motion/Reveal";
+import { record, inWords, capitalise } from "@/lib/record";
 
 /**
  * How the practice got here, told with its own publication record.
@@ -8,11 +9,11 @@ import Reveal from "@/components/motion/Reveal";
  * This replaces a vertical spine with dotted nodes — the timeline widget
  * every site ships, and one that carried no information the dates did not
  * already give. The chart below is not a decoration of the history, it is
- * the history: forty-five dated entries between 2003 and 2022, one bar per
+ * the history: every dated entry in the archive, one point per
  * year, with the four working periods marked underneath.
  *
  * It also tells the truth about the shape. There are years with nothing in
- * them — 2009, 2011, 2012, 2020 — and the record peaks at seven in 2018,
+ * them — 2009, 2011 and 2012 — and the record peaks at seven in 2018,
  * the year the mSToPS trial ran in JAMA. A generic timeline would have
  * flattened all of that into evenly spaced dots.
  *
@@ -27,41 +28,47 @@ type Era = {
   detail: string;
 };
 
+/* From the principal's own biography, supplied by Pharmatiya, with dates
+   from the published record. Employers are named because they are career
+   history, and three of them are already named in the published abstracts
+   on the Evidence page. The current provider role is described, not named:
+   whether to name a current employer on the firm's own site is the client's
+   call, not ours. */
 const eras: Era[] = [
   {
     start: 2003,
     end: 2011,
-    event: "Hospital epidemiology and outcomes research",
+    event: "Intermountain Healthcare — outcomes research to director of HEOR",
     detail:
-      "Infection surveillance, antibiotic utilisation and hospital-associated infection studies inside an integrated health system, published across IDSA, ICAAC, SHEA and ASM.",
+      "Clinical pharmacist and outcomes researcher, then director of HEOR, inside an integrated delivery network. Industry-sponsored, protocol-driven outcomes studies on the enterprise data warehouse, and epidemiology with the Division of Clinical Epidemiology and Infectious Diseases at LDS Hospital.",
   },
   {
     start: 2011,
     end: 2014,
-    event: "Pharmacovigilance and clinical trials",
+    event: "ActiveHealth Management — pharmacy informatics and pharmacovigilance",
     detail:
-      "Pharmacovigilance and clinical-trials products, including a claims-based sentinel system analysing five million lives. The underlying method is patented — US 8,744,872.",
+      "Director of pharmacy informatics, improving and building clinical programmes — polypharmacy, medication adherence, risk adjustment. With physicians and the Aetna Innovation Lab, co-developed a claims-based pharmacovigilance platform for generating hypotheses about drugs, devices and biologics. The method is patented: US 8,744,872.",
   },
   {
     start: 2014,
     end: 2019,
-    event: "Payer-side analytics and pragmatic trials",
+    event: "Healthagen — an outcomes research business on the payer side",
     detail:
-      "Real-world evidence on inpatient clinical data and outpatient claims, including the nationwide mSToPS atrial fibrillation screening trial published in JAMA in 2018.",
+      "Conceived, built and ran the outcomes research business inside a payer: retrospective HEOR on claims, and prospective pragmatic trials built on the pharmacovigilance outputs — including the nationwide mSToPS atrial fibrillation screening trial, published in JAMA in 2018.",
   },
   {
     start: 2019,
     end: 2022,
     event: "Machine learning in outcomes research",
     detail:
-      "Hospitalisation risk in COVID-19, and published work on where machine learning improves on traditional statistical modelling in healthcare analytics — and where it does not.",
+      "Hospitalisation risk in COVID-19, guideline conformance in type 2 diabetes, and published work on where machine learning improves on traditional statistical modelling in healthcare analytics — and where it does not.",
   },
   {
     start: null,
     end: null,
-    event: "Pharmatiya founded",
+    event: "Pharmatiya, and provider-side evidence today",
     detail:
-      "Independent HEOR and RWE practice, working directly with commercial, medical affairs and market access teams.",
+      "An independent HEOR and RWE practice working directly with commercial, medical affairs and market access teams. Alongside it: research and value-based contracting built from a national provider's EHR data, and an advisory seat on the American Diabetes Association's Overcoming Therapeutic Inertia initiative.",
   },
 ];
 
@@ -88,7 +95,7 @@ const pointX = (year: number) => slotX(year) + SLOT / 2;
 const pointY = (n: number) => BASELINE - (n / PEAK) * MAX_H;
 
 /* Every year in the span, including the empty ones. The line has to fall to
-   the axis in 2009, 2011, 2012 and 2020 rather than skip them — the gaps are
+   the axis in 2009, 2011 and 2012 rather than skip them — the gaps are
    part of what the chart is for, and a line drawn only through the years
    with output would quietly close them up. */
 const series = Array.from({ length: SPAN }, (_, i) => {
@@ -137,7 +144,7 @@ export default function Milestones() {
             Published output by year, {FIRST} to {LAST}
           </title>
           <desc id="tl-desc">
-            Forty-five dated entries. Output is steadiest through the hospital
+            {capitalise(inWords(record.dated))} dated entries. Output is steadiest through the hospital
             epidemiology years, thins between {2009} and 2012, and peaks at{" "}
             {PEAK} in 2018, the year of the mSToPS trial. Four working periods
             are marked: {FIRST} to 2011, 2011 to 2014, 2014 to 2019 and 2019 to{" "}

@@ -1,3 +1,5 @@
+import { record } from "@/lib/record";
+
 /**
  * Site-wide constants.
  *
@@ -48,13 +50,13 @@ export const nav = [
 export const proofFigures = [
   { value: "25+", label: "years in HEOR, RWE and outcomes research" },
   {
-    value: "47",
-    label: "publications, abstracts and posters, 2003–2022",
-    // Counted from the bibliography Pharmatiya supplied. Every entry is on
-    // the Evidence page and the linkable ones cite a DOI, PMID or patent.
+    // Counted from data/publications.json. Every entry is on the Evidence
+    // page and the linkable ones cite a DOI, PMID or patent.
+    value: String(record.total),
+    label: `publications, abstracts and posters, ${record.firstYear}–${record.lastYear}`,
   },
-  { value: "14", label: "peer-reviewed journal publications" },
-  { value: "12", label: "therapeutic areas in the published record" },
+  { value: String(record.peerReviewed), label: "peer-reviewed journal publications" },
+  { value: String(record.areas), label: "therapeutic areas in the published record" },
 ] as const;
 
 export const services = [
@@ -75,6 +77,9 @@ export const services = [
       "Survival analysis",
       "Propensity scoring",
       "Multivariate modelling",
+      "Incidence and prevalence studies",
+      "Event rates defined from the literature",
+      "Post-marketing adverse-event surveillance algorithms",
     ],
     deliverables: [
       "Protocol document",
@@ -120,6 +125,9 @@ export const services = [
       "Logistic regression and ANOVA",
       "Machine learning on hierarchical files",
       "Cohort development and risk stratification",
+      "Matched control populations built in PL/SQL",
+      "Extraction from MySQL and Oracle into SAS, SPSS, Minitab or Excel",
+      "Paper or web-based data collection where no database exists",
     ],
     deliverables: [
       "Defined cohort with attrition accounting",
@@ -135,7 +143,7 @@ export const services = [
       },
       {
         label: "Cohort definition",
-        detail: "Inclusion and exclusion applied step by step, with every drop accounted for.",
+        detail: "Study period, population and outcome fixed first; inclusion and exclusion applied step by step, with every drop accounted for and comorbidities controlled for.",
       },
       {
         label: "Analysis",
@@ -256,7 +264,7 @@ export const therapeuticAreas = [
   { area: "Atrial fibrillation", note: "6 entries — incl. the mSToPS trial, JAMA 2018" },
   { area: "Trauma", note: "4 entries — hospital-associated infection" },
   { area: "Asthma", note: "3 entries — guideline impact and resource use" },
-  { area: "Type 2 diabetes", note: "Meta-analysis, Diabetes Obes Metab 2021" },
+  { area: "Type 2 diabetes", note: "Meta-analysis, Diabetes Obes Metab 2021; guideline conformance, J Clin Transl Endocrinol 2020" },
   { area: "Pharmacovigilance", note: "US patent 8,744,872; claims-based sentinel" },
   { area: "Cardiovascular", note: "Technology-enabled trials, Circulation 2019" },
   { area: "Mental health", note: "Pharmacogenetic testing, Depress Anxiety 2018" },

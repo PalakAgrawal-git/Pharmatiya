@@ -55,7 +55,7 @@ export const team: TeamMember[] = [
     role: "Principal",
     roleConfirmed: false,
     bio:
-      "A licensed pharmacist who moved into outcomes research and stayed for twenty-five years. Published work spans hospital infection surveillance, claims-based pharmacovigilance and nationwide pragmatic trials — including the mSToPS atrial fibrillation screening trial in JAMA, and a systematic review of therapeutic inertia in type 2 diabetes in Diabetes, Obesity and Metabolism.",
+      "A clinical pharmacist who moved into outcomes research and has spent twenty-five years on every side of the data: director of HEOR inside an integrated delivery network, co-developer of a patented claims-based pharmacovigilance platform, and the person who built a payer's outcomes research business from the ground up, where he ran retrospective studies and prospective pragmatic trials — among them the mSToPS atrial fibrillation screening trial in JAMA. He now works on the provider side, building research and value-based contracting from EHR data, and advises the American Diabetes Association's Overcoming Therapeutic Inertia initiative.",
     education: [
       "M.S. Pharmacy Administration, magna cum laude, Idaho State University",
       "B.Pharm, University of Pune",
@@ -63,7 +63,7 @@ export const team: TeamMember[] = [
     licensure: ["Registered pharmacist, Utah and Maryland"],
     affiliations: [
       "ISPOR",
-      "American Diabetes Association",
+      "American Diabetes Association — advisor, Overcoming Therapeutic Inertia",
       "American College of Cardiology",
     ],
     credits: [

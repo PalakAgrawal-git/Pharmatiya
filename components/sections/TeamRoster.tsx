@@ -142,6 +142,10 @@ export default function TeamRoster() {
           A photograph per person, if wanted. Without one the position holds
           with a typographic panel — stock portraits are not an option here.
         </Slot>
+        <Slot id={25}>
+          Office or working photography, if you want any. The page is designed
+          to hold without it; nothing here falls back to stock imagery.
+        </Slot>
       </div>
 
       <p className="mt-10 border-t border-rule pt-6 text-small text-muted">

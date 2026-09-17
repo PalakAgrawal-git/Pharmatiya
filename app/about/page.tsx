@@ -44,8 +44,8 @@ export default function AboutPage() {
   return (
     <>
       <section className="border-b border-rule">
-        <div className="shell section">
-          <Reveal>
+        <div className="shell section grid items-end gap-x-16 gap-y-12 lg:grid-cols-12">
+          <Reveal className="lg:col-span-7">
             <SectionHeader
               as="h1"
               display
@@ -67,9 +67,27 @@ export default function AboutPage() {
             </p>
           </Reveal>
 
-          {/* Office and working photography goes here once supplied
-              (client input 1). No stock imagery stands in, and no panel
-              announces the gap to visitors — the column simply closes up. */}
+          {/* The name, from the practice's own deck. It fills the column that
+              was waiting for photography with something only this firm can
+              say, rather than with a stock image or an empty panel. The
+              glosses are Pharmatiya's; no etymology is claimed beyond them. */}
+          <Reveal delay={140} as="aside" className="lg:col-span-4 lg:col-start-9">
+            <div className="border-t border-rule-firm pt-6">
+              <p className="label-sm text-faint">The name</p>
+              <p className="mt-5 text-[clamp(2rem,1.4rem+2.2vw,3rem)] leading-none tracking-[-0.03em]">
+                Pharma<span className="display italic text-accent">tiya</span>
+              </p>
+              <dl className="mt-6 grid grid-cols-[auto_1fr] gap-x-5 gap-y-2 text-small">
+                <dt className="font-mono text-caption text-faint">matiya</dt>
+                <dd className="text-muted">
+                  revolution &middot; a gift of goodness &middot; respectable
+                </dd>
+              </dl>
+              <p className="mt-6 border-t border-rule pt-4 text-small leading-[1.6] text-muted">
+                Revolutionise research and analytics &mdash; together.
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -113,24 +131,13 @@ export default function AboutPage() {
             </SectionLabel>
           </Reveal>
 
-<Milestones />
+          <Milestones />
 
           <div className="mt-10 flex flex-col gap-4">
-            <Slot id={25}>
-              Office or working photography, if you want any. The page is
-              designed to hold without it — nothing here falls back to stock
-              imagery.
-            </Slot>
             <Slot id={9}>
               The year Pharmatiya was founded. The chronology runs to the last
               published entry and then stops; without a founding year the
               current period cannot be dated.
-            </Slot>
-            <Slot id={14} blocking>
-              Which organisation the Outcomes Research division belonged to.
-              It is referred to on this page and in the homepage pull-quote
-              without being named, which reads as evasive rather than
-              discreet.
             </Slot>
           </div>
         </div>

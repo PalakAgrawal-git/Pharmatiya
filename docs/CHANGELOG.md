@@ -6,6 +6,85 @@ that behaviour has to be recorded here or those documents quietly go stale.
 
 ---
 
+## 2026-09-17 — client materials incorporated
+
+Seven files supplied by Pharmatiya: the Pharmatiya product deck, the Avalere
+deck, the RWE presentation (Oct 2025, as .pptx and .pdf), the ICAAC poster,
+"All Abstracts - MP" and the principal's biography.
+
+### Used, and where
+
+- **About.** The chronology is rewritten from the biography, naming
+  Intermountain, ActiveHealth Management and Healthagen as career history.
+  The opening column now carries the name's meaning from the product deck
+  ("matiya: revolution, a gift of goodness, respectable"). The roster bio is
+  updated, and the ADA Overcoming Therapeutic Inertia advisory role added.
+  **Client input 14 is resolved** — the Outcomes Research division was
+  Healthagen — and its slot is removed.
+- **Evidence.** New *Selected studies* section: four published studies from
+  the abstracts file and the poster, with figures quoted as reported,
+  co-authorship shown as published, and one null result marked as such.
+- **Archive.** Two entries added (49 total, 15 peer-reviewed): the 2020
+  *J Clin Transl Endocrinol* guideline-conformance paper, and the ICAAC
+  rapid-identification poster (undated — the file carries no year).
+  `scripts/build-publications.py` now carries both forward on a rerun.
+- **Counts are derived, not typed.** The homepage band, the About chart and
+  the Evidence introduction now count from `data/publications.json`, so they
+  cannot drift from the archive again.
+- **Homepage figure 03 is real data.** The invented cohort counts are
+  replaced with the published mSToPS participant flow (Steinhubl et al.,
+  JAMA 2018). Figures 02 and 04 are now captioned *Illustrative data*.
+- **Services.** *Who uses real-world evidence* (from the RWE deck's
+  stakeholder map); *Three retrospective designs* (redrawn from the deck's
+  study-design slide, positions taken from its geometry); methodology and
+  cohort-definition wording extended from the abstracts file.
+- **NextGen AI.** *How it works* now opens with the ask → choose data → read
+  the answer flow from the product deck, with the deck's example questions
+  and follow-up actions. The example answer is shown as its structure with
+  blanks, not with the deck's figures.
+
+### Deliberately not used
+
+- **The Avalere deck, in full.** It is another company's confidential
+  business plan — P&L, BD timeline, pricing tiers, internal staff notes, and
+  references to Excelra and Sanguine products. None of it describes
+  Pharmatiya.
+- **The pharma "network" slides.** They list companies at previous
+  employers, and one version is titled "multiple discussions, no yield".
+  Showing those names would claim clients the practice does not have.
+- **The COVID-19 treatment slide.** A hypothetical with drug susceptibility
+  figures for remdesivir and hydroxychloroquine. Unsafe to publish.
+- **The COVID-19 sample abstract.** A template with XXX in every result.
+- **The product deck's demo results** (12 million members, 580,000 metformin
+  users, an average age of 36). Concept mock-up figures, not data.
+- **Market-sizing slides**, the **$30k–$300k pricing** (Avalere's, not
+  Pharmatiya's — client input 13 stays open), the **Aetna patent superlative**,
+  the **"only scientist" sales claim**, the **current employer's name and
+  strategy**, and a **third party's email address** on the poster.
+
+### Open questions this raises
+
+- **Name the current employer?** The biography names Healogics. The site
+  describes the work without naming it.
+- **"12 years" or "25+ years"?** The abstracts file says Pharmatiya Analytics
+  has "over 12 years of experience" and refers to the firm as "PHBR". The
+  site says 25+ years, which is the principal's career, not the firm's age.
+- **Registered trademark.** The product deck marks the name ®Pharmatiya. The
+  site does not use the mark until that is confirmed.
+- **The RWE deck is marked "Confidential".** Its concepts are paraphrased
+  here, not reproduced; confirm that is acceptable.
+
+### Security
+
+- **The repository is public, and the résumé was downloadable from it**
+  (raw.githubusercontent.com returned 200). Pages itself is fine — the
+  Actions workflow deploys only the build. The four client source files are
+  now untracked and the root is git-ignored for client material, **but they
+  remain in the repository's history**. Making the repository private, or
+  rewriting history, is needed to close this.
+
+---
+
 ## 2026-09-08 — editorial redesign
 
 Twelve commits, merged to `main` from

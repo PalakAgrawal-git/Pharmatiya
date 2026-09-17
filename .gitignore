@@ -13,3 +13,13 @@ next-env.d.ts
 
 # TypeScript incremental build cache, written by `npm run typecheck`
 tsconfig.tsbuildinfo
+
+# Client source material. The repository root is (or has been) served by
+# GitHub Pages, so anything committed here is publicly downloadable. These
+# files include a third party's confidential deck, personal details and a
+# third party's email address. Keep them local. Anchored to the root so the
+# generated documents in docs/ are unaffected.
+/*.pptx
+/*.ppt
+/*.docx
+/*.pdf

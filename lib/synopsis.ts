@@ -102,7 +102,7 @@ const OUTCOMES: { name: string; match: RegExp }[] = [
   { name: "Hospitalisations and emergency visits", match: /hospitali|admission|emergency|\bed\b visits|readmi/i },
   { name: "Healthcare resource utilisation (HCRU)", match: /utili[sz]ation|\bhcru\b|visits/i },
   { name: "Total cost of care", match: /cost|spend|economic|budget/i },
-  { name: "Clinical outcomes and complications", match: /outcome|complication|mortality|survival/i },
+  { name: "Clinical outcomes and complications", match: /clinical outcome|complication|mortality|survival/i },
 ];
 
 function pick<T extends { name: string; match: RegExp }>(list: T[], text: string) {
@@ -121,6 +121,23 @@ export function looksLikePHI(text: string): string | null {
   ];
   for (const [pattern, what] of checks) if (pattern.test(text)) return what;
   return null;
+}
+
+/**
+ * What the builder read from a statement, before drafting. Shown to the user
+ * as the steps the assistant takes, so each step reports something the
+ * builder actually found rather than a scripted "thinking" line.
+ */
+export function readStatement(problem: string) {
+  const text = problem.trim();
+  const condition = CONDITIONS.find((c) => c.match.test(text)) ?? null;
+  return {
+    condition: condition?.name ?? null,
+    codes: condition?.codes ?? null,
+    sources: pick(SOURCES, text),
+    audience: pick(AUDIENCES, text),
+    outcomes: pick(OUTCOMES, text),
+  };
 }
 
 /* ── Drafting ─────────────────────────────────────────────────────────── */

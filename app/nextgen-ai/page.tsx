@@ -1,11 +1,10 @@
 import { site } from "@/lib/site";
-import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
 import ArrowLink from "@/components/ui/ArrowLink";
 import WorkflowDiagram from "@/components/sections/WorkflowDiagram";
 import AskFlow from "@/components/sections/AskFlow";
 import StudyFinder from "@/components/sections/StudyFinder";
-import SynopsisBuilder from "@/components/sections/SynopsisBuilder";
+import AssistantWorkspace from "@/components/sections/AssistantWorkspace";
 import Reveal from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 
@@ -63,44 +62,28 @@ const trust = [
 export default function NextGenPage() {
   return (
     <>
-      <section className="border-b border-rule">
-        <div className="shell section">
-          <Reveal>
-            <SectionHeader
-              as="h1"
-              display
-              eyebrow={site.productName}
-              index="Human-reviewed"
-              title="Evidence synopses drafted in hours, reviewed by the researchers who would have written them."
-              lede="Describe the problem in a sentence. The builder structures it into a payer-, provider- and pharma-ready synopsis in our three-step framework — then a researcher reviews it."
-            />
-            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-              <Button href="#builder" arrow={false}>
-                Build a synopsis ↓
-              </Button>
-              <ArrowLink href="/contact/#demo">Request a demo</ArrowLink>
+      {/* The product first. The page opens on the working application, not
+          on a description of it — a visitor should be able to use it before
+          reading a word about it. */}
+      <section id="builder" className="scroll-mt-20 border-b border-rule">
+        <div className="shell pb-16 pt-8 lg:pb-20 lg:pt-10">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
+            <div>
+              <p className="label-sm text-accent">{site.productName} · Human-reviewed</p>
+              <h1 className="mt-3 max-w-[28ch] text-[clamp(1.6rem,1.2rem+1.6vw,2.4rem)] font-light leading-[1.12] tracking-[-0.025em]">
+                Evidence synopses, drafted in minutes and reviewed by researchers.
+              </h1>
             </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* The product, on the page. It was a link to app.pharmatiya.net, which
-          stops resolving when the domain moves here. */}
-      <section id="builder" className="scroll-mt-24 border-b border-rule bg-sunk">
-        <div className="shell section">
-          <Reveal>
-            <SectionLabel as="h2" index="01" className="mb-8">
-              Build a synopsis
-            </SectionLabel>
-          </Reveal>
-          <SynopsisBuilder />
+            <ArrowLink href="/contact/#demo">Request a demo</ArrowLink>
+          </div>
+          <AssistantWorkspace />
         </div>
       </section>
 
       <section className="border-b border-rule">
         <div className="shell section">
           <Reveal>
-            <SectionLabel as="h2" index="02">
+            <SectionLabel as="h2" index="01">
               Search prior work
             </SectionLabel>
             <p className="measure mb-6 mt-6 text-muted">
@@ -138,7 +121,7 @@ export default function NextGenPage() {
       <section className="border-b border-rule">
         <div className="shell section">
           <Reveal>
-            <SectionLabel as="h2" index="03" className="mb-8">
+            <SectionLabel as="h2" index="02" className="mb-8">
               Where AI is used — and where it is not
             </SectionLabel>
           </Reveal>
@@ -184,7 +167,7 @@ export default function NextGenPage() {
       <section className="border-b border-rule bg-sunk">
         <div className="shell section">
           <Reveal>
-            <SectionLabel as="h2" index="04" className="mb-8">
+            <SectionLabel as="h2" index="03" className="mb-8">
               Trust
             </SectionLabel>
           </Reveal>

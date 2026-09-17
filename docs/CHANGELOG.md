@@ -6,6 +6,32 @@ that behaviour has to be recorded here or those documents quietly go stale.
 
 ---
 
+## 2026-09-17 — NextGen AI becomes an application
+
+The builder looked like every other section of the site. The NextGen AI page
+now opens on a working AI workspace instead of a page header:
+
+- **Sidebar**: New synopsis, recent synopses (kept in this browser only),
+  and the three-step framework.
+- **Conversation**: a welcome prompt with four worked examples, user and
+  assistant turns, and a composer that grows with the text (Enter sends,
+  Shift+Enter adds a line).
+- **Visible working steps**, each reporting what the builder actually found
+  in the question: condition, ICD-10-CM code family, data sources and
+  audience, outcomes. No scripted "thinking" text.
+- **The synopsis arrives section by section** as a card: study question,
+  then each of the three steps (collapsible), then value and review. Copy
+  and Download on every result.
+- **Follow-ups refine the draft.** Each new message is read together with
+  the earlier ones and the synopsis is rebuilt, so "Add adherence as an
+  outcome" adds adherence. Four one-click refinements are offered.
+- **Patient details are refused** in the conversation, as before.
+- No model is named. In this build the draft is made in the browser, and
+  the Trust section says so; with `NEXT_PUBLIC_SYNOPSIS_API` set, the same
+  workspace talks to the model-backed service.
+
+---
+
 ## 2026-09-17 — the synopsis builder moves into the site; placeholders removed
 
 The old site is being replaced by this one, and the domain will move with it.

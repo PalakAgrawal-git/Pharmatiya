@@ -7,8 +7,12 @@ import {
   readStatement,
   synopsisToText,
   type BuildResult,
-  type Synopsis,
 } from "@/lib/synopsis";
+import {
+  makeMeta,
+  synopsisDocumentHtml,
+  textDocumentHtml,
+} from "@/lib/synopsisDocument";
 
 /**
  * NextGen AI, as an application rather than as a page section.
@@ -39,6 +43,8 @@ type AssistantMessage = {
   result?: BuildResult;
   /** How many sections of the result are showing; results arrive in order. */
   shown: number;
+  /** When the draft was completed; dates the document. */
+  at?: number;
 };
 type Message = UserMessage | AssistantMessage;
 type Thread = { id: string; title: string; messages: Message[]; updated: number };
@@ -146,6 +152,7 @@ export default function AssistantWorkspace() {
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [viewing, setViewing] = useState<string | null>(null);
   const logRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const reduced = useRef(false);
@@ -157,6 +164,10 @@ export default function AssistantWorkspace() {
   }, []);
 
   const active = threads.find((t) => t.id === activeId) ?? null;
+  const viewingMessage =
+    (active?.messages.find((m) => m.id === viewing && m.role === "assistant") as
+      | AssistantMessage
+      | undefined) ?? null;
 
   const update = useCallback((id: string, fn: (t: Thread) => Thread) => {
     setThreads((all) => {
@@ -243,6 +254,7 @@ export default function AssistantWorkspace() {
       patchAssistant(threadId, assistantId, (m) => ({
         status: "done",
         result,
+        at: Date.now(),
         steps: m.steps.map((s) => ({ ...s, done: true })),
       }));
       const sections = result.kind === "structured" ? 5 : 1;
@@ -283,17 +295,6 @@ export default function AssistantWorkspace() {
     } catch {
       /* clipboard blocked; the download remains */
     }
-  }
-
-  function download(message: AssistantMessage) {
-    if (!message.result) return;
-    const text = message.result.kind === "text" ? message.result.text : synopsisToText(message.result.synopsis);
-    const url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "pharmatiya-synopsis.txt";
-    link.click();
-    URL.revokeObjectURL(url);
   }
 
   return (
@@ -401,7 +402,7 @@ export default function AssistantWorkspace() {
                     message={m}
                     copied={copiedId === m.id}
                     onCopy={() => copy(m)}
-                    onDownload={() => download(m)}
+                    onOpen={() => setViewing(m.id)}
                     onRefine={send}
                     busy={busy}
                     isLast={m.id === active.messages[active.messages.length - 1].id}
@@ -461,6 +462,10 @@ export default function AssistantWorkspace() {
           </div>
         </form>
       </section>
+
+      {viewingMessage && (
+        <DocumentViewer message={viewingMessage} onClose={() => setViewing(null)} />
+      )}
     </div>
   );
 }
@@ -527,7 +532,7 @@ function AssistantTurn({
   message,
   copied,
   onCopy,
-  onDownload,
+  onOpen,
   onRefine,
   busy,
   isLast,
@@ -535,7 +540,7 @@ function AssistantTurn({
   message: AssistantMessage;
   copied: boolean;
   onCopy: () => void;
-  onDownload: () => void;
+  onOpen: () => void;
   onRefine: (text: string) => void;
   busy: boolean;
   isLast: boolean;
@@ -574,40 +579,37 @@ function AssistantTurn({
           </ol>
         )}
 
-        {message.status === "done" && message.result && (
-          <div className="mt-5">
-            {message.result.kind === "text" ? (
-              <pre className="whitespace-pre-wrap font-sans text-small leading-[1.75] text-muted">{message.result.text}</pre>
-            ) : (
-              <SynopsisCard synopsis={message.result.synopsis} shown={message.shown} />
-            )}
+        {message.status === "done" && message.result && message.shown >= 1 && (
+          <div className="mt-4">
+            <p className="text-small leading-[1.65] text-muted">
+              {message.result.kind === "structured"
+                ? `Here is the synopsis — ${message.result.synopsis.steps.length + 4} sections in the three-step framework, set as a client document. Open it to review, or save it as a PDF or Word file.`
+                : "Here is the synopsis, set as a client document. Open it to review, or save it as a PDF or Word file."}
+            </p>
+            <DocumentCard message={message} onOpen={onOpen} />
 
-            {message.shown >= (message.result.kind === "structured" ? 5 : 1) && (
-              <>
-                <div className="mt-5 flex flex-wrap items-center gap-2">
-                  <ToolButton onClick={onCopy}>{copied ? "Copied ✓" : "Copy"}</ToolButton>
-                  <ToolButton onClick={onDownload}>Download .txt</ToolButton>
-                  <span className="ml-1 text-caption text-faint">Draft for expert review</span>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <ToolButton onClick={onCopy}>{copied ? "Copied ✓" : "Copy text"}</ToolButton>
+              <span className="ml-1 text-caption text-faint">Draft — for expert review before client use</span>
+            </div>
+
+            {isLast && (
+              <div className="mt-5">
+                <p className="text-caption text-faint">Refine it</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {REFINEMENTS.map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      disabled={busy}
+                      onClick={() => onRefine(r)}
+                      className="rounded-full border border-rule-firm px-3 py-1.5 text-caption text-muted transition-colors hover:border-accent hover:text-ink disabled:opacity-50"
+                    >
+                      {r}
+                    </button>
+                  ))}
                 </div>
-                {isLast && (
-                  <div className="mt-5">
-                    <p className="text-caption text-faint">Refine it</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {REFINEMENTS.map((r) => (
-                        <button
-                          key={r}
-                          type="button"
-                          disabled={busy}
-                          onClick={() => onRefine(r)}
-                          className="rounded-full border border-rule-firm px-3 py-1.5 text-caption text-muted transition-colors hover:border-accent hover:text-ink disabled:opacity-50"
-                        >
-                          {r}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </>
+              </div>
             )}
           </div>
         )}
@@ -628,76 +630,150 @@ function ToolButton({ onClick, children }: { onClick: () => void; children: Reac
   );
 }
 
-function SynopsisCard({ synopsis, shown }: { synopsis: Synopsis; shown: number }) {
+/* ── The deliverable ────────────────────────────────────────────────── */
+
+function documentFor(message: AssistantMessage) {
+  const meta = makeMeta(message.id, new Date(message.at ?? Date.now()));
+  const result = message.result!;
+  const title =
+    result.kind === "structured" ? result.synopsis.title : "HEOR / RWE study synopsis";
+  const html =
+    result.kind === "structured"
+      ? synopsisDocumentHtml(result.synopsis, meta)
+      : textDocumentHtml(result.text, meta);
+  return { meta, title, html };
+}
+
+function downloadWord(html: string, reference: string) {
+  // Word opens HTML saved as .doc as an ordinary document. The grey viewing
+  // backdrop and page shadow are for the screen only, so they are removed.
+  const word = html
+    .replace("html { background: #e9ecea; }", "html { background: #fff; }")
+    .replace("padding: 32px 16px 48px;", "padding: 0;")
+    .replace("box-shadow: 0 2px 24px rgba(0,0,0,.12);", "");
+  const url = URL.createObjectURL(new Blob(["\ufeff", word], { type: "application/msword" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${reference}.doc`;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function DocumentCard({ message, onOpen }: { message: AssistantMessage; onOpen: () => void }) {
+  const { meta, title } = documentFor(message);
+  const sections =
+    message.result?.kind === "structured"
+      ? ["Problem statement", "Study question", ...message.result.synopsis.steps.map((s) => `${s.step} — ${s.name}`)]
+      : ["Synopsis"];
+
   return (
-    <article className="overflow-hidden rounded-[10px] border border-rule-firm bg-surface/40">
-      <header className="border-b border-rule px-5 py-4">
-        <p className="label-sm text-accent">Synopsis</p>
-        <h3 className="mt-2 text-[1.2rem] font-normal leading-[1.25] text-ink">{synopsis.title}</h3>
-      </header>
-
-      {shown >= 1 && (
-        <dl className="grid gap-x-5 gap-y-2.5 border-b border-rule px-5 py-4 sm:grid-cols-[7.5rem_1fr]">
-          {synopsis.question.map((q) => (
-            <div key={q.label} className="contents">
-              <dt className="label-sm pt-0.5 text-faint">{q.label}</dt>
-              <dd className="text-small leading-[1.55] text-ink">{q.value}</dd>
-            </div>
+    <div className="mt-3 flex flex-col gap-4 rounded-[12px] border border-rule-firm bg-surface/40 p-3 sm:flex-row sm:items-center">
+      {/* A miniature of the page, so the card reads as a file and not as text. */}
+      <button
+        type="button"
+        onClick={onOpen}
+        aria-label={`Open ${title}`}
+        className="group relative h-[8.5rem] w-full shrink-0 overflow-hidden rounded-[6px] bg-[#e9ecea] p-2 sm:w-[6.5rem]"
+      >
+        <span className="block h-full rounded-[2px] bg-white px-2 pt-2 text-left shadow-sm transition-transform group-hover:-translate-y-0.5">
+          <span className="block border-b-2 border-[#2f8f81] pb-1 text-[6px] font-semibold text-[#0f1a18]">Pharmatiya</span>
+          <span className="mt-1.5 block text-[5.5px] leading-[1.3] text-[#0f1a18]">{title}</span>
+          {[80, 92, 70, 88, 60, 84, 76].map((w, i) => (
+            <span key={i} className="mt-1 block h-[2px] rounded bg-[#cfd6d3]" style={{ width: `${w}%` }} />
           ))}
-        </dl>
-      )}
+        </span>
+      </button>
 
-      {synopsis.steps.map((step, i) =>
-        shown >= i + 2 ? (
-          <details key={step.step} open className="group border-b border-rule">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-3.5 hover:bg-surface/60">
-              <span className="flex items-baseline gap-3">
-                <span className="label-sm tabular text-accent">{step.step}</span>
-                <span className="text-small font-medium text-ink">{step.name}</span>
-              </span>
-              <span aria-hidden="true" className="text-faint transition-transform group-open:rotate-180">⌄</span>
-            </summary>
-            <div className="grid gap-x-8 gap-y-4 px-5 pb-5 sm:grid-cols-2">
-              {step.sections.map((section) => (
-                <div key={section.heading}>
-                  <p className="label-sm text-faint">{section.heading}</p>
-                  <ul className="mt-1.5 flex flex-col gap-1">
-                    {section.items.map((item) => (
-                      <li key={item} className="text-caption leading-[1.55] text-muted">
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </details>
-        ) : null,
-      )}
+      <div className="min-w-0 flex-1">
+        <p className="label-sm text-accent">Study synopsis · Draft</p>
+        <p className="mt-1 text-small font-medium leading-snug text-ink">{title}</p>
+        <p className="mt-1 text-caption text-faint">
+          {meta.reference} · {meta.date}
+        </p>
+        <p className="mt-2 line-clamp-2 text-caption text-muted">{sections.join(" · ")}</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={onOpen}
+            className="rounded-[6px] bg-ink px-3 py-1.5 text-caption font-medium text-paper transition-colors hover:bg-accent"
+          >
+            Open document
+          </button>
+          <ToolButton onClick={() => downloadWord(documentFor(message).html, meta.reference)}>
+            Download Word
+          </ToolButton>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-      {shown >= 5 && (
-        <footer className="grid gap-x-8 gap-y-4 px-5 py-4 sm:grid-cols-2">
-          <div>
-            <p className="label-sm text-faint">Value by stakeholder</p>
-            <dl className="mt-1.5 flex flex-col gap-1.5">
-              {synopsis.value.map((v) => (
-                <div key={v.audience} className="text-caption leading-[1.55]">
-                  <dt className="inline text-ink">{v.audience}: </dt>
-                  <dd className="inline text-muted">{v.message}</dd>
-                </div>
-              ))}
-            </dl>
+function DocumentViewer({ message, onClose }: { message: AssistantMessage; onClose: () => void }) {
+  const { meta, title, html } = documentFor(message);
+  const frameRef = useRef<HTMLIFrameElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const previous = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = overflow;
+      previous?.focus();
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${title} — ${meta.reference}`}
+      className="fixed inset-0 z-[60] flex flex-col bg-[#060b0a]/85 backdrop-blur-sm"
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <div className="mx-auto flex h-full w-full max-w-[64rem] flex-col p-3 sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-t-[10px] border border-b-0 border-rule-firm bg-[#0c1513] px-4 py-3">
+          <div className="min-w-0">
+            <p className="truncate text-small font-medium text-ink">{title}</p>
+            <p className="text-caption text-faint">
+              {meta.reference} · Draft for expert review
+            </p>
           </div>
-          <div>
-            <p className="label-sm text-faint">Review</p>
-            <ul className="mt-1.5 flex flex-col gap-1">
-              {synopsis.review.map((r) => (
-                <li key={r} className="text-caption leading-[1.55] text-muted">{r}</li>
-              ))}
-            </ul>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => frameRef.current?.contentWindow?.print()}
+              className="rounded-[6px] bg-ink px-3 py-1.5 text-caption font-medium text-paper transition-colors hover:bg-accent"
+            >
+              Save as PDF
+            </button>
+            <ToolButton onClick={() => downloadWord(html, meta.reference)}>Download Word</ToolButton>
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={onClose}
+              aria-label="Close document"
+              className="grid size-8 place-items-center rounded-[6px] border border-rule-firm text-muted transition-colors hover:text-ink"
+            >
+              ✕
+            </button>
           </div>
-        </footer>
-      )}
-    </article>
+        </div>
+        <iframe
+          ref={frameRef}
+          title={`${title} document`}
+          srcDoc={html}
+          className="min-h-0 w-full flex-1 rounded-b-[10px] border border-rule-firm bg-[#e9ecea]"
+        />
+      </div>
+    </div>
   );
 }

@@ -6,6 +6,29 @@ that behaviour has to be recorded here or those documents quietly go stale.
 
 ---
 
+## 2026-09-17 — the synopsis is a client document
+
+The synopsis is what a client receives, and it was being shown in the
+website's own dark styling. It is now a separate deliverable
+(`lib/synopsisDocument.ts`):
+
+- **In the conversation** it arrives as a document card: a miniature page,
+  the title, a reference number (`PH-SYN-YYYYMMDD-XXXX`), the date and its
+  sections, with *Open document* and *Download Word*.
+- **Open document** shows it in a viewer: white A4 page, Pharmatiya®
+  letterhead, reference and date, a draft-status notice, a summary table,
+  seven numbered sections with numbered sub-sections, tables for the study
+  question and stakeholder value, a reviewer sign-off block and a
+  confidential-draft footer.
+- **Save as PDF** prints the document through the browser's own PDF output,
+  with A4 margins and page-break rules. **Download Word** saves a `.doc`
+  named by the reference number, with the on-screen backdrop removed.
+- The viewer, the PDF and the Word file come from one HTML template, so they
+  cannot differ. The document's styling is fixed and independent of the
+  site's theme.
+
+---
+
 ## 2026-09-17 — NextGen AI becomes an application
 
 The builder looked like every other section of the site. The NextGen AI page

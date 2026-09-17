@@ -62,17 +62,28 @@ deck, the RWE presentation (Oct 2025, as .pptx and .pdf), the ICAAC poster,
   the **"only scientist" sales claim**, the **current employer's name and
   strategy**, and a **third party's email address** on the poster.
 
-### Open questions this raises
+### Questions this raised — answered 2026-09-17
 
-- **Name the current employer?** The biography names Healogics. The site
-  describes the work without naming it.
-- **"12 years" or "25+ years"?** The abstracts file says Pharmatiya Analytics
-  has "over 12 years of experience" and refers to the firm as "PHBR". The
-  site says 25+ years, which is the principal's career, not the firm's age.
-- **Registered trademark.** The product deck marks the name ®Pharmatiya. The
-  site does not use the mark until that is confirmed.
-- **The RWE deck is marked "Confidential".** Its concepts are paraphrased
-  here, not reproduced; confirm that is acceptable.
+- **Name the current employer?** No change: the work is described, the
+  employer is not named.
+- **"12 years" or "25+ years"?** 25+ stands.
+- **Registered trademark.** Confirmed registered. The ® now follows the name
+  in the header wordmark, the footer and the About name panel, hidden from
+  screen readers; the footer states "Pharmatiya® is a registered trademark"
+  in words.
+- **The RWE deck is marked "Confidential".** No change: its concepts stay
+  paraphrased.
+
+### Header fixes found while adding the mark
+
+- Between roughly 1024 and 1150px the header broke "NextGen AI" and the
+  booking link onto two lines. Labels are now kept on one line; they fit at
+  the existing spacing with no overflow.
+- The booking link was 42px tall with its arrow riding at the top edge — a
+  side effect of the width-reserving label added to stop the nav shifting.
+  A grid takes its baseline from its first item, and that item had zero
+  height. The visible label now comes first. Tab positions are unchanged
+  across pages.
 
 ### Security
 

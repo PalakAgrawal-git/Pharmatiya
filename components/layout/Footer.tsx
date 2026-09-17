@@ -22,7 +22,8 @@ export default function Footer() {
       <div className="shell section-tight grid gap-x-16 gap-y-14 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <p className="display text-[1.5rem] leading-none text-white">
-            Pharmatiya <span className="text-white/45">Health</span>
+            Pharmatiya<sup aria-hidden="true" className="ml-[0.05em] align-super text-[0.45em] font-normal">®</sup> 
+            <span className="text-white/45">Health</span>
           </p>
           <ul className="mt-6 flex flex-col gap-1.5 text-small text-white/55">
             <li>Health economics</li>
@@ -56,7 +57,7 @@ export default function Footer() {
         <div className="shell flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6">
           <p className="text-caption text-white/45">
             © {year} {site.legalName} · {site.address.locality},{" "}
-            {site.address.region}
+            {site.address.region} · Pharmatiya® is a registered trademark.
           </p>
           <a
             href={`mailto:${site.email}`}

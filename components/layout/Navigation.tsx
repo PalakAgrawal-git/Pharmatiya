@@ -55,7 +55,7 @@ export default function Navigation() {
               href={href}
               onClick={backToTopIfCurrent(href)}
               aria-current={isCurrent(href) ? "page" : undefined}
-              className={`relative py-1 text-small no-underline transition-colors duration-200 after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:origin-left after:scale-x-0 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.16,1,0.3,1)] hover:after:scale-x-100 ${
+              className={`relative whitespace-nowrap py-1 text-small no-underline transition-colors duration-200 after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:origin-left after:scale-x-0 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.16,1,0.3,1)] hover:after:scale-x-100 ${
                 isCurrent(href)
                   ? "text-ink after:scale-x-100 after:bg-accent"
                   : "text-muted after:bg-ink hover:text-ink"
@@ -79,17 +79,20 @@ export default function Navigation() {
           the swap from the fallback face to Fira Sans. */}
       <Link
         href={onProductPage ? "/contact/#demo" : "/contact/"}
-        className="group inline-flex items-baseline gap-2 text-small font-medium text-ink no-underline"
+        className="group inline-flex items-baseline gap-2 whitespace-nowrap text-small font-medium text-ink no-underline"
       >
         <span className="grid border-b border-transparent pb-0.5 transition-colors duration-200 group-hover:border-accent">
+          {/* Visible label first: a grid takes its baseline from its first
+              item, and with the zero-height sizer first the arrow beside it
+              aligned to the top edge and the link grew to 42px. */}
+          <span className="col-start-1 row-start-1">
+            {onProductPage ? "Request a demo" : "Book a consultation"}
+          </span>
           <span
             aria-hidden="true"
             className="invisible col-start-1 row-start-1 h-0 overflow-hidden"
           >
             Book a consultation
-          </span>
-          <span className="col-start-1 row-start-1">
-            {onProductPage ? "Request a demo" : "Book a consultation"}
           </span>
         </span>
         <span

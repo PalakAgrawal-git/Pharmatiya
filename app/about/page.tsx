@@ -76,6 +76,7 @@ export default function AboutPage() {
               <p className="label-sm text-faint">The name</p>
               <p className="mt-5 text-[clamp(2rem,1.4rem+2.2vw,3rem)] leading-none tracking-[-0.03em]">
                 Pharma<span className="display italic text-accent">tiya</span>
+                <sup aria-hidden="true" className="ml-[0.05em] align-super text-[0.45em] font-normal text-faint">®</sup>
               </p>
               <dl className="mt-6 grid grid-cols-[auto_1fr] gap-x-5 gap-y-2 text-small">
                 <dt className="font-mono text-caption text-faint">matiya</dt>

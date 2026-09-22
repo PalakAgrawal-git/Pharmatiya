@@ -6,6 +6,38 @@ that behaviour has to be recorded here or those documents quietly go stale.
 
 ---
 
+## 2026-09-22 — the mSToPS programme leads the Evidence page
+
+The client's point: the practice's real differentiator is having worked
+across companies in the industry, and across departments inside a
+manufacturer. mSToPS is the proof, so it now opens the Evidence page as
+section 01 (everything below renumbers to 02–06).
+
+- **The argument is the author list.** Three organisations, named as they
+  appear on the JAMA paper: Janssen Scientific Affairs (manufacturer),
+  Scripps Translational Science Institute (research institute) and
+  Healthagen Outcomes (the health plan's analytics business, where our
+  principal worked). The funding line is quoted from the paper.
+- **Departments inside the manufacturer** — market access, commercial, R&D,
+  medical affairs — are set apart under "Inside the manufacturer, we worked
+  with", because that is our own account of the engagement and not something
+  the paper states.
+- **Six published outputs, 2016–2019**, all co-authored by our principal,
+  with DOIs where they exist. The Circulation review of technology-enabled
+  trials is mentioned separately: it is related work, not a programme output.
+- **Services** now says we have worked with market access, commercial, R&D
+  and medical affairs on one programme, linking to the section.
+
+### Checked before publishing
+
+- The JAMA article was read for the author affiliations and funding line.
+- **The 2021 three-year outcomes paper (PLOS ONE) is deliberately excluded.**
+  Our principal is not an author on it; Healthagen is represented by
+  colleagues. The archive only claims work he did.
+- Two poster labels were corrected to match the posters' own titles.
+
+---
+
 ## 2026-09-17 — Evidence page redesigned
 
 - **Hero**: four figures at a glance, counted from the archive (49 entries,

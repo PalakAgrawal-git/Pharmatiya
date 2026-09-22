@@ -75,7 +75,13 @@ export default function ServicesPage() {
             <p className="measure mb-8 text-muted">
               The same data answers different questions depending on who is
               asking. We have worked on the payer, provider and manufacturer
-              side of each of these.
+              side of each of these — and inside a manufacturer, with market
+              access, commercial, R&amp;D and medical affairs on the same
+              programme.{" "}
+              <Link href="/evidence/#programme" className="text-accent underline underline-offset-4">
+                See how that worked on mSToPS
+              </Link>
+              .
             </p>
           </Reveal>
           <Stakeholders />

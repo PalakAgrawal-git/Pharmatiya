@@ -1,6 +1,7 @@
 import { methods } from "@/lib/site";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CaseStudies from "@/components/evidence/CaseStudies";
+import LandmarkProgramme from "@/components/evidence/LandmarkProgramme";
 import SelectedStudies from "@/components/evidence/SelectedStudies";
 import DatasetMap from "@/components/evidence/DatasetMap";
 import TherapeuticMatrix from "@/components/evidence/TherapeuticMatrix";
@@ -34,6 +35,7 @@ const glance = [
 ];
 
 const sections = [
+  { id: "programme", label: "mSToPS programme" },
   { id: "studies", label: "Selected studies" },
   { id: "areas", label: "Therapeutic areas" },
   { id: "data", label: "Data coverage" },
@@ -120,10 +122,26 @@ export default function EvidencePage() {
         </div>
       </section>
 
+      {/* The landmark programme leads: it is the strongest single proof on
+          the site, and the argument it makes — manufacturer, research
+          institute and health plan on one author list — is the one a buyer
+          is really asking about. */}
+      <section id="programme" className="scroll-mt-24 border-b border-rule">
+        <div className="shell section">
+          <Head
+            index="01"
+            label="Landmark programme"
+            title="mSToPS: three organisations, one trial"
+            lede="A nationwide, direct-to-participant screening trial run by a manufacturer, a research institute and a national health plan together — published in JAMA, and now the model for how much of the industry works."
+          />
+          <LandmarkProgramme />
+        </div>
+      </section>
+
       {/* Worked examples persuade before capability lists do. */}
       <section id="studies" className="scroll-mt-24 border-b border-rule bg-sunk">
         <div className="shell section">
-          <Head index="01" label="Selected studies" title={`${capitalise(inWords(studies.length))} studies, told the way you would assess one`} />
+          <Head index="02" label="Selected studies" title={`${capitalise(inWords(studies.length))} studies, told the way you would assess one`} />
           <SelectedStudies />
           <Reveal delay={100} className="mt-14">
             <CaseStudies />
@@ -136,7 +154,7 @@ export default function EvidencePage() {
       <section id="areas" className="scroll-mt-24 bg-inverse text-white">
         <div className="shell section">
           <Head
-            index="02"
+            index="03"
             label="Therapeutic areas"
             tone="dark"
             title="Where our published work is concentrated"
@@ -152,7 +170,7 @@ export default function EvidencePage() {
       <section id="data" className="scroll-mt-24 border-b border-rule">
         <div className="shell section">
           <Head
-            index="03"
+            index="04"
             label="Data coverage"
             title="The real-world data we work in"
             lede="Payer, provider and pharmacy data — extracted and analysed by the same team, so the cohort definition survives contact with the data."
@@ -168,7 +186,7 @@ export default function EvidencePage() {
       <section id="record" className="scroll-mt-24 border-b border-rule bg-sunk">
         <div className="shell section">
           <Head
-            index="04"
+            index="05"
             label="Published record"
             title="Everything we have published, searchable"
             lede={`${capitalise(inWords(record.total))} publications, abstracts, posters, a patent and a book chapter authored or co-authored by our team between ${record.firstYear} and ${record.lastYear} — in JAMA, Circulation, Diabetes, Obesity and Metabolism, Vaccine and others. Search it, or filter by type.`}
@@ -183,7 +201,7 @@ export default function EvidencePage() {
       <section id="methods" className="scroll-mt-24 border-b border-rule">
         <div className="shell section">
           <Head
-            index="05"
+            index="06"
             label="Methods"
             title="Methods and analytical capability"
             lede="Every method listed is one we have run ourselves, from study design through to the code."

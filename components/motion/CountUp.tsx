@@ -44,6 +44,13 @@ export default function CountUp({
 }: Props) {
   const ref = useRef<HTMLElement>(null);
   const [shown, setShown] = useState(value);
+  /* Whether the figure was actually zeroed before paint. The effect below
+     must not re-measure to decide: layout moves between the two effects —
+     fonts finish, a reveal transform settles — so a figure could be zeroed
+     by the first and then treated as "never zeroed" by the second, leaving
+     it reading 0 for ever with no observer and no failsafe running. One
+     decision, recorded, used by both. */
+  const zeroed = useRef(false);
 
   const digits = value.match(/\d+/);
   const target = digits ? parseInt(digits[0], 10) : null;
@@ -62,6 +69,7 @@ export default function CountUp({
     const box = node.getBoundingClientRect();
     if (box.top < window.innerHeight && box.bottom > 0) return;
 
+    zeroed.current = true;
     setShown(value.replace(/\d+/, "0"));
   }, [target, value]);
 
@@ -85,9 +93,9 @@ export default function CountUp({
       frame = requestAnimationFrame(tick);
     };
 
-    // Already on screen: it was never zeroed, so leave it finished.
-    const box = node.getBoundingClientRect();
-    if (box.top < window.innerHeight && box.bottom > 0) return;
+    // Never zeroed — it was on screen before paint — so it already shows the
+    // finished value and there is nothing to animate.
+    if (!zeroed.current) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {

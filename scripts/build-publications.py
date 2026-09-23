@@ -177,7 +177,8 @@ path = r"C:\Users\Palak Agrawal\Desktop\pharmatiya\data\publications.json"
 # are carried forward from the existing file by id.
 #   p49 - citation list in RWE-Presentation-RRM (Oct 2025)
 #   p50 - the ICAAC poster file (Poster1_Vitek_Poster_ICAAC)
-SUPPLEMENTARY = {"p49", "p50"}
+#   p51 - the ACC 2019 mSToPS abstract, found via Crossref
+SUPPLEMENTARY = {"p49", "p50", "p51"}
 try:
     existing = json.load(io.open(path, encoding="utf8"))["publications"]
     records += [r for r in existing if r["id"] in SUPPLEMENTARY]

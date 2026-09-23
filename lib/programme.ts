@@ -53,6 +53,7 @@ const OUTPUTS: { id: string; label: string }[] = [
   { id: "p13", label: "An end-to-end trial inside a health insurance system" },
   { id: "p7", label: "Primary trial result" },
   { id: "p6", label: "What the recruitment model taught us" },
+  { id: "p51", label: "Healthcare resource use after screening" },
 ];
 
 export const outputs = OUTPUTS.map((output) => {

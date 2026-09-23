@@ -1,16 +1,16 @@
 {
   "generatedAt": null,
-  "source": "MehtaRR_Publications.pdf, supplied by Pharmatiya. p49 from the citation list in RWE-Presentation-RRM (Oct 2025); p50 from the supplied ICAAC poster file.",
+  "source": "MehtaRR_Publications.pdf, supplied by Pharmatiya. p49 from the citation list in RWE-Presentation-RRM (Oct 2025); p50 from the supplied ICAAC poster file. p51 from the ACC 2019 abstract, verified through Crossref.",
   "note": "Published record only. Derived from the supplied bibliography; no personal contact details, licence numbers or unpublished client engagements are included.",
   "counts": {
     "publication": 15,
     "poster": 12,
     "patent": 1,
-    "abstract": 17,
+    "abstract": 18,
     "presentation": 3,
     "book chapter": 1
   },
-  "total": 49,
+  "total": 50,
   "publications": [
     {
       "id": "p1",
@@ -644,6 +644,20 @@
       "methods": [
         "Matched case-control",
         "Survival analysis"
+      ]
+    },
+    {
+      "id": "p51",
+      "citation": "Steinhubl SR, Edwards AM, Waalen J, Zambon R, Mehta R, Ariniello L, Ebner G, Baca-Motes K, Carter C, Felicione E, Sarich T, Topol E. Healthcare Resource Utilization Associated With Electrocardiograph (ECG) Sensor Patch Screening for Atrial Fibrillation (AF): Results From the mSToPS Trial. J Am Coll Cardiol. 2019;73(9):296. (Abstract)",
+      "year": 2019,
+      "type": "abstract",
+      "venue": "ACC 2019",
+      "link": "https://doi.org/10.1016/s0735-1097(19)30904-0",
+      "topics": [
+        "Atrial fibrillation"
+      ],
+      "methods": [
+        "Healthcare resource utilisation"
       ]
     }
   ]

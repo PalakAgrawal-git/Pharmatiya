@@ -32,8 +32,8 @@ export const partners = [
   },
   {
     role: "Health plan",
-    name: "Healthagen Outcomes",
-    note: "The analytics business of a national health plan. Identified the at-risk population from claims, and measured what happened next. Our principal worked here.",
+    name: "Aetna / Healthagen Outcomes",
+    note: "The national health plan. Its claims identified who was at risk; its analytics business measured what followed. Our principal is an author from Aetna on the design paper and from Healthagen Outcomes on the trial result.",
   },
 ];
 

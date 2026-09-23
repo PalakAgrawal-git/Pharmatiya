@@ -30,7 +30,9 @@ export default function LandmarkProgramme() {
             find atrial fibrillation that routine care was missing. The health
             plan found the population and measured what followed; the research
             institute designed and ran the trial; the manufacturer funded it
-            and sat on the author list.
+            and sat on the author list. The population came from Aetna’s own
+            membership, and our principal is named on the papers from both
+            Aetna and Healthagen Outcomes.
           </p>
           <p className="measure mt-4 text-small leading-[1.7] text-muted">
             Three organisations that had no history of sharing a protocol, an
@@ -138,6 +140,10 @@ export default function LandmarkProgramme() {
         </ol>
 
         <p className="mt-6 text-caption leading-[1.6] text-faint">
+          Conference abstracts without a permanent online record are listed
+          without a link.
+        </p>
+        <p className="mt-3 text-caption leading-[1.6] text-faint">
           The method the trial demonstrated was then reviewed across the
           industry in{" "}
           <a

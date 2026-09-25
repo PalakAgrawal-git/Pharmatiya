@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { nav, site } from "@/lib/site";
-import DigestSignup from "@/components/sections/DigestSignup";
 
 /**
  * The footer closes the page on the dark ground.
@@ -20,7 +19,7 @@ export default function Footer() {
   return (
     <footer className="mt-auto bg-inverse text-white">
       <div className="shell section-tight grid gap-x-16 gap-y-14 lg:grid-cols-12">
-        <div className="lg:col-span-4">
+        <div className="lg:col-span-5">
           <p className="display text-[1.5rem] leading-none text-white">
             Pharmatiya<sup aria-hidden="true" className="ml-[0.05em] align-super text-[0.45em] font-normal">®</sup> 
             <span className="text-white/45">Health</span>
@@ -32,7 +31,9 @@ export default function Footer() {
           </ul>
         </div>
 
-        <nav aria-label="Footer" className="lg:col-span-3">
+        {/* Pushed to the far edge: with the digest column gone, two blocks
+            left together leave half the footer empty. */}
+        <nav aria-label="Footer" className="lg:col-span-4 lg:col-start-9">
           <h2 className="label text-white/45">Pages</h2>
           <ul className="mt-6 grid grid-cols-2 gap-x-8 gap-y-2.5">
             {nav.map(({ href, label }) => (
@@ -48,9 +49,6 @@ export default function Footer() {
           </ul>
         </nav>
 
-        <div className="lg:col-span-4 lg:col-start-9">
-          <DigestSignup variant="footer" />
-        </div>
       </div>
 
       <div className="border-t border-white/12">

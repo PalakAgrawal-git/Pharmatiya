@@ -4,7 +4,6 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { DataLabel } from "@/components/ui/DataLabel";
 import Button from "@/components/ui/Button";
 import ContactRouting from "@/components/sections/ContactRouting";
-import DigestSignup from "@/components/sections/DigestSignup";
 import Reveal from "@/components/motion/Reveal";
 
 export const metadata = {
@@ -95,13 +94,6 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="border-b border-rule">
-        <div className="shell section">
-          <Reveal>
-            <DigestSignup />
-          </Reveal>
-        </div>
-      </section>
     </>
   );
 }

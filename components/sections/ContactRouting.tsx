@@ -63,8 +63,7 @@ export default function ContactRouting() {
       Enquiry: routes.find((r) => r.id === route)?.label ?? route,
     };
     data.forEach((value, key) => {
-      fields[key.charAt(0).toUpperCase() + key.slice(1)] =
-        key === "digest" ? "Yes, add me to the digest" : String(value);
+      fields[key.charAt(0).toUpperCase() + key.slice(1)] = String(value);
     });
     setState("sending");
     try {
@@ -224,18 +223,6 @@ export default function ContactRouting() {
             </>
           )}
         </div>
-
-        <label className="flex items-start gap-3 text-small text-muted">
-          <input
-            type="checkbox"
-            name="digest"
-            className="mt-1 size-5 accent-[var(--color-accent)]"
-          />
-          <span>
-            Add me to the Quarterly Insights Digest. Sent four times a year;
-            unsubscribe in one click.
-          </span>
-        </label>
 
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           <Button type="submit" disabled={state === "sending"}>

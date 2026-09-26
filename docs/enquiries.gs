@@ -83,6 +83,7 @@ function getSheet() {
     sheet = book.insertSheet(SHEET_NAME);
     sheet.appendRow(['Received']);
     sheet.setFrozenRows(1);
+    styleHeaders(sheet);
   }
   return sheet;
 }
@@ -109,12 +110,43 @@ function buildRow(sheet, data) {
     if (headers.indexOf(label) === -1) {
       headers.push(label);
       sheet.getRange(1, headers.length).setValue(label);
+      styleHeaders(sheet);
     }
   });
 
   return headers.map(function (header) {
     return values[header] === undefined ? '' : values[header];
   });
+}
+
+/**
+ * The header row, in the website's own green. Run this by hand from the
+ * editor (choose styleHeaders, press Run) to colour a sheet that already
+ * has rows in it; after that it looks after itself, including when a new
+ * form field adds a column.
+ */
+function styleHeaders(sheet) {
+  sheet = sheet || SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+  if (!sheet) return;
+
+  const width = Math.max(sheet.getLastColumn(), 1);
+  sheet.getRange(1, 1, 1, width)
+    .setBackground('#2f8f81')
+    .setFontColor('#ffffff')
+    .setFontWeight('bold')
+    .setVerticalAlignment('middle');
+
+  sheet.setFrozenRows(1);
+  sheet.setRowHeight(1, 32);
+  // Widen to fit, but cap it: a message field left to size itself would
+  // run off the screen and push every other column out of sight.
+  sheet.autoResizeColumns(1, width);
+  for (let c = 1; c <= width; c++) {
+    if (sheet.getColumnWidth(c) > 320) sheet.setColumnWidth(c, 320);
+  }
+  sheet.getRange(2, 1, Math.max(sheet.getMaxRows() - 1, 1), width)
+    .setVerticalAlignment('top')
+    .setWrap(true);
 }
 
 function reply(status, message) {

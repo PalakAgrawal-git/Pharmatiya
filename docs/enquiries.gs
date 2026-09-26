@@ -2,7 +2,7 @@
  * Pharmatiya Health — website enquiries into a Google Sheet.
  *
  * Paste this into Extensions → Apps Script on the sheet that should hold the
- * enquiries, set the three values below, then Deploy → New deployment →
+ * enquiries, set the values below, then Deploy → New deployment →
  * Web app → Execute as: Me → Who has access: Anyone → Deploy. Copy the
  * /exec URL it gives you; that is what the website posts to.
  *
@@ -12,8 +12,20 @@
  */
 
 // ── Settings ────────────────────────────────────────────────────────────
-const SHEET_NAME = 'Enquiries';   // tab to write into; created if absent
 const SHARED_TOKEN = '';          // optional; must match the site's token
+
+/**
+ * One tab per enquiry type, so new business is never mixed in with press.
+ * The keys are exactly what the website sends as "Enquiry type"; anything
+ * that does not match lands in the fallback, which is how a renamed option
+ * on the site shows up here as a tab to look at rather than a lost row.
+ */
+const TABS = {
+  'New client': 'New clients',
+  'Existing client': 'Existing clients',
+  'Press & partners': 'Press & partners',
+};
+const FALLBACK_TAB = 'Other';
 // ────────────────────────────────────────────────────────────────────────
 
 // This script only writes to the sheet. It sends no email, so authorising it
@@ -38,7 +50,7 @@ function doPost(e) {
     const email = String(data.Email || data.email || '').trim();
     if (!email || email.indexOf('@') < 1) return reply(400, 'Invalid');
 
-    const sheet = getSheet();
+    const sheet = getSheet(data['Enquiry type']);
     const row = buildRow(sheet, data);
     sheet.appendRow(row);
     return reply(200, 'OK');
@@ -62,25 +74,33 @@ function doGet() {
       return reply(500, 'This script is not attached to any spreadsheet. ' +
         'Open the sheet, use Extensions > Apps Script, and paste it there.');
     }
-    const sheet = book.getSheetByName(SHEET_NAME);
+    const counts = {};
+    Object.keys(TABS).concat(FALLBACK_TAB).forEach(function (key) {
+      const name = TABS[key] || key;
+      const sheet = book.getSheetByName(name);
+      counts[name] = sheet ? Math.max(sheet.getLastRow() - 1, 0) : null;
+    });
     return reply(200, JSON.stringify({
       running: true,
       spreadsheet: book.getName(),
       url: book.getUrl(),
-      tab: SHEET_NAME,
-      tabExists: !!sheet,
-      rows: sheet ? Math.max(sheet.getLastRow() - 1, 0) : 0,
+      tabs: counts,   // null means the tab does not exist yet
     }));
   } catch (err) {
     return reply(500, String(err));
   }
 }
 
-function getSheet() {
+function tabFor(enquiryType) {
+  return TABS[String(enquiryType || '').trim()] || FALLBACK_TAB;
+}
+
+function getSheet(enquiryType) {
+  const name = tabFor(enquiryType);
   const book = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = book.getSheetByName(SHEET_NAME);
+  let sheet = book.getSheetByName(name);
   if (!sheet) {
-    sheet = book.insertSheet(SHEET_NAME);
+    sheet = book.insertSheet(name);
     sheet.appendRow(['Received']);
     sheet.setFrozenRows(1);
     styleHeaders(sheet);
@@ -126,8 +146,15 @@ function buildRow(sheet, data) {
  * form field adds a column.
  */
 function styleHeaders(sheet) {
-  sheet = sheet || SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
-  if (!sheet) return;
+  if (!sheet) {
+    // Run by hand with nothing selected: format every enquiry tab there is.
+    const book = SpreadsheetApp.getActiveSpreadsheet();
+    Object.keys(TABS).concat(FALLBACK_TAB, 'Enquiries').forEach(function (key) {
+      const found = book.getSheetByName(TABS[key] || key);
+      if (found) styleHeaders(found);
+    });
+    return;
+  }
 
   const width = Math.max(sheet.getLastColumn(), 1);
   sheet.getRange(1, 1, 1, width)

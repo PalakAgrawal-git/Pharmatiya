@@ -144,10 +144,14 @@ export function Select({
       <label htmlFor={id} className="label text-faint">
         {label}
       </label>
-      {/* Native select: correct behaviour on mobile, accessible for free. */}
+      {/* Native select: correct behaviour on mobile, accessible for free.
+          The open list is drawn by the operating system, not by us, so it
+          keeps its own white background while the options inherit the page's
+          light text — white on white, and unreadable. Each option therefore
+          carries its own colours. */}
       <select id={id} name={name} required={required} className={control}>
         {options.map((option) => (
-          <option key={option} value={option}>
+          <option key={option} value={option} className="bg-white text-[#141a19]">
             {option}
           </option>
         ))}

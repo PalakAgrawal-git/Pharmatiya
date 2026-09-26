@@ -12,10 +12,14 @@
  */
 
 // ── Settings ────────────────────────────────────────────────────────────
-const SHEET_NAME = 'Enquiries';          // tab to write into; created if absent
-const NOTIFY = 'admin@pharmatiya.net';   // who gets an email per enquiry ('' = none)
-const SHARED_TOKEN = '';                 // optional; must match the site's token
+const SHEET_NAME = 'Enquiries';   // tab to write into; created if absent
+const SHARED_TOKEN = '';          // optional; must match the site's token
 // ────────────────────────────────────────────────────────────────────────
+
+// This script only writes to the sheet. It sends no email, so authorising it
+// asks for access to this spreadsheet and nothing else — no permission to
+// send mail as you. Watch the sheet, or set a Google Sheets notification
+// rule (Tools → Notification settings) if you want to be told about new rows.
 
 function doPost(e) {
   try {
@@ -37,8 +41,6 @@ function doPost(e) {
     const sheet = getSheet();
     const row = buildRow(sheet, data);
     sheet.appendRow(row);
-
-    if (NOTIFY) notify(data);
     return reply(200, 'OK');
   } catch (err) {
     console.error(err);
@@ -89,19 +91,6 @@ function buildRow(sheet, data) {
 
   return headers.map(function (header) {
     return values[header] === undefined ? '' : values[header];
-  });
-}
-
-function notify(data) {
-  const lines = Object.keys(data)
-    .filter(function (k) { return k !== 'token' && String(data[k]).trim(); })
-    .map(function (k) { return k + ': ' + data[k]; });
-
-  MailApp.sendEmail({
-    to: NOTIFY,
-    replyTo: String(data.Email || data.email || ''),
-    subject: 'Website enquiry: ' + (data['Enquiry type'] || 'New'),
-    body: lines.join('\n\n') + '\n\n—\nSent from the Pharmatiya website.',
   });
 }
 

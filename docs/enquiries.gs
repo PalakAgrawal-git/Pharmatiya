@@ -48,9 +48,32 @@ function doPost(e) {
   }
 }
 
-/** Visiting the URL in a browser should say something, not error. */
+/**
+ * Visiting the URL in a browser reports which spreadsheet this deployment is
+ * actually bound to, and how many rows it holds. If enquiries seem to vanish,
+ * this says where they went: a script created from script.google.com rather
+ * than from the sheet's own Extensions menu is bound to nothing, and a script
+ * copied between sheets keeps writing to the original.
+ */
 function doGet() {
-  return reply(200, 'Pharmatiya enquiry endpoint is running.');
+  try {
+    const book = SpreadsheetApp.getActiveSpreadsheet();
+    if (!book) {
+      return reply(500, 'This script is not attached to any spreadsheet. ' +
+        'Open the sheet, use Extensions > Apps Script, and paste it there.');
+    }
+    const sheet = book.getSheetByName(SHEET_NAME);
+    return reply(200, JSON.stringify({
+      running: true,
+      spreadsheet: book.getName(),
+      url: book.getUrl(),
+      tab: SHEET_NAME,
+      tabExists: !!sheet,
+      rows: sheet ? Math.max(sheet.getLastRow() - 1, 0) : 0,
+    }));
+  } catch (err) {
+    return reply(500, String(err));
+  }
 }
 
 function getSheet() {

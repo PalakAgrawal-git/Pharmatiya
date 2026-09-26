@@ -35,6 +35,23 @@ export async function sendMessage(
       body: JSON.stringify({ subject, ...Object.fromEntries(filled) }),
     });
     if (!response.ok) throw new Error(`Form service returned ${response.status}`);
+
+    /* An Apps Script web app answers 200 even when its own code failed, so
+       the HTTP status proves nothing: the status it reports is in the body.
+       Without this a submission that never reached the sheet still told the
+       visitor "your enquiry has been sent". */
+    const text = await response.text();
+    try {
+      const body = JSON.parse(text) as { status?: number; message?: string };
+      if (typeof body.status === "number" && body.status >= 400) {
+        throw new Error(body.message || `Form service reported ${body.status}`);
+      }
+    } catch (error) {
+      // Not JSON: an endpoint that simply returns "ok" is fine. Only a
+      // reported failure above is an error.
+      if (error instanceof Error && error.message.startsWith("Form service")) throw error;
+      if (error instanceof Error && !(error instanceof SyntaxError)) throw error;
+    }
     return "sent";
   }
 

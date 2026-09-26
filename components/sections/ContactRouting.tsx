@@ -1,5 +1,6 @@
 "use client";
 
+import EmailAddress from "@/components/ui/EmailAddress";
 import { useState, type FormEvent } from "react";
 import { sendMessage, type SendResult } from "@/lib/submit";
 import { site } from "@/lib/site";
@@ -240,12 +241,7 @@ export default function ContactRouting() {
             {(state === "unconfigured" || state === "error") && (
               <>
                 That did not send. Please write to{" "}
-                <a
-                  href={`mailto:${site.email}`}
-                  className="text-accent underline underline-offset-4"
-                >
-                  {site.email}
-                </a>{" "}
+                <EmailAddress className="text-accent underline underline-offset-4" />{" "}
                 and we will reply.
               </>
             )}

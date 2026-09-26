@@ -1,6 +1,6 @@
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/motion/Reveal";
-import { site } from "@/lib/site";
+import EmailAddress from "@/components/ui/EmailAddress";
 
 type Props = {
   title?: string;
@@ -36,15 +36,9 @@ export default function CTA({
           <Button href={href} full>
             {action}
           </Button>
-          <a
-            href={`mailto:${site.email}`}
-            className="arrow-link text-small text-ink underline decoration-rule-firm underline-offset-[6px] transition-colors hover:decoration-accent"
-          >
-            Or email us directly{" "}
-            <span className="arrow" aria-hidden="true">
-              →
-            </span>
-          </a>
+          <EmailAddress className="text-small text-ink underline decoration-rule-firm underline-offset-[6px] transition-colors hover:decoration-accent">
+            Or copy our email address
+          </EmailAddress>
         </Reveal>
       </div>
     </section>

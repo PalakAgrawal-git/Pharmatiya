@@ -1,3 +1,4 @@
+import EmailAddress from "@/components/ui/EmailAddress";
 import Link from "next/link";
 import { nav, site } from "@/lib/site";
 
@@ -57,12 +58,7 @@ export default function Footer() {
             © {year} {site.legalName} · {site.address.locality},{" "}
             {site.address.region} · Pharmatiya® is a registered trademark.
           </p>
-          <a
-            href={`mailto:${site.email}`}
-            className="text-caption text-white/45 no-underline transition-colors hover:text-white"
-          >
-            {site.email}
-          </a>
+          <EmailAddress className="text-caption text-white/45 no-underline transition-colors hover:text-white" />
         </div>
       </div>
     </footer>

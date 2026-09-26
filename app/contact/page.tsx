@@ -1,3 +1,4 @@
+import EmailAddress from "@/components/ui/EmailAddress";
 import Link from "next/link";
 import { site } from "@/lib/site";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -70,12 +71,7 @@ export default function ContactPage() {
               Direct contact
             </DataLabel>
             <p className="mb-4">
-              <a
-                href={`mailto:${site.email}`}
-                className="text-accent underline underline-offset-4"
-              >
-                {site.email}
-              </a>
+              <EmailAddress className="text-accent underline underline-offset-4" />
             </p>
             <address className="not-italic text-muted">
               {site.legalName}

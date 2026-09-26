@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { sendMessage, type SendResult } from "@/lib/submit";
+import { site } from "@/lib/site";
 import { Field, TextArea, Select } from "@/components/ui/Field";
 import Button from "@/components/ui/Button";
 import { DataLabel } from "@/components/ui/DataLabel";
@@ -42,9 +43,9 @@ const serviceOptions = [
  * three paths visible — a visitor who cannot see "existing client" assumes
  * there is no route for them.
  *
- * Submission goes through lib/submit: a form endpoint when one is configured,
- * the visitor's mail client otherwise. Required fields are checked before
- * anything is sent, and the result is announced.
+ * Submission goes through lib/submit to the configured endpoint, which writes
+ * the enquiry into Pharmatiya's sheet. Required fields are checked first, and
+ * the result is announced. Nothing here opens a mail client.
  */
 export default function ContactRouting() {
   const [route, setRoute] = useState<Route>("new");
@@ -235,11 +236,19 @@ export default function ContactRouting() {
           </Button>
           <p role="status" className="text-small text-muted">
             {state === "invalid" && "Please fill in the required fields."}
-            {state === "sent" && "Thank you — your enquiry has been sent."}
-            {state === "mail-client" &&
-              "Your email app has opened with the enquiry written — press send to finish."}
-            {state === "error" &&
-              "That did not send. Please email us directly and we will reply."}
+            {state === "sent" && "Thank you. Your enquiry has been sent, and we will reply shortly."}
+            {(state === "unconfigured" || state === "error") && (
+              <>
+                That did not send. Please write to{" "}
+                <a
+                  href={`mailto:${site.email}`}
+                  className="text-accent underline underline-offset-4"
+                >
+                  {site.email}
+                </a>{" "}
+                and we will reply.
+              </>
+            )}
           </p>
         </div>
       </form>

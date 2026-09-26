@@ -59,15 +59,20 @@ export default function ContactRouting() {
       return;
     }
     const data = new FormData(form);
+    /* "Enquiry type", not "Enquiry": the press route's own textarea is named
+       `enquiry`, and capitalised it landed on the same key — the route label
+       was overwritten by the message, and the subject line with it. */
     const fields: Record<string, string> = {
-      Enquiry: routes.find((r) => r.id === route)?.label ?? route,
+      "Enquiry type": routes.find((r) => r.id === route)?.label ?? route,
     };
     data.forEach((value, key) => {
       fields[key.charAt(0).toUpperCase() + key.slice(1)] = String(value);
     });
     setState("sending");
     try {
-      setState(await sendMessage(`Website enquiry — ${fields.Enquiry}`, fields));
+      setState(
+        await sendMessage(`Website enquiry: ${fields["Enquiry type"]}`, fields),
+      );
     } catch {
       setState("error");
     }

@@ -192,9 +192,14 @@ function asSynopsis(raw: string) {
   if (!isText(d?.title) || !isText(d?.problem)) return null;
   if (!audience || !sources || !review || !question || !value || !plan) return null;
 
-  /* The parts below enrich the document but are not worth refusing a draft
-     over: a synopsis missing its appendix is still a usable synopsis. */
+  /* The summary and the background are what make this read as a document
+     rather than as notes, which was the whole complaint. A draft without
+     them is asked for again rather than accepted. */
   const background = textList(d?.background);
+  if (!isText(d?.summary) || !background) return null;
+
+  /* These two enrich the document but are not worth refusing a draft over:
+     a synopsis missing its appendix is still a usable synopsis. */
   const nextSteps = textList(d?.nextSteps);
   const codes = Array.isArray(d?.codes)
     ? (d.codes as unknown[])
@@ -217,8 +222,8 @@ function asSynopsis(raw: string) {
     steps: plan,
     value,
     review,
-    ...(isText(d?.summary) ? { summary: String(d.summary).trim() } : {}),
-    ...(background ? { background } : {}),
+    summary: String(d.summary).trim(),
+    background,
     ...(nextSteps ? { nextSteps } : {}),
     ...(codes.length ? { codes } : {}),
   };
@@ -250,49 +255,64 @@ export async function POST(request: Request) {
   }
 
   try {
-    const response = await fetch(`${BASE}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${KEY}`,
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        max_tokens: MAX_TOKENS,
-        temperature: 0.3,
-        /* Guarantees syntactically valid JSON. It does not guarantee the
-           right shape, which is why the reply is still checked below. */
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: SYSTEM },
-          { role: "user", content: problem },
-        ],
-      }),
-    });
+    /* Asked twice at most. A model given this much structure occasionally
+       returns a thinner draft than the brief asks for — a missing summary
+       or background — and asking again is cheaper for everyone than giving
+       the visitor a document that reads as notes. */
+    let lastRaw = "";
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const response = await fetch(`${BASE}/chat/completions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${KEY}`,
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          max_tokens: MAX_TOKENS,
+          temperature: 0.3,
+          /* Guarantees syntactically valid JSON. It does not guarantee the
+             right shape, which is why the reply is still checked below. */
+          response_format: { type: "json_object" },
+          messages: [
+            { role: "system", content: SYSTEM },
+            { role: "user", content: problem },
+            ...(attempt
+              ? [
+                  {
+                    role: "system" as const,
+                    content:
+                      "The previous draft was missing required fields. Return every field in the shape, including summary, background, nextSteps and codes.",
+                  },
+                ]
+              : []),
+          ],
+        }),
+      });
 
-    if (!response.ok) {
-      /* The provider's own message can name the account, the key or the
-         billing state. Log it for us; tell the visitor nothing about it. */
-      console.error("Synopsis provider error", response.status, await response.text());
-      return fail(502, "The drafting service is unavailable. Please try again shortly.");
+      if (!response.ok) {
+        /* The provider's own message can name the account, the key or the
+           billing state. Log it for us; tell the visitor nothing about it. */
+        console.error("Synopsis provider error", response.status, await response.text());
+        return fail(502, "The drafting service is unavailable. Please try again shortly.");
+      }
+
+      const data = (await response.json()) as {
+        choices?: { message?: { content?: string } }[];
+      };
+      const raw = data.choices?.[0]?.message?.content?.trim();
+      if (!raw) return fail(502, "The drafting service returned nothing.");
+      lastRaw = raw;
+
+      /* The page typesets a synopsis from its parts. A reply that is not
+         that shape would be shown as a wall of raw text, which is worse
+         than not answering. */
+      const synopsis = asSynopsis(raw);
+      if (synopsis) return Response.json({ synopsis });
     }
 
-    const data = (await response.json()) as {
-      choices?: { message?: { content?: string } }[];
-    };
-    const raw = data.choices?.[0]?.message?.content?.trim();
-    if (!raw) return fail(502, "The drafting service returned nothing.");
-
-    /* The page typesets a synopsis from its parts. A reply that is not that
-       shape would be shown as a wall of raw text, which is worse than not
-       answering, so it is refused and the browser-side builder takes over. */
-    const synopsis = asSynopsis(raw);
-    if (!synopsis) {
-      console.error("Synopsis reply was not the expected shape", raw.slice(0, 600));
-      return fail(502, "The drafting service returned an unusable draft.");
-    }
-
-    return Response.json({ synopsis });
+    console.error("Synopsis reply was not the expected shape", lastRaw.slice(0, 600));
+    return fail(502, "The drafting service returned an unusable draft.");
   } catch (error) {
     console.error("Synopsis request failed", error);
     return fail(502, "The drafting service could not be reached.");

@@ -29,8 +29,16 @@ export const dynamic = "force-dynamic";
 const KEY = process.env.OPENAI_API_KEY;
 const MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";
 const BASE = process.env.OPENAI_BASE_URL || "https://api.openai.com/v1";
-/** A ceiling on cost per request, not a target. */
-const MAX_TOKENS = Number(process.env.SYNOPSIS_MAX_TOKENS || 1800);
+/**
+ * A ceiling on cost per request, not a target.
+ *
+ * It must clear the whole synopsis comfortably. A reply cut off at the
+ * limit is truncated JSON, which cannot be parsed and cannot be partly
+ * used, so a cap set too low does not produce a shorter document: it
+ * produces no document. A full draft runs to roughly 1,700 tokens, and
+ * this leaves room for a longer question to need more.
+ */
+const MAX_TOKENS = Number(process.env.SYNOPSIS_MAX_TOKENS || 4000);
 /** The longest problem statement accepted, in characters. */
 const MAX_INPUT = 4000;
 
@@ -413,8 +421,16 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
       }
 
       const data = (await response.json()) as {
-        choices?: { message?: { content?: string } }[];
+        choices?: { message?: { content?: string }; finish_reason?: string }[];
       };
+
+      /* Truncation is worth naming in the log. It looks identical to a
+         malformed reply from the outside, and the fix is different: the
+         token ceiling is too low for the shape being asked for. */
+      if (data.choices?.[0]?.finish_reason === "length") {
+        console.error(`Synopsis reply hit the ${MAX_TOKENS}-token ceiling and was cut off.`);
+      }
+
       const raw = data.choices?.[0]?.message?.content?.trim();
       if (!raw) return fail(502, "The drafting service returned nothing.");
       lastRaw = raw;

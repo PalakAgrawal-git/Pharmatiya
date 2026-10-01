@@ -265,7 +265,12 @@ export default function AssistantWorkspace() {
     } catch (error) {
       patchAssistant(threadId, assistantId, {
         status: "error",
-        note: `I couldn't build that: ${error instanceof Error ? error.message : "the service did not respond"}. Try again in a moment.`,
+        /* The service's messages are sentences and end in a full stop, so
+           one is not added here — "unusable draft.. Try again" was the
+           result of assuming otherwise. */
+        note: `I couldn't build that. ${
+          error instanceof Error ? error.message.replace(/\.*$/, ".") : "The service did not respond."
+        } Try again in a moment.`,
       });
     } finally {
       setBusy(false);

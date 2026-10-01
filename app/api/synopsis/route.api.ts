@@ -115,7 +115,13 @@ characters, no headings inside a string: the structure above is the
 formatting, and the document is typeset from it.
 
 Each item is a complete sentence or a precise phrase, not a fragment or a
-placeholder. Give all three steps.`;
+placeholder. Give all three steps.
+
+Give two to four next steps, each one an action with an owner implied.
+
+Give at least six code rows covering the condition and the categories a
+cohort would need, grouped by what they identify. A one-line appendix is
+worse than none.`;
 
 type Body = { problem?: unknown };
 

@@ -198,6 +198,10 @@ function asSynopsis(raw: string) {
   const background = textList(d?.background);
   if (!isText(d?.summary) || !background) return null;
 
+  /* The framework is three steps. A draft that stops at feasibility is not
+     the thing the page describes, whatever else is right about it. */
+  if (plan.length < 3) return null;
+
   /* These two enrich the document but are not worth refusing a draft over:
      a synopsis missing its appendix is still a usable synopsis. */
   const nextSteps = textList(d?.nextSteps);

@@ -583,7 +583,7 @@ function AssistantTurn({
           <div className="mt-4">
             <p className="text-small leading-[1.65] text-muted">
               {message.result.kind === "structured"
-                ? `Here is the synopsis — ${message.result.synopsis.steps.length + 4} sections in the three-step framework, set as a client document. Open it to review, or save it as a PDF or Word file.`
+                ? `Here is the synopsis — ${contentsOf(message.result).length} sections in the three-step framework, set as a client document. Open it to review, or save it as a PDF or Word file.`
                 : "Here is the synopsis, set as a client document. Open it to review, or save it as a PDF or Word file."}
             </p>
             <DocumentCard message={message} onOpen={onOpen} />
@@ -659,12 +659,33 @@ function downloadWord(html: string, reference: string) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+/**
+ * The document's contents, in the order it typesets them.
+ *
+ * Derived rather than listed, because a synopsis from the drafting service
+ * carries parts the browser-side builder never produces — a summary, a
+ * background, next steps, a code appendix. A fixed list would undercount
+ * the document and name sections it does not contain.
+ */
+function contentsOf(result: BuildResult): string[] {
+  if (result.kind !== "structured") return ["Synopsis"];
+  const s = result.synopsis;
+  return [
+    ...(s.summary ? ["Executive summary"] : []),
+    ...(s.background?.length ? ["Background"] : []),
+    "Problem statement",
+    "Study question",
+    ...s.steps.map((step) => `${step.step} — ${step.name}`),
+    "Value by stakeholder",
+    "Review and limitations",
+    ...(s.nextSteps?.length ? ["Next steps"] : []),
+    ...(s.codes?.length ? ["Appendix: code list"] : []),
+  ];
+}
+
 function DocumentCard({ message, onOpen }: { message: AssistantMessage; onOpen: () => void }) {
   const { meta, title } = documentFor(message);
-  const sections =
-    message.result?.kind === "structured"
-      ? ["Problem statement", "Study question", ...message.result.synopsis.steps.map((s) => `${s.step} — ${s.name}`)]
-      : ["Synopsis"];
+  const sections = message.result ? contentsOf(message.result) : ["Synopsis"];
 
   return (
     <div className="mt-3 flex flex-col gap-4 rounded-[12px] border border-rule-firm bg-surface/40 p-3 sm:flex-row sm:items-center">

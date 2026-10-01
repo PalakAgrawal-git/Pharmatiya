@@ -364,26 +364,49 @@ export type BuildResult =
   | { kind: "structured"; synopsis: Synopsis }
   | { kind: "text"; text: string };
 
+/**
+ * A statement the service would not draft from, as opposed to a service
+ * that could not answer. The difference matters: the first must reach the
+ * visitor, and the second must not stop them getting a synopsis.
+ */
+export class Refused extends Error {}
+
 export async function buildSynopsis(problem: string): Promise<BuildResult> {
   if (api) {
-    const response = await fetch(api, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ problem }),
-    });
-    const data = (await response.json()) as {
-      synopsis?: Synopsis | string;
-      error?: string;
-    };
-    if (!response.ok || data.error || !data.synopsis) {
-      throw new Error(data.error ?? `Synopsis service returned ${response.status}`);
+    try {
+      const response = await fetch(api, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ problem }),
+      });
+      const data = (await response.json()) as {
+        synopsis?: Synopsis | string;
+        error?: string;
+      };
+
+      /* A refusal is the visitor's to see: a statement carrying patient
+         identifiers must be rejected, not quietly drafted anyway. */
+      if (response.status === 422) throw new Refused(data.error ?? "That statement was refused.");
+
+      if (!response.ok || data.error || !data.synopsis) {
+        throw new Error(data.error ?? `Synopsis service returned ${response.status}`);
+      }
+      /* The service returns the synopsis in parts, which the page typesets
+         the same way it typesets its own. A string is still accepted, so an
+         older service, or one written by someone else, keeps working. */
+      return typeof data.synopsis === "string"
+        ? { kind: "text", text: data.synopsis }
+        : { kind: "structured", synopsis: data.synopsis };
+    } catch (error) {
+      if (error instanceof Refused) throw error;
+      /* The service is an improvement on the builder below, not a
+         replacement for it. When it cannot answer — a draft it would not
+         stand behind, a timeout, a provider outage — the synopsis is built
+         here instead. A shorter document beats an error message, and the
+         visitor keeps the thing they came for. */
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      return { kind: "structured", synopsis: draftSynopsis(problem) };
     }
-    /* The service returns the synopsis in parts, which the page typesets the
-       same way it typesets its own. A string is still accepted, so an older
-       service, or one written by someone else, keeps working. */
-    return typeof data.synopsis === "string"
-      ? { kind: "text", text: data.synopsis }
-      : { kind: "structured", synopsis: data.synopsis };
   }
   // A short pause. The draft is instant, and a result that appears with no
   // transition reads as the page jumping rather than as work being done.

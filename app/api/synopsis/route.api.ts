@@ -60,10 +60,18 @@ Close with value by stakeholder, and with what a reviewer must confirm.
 
 Never request, infer or repeat patient-identifying information.
 
+Write at the standard of a synopsis going to a sponsor for a decision, not
+notes towards one. That means an executive summary that stands alone, a
+background that says what is already known, named statistical methods
+rather than "appropriate analyses", and a closing ask.
+
 Reply with JSON only, in exactly this shape:
 
 {
-  "title": "short title, no markdown",
+  "title": "Sponsor-facing title naming the condition and the setting",
+  "summary": "One paragraph a sponsor could read alone and act on: what is proposed, in which data, and what it will establish.",
+  "background": ["Why this matters and what is already known.",
+                 "What the existing evidence does not settle, and why this data can."],
   "problem": "the problem restated in one or two sentences",
   "condition": "the condition and its ICD-10-CM category, or null",
   "audience": ["who the work is for"],
@@ -74,13 +82,33 @@ Reply with JSON only, in exactly this shape:
                {"label": "Outcomes", "value": "..."},
                {"label": "Timeframe", "value": "..."}],
   "steps": [{"step": "Step 0", "name": "Feasibility",
-             "sections": [{"heading": "Cohort", "items": ["..."]},
-                          {"heading": "Data", "items": ["..."]},
-                          {"heading": "Objectives and endpoints", "items": ["..."]},
-                          {"heading": "Analysis", "items": ["..."]}]}],
+             "timeframe": "2-4 weeks",
+             "sections": [{"heading": "Primary objectives", "items": ["..."]},
+                          {"heading": "Secondary objectives", "items": ["..."]},
+                          {"heading": "Study design and data source", "items": ["..."]},
+                          {"heading": "Cohort definition", "items": ["..."]},
+                          {"heading": "Stratification", "items": ["..."]},
+                          {"heading": "Statistical analysis plan", "items": ["..."]},
+                          {"heading": "Key outputs", "items": ["..."]}]}],
   "value": [{"audience": "Payer", "message": "..."}],
-  "review": ["what a reviewer must confirm before this is used"]
+  "review": ["what a reviewer must confirm before this is used"],
+  "nextSteps": ["the concrete decision or approval being asked for"],
+  "codes": [{"group": "Condition or category",
+             "code": "ICD-10-CM code",
+             "description": "what the code covers"}]
 }
+
+Section headings per step, used as they fit the step: primary objectives,
+secondary objectives, study design and data source, cohort definition,
+stratification, statistical analysis plan, healthcare resource utilisation,
+key outputs, strategic impact. Step 2 covers outreach strategies,
+governance and compliance, the conversion funnel and operational metrics.
+
+Give enrolment windows and look-back periods in the design section. Name
+the statistical methods: Kaplan-Meier and Cox proportional hazards for time
+to event, negative binomial for utilisation counts, generalised linear
+models for cost, propensity matching for comparability. Name only methods
+the question warrants.
 
 Write every string as finished prose. No markdown, no asterisks, no bullet
 characters, no headings inside a string: the structure above is the
@@ -120,6 +148,7 @@ function steps(v: unknown) {
   const out = v.map((item) => {
     const step = item as Record<string, unknown>;
     if (!isText(step?.step) || !isText(step?.name) || !Array.isArray(step?.sections)) return null;
+    const timeframe = isText(step?.timeframe) ? String(step.timeframe).trim() : undefined;
     const sections = (step.sections as unknown[]).map((s) => {
       const section = s as Record<string, unknown>;
       const items = textList(section?.items);
@@ -131,6 +160,7 @@ function steps(v: unknown) {
     return {
       step: String(step.step).trim(),
       name: String(step.name).trim(),
+      ...(timeframe ? { timeframe } : {}),
       sections: sections as { heading: string; items: string[] }[],
     };
   });
@@ -156,6 +186,21 @@ function asSynopsis(raw: string) {
   if (!isText(d?.title) || !isText(d?.problem)) return null;
   if (!audience || !sources || !review || !question || !value || !plan) return null;
 
+  /* The parts below enrich the document but are not worth refusing a draft
+     over: a synopsis missing its appendix is still a usable synopsis. */
+  const background = textList(d?.background);
+  const nextSteps = textList(d?.nextSteps);
+  const codes = Array.isArray(d?.codes)
+    ? (d.codes as unknown[])
+        .map((c) => c as Record<string, unknown>)
+        .filter((c) => isText(c?.group) && isText(c?.code) && isText(c?.description))
+        .map((c) => ({
+          group: String(c.group).trim(),
+          code: String(c.code).trim(),
+          description: String(c.description).trim(),
+        }))
+    : [];
+
   return {
     title: String(d.title).trim(),
     problem: String(d.problem).trim(),
@@ -166,6 +211,10 @@ function asSynopsis(raw: string) {
     steps: plan,
     value,
     review,
+    ...(isText(d?.summary) ? { summary: String(d.summary).trim() } : {}),
+    ...(background ? { background } : {}),
+    ...(nextSteps ? { nextSteps } : {}),
+    ...(codes.length ? { codes } : {}),
   };
 }
 

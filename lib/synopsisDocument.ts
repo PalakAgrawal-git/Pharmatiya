@@ -122,6 +122,18 @@ export function synopsisDocumentHtml(s: Synopsis, meta: DocumentMeta): string {
 
   // Sections are numbered as they are produced, so they must be produced in
   // the order they appear on the page.
+
+  /* A sponsor reads the first page and decides whether to read the rest, so
+     the summary and the background come before the problem statement. Both
+     are absent from a synopsis drafted in the browser, and the document
+     simply starts at the problem statement then. */
+  const summary = s.summary
+    ? section("Executive summary", `<p class="problem">${esc(s.summary)}</p>`)
+    : "";
+  const background = s.background?.length
+    ? section("Background", s.background.map((p) => `<p>${esc(p)}</p>`).join(""))
+    : "";
+
   const problem = section("Problem statement", `<p class="problem">${esc(s.problem)}</p>`);
   const question = section(
     "Study question",
@@ -140,7 +152,10 @@ export function synopsisDocumentHtml(s: Synopsis, meta: DocumentMeta): string {
           return `<h3><span class="n">${k}.${i + 1}</span>${esc(sec.heading)}</h3>${content}`;
         })
         .join("");
-      return section(`${step.step} — ${step.name}`, subs);
+      const when = step.timeframe
+        ? `<p class="lede">Execution timeframe: ${esc(step.timeframe)}</p>`
+        : "";
+      return section(`${step.step} — ${step.name}`, when + subs);
     })
     .join("");
   const value = section(
@@ -148,6 +163,19 @@ export function synopsisDocumentHtml(s: Synopsis, meta: DocumentMeta): string {
     `<table>${s.value.map((v) => `<tr><th>${esc(v.audience)}</th><td>${esc(v.message)}</td></tr>`).join("")}</table>`,
   );
   const review = section("Review and limitations", list(s.review));
+  const next = s.nextSteps?.length ? section("Next steps", list(s.nextSteps)) : "";
+  const appendix = s.codes?.length
+    ? section(
+        "Appendix: illustrative code list",
+        `<p class="lede">Categories to be confirmed against the data before any cohort is built.</p>
+         <table><tr><th>Group</th><th>Code</th><th>Description</th></tr>${s.codes
+           .map(
+             (c) =>
+               `<tr><td>${esc(c.group)}</td><td>${esc(c.code)}</td><td>${esc(c.description)}</td></tr>`,
+           )
+           .join("")}</table>`,
+      )
+    : "";
 
   const body = `
 <p class="kind">Study synopsis &middot; Draft</p>
@@ -162,11 +190,15 @@ export function synopsisDocumentHtml(s: Synopsis, meta: DocumentMeta): string {
   <tr><th>Status</th><td>Draft &mdash; not for distribution until reviewed</td></tr>
 </table>
 
+${summary}
+${background}
 ${problem}
 ${question}
 ${steps}
 ${value}
 ${review}
+${next}
+${appendix}
 
 <table class="signoff">
   <tr><th>Reviewed by</th><td></td><th style="width:14%">Date</th><td style="width:22%"></td></tr>

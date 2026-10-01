@@ -33,10 +33,25 @@ export type Synopsis = {
   steps: {
     step: string;
     name: string;
+    /** "1-3 months". Shown beside the step heading. */
+    timeframe?: string;
     sections: { heading: string; items: string[] }[];
   }[];
   value: { audience: string; message: string }[];
   review: string[];
+
+  /* The parts that make a synopsis read as a deliverable rather than as
+     notes. All optional: the browser-side builder does not produce them,
+     and a document without them is still correct, just shorter. */
+
+  /** One paragraph a sponsor can read on its own and act on. */
+  summary?: string;
+  /** Why the question matters, and what is already known. */
+  background?: string[];
+  /** The concrete ask that closes the document. */
+  nextSteps?: string[];
+  /** Illustrative code list, as an appendix. */
+  codes?: { group: string; code: string; description: string }[];
 };
 
 /* ── Recognition ──────────────────────────────────────────────────────── */

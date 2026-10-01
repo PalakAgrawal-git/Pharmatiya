@@ -342,11 +342,19 @@ export async function buildSynopsis(problem: string): Promise<BuildResult> {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ problem }),
     });
-    const data = (await response.json()) as { synopsis?: string; error?: string };
+    const data = (await response.json()) as {
+      synopsis?: Synopsis | string;
+      error?: string;
+    };
     if (!response.ok || data.error || !data.synopsis) {
       throw new Error(data.error ?? `Synopsis service returned ${response.status}`);
     }
-    return { kind: "text", text: data.synopsis };
+    /* The service returns the synopsis in parts, which the page typesets the
+       same way it typesets its own. A string is still accepted, so an older
+       service, or one written by someone else, keeps working. */
+    return typeof data.synopsis === "string"
+      ? { kind: "text", text: data.synopsis }
+      : { kind: "structured", synopsis: data.synopsis };
   }
   // A short pause. The draft is instant, and a result that appears with no
   // transition reads as the page jumping rather than as work being done.

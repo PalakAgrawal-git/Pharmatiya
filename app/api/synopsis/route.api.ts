@@ -58,12 +58,115 @@ confirmed against the data.
 
 Close with value by stakeholder, and with what a reviewer must confirm.
 
-Never request, infer or repeat patient-identifying information.`;
+Never request, infer or repeat patient-identifying information.
+
+Reply with JSON only, in exactly this shape:
+
+{
+  "title": "short title, no markdown",
+  "problem": "the problem restated in one or two sentences",
+  "condition": "the condition and its ICD-10-CM category, or null",
+  "audience": ["who the work is for"],
+  "sources": ["each data source required"],
+  "question": [{"label": "Population", "value": "..."},
+               {"label": "Exposure", "value": "..."},
+               {"label": "Comparator", "value": "..."},
+               {"label": "Outcomes", "value": "..."},
+               {"label": "Timeframe", "value": "..."}],
+  "steps": [{"step": "Step 0", "name": "Feasibility",
+             "sections": [{"heading": "Cohort", "items": ["..."]},
+                          {"heading": "Data", "items": ["..."]},
+                          {"heading": "Objectives and endpoints", "items": ["..."]},
+                          {"heading": "Analysis", "items": ["..."]}]}],
+  "value": [{"audience": "Payer", "message": "..."}],
+  "review": ["what a reviewer must confirm before this is used"]
+}
+
+Write every string as finished prose. No markdown, no asterisks, no bullet
+characters, no headings inside a string: the structure above is the
+formatting, and the document is typeset from it.
+
+Each item is a complete sentence or a precise phrase, not a fragment or a
+placeholder. Give all three steps.`;
 
 type Body = { problem?: unknown };
 
 function fail(status: number, error: string) {
   return Response.json({ error }, { status });
+}
+
+/* ── Checking the reply ─────────────────────────────────────────────────
+   A language model is asked for this shape, not held to it. Everything
+   below is a check on what actually came back; anything missing or of the
+   wrong type means the draft is refused rather than half-rendered. */
+
+const isText = (v: unknown): v is string => typeof v === "string" && v.trim().length > 0;
+const textList = (v: unknown): string[] | null =>
+  Array.isArray(v) && v.length > 0 && v.every(isText) ? (v as string[]).map((s) => s.trim()) : null;
+
+function pairs<K extends string>(v: unknown, a: K, b: K) {
+  if (!Array.isArray(v) || !v.length) return null;
+  const out = v.map((item) => {
+    const row = item as Record<string, unknown>;
+    return isText(row?.[a]) && isText(row?.[b])
+      ? { [a]: String(row[a]).trim(), [b]: String(row[b]).trim() }
+      : null;
+  });
+  return out.every(Boolean) ? (out as Record<K, string>[]) : null;
+}
+
+function steps(v: unknown) {
+  if (!Array.isArray(v) || !v.length) return null;
+  const out = v.map((item) => {
+    const step = item as Record<string, unknown>;
+    if (!isText(step?.step) || !isText(step?.name) || !Array.isArray(step?.sections)) return null;
+    const sections = (step.sections as unknown[]).map((s) => {
+      const section = s as Record<string, unknown>;
+      const items = textList(section?.items);
+      return isText(section?.heading) && items
+        ? { heading: String(section.heading).trim(), items }
+        : null;
+    });
+    if (!sections.length || !sections.every(Boolean)) return null;
+    return {
+      step: String(step.step).trim(),
+      name: String(step.name).trim(),
+      sections: sections as { heading: string; items: string[] }[],
+    };
+  });
+  return out.every(Boolean) ? (out as NonNullable<(typeof out)[number]>[]) : null;
+}
+
+function asSynopsis(raw: string) {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return null;
+  }
+  const d = parsed as Record<string, unknown>;
+
+  const audience = textList(d?.audience);
+  const sources = textList(d?.sources);
+  const review = textList(d?.review);
+  const question = pairs(d?.question, "label", "value");
+  const value = pairs(d?.value, "audience", "message");
+  const plan = steps(d?.steps);
+
+  if (!isText(d?.title) || !isText(d?.problem)) return null;
+  if (!audience || !sources || !review || !question || !value || !plan) return null;
+
+  return {
+    title: String(d.title).trim(),
+    problem: String(d.problem).trim(),
+    condition: isText(d?.condition) ? String(d.condition).trim() : null,
+    audience,
+    sources,
+    question,
+    steps: plan,
+    value,
+    review,
+  };
 }
 
 export async function POST(request: Request) {
@@ -102,6 +205,9 @@ export async function POST(request: Request) {
         model: MODEL,
         max_tokens: MAX_TOKENS,
         temperature: 0.3,
+        /* Guarantees syntactically valid JSON. It does not guarantee the
+           right shape, which is why the reply is still checked below. */
+        response_format: { type: "json_object" },
         messages: [
           { role: "system", content: SYSTEM },
           { role: "user", content: problem },
@@ -119,8 +225,17 @@ export async function POST(request: Request) {
     const data = (await response.json()) as {
       choices?: { message?: { content?: string } }[];
     };
-    const synopsis = data.choices?.[0]?.message?.content?.trim();
-    if (!synopsis) return fail(502, "The drafting service returned nothing.");
+    const raw = data.choices?.[0]?.message?.content?.trim();
+    if (!raw) return fail(502, "The drafting service returned nothing.");
+
+    /* The page typesets a synopsis from its parts. A reply that is not that
+       shape would be shown as a wall of raw text, which is worse than not
+       answering, so it is refused and the browser-side builder takes over. */
+    const synopsis = asSynopsis(raw);
+    if (!synopsis) {
+      console.error("Synopsis reply was not the expected shape", raw.slice(0, 600));
+      return fail(502, "The drafting service returned an unusable draft.");
+    }
 
     return Response.json({ synopsis });
   } catch (error) {

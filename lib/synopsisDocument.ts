@@ -83,6 +83,11 @@ const CSS = `
   li { margin: 3px 0 0; }
   .lede { color: #3d4744; }
   .problem { margin: 10px 0 0; padding: 12px 14px; background: #f2f5f4; border-radius: 3px; font-style: italic; }
+  /* References are read by number, so the number is kept hard against the
+     text rather than hanging in a wide indent. */
+  .refs { margin: 8px 0 0; padding-left: 20px; }
+  .refs li { margin: 5px 0 0; font-size: 9pt; line-height: 1.5; }
+  .refs a { color: #2f8f81; word-break: break-all; }
   .funnel { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; padding: 0; list-style: none; }
   .funnel li { margin: 0; padding: 4px 10px; border: 1px solid #b9d9d3; background: #eef7f5; border-radius: 12px; font-size: 9pt; }
   .text { white-space: pre-wrap; }
@@ -164,6 +169,19 @@ export function synopsisDocumentHtml(s: Synopsis, meta: DocumentMeta): string {
   );
   const review = section("Review and limitations", list(s.review));
   const next = s.nextSteps?.length ? section("Next steps", list(s.nextSteps)) : "";
+  const references = s.references?.length
+    ? section(
+        "References",
+        `<ol class="refs">${s.references
+          .map(
+            (r) =>
+              `<li>${esc(r.citation)}${
+                r.link ? ` <a href="${esc(r.link)}">${esc(r.link)}</a>` : ""
+              }</li>`,
+          )
+          .join("")}</ol>`,
+      )
+    : "";
   const appendix = s.codes?.length
     ? section(
         "Appendix: illustrative code list",
@@ -198,6 +216,7 @@ ${steps}
 ${value}
 ${review}
 ${next}
+${references}
 ${appendix}
 
 <table class="signoff">

@@ -123,6 +123,62 @@ Give at least six code rows covering the condition and the categories a
 cohort would need, grouped by what they identify. A one-line appendix is
 worse than none.`;
 
+/* ── Literature ─────────────────────────────────────────────────────────
+   Real published work, found before anything is drafted.
+
+   The model is never asked to write a citation. It is handed a numbered
+   list of papers that were actually returned by a search, and may only
+   refer to them by number; the list printed in the document is the one
+   fetched here. A reference that does not exist is therefore not something
+   the model is discouraged from producing — it has no way to produce one.
+
+   Europe PMC, because its search is a single public endpoint needing no
+   key, and it indexes MEDLINE. Relevance order, not citation count: the
+   most-cited papers for any clinical phrase are the global burden of
+   disease surveys, which are never what a synopsis needs. */
+
+const PMC = "https://www.ebi.ac.uk/europepmc/webservices/rest/search";
+const STOP = new Set(
+  ("a an and the of for to in on with using from by at is are as that this these those our we " +
+    "their it its new real world patients team study data analysis across among within").split(" "),
+);
+
+type Paper = { citation: string; link: string | null };
+
+async function findPapers(problem: string): Promise<Paper[]> {
+  const words = (problem.toLowerCase().match(/[a-z0-9-]+/g) ?? [])
+    .filter((w) => w.length > 2 && !STOP.has(w))
+    .slice(0, 6);
+  if (words.length < 2) return [];
+
+  const query =
+    `(${words.map((w) => `TITLE_ABS:"${w}"`).join(" AND ")})` +
+    ` AND (FIRST_PDATE:[2015-01-01 TO 2030-12-31]) AND (SRC:MED)`;
+
+  try {
+    const url = `${PMC}?query=${encodeURIComponent(query)}&format=json&pageSize=8`;
+    const response = await fetch(url, { signal: AbortSignal.timeout(6000) });
+    if (!response.ok) return [];
+    const data = (await response.json()) as {
+      resultList?: { result?: Record<string, string>[] };
+    };
+    return (data.resultList?.result ?? [])
+      .filter((r) => r.title && r.journalTitle && r.pubYear)
+      .map((r) => {
+        const first = (r.authorString ?? "").split(",")[0].trim();
+        const who = first ? `${first}${(r.authorString ?? "").includes(",") ? " et al." : ""} ` : "";
+        return {
+          citation: `${who}${r.title!.replace(/\.$/, "")}. ${r.journalTitle}. ${r.pubYear}.`,
+          link: r.doi ? `https://doi.org/${r.doi}` : r.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${r.pmid}/` : null,
+        };
+      });
+  } catch {
+    /* The search is an enrichment, not a dependency. A synopsis without a
+       background citation is still a synopsis; a failed draft is not. */
+    return [];
+  }
+}
+
 type Body = { problem?: unknown };
 
 function fail(status: number, error: string) {
@@ -171,6 +227,52 @@ function steps(v: unknown) {
     };
   });
   return out.every(Boolean) ? (out as NonNullable<(typeof out)[number]>[]) : null;
+}
+
+/**
+ * Keeps the citations that point at a real paper, and drops the rest.
+ *
+ * The model is told to cite only the relevant papers, so the list it was
+ * given is usually wider than the list it uses. Printing the unused ones
+ * would attach references to a document that does not rely on them. A
+ * marker pointing outside the list — [9] when eight were offered — is
+ * removed from the text rather than printed as a dead number.
+ *
+ * Surviving citations are renumbered to run 1..n in order of first
+ * appearance, so the background and the reference list agree.
+ */
+function withReferences(
+  synopsis: ReturnType<typeof asSynopsis> & object,
+  papers: Paper[],
+) {
+  if (!papers.length || !synopsis.background?.length) return synopsis;
+
+  const order: number[] = [];
+  const renumber = (text: string) =>
+    text.replace(/\[([\d,\s]+)\]/g, (whole, group: string) => {
+      const kept = group
+        .split(",")
+        .map((part) => Number(part.trim()))
+        .filter((n) => Number.isInteger(n) && n >= 1 && n <= papers.length)
+        .map((n) => {
+          if (!order.includes(n)) order.push(n);
+          return order.indexOf(n) + 1;
+        });
+      return kept.length ? `[${kept.join(",")}]` : "";
+    });
+
+  const background = synopsis.background.map(renumber).map((t) => t.replace(/\s+([.,;])/g, "$1").trim());
+  if (!order.length) return { ...synopsis, background };
+
+  return {
+    ...synopsis,
+    background,
+    references: order.map((source, i) => ({
+      n: i + 1,
+      citation: papers[source - 1].citation,
+      link: papers[source - 1].link,
+    })),
+  };
 }
 
 function asSynopsis(raw: string) {
@@ -258,6 +360,15 @@ export async function POST(request: Request) {
     return fail(422, "That looks like it contains patient-identifying information. Describe the question, not the patient.");
   }
 
+  const papers = await findPapers(problem);
+  const sources = papers.length
+    ? `\n\nPublished work found for this question. Cite these in the background by
+number in square brackets, as [1] or [2,3]. Cite only those genuinely
+relevant to this question and ignore the rest; an irrelevant citation is
+worse than none. Never cite anything not on this list, and never invent a
+reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
+    : "";
+
   try {
     /* Asked twice at most. A model given this much structure occasionally
        returns a thinner draft than the brief asks for — a missing summary
@@ -279,7 +390,7 @@ export async function POST(request: Request) {
              right shape, which is why the reply is still checked below. */
           response_format: { type: "json_object" },
           messages: [
-            { role: "system", content: SYSTEM },
+            { role: "system", content: SYSTEM + sources },
             { role: "user", content: problem },
             ...(attempt
               ? [
@@ -312,7 +423,7 @@ export async function POST(request: Request) {
          that shape would be shown as a wall of raw text, which is worse
          than not answering. */
       const synopsis = asSynopsis(raw);
-      if (synopsis) return Response.json({ synopsis });
+      if (synopsis) return Response.json({ synopsis: withReferences(synopsis, papers) });
     }
 
     console.error("Synopsis reply was not the expected shape", lastRaw.slice(0, 600));

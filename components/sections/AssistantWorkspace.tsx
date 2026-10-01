@@ -679,6 +679,7 @@ function contentsOf(result: BuildResult): string[] {
     "Value by stakeholder",
     "Review and limitations",
     ...(s.nextSteps?.length ? ["Next steps"] : []),
+    ...(s.references?.length ? ["References"] : []),
     ...(s.codes?.length ? ["Appendix: code list"] : []),
   ];
 }

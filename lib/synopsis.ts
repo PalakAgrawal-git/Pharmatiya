@@ -52,6 +52,20 @@ export type Synopsis = {
   nextSteps?: string[];
   /** Illustrative code list, as an appendix. */
   codes?: { group: string; code: string; description: string }[];
+
+  /**
+   * Real published work, found before the synopsis was drafted and cited by
+   * number in the background. The model never writes these: it is given a
+   * numbered list and may only refer to it, and the list rendered in the
+   * document is the one we fetched. A citation here therefore names a paper
+   * that exists, which is the only way an automated reference is worth
+   * printing.
+   */
+  references?: {
+    n: number;
+    citation: string;
+    link: string | null;
+  }[];
 };
 
 /* ── Recognition ──────────────────────────────────────────────────────── */

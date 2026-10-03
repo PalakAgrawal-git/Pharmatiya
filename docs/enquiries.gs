@@ -14,18 +14,9 @@
 // ── Settings ────────────────────────────────────────────────────────────
 const SHARED_TOKEN = '';          // optional; must match the site's token
 
-/**
- * One tab per enquiry type, so new business is never mixed in with press.
- * The keys are exactly what the website sends as "Enquiry type"; anything
- * that does not match lands in the fallback, which is how a renamed option
- * on the site shows up here as a tab to look at rather than a lost row.
- */
-const TABS = {
-  'New client': 'New clients',
-  'Existing client': 'Existing clients',
-  'Press & partners': 'Press & partners',
-};
-const FALLBACK_TAB = 'Other';
+// The tab every enquiry is written to, created if it is not there. The site
+// asks one set of questions now rather than three, so there is one tab.
+const SHEET_NAME = 'Enquiries';
 // ────────────────────────────────────────────────────────────────────────
 
 // This script only writes to the sheet. It sends no email, so authorising it
@@ -50,7 +41,7 @@ function doPost(e) {
     const email = String(data.Email || data.email || '').trim();
     if (!email || email.indexOf('@') < 1) return reply(400, 'Invalid');
 
-    const sheet = getSheet(data['Enquiry type']);
+    const sheet = getSheet();
     const row = buildRow(sheet, data);
     sheet.appendRow(row);
     return reply(200, 'OK');
@@ -74,33 +65,25 @@ function doGet() {
       return reply(500, 'This script is not attached to any spreadsheet. ' +
         'Open the sheet, use Extensions > Apps Script, and paste it there.');
     }
-    const counts = {};
-    Object.keys(TABS).concat(FALLBACK_TAB).forEach(function (key) {
-      const name = TABS[key] || key;
-      const sheet = book.getSheetByName(name);
-      counts[name] = sheet ? Math.max(sheet.getLastRow() - 1, 0) : null;
-    });
+    const sheet = book.getSheetByName(SHEET_NAME);
     return reply(200, JSON.stringify({
       running: true,
       spreadsheet: book.getName(),
       url: book.getUrl(),
-      tabs: counts,   // null means the tab does not exist yet
+      tab: SHEET_NAME,
+      tabExists: !!sheet,
+      rows: sheet ? Math.max(sheet.getLastRow() - 1, 0) : 0,
     }));
   } catch (err) {
     return reply(500, String(err));
   }
 }
 
-function tabFor(enquiryType) {
-  return TABS[String(enquiryType || '').trim()] || FALLBACK_TAB;
-}
-
-function getSheet(enquiryType) {
-  const name = tabFor(enquiryType);
+function getSheet() {
   const book = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = book.getSheetByName(name);
+  let sheet = book.getSheetByName(SHEET_NAME);
   if (!sheet) {
-    sheet = book.insertSheet(name);
+    sheet = book.insertSheet(SHEET_NAME);
     sheet.appendRow(['Received']);
     sheet.setFrozenRows(1);
     styleHeaders(sheet);
@@ -148,11 +131,8 @@ function buildRow(sheet, data) {
 function styleHeaders(sheet) {
   if (!sheet) {
     // Run by hand with nothing selected: format every enquiry tab there is.
-    const book = SpreadsheetApp.getActiveSpreadsheet();
-    Object.keys(TABS).concat(FALLBACK_TAB, 'Enquiries').forEach(function (key) {
-      const found = book.getSheetByName(TABS[key] || key);
-      if (found) styleHeaders(found);
-    });
+    const found = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    if (found) styleHeaders(found);
     return;
   }
 

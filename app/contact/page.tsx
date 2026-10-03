@@ -10,22 +10,33 @@ import Reveal from "@/components/motion/Reveal";
 export const metadata = {
   title: "Contact",
   description:
-    "Separate routes for new clients, existing clients and press, so enquiries reach the right person. Book a 30-minute consultation with a senior researcher.",
+    "Send us the question you are trying to answer. Every enquiry is read by a researcher. Book a 30-minute consultation with a senior researcher.",
   alternates: { canonical: "/contact/" },
 };
 
 export default function ContactPage() {
   return (
     <>
+      {/* The heading is set at 18 characters a line, so a long one stacks
+          four deep down the left and leaves the rest of the band empty. A
+          short title and a line beside it fill the opening the way every
+          other page's does. */}
       <section className="border-b border-rule">
-        <div className="shell section">
-          <Reveal>
+        <div className="shell section-tight grid gap-x-16 gap-y-8 lg:grid-cols-12 lg:items-end">
+          <Reveal className="lg:col-span-7">
             <SectionHeader
               as="h1"
               display
               eyebrow="Contact"
-              title="Tell us which applies and the enquiry reaches the right person directly."
+              title="Start with the question you are trying to answer."
             />
+          </Reveal>
+          <Reveal delay={120} className="lg:col-span-4 lg:col-start-9">
+            <p className="text-small leading-[1.7] text-muted">
+              Every enquiry is read by a researcher. If there is a study in it,
+              we will tell you what data it would take and whether that data
+              exists.
+            </p>
           </Reveal>
         </div>
       </section>

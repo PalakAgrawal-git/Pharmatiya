@@ -3,15 +3,8 @@
 import EmailAddress from "@/components/ui/EmailAddress";
 import { useState, type FormEvent } from "react";
 import { sendMessage, type SendResult } from "@/lib/submit";
-import { Field, TextArea, Select } from "@/components/ui/Field";
+import { Field, TextArea } from "@/components/ui/Field";
 import Button from "@/components/ui/Button";
-
-const serviceOptions = [
-  "Not sure yet",
-  "Evidence generation",
-  "Real-world data analytics",
-  "Access & value strategy",
-] as const;
 
 /**
  * The enquiry form.
@@ -51,10 +44,10 @@ export default function ContactRouting() {
 
   return (
     <div>
-      {/* The form had a question above it where a heading belongs. This
-          names the thing instead of interrogating the visitor. */}
+      {/* Named, not asked. The form used to open with a question the form
+          itself answers. */}
       <p className="mb-6 border-b border-rule pb-4 font-mono text-caption uppercase tracking-[0.12em] text-faint">
-        Your enquiry
+        Contact us
       </p>
 
       <form
@@ -64,58 +57,42 @@ export default function ContactRouting() {
       >
         <div className="grid gap-5 sm:grid-cols-2">
           <Field
-            id="name"
-            name="name"
-            label="Name"
+            id="firstName"
+            name="firstName"
+            label="First name"
             required
-            autoComplete="name"
+            autoComplete="given-name"
           />
           <Field
-            id="organisation"
-            name="organisation"
-            label="Organisation"
+            id="lastName"
+            name="lastName"
+            label="Last name"
             required
-            autoComplete="organization"
+            autoComplete="family-name"
           />
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2">
-          <Field
-            id="email"
-            name="email"
-            type="email"
-            label="Work email"
-            required
-            autoComplete="email"
-            inputMode="email"
-          />
-          <Field
-            id="role"
-            name="role"
-            label="Role"
-            autoComplete="organization-title"
-          />
-        </div>
-
-        <Select
-          id="service"
-          name="service"
-          label="Which service is closest?"
-          options={serviceOptions}
+        <Field
+          id="email"
+          name="email"
+          type="email"
+          label="Email"
+          required
+          autoComplete="email"
+          inputMode="email"
         />
 
         <TextArea
-          id="question"
-          name="question"
-          label="What question are you trying to answer?"
+          id="message"
+          name="message"
+          label="Message"
           required
-          rows={4}
-          hint="A sentence is enough. We will come back with what it would take to answer it."
+          rows={5}
         />
 
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           <Button type="submit" disabled={state === "sending"}>
-            {state === "sending" ? "Sending…" : "Send enquiry"}
+            {state === "sending" ? "Sending…" : "Send"}
           </Button>
           <p role="status" className="text-small text-muted">
             {state === "invalid" && "Please fill in the required fields."}

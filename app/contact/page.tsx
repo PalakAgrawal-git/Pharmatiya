@@ -34,11 +34,12 @@ export default function ContactPage() {
         <div className="shell section grid gap-x-16 gap-y-14 lg:grid-cols-12">
           <Reveal className="lg:col-span-4">
             <h2 className="text-[clamp(1.6rem,1.2rem+1.6vw,2.4rem)] leading-[1.1]">
-              Start a conversation
+              Let&rsquo;s connect
             </h2>
             <p className="mt-7 text-small leading-[1.7] text-muted">
-              Tell us what you are working on. The enquiry is routed to the
-              person who would run the work, not to a sales desk.
+              If you are interested in collaborating, send us your details and
+              we will be in touch. Your message reaches the person who would
+              run the work, not a sales desk.
             </p>
           </Reveal>
           <Reveal delay={120} className="lg:col-span-7 lg:col-start-6">

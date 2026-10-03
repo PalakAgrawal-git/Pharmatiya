@@ -108,7 +108,7 @@ function buildRow(sheet, data) {
   const values = { Received: new Date() };
   Object.keys(data).forEach(function (key) {
     if (key === 'token' || key === 'company' || key === 'website') return;
-    const label = key.charAt(0).toUpperCase() + key.slice(1);
+    const label = headingFor(key);
     values[label] = String(data[key]);
     if (headers.indexOf(label) === -1) {
       headers.push(label);
@@ -120,6 +120,19 @@ function buildRow(sheet, data) {
   return headers.map(function (header) {
     return values[header] === undefined ? '' : values[header];
   });
+}
+
+/**
+ * A field name as a column heading a person would write.
+ *
+ * The form names its fields the way code wants them — firstName, lastName —
+ * and capitalising the first letter alone would head the column "FirstName".
+ * The words are separated and only the first is capitalised, so the sheet
+ * reads "First name" rather than shouting at whoever opens it.
+ */
+function headingFor(key) {
+  const words = String(key).replace(/([a-z0-9])([A-Z])/g, '$1 $2').toLowerCase().trim();
+  return words.charAt(0).toUpperCase() + words.slice(1);
 }
 
 /**

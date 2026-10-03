@@ -87,19 +87,21 @@ export default function ContactRouting() {
           What is this about?
         </legend>
 
-        <div className="grid gap-3 sm:grid-cols-3">
+        {/* A thin rule over a block of text does not look like something you
+            can click, which is how three paragraphs ended up sitting above
+            the form reading as prose. Each option is now a card with its own
+            edge and a control you can see, so the set reads as a choice
+            before a word of it is read. */}
+        <div className="grid gap-2.5 sm:grid-cols-3">
           {routes.map((option) => {
             const selected = route === option.id;
             return (
               <label
                 key={option.id}
-                /* Three boxes for three choices was the last card set on the
-                   page. The options now sit on a shared rule and the selected
-                   one is marked by that rule thickening to the accent — the
-                   convention the navigation and the archive tabs already use,
-                   so selection reads the same way across the site. */
-                className={`cursor-pointer border-t-2 pt-5 transition-colors duration-200 ${
-                  selected ? "border-accent" : "border-rule hover:border-rule-firm"
+                className={`group relative flex cursor-pointer gap-3 rounded-[10px] border p-4 transition-all duration-200 ${
+                  selected
+                    ? "border-accent bg-accent/[0.07] shadow-[inset_0_0_0_1px_var(--color-accent)]"
+                    : "border-rule-firm bg-surface/30 hover:border-accent/50 hover:bg-surface/60"
                 }`}
               >
                 <input
@@ -110,19 +112,39 @@ export default function ContactRouting() {
                   onChange={() => setRoute(option.id)}
                   className="sr-only"
                 />
+
+                {/* The dot carries the state. Colour alone would leave the
+                    choice invisible to anyone who cannot separate the two
+                    greens, and this is the one control on the page where
+                    getting it wrong routes the enquiry to the wrong desk. */}
                 <span
-                  className={`label-sm block ${
-                    selected ? "text-accent" : "text-faint"
+                  aria-hidden="true"
+                  className={`mt-[3px] flex h-[15px] w-[15px] shrink-0 items-center justify-center rounded-full border transition-colors duration-200 ${
+                    selected ? "border-accent" : "border-rule-firm group-hover:border-accent/60"
                   }`}
                 >
-                  {option.label}
+                  <span
+                    className={`h-[7px] w-[7px] rounded-full bg-accent transition-transform duration-200 ${
+                      selected ? "scale-100" : "scale-0"
+                    }`}
+                  />
                 </span>
-                <span
-                  className={`mt-3 block text-small leading-[1.55] ${
-                    selected ? "text-ink" : "text-muted"
-                  }`}
-                >
-                  {option.description}
+
+                <span className="min-w-0">
+                  <span
+                    className={`label-sm block transition-colors duration-200 ${
+                      selected ? "text-accent" : "text-faint group-hover:text-muted"
+                    }`}
+                  >
+                    {option.label}
+                  </span>
+                  <span
+                    className={`mt-2 block text-small leading-[1.5] transition-colors duration-200 ${
+                      selected ? "text-ink" : "text-muted"
+                    }`}
+                  >
+                    {option.description}
+                  </span>
                 </span>
               </label>
             );

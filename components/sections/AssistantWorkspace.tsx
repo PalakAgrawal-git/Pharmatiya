@@ -676,6 +676,7 @@ function contentsOf(result: BuildResult): string[] {
   if (result.kind !== "structured") return ["Synopsis"];
   const s = result.synopsis;
   return [
+    "Problem statement",
     ...(s.background.length ? ["Background"] : []),
     ...s.sections.map((section) => section.heading),
     ...(s.references?.length ? ["References"] : []),

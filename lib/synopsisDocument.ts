@@ -122,27 +122,49 @@ ${body}
 const list = (items: string[]) => `<ul>${items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>`;
 
 export function synopsisDocumentHtml(s: Synopsis, meta: DocumentMeta): string {
+  let n = 0;
+  const section = (title: string, inner: string) => {
+    n += 1;
+    return `<h2><span class="n">${n}.</span>${esc(title)}</h2>${inner}`;
+  };
+
+  // Sections are numbered as they are produced, so they must be produced in
+  // the order they appear on the page.
+
+  const problem = section("Problem statement", `<p class="problem">${esc(s.problem)}</p>`);
   const background = s.background.length
-    ? `<h2>Background</h2>${s.background.map((p) => `<p>${esc(p)}</p>`).join("")}`
+    ? section("Background", s.background.map((p) => `<p>${esc(p)}</p>`).join(""))
     : "";
 
   const sections = s.sections
     .map((sec) => {
+      const k = n + 1;
       const paragraphs = (sec.paragraphs ?? []).map((p) => `<p>${esc(p)}</p>`).join("");
+      let sub = 0;
       const groups = (sec.groups ?? [])
-        .map((g) => `${g.label ? `<h3>${esc(g.label)}</h3>` : ""}${list(g.items)}`)
+        .map((g) => {
+          const heading = g.label
+            ? `<h3><span class="n">${k}.${++sub}</span>${esc(g.label)}</h3>`
+            : "";
+          return heading + list(g.items);
+        })
         .join("");
-      return `<h2>${esc(sec.heading)}</h2>${paragraphs}${groups}`;
+      return section(sec.heading, paragraphs + groups);
     })
     .join("");
 
   const references = s.references?.length
-    ? `<h2>References</h2><ol class="refs">${s.references
-        .map(
-          (r) =>
-            `<li>${esc(r.citation)}${r.link ? ` <a href="${esc(r.link)}">${esc(r.link)}</a>` : ""}</li>`,
-        )
-        .join("")}</ol>`
+    ? section(
+        "References",
+        `<ol class="refs">${s.references
+          .map(
+            (r) =>
+              `<li>${esc(r.citation)}${
+                r.link ? ` <a href="${esc(r.link)}">${esc(r.link)}</a>` : ""
+              }</li>`,
+          )
+          .join("")}</ol>`,
+      )
     : "";
 
   const body = `
@@ -150,6 +172,14 @@ export function synopsisDocumentHtml(s: Synopsis, meta: DocumentMeta): string {
 <h1>${esc(s.title)}</h1>
 <div class="status"><b>Draft for expert review.</b> Prepared with Pharmatiya NextGen AI. A Pharmatiya researcher reviews and signs off every synopsis before it is used.</div>
 
+<table class="summary">
+  <tr><th>Prepared for</th><td>${esc(s.audience.join(", "))} stakeholders</td></tr>
+  <tr><th>Condition</th><td>${esc(s.condition ?? "As defined in the problem statement")}</td></tr>
+  <tr><th>Data sources</th><td>${esc(s.sources.join("; "))}</td></tr>
+  <tr><th>Status</th><td>Draft &mdash; not for distribution until reviewed</td></tr>
+</table>
+
+${problem}
 ${background}
 ${sections}
 <p class="closing">${esc(s.closing)}</p>
@@ -159,7 +189,12 @@ ${references}
   <p><b>${esc(CREDIT.line)}</b></p>
   <p>${esc(CREDIT.detail)}</p>
   <p>Learn more: <a href="${esc(CREDIT.link)}">${esc(CREDIT.link)}</a></p>
-</div>`;
+</div>
+
+<table class="signoff">
+  <tr><th>Reviewed by</th><td></td><th style="width:14%">Date</th><td style="width:22%"></td></tr>
+  <tr><th>Approved for client use</th><td></td><th>Date</th><td></td></tr>
+</table>`;
 
   return shell(meta, s.title, body);
 }

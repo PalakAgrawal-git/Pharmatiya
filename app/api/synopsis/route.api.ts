@@ -31,6 +31,14 @@ const KEY = process.env.OPENAI_API_KEY;
 const MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";
 const BASE = process.env.OPENAI_BASE_URL || "https://api.openai.com/v1";
 /**
+ * The agent's own instructions, pasted in as an environment variable so the
+ * text never sits in the repository. They govern content, depth and tone;
+ * the JSON shape below still applies, because the page typesets the
+ * document from its parts.
+ */
+const HOUSE = (process.env.SYNOPSIS_INSTRUCTIONS || "").trim();
+
+/**
  * A ceiling on cost per request, not a target.
  *
  * It must clear the whole synopsis comfortably. A reply cut off at the
@@ -375,7 +383,15 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
              right shape, which is why the reply is still checked below. */
           response_format: { type: "json_object" },
           messages: [
-            { role: "system", content: SYSTEM + sources },
+            {
+              role: "system",
+              content:
+                SYSTEM +
+                (HOUSE
+                  ? `\n\nHouse instructions. Follow these for the content, depth and tone of every section. Where they conflict with the length guidance above, they win. The JSON shape and American English still apply.\n\n${HOUSE}`
+                  : "") +
+                sources,
+            },
             { role: "user", content: problem },
             ...(attempt
               ? [

@@ -139,7 +139,7 @@ function planSteps(problem: string): Step[] {
     },
     {
       label: "Outcomes",
-      detail: read.outcomes.length ? read.outcomes.join("; ") : "Utilisation, cost and clinical outcomes",
+      detail: read.outcomes.length ? read.outcomes.join("; ") : "Utilization, cost and clinical outcomes",
       done: false,
     },
     { label: "Drafting the synopsis", detail: "Objectives · Design · Population · Outcomes", done: false },

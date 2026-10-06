@@ -3,7 +3,7 @@ import { CREDIT, type Synopsis } from "@/lib/synopsis";
 /**
  * The synopsis as a client deliverable.
  *
- * On the website the synopsis was set in the website's own type and colours,
+ * On the website the synopsis was set in the website's own type and colors,
  * which made the thing a client receives look like a page of our site. This
  * renders it as a document instead: white paper, a letterhead, a reference
  * number, a draft status, numbered sections and tables.

@@ -44,8 +44,8 @@ const MAX_TOKENS = Number(process.env.SYNOPSIS_MAX_TOKENS || 4000);
 const MAX_INPUT = 4000;
 
 /**
- * What the model is asked to produce. The framework is Pharmatiya's, not the
- * model's invention: it must fill these three steps, not propose its own
+ * What the model is asked to produce. The structure is Pharmatiya's, not the
+ * model's invention: it must fill these sections, not propose its own
  * structure, or the output stops matching the documents the site generates.
  */
 const SYSTEM = `You draft HEOR and RWE study synopses for Pharmatiya Health.
@@ -54,88 +54,79 @@ Produce a planning draft only. A Pharmatiya researcher reviews and signs off
 every synopsis before it is used, so state assumptions rather than hiding
 them, and never present a number as settled.
 
-Structure every synopsis in Pharmatiya's three-step framework, in this order:
-  Step 0 - Feasibility
-  Step 1 - Retrospective Study
-  Step 2 - Pragmatic Outreach
-
-For each step give the cohort definition, the data required, the objectives
-and endpoints, and the analysis. Use ICD-10-CM categories rather than
-specific subcodes: a category that is right beats a subcode that might not
-be. Where a sample size or a cost appears, mark it as an estimate to be
-confirmed against the data.
-
-Close with value by stakeholder, and with what a reviewer must confirm.
-
-Never request, infer or repeat patient-identifying information.
-
 Write in American English throughout: American spelling (hospitalization,
 utilization, enrollment, program, randomized, generalized, standardized,
 analyze, behavior, hemophilia, pediatric), American terms and US date and
 number conventions. Never use British spellings.
 
-Write at the standard of a synopsis going to a sponsor for a decision, not
-notes towards one. That means an executive summary that stands alone, a
-background that says what is already known, named statistical methods
-rather than "appropriate analyses", and a closing ask.
+Never request, infer or repeat patient-identifying information.
+
+Write at the standard of a synopsis going to a sponsor for a decision. Use
+the drug and disease named in the problem statement. Where the statement does
+not name one, keep a bracketed placeholder such as [Drug X] or [Disease Y]
+rather than inventing it. Use ICD-10-CM categories rather than subcodes, and
+mark any sample size or cost as an estimate to be confirmed against the data.
+
+The synopsis has this structure, in this order:
+
+  Title: "Real-World Effectiveness and Economic Impact of [Drug X] in the
+    Management of [Disease Y]: A Health Economics and Outcomes Research Study",
+    adapted to the question.
+  Background: one paragraph on the clinical and economic burden, what is
+    already known, and why real-world evidence on the therapy matters.
+  Objectives: Primary Objective; Secondary Objectives (healthcare resource
+    utilization and direct medical costs, cost-effectiveness from a payer
+    perspective, patient-reported outcomes and quality of life where
+    relevant, subgroups with differential response).
+  Study Design: a paragraph. Retrospective observational cohort on real-world
+    data, propensity score matching, and a cost-effectiveness model where
+    cost is in question.
+  Population: Inclusion Criteria; Exclusion Criteria.
+  Data Sources: each source and what it contributes.
+  Outcomes: Clinical Outcomes; Economic Outcomes; Patient-Reported Outcomes.
+  Statistical Approach: named methods, for example descriptive statistics,
+    propensity score matching or inverse probability of treatment weighting,
+    Kaplan-Meier and Cox proportional hazards for time to event, generalized
+    linear models for cost and utilization, sensitivity analyses, a Markov or
+    partitioned survival model for ICERs, and subgroup analyses. Name only
+    methods the question warrants.
+  Deliverables: study report, manuscript(s), executive summary and
+    payer-focused slide deck, health economic model and documentation for
+    formulary submissions and HTAs, and recommendations.
+  Closing: one sentence stating what the study will provide and for whom.
 
 Reply with JSON only, in exactly this shape:
 
 {
-  "title": "Sponsor-facing title naming the condition and the setting",
-  "summary": "One paragraph a sponsor could read alone and act on: what is proposed, in which data, and what it will establish.",
-  "background": ["Why this matters and what is already known.",
-                 "What the existing evidence does not settle, and why this data can."],
+  "title": "...",
   "problem": "the problem restated in one or two sentences",
   "condition": "the condition and its ICD-10-CM category, or null",
   "audience": ["who the work is for"],
   "sources": ["each data source required"],
-  "question": [{"label": "Population", "value": "..."},
-               {"label": "Exposure", "value": "..."},
-               {"label": "Comparator", "value": "..."},
-               {"label": "Outcomes", "value": "..."},
-               {"label": "Timeframe", "value": "..."}],
-  "steps": [{"step": "Step 0", "name": "Feasibility",
-             "timeframe": "2-4 weeks",
-             "sections": [{"heading": "Primary objectives", "items": ["..."]},
-                          {"heading": "Secondary objectives", "items": ["..."]},
-                          {"heading": "Study design and data source", "items": ["..."]},
-                          {"heading": "Cohort definition", "items": ["..."]},
-                          {"heading": "Stratification", "items": ["..."]},
-                          {"heading": "Statistical analysis plan", "items": ["..."]},
-                          {"heading": "Key outputs", "items": ["..."]}]}],
-  "value": [{"audience": "Payer", "message": "..."}],
-  "review": ["what a reviewer must confirm before this is used"],
-  "nextSteps": ["the concrete decision or approval being asked for"],
-  "codes": [{"group": "Condition or category",
-             "code": "ICD-10-CM code",
-             "description": "what the code covers"}]
+  "background": ["One paragraph, cited by number where a published paper is listed."],
+  "sections": [
+    {"heading": "Objectives",
+     "groups": [{"label": "Primary Objective", "items": ["..."]},
+                {"label": "Secondary Objectives", "items": ["..."]}]},
+    {"heading": "Study Design", "paragraphs": ["..."]},
+    {"heading": "Population",
+     "groups": [{"label": "Inclusion Criteria", "items": ["..."]},
+                {"label": "Exclusion Criteria", "items": ["..."]}]},
+    {"heading": "Data Sources", "groups": [{"items": ["..."]}]},
+    {"heading": "Outcomes",
+     "groups": [{"label": "Clinical Outcomes", "items": ["..."]},
+                {"label": "Economic Outcomes", "items": ["..."]},
+                {"label": "Patient-Reported Outcomes", "items": ["..."]}]},
+    {"heading": "Statistical Approach", "groups": [{"items": ["..."]}]},
+    {"heading": "Deliverables", "groups": [{"items": ["..."]}]}
+  ],
+  "closing": "One closing sentence."
 }
-
-Section headings per step, used as they fit the step: primary objectives,
-secondary objectives, study design and data source, cohort definition,
-stratification, statistical analysis plan, healthcare resource utilization,
-key outputs, strategic impact. Step 2 covers outreach strategies,
-governance and compliance, the conversion funnel and operational metrics.
-
-Give enrolment windows and look-back periods in the design section. Name
-the statistical methods: Kaplan-Meier and Cox proportional hazards for time
-to event, negative binomial for utilisation counts, generalized linear
-models for cost, propensity matching for comparability. Name only methods
-the question warrants.
 
 Write every string as finished prose. No markdown, no asterisks, no bullet
 characters, no headings inside a string: the structure above is the
-formatting, and the document is typeset from it.
-
-Each item is a complete sentence or a precise phrase, not a fragment or a
-placeholder. Give all three steps.
-
-Give two to four next steps, each one an action with an owner implied.
-
-Give at least six code rows covering the condition and the categories a
-cohort would need, grouped by what they identify. A one-line appendix is
-worse than none.`;
+formatting, and the document is typeset from it. Each item is a complete
+sentence or a precise phrase, not a fragment or a placeholder.`;
 
 /* ── Literature ─────────────────────────────────────────────────────────
    Real published work, found before anything is drafted.
@@ -219,25 +210,25 @@ function pairs<K extends string>(v: unknown, a: K, b: K) {
   return out.every(Boolean) ? (out as Record<K, string>[]) : null;
 }
 
-function steps(v: unknown) {
+function sectionsOf(v: unknown) {
   if (!Array.isArray(v) || !v.length) return null;
   const out = v.map((item) => {
-    const step = item as Record<string, unknown>;
-    if (!isText(step?.step) || !isText(step?.name) || !Array.isArray(step?.sections)) return null;
-    const timeframe = isText(step?.timeframe) ? String(step.timeframe).trim() : undefined;
-    const sections = (step.sections as unknown[]).map((s) => {
-      const section = s as Record<string, unknown>;
-      const items = textList(section?.items);
-      return isText(section?.heading) && items
-        ? { heading: String(section.heading).trim(), items }
-        : null;
-    });
-    if (!sections.length || !sections.every(Boolean)) return null;
+    const sec = item as Record<string, unknown>;
+    if (!isText(sec?.heading)) return null;
+    const paragraphs = Array.isArray(sec.paragraphs) ? textList(sec.paragraphs) : null;
+    const groups = Array.isArray(sec.groups)
+      ? (sec.groups as unknown[]).map((g) => {
+          const group = g as Record<string, unknown>;
+          const items = textList(group?.items);
+          return items ? { ...(isText(group?.label) ? { label: String(group.label).trim() } : {}), items } : null;
+        })
+      : [];
+    if (!groups.every(Boolean)) return null;
+    if (!paragraphs && !groups.length) return null;
     return {
-      step: String(step.step).trim(),
-      name: String(step.name).trim(),
-      ...(timeframe ? { timeframe } : {}),
-      sections: sections as { heading: string; items: string[] }[],
+      heading: String(sec.heading).trim(),
+      ...(paragraphs ? { paragraphs } : {}),
+      ...(groups.length ? { groups: groups as { label?: string; items: string[] }[] } : {}),
     };
   });
   return out.every(Boolean) ? (out as NonNullable<(typeof out)[number]>[]) : null;
@@ -259,7 +250,7 @@ function withReferences(
   synopsis: ReturnType<typeof asSynopsis> & object,
   papers: Paper[],
 ) {
-  if (!papers.length || !synopsis.background?.length) return synopsis;
+  if (!papers.length || !synopsis.background.length) return synopsis;
 
   const order: number[] = [];
   const renumber = (text: string) =>
@@ -300,37 +291,14 @@ function asSynopsis(raw: string) {
 
   const audience = textList(d?.audience);
   const sources = textList(d?.sources);
-  const review = textList(d?.review);
-  const question = pairs(d?.question, "label", "value");
-  const value = pairs(d?.value, "audience", "message");
-  const plan = steps(d?.steps);
-
-  if (!isText(d?.title) || !isText(d?.problem)) return null;
-  if (!audience || !sources || !review || !question || !value || !plan) return null;
-
-  /* The summary and the background are what make this read as a document
-     rather than as notes, which was the whole complaint. A draft without
-     them is asked for again rather than accepted. */
   const background = textList(d?.background);
-  if (!isText(d?.summary) || !background) return null;
+  const sections = sectionsOf(d?.sections);
 
-  /* The framework is three steps. A draft that stops at feasibility is not
-     the thing the page describes, whatever else is right about it. */
-  if (plan.length < 3) return null;
+  if (!isText(d?.title) || !isText(d?.problem) || !isText(d?.closing)) return null;
+  if (!audience || !sources || !background || !sections) return null;
 
-  /* These two enrich the document but are not worth refusing a draft over:
-     a synopsis missing its appendix is still a usable synopsis. */
-  const nextSteps = textList(d?.nextSteps);
-  const codes = Array.isArray(d?.codes)
-    ? (d.codes as unknown[])
-        .map((c) => c as Record<string, unknown>)
-        .filter((c) => isText(c?.group) && isText(c?.code) && isText(c?.description))
-        .map((c) => ({
-          group: String(c.group).trim(),
-          code: String(c.code).trim(),
-          description: String(c.description).trim(),
-        }))
-    : [];
+  /* A draft that stops after the objectives is not a synopsis. */
+  if (sections.length < 6) return null;
 
   return {
     title: String(d.title).trim(),
@@ -338,14 +306,9 @@ function asSynopsis(raw: string) {
     condition: isText(d?.condition) ? String(d.condition).trim() : null,
     audience,
     sources,
-    question,
-    steps: plan,
-    value,
-    review,
-    summary: String(d.summary).trim(),
     background,
-    ...(nextSteps ? { nextSteps } : {}),
-    ...(codes.length ? { codes } : {}),
+    sections,
+    closing: String(d.closing).trim(),
   };
 }
 
@@ -411,7 +374,7 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
                   {
                     role: "system" as const,
                     content:
-                      "The previous draft was missing required fields. Return every field in the shape, including summary, background, nextSteps and codes.",
+                      "The previous draft was missing required fields. Return every field in the shape, including the background, all seven sections and the closing sentence.",
                   },
                 ]
               : []),

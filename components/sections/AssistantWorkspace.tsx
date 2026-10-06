@@ -112,7 +112,7 @@ function planSteps(problem: string): Step[] {
     return [
       { label: "Checking for patient data", detail: "None found", done: false },
       { label: "Sending to NextGen AI", detail: "Your statement, and nothing else", done: false },
-      { label: "Drafting the synopsis", detail: "Feasibility · Retrospective · Outreach", done: false },
+      { label: "Drafting the synopsis", detail: "Objectives · Design · Population · Outcomes", done: false },
     ];
   }
   const read = readStatement(problem);
@@ -142,7 +142,7 @@ function planSteps(problem: string): Step[] {
       detail: read.outcomes.length ? read.outcomes.join("; ") : "Utilisation, cost and clinical outcomes",
       done: false,
     },
-    { label: "Drafting the synopsis", detail: "Feasibility · Retrospective study · Pragmatic outreach", done: false },
+    { label: "Drafting the synopsis", detail: "Objectives · Design · Population · Outcomes", done: false },
   ];
 }
 
@@ -588,7 +588,7 @@ function AssistantTurn({
           <div className="mt-4">
             <p className="text-small leading-[1.65] text-muted">
               {message.result.kind === "structured"
-                ? `Here is the synopsis — ${contentsOf(message.result).length} sections in the three-step framework, set as a client document. Open it to review, or save it as a PDF or Word file.`
+                ? `Here is the synopsis — ${contentsOf(message.result).length} sections, set as a client document. Open it to review, or save it as a PDF or Word file.`
                 : "Here is the synopsis, set as a client document. Open it to review, or save it as a PDF or Word file."}
             </p>
             <DocumentCard message={message} onOpen={onOpen} />
@@ -676,16 +676,9 @@ function contentsOf(result: BuildResult): string[] {
   if (result.kind !== "structured") return ["Synopsis"];
   const s = result.synopsis;
   return [
-    ...(s.summary ? ["Executive summary"] : []),
-    ...(s.background?.length ? ["Background"] : []),
-    "Problem statement",
-    "Study question",
-    ...s.steps.map((step) => `${step.step} — ${step.name}`),
-    "Value by stakeholder",
-    "Review and limitations",
-    ...(s.nextSteps?.length ? ["Next steps"] : []),
+    ...(s.background.length ? ["Background"] : []),
+    ...s.sections.map((section) => section.heading),
     ...(s.references?.length ? ["References"] : []),
-    ...(s.codes?.length ? ["Appendix: code list"] : []),
   ];
 }
 

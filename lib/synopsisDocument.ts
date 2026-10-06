@@ -75,9 +75,9 @@ const CSS = `
 
   h2 { margin: 30px 0 0; padding-top: 12px; border-top: 1px solid #d6dcda;
     font-size: 12.5pt; font-weight: 600; color: #0f1a18; page-break-after: avoid; }
-  h2 .n { display: inline-block; min-width: 30px; color: #2f8f81; }
+  h2 .n { color: #2f8f81; }
   h3 { margin: 16px 0 0; font-size: 10.5pt; font-weight: 600; color: #2a3431; page-break-after: avoid; }
-  h3 .n { color: #6b7572; font-weight: 400; margin-right: 6px; }
+  h3 .n { color: #6b7572; font-weight: 400; }
   p { margin: 8px 0 0; }
   ul { margin: 6px 0 0; padding-left: 18px; }
   li { margin: 3px 0 0; }
@@ -125,7 +125,7 @@ export function synopsisDocumentHtml(s: Synopsis, meta: DocumentMeta): string {
   let n = 0;
   const section = (title: string, inner: string) => {
     n += 1;
-    return `<h2><span class="n">${n}.</span>${esc(title)}</h2>${inner}`;
+    return `<h2><span class="n">${n}.</span>&nbsp;&nbsp;${esc(title)}</h2>${inner}`;
   };
 
   // Sections are numbered as they are produced, so they must be produced in
@@ -144,7 +144,7 @@ export function synopsisDocumentHtml(s: Synopsis, meta: DocumentMeta): string {
       const groups = (sec.groups ?? [])
         .map((g) => {
           const heading = g.label
-            ? `<h3><span class="n">${k}.${++sub}</span>${esc(g.label)}</h3>`
+            ? `<h3><span class="n">${k}.${++sub}</span>&nbsp;&nbsp;${esc(g.label)}</h3>`
             : "";
           return heading + list(g.items);
         })

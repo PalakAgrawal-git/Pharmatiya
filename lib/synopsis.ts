@@ -23,6 +23,8 @@
  * a planning draft for expert review, as the live product does.
  */
 
+import { americanizeDeep } from "@/lib/americanize";
+
 export type SynopsisSection = {
   heading: string;
   /** Running prose, set before any lists. */
@@ -181,6 +183,12 @@ const DEFAULT_OUTCOMES = [
   "Clinical outcomes and complications",
 ];
 
+const IMPACT: Record<string, string> = {
+  Payer: "where cost and utilization concentrate, and which management actions change them.",
+  Provider: "which patients to prioritize, and how the care pathway performs against comparable care.",
+  Pharma: "real-world effectiveness and value evidence for access, contracting and medical affairs.",
+};
+
 const lower = (w: string) => w.charAt(0).toLowerCase() + w.slice(1);
 
 /** "Payer", "Payer and provider", "Payer, provider and pharma". */
@@ -225,7 +233,9 @@ export function draftSynopsis(problem: string): Synopsis {
     audience,
     sources,
     background: [
-      `${condition ? condition.name : "[Disease Y]"} represents a significant clinical and economic burden, characterized by high morbidity and substantial healthcare resource utilization. Despite the availability of multiple treatment options, real-world evidence (RWE) on the effectiveness and cost-effectiveness of ${drug} remains limited. Understanding the health outcomes and economic impact of ${drug} in routine clinical practice is critical for ${listOf(audience).toLowerCase()} decision-makers to optimize treatment strategies and resource allocation.`,
+      `${disease} represents a significant clinical and economic burden, characterized by high morbidity, repeated use of healthcare services, and substantial direct and indirect costs. Patients often move through several lines of therapy, and treatment decisions in routine practice are shaped by access, tolerability, comorbidity and cost as much as by trial efficacy.`,
+      `Despite the availability of multiple treatment options, real-world evidence (RWE) on the effectiveness and cost-effectiveness of ${drug} remains limited. Randomized trials enroll selected patients under controlled conditions and rarely report resource use or cost, so ${listOf(audience).toLowerCase()} decision-makers are left to infer how ${drug} performs in the populations they actually manage.`,
+      `This study addresses that gap using real-world data. It will describe how ${drug} is used, compare outcomes with standard of care (SoC) in matched patients, and quantify the associated healthcare resource utilization (HRU) and cost, so that treatment strategy and resource allocation can be decided on evidence from routine clinical practice.`,
     ],
     sections: [
       {
@@ -233,15 +243,17 @@ export function draftSynopsis(problem: string): Synopsis {
         groups: [
           {
             label: "Primary Objective",
-            items: [`To evaluate the real-world clinical effectiveness of ${drug} compared to standard of care (SoC) in patients with ${diseaseLower}.`],
+            items: [`To evaluate the real-world clinical effectiveness of ${drug} compared to standard of care (SoC) in adult patients with ${diseaseLower}.`],
           },
           {
             label: "Secondary Objectives",
             items: [
-              "To assess the healthcare resource utilization (HRU) and direct medical costs associated with the exposure versus SoC.",
+              "To describe treatment patterns, including switching, cycling, augmentation and persistence, over the follow-up period.",
+              "To assess healthcare resource utilization (HRU) and direct medical costs associated with the exposure versus SoC.",
               "To estimate the cost-effectiveness of the exposure relative to SoC from a payer perspective.",
               ...(hasPro ? ["To explore patient-reported outcomes (PROs) and quality of life (QoL) measures in treated patients."] : []),
               "To identify patient subgroups with differential treatment response and economic outcomes.",
+              "To identify the patients carrying the greatest clinical and economic burden, as candidates for targeted outreach.",
             ],
           },
         ],
@@ -250,6 +262,19 @@ export function draftSynopsis(problem: string): Synopsis {
         heading: "Study Design",
         paragraphs: [
           `This study will use a retrospective observational cohort design leveraging real-world data (RWD) to compare outcomes between patients initiating ${drug} and those receiving SoC. Propensity score matching (PSM) will be applied to balance baseline characteristics and minimize confounding.${costed ? " Additionally, a cost-effectiveness model will be developed to extrapolate long-term economic outcomes based on observed clinical and HRU data." : ""}`,
+          "The design is staged. A feasibility assessment confirms that the chosen data can support the question before the full retrospective analysis is run, and the findings then inform a pragmatic outreach and evidence-activation plan.",
+        ],
+        groups: [
+          {
+            label: "Key Design Elements",
+            items: [
+              "Index date: the first qualifying fill or administration of the exposure, or the first qualifying diagnosis for the comparator, within the identification window.",
+              "Identification window: [start date] to [end date], to be confirmed against data availability at feasibility.",
+              "Baseline period: 12 months before the index date, used to describe characteristics and to match.",
+              "Follow-up period: 12 months from the index date, censored at disenrollment, death or end of data.",
+              "Comparator: usual care, or patients without the exposure, matched on baseline characteristics.",
+            ],
+          },
         ],
       },
       {
@@ -259,17 +284,42 @@ export function draftSynopsis(problem: string): Synopsis {
             label: "Inclusion Criteria",
             items: [
               `Adult patients (18 years or older) diagnosed with ${diseaseLower}${condition ? ` (ICD-10-CM ${condition.codes})` : " according to established clinical criteria"}.`,
+              "Diagnosis confirmed by one inpatient or two outpatient encounters at least 30 days apart.",
               `Initiated treatment with ${drug} or SoC between [start date] and [end date].`,
               hasClaims
                 ? "At least 12 months of continuous enrollment before and after treatment initiation."
-                : "At least 12 months of follow-up data available after treatment initiation.",
+                : "At least 12 months of active care in the system before and after treatment initiation.",
+              "Complete demographic and clinical data for the variables used in matching.",
             ],
           },
           {
             label: "Exclusion Criteria",
             items: [
               "Patients enrolled in clinical trials during the study period.",
+              "Prior exposure to the study therapy during the baseline period.",
+              "Conditions that would confound the outcome or make the comparison invalid.",
               "Patients with incomplete demographic or clinical data critical for analysis.",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Cohort Definition and Stratification",
+        groups: [
+          {
+            label: "Cohorts",
+            items: [
+              `Exposed cohort: patients initiating ${drug}.`,
+              "Comparator cohort: patients receiving SoC, propensity score matched to the exposed cohort on baseline characteristics.",
+            ],
+          },
+          {
+            label: "Stratification",
+            items: [
+              "Age group, sex and region.",
+              "Comorbidity burden, using a validated index such as the Charlson Comorbidity Index.",
+              "Prior treatment history and line of therapy.",
+              "Care setting and payer type.",
             ],
           },
         ],
@@ -283,12 +333,14 @@ export function draftSynopsis(problem: string): Synopsis {
             items: [
               "Primary effectiveness endpoint: [e.g., symptom control, time to treatment failure, or biomarker response].",
               "Secondary endpoints: overall survival, hospitalization rates, adverse event incidence.",
+              "Clinical complications attributable to the condition or its treatment.",
             ],
           },
           {
             label: "Economic Outcomes",
             items: [
               "Direct medical costs including inpatient, outpatient, pharmacy, and procedural expenses.",
+              "All-cause and condition-related cost per patient per month, from the payer perspective.",
               "HRU metrics such as number of hospitalizations, emergency visits, and outpatient consultations.",
             ],
           },
@@ -301,7 +353,20 @@ export function draftSynopsis(problem: string): Synopsis {
                 ],
               }]
             : []),
-          { label: "Outcomes of interest named in the problem statement", items: outcomes },
+          { label: "Outcomes of Interest Named in the Problem Statement", items: outcomes },
+        ],
+      },
+      {
+        heading: "Healthcare Resource Utilization and Cost",
+        groups: [
+          {
+            items: [
+              "Inpatient admissions and length of stay.",
+              "Emergency, outpatient and specialist visits.",
+              "Pharmacy fills and out-of-pocket spending.",
+              "Total cost of care, reported per patient per month and per patient per year, with the main drivers identified.",
+            ],
+          },
         ],
       },
       {
@@ -309,13 +374,47 @@ export function draftSynopsis(problem: string): Synopsis {
         groups: [
           {
             items: [
-              "Descriptive statistics to summarize baseline demographics and clinical characteristics.",
+              "Descriptive statistics to summarize baseline demographics and clinical characteristics, with standardized differences before and after matching.",
               "Propensity score matching or inverse probability of treatment weighting to adjust for confounding variables.",
               "Survival analyses using Kaplan-Meier curves and Cox proportional hazards models for time-to-event outcomes.",
-              "Generalized linear models (GLM) to compare cost and HRU outcomes between cohorts.",
-              "Sensitivity analyses to test the robustness of findings.",
+              "Negative binomial regression for utilization counts, and generalized linear models (GLM) with a gamma distribution and log link for costs.",
+              "Sensitivity analyses on the index definition, follow-up length and matching specification to test the robustness of findings.",
               ...(costed ? ["Development of a Markov or partitioned survival cost-effectiveness model incorporating clinical and economic data to estimate incremental cost-effectiveness ratios (ICERs)."] : []),
               "Subgroup analyses based on demographic and clinical factors.",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Key Outputs",
+        groups: [
+          {
+            items: [
+              "Patient counts at each inclusion and exclusion step.",
+              "Baseline demographics and comorbidity burden for each cohort.",
+              "Follow-up time available, and completeness of each outcome field.",
+              "Adjusted comparisons of effectiveness, HRU and cost between cohorts.",
+              "A go / no-go recommendation at feasibility, with the reason.",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Strategic Impact",
+        groups: [
+          {
+            items: audience.map((a) => `${a}: ${IMPACT[a]}`),
+          },
+        ],
+      },
+      {
+        heading: "Timeline",
+        groups: [
+          {
+            items: [
+              "Feasibility assessment: 2 to 4 weeks.",
+              "Retrospective study: 1 to 3 months.",
+              "Pragmatic outreach and evidence activation: 3 to 6 months, depending on enrollment.",
             ],
           },
         ],
@@ -366,6 +465,12 @@ export function synopsisToText(s: Synopsis): string {
 
 const api = process.env.NEXT_PUBLIC_SYNOPSIS_API;
 
+/** American spelling on everything but the fetched references. */
+function american(synopsis: Synopsis): Synopsis {
+  const { references, ...rest } = synopsis;
+  return { ...americanizeDeep(rest), ...(references ? { references } : {}) };
+}
+
 export type BuildResult =
   | { kind: "structured"; synopsis: Synopsis }
   | { kind: "text"; text: string };
@@ -402,7 +507,7 @@ export async function buildSynopsis(problem: string): Promise<BuildResult> {
          older service, or one written by someone else, keeps working. */
       return typeof data.synopsis === "string"
         ? { kind: "text", text: data.synopsis }
-        : { kind: "structured", synopsis: data.synopsis };
+        : { kind: "structured", synopsis: american(data.synopsis) };
     } catch (error) {
       if (error instanceof Refused) throw error;
       /* The service is an improvement on the builder below, not a
@@ -411,11 +516,11 @@ export async function buildSynopsis(problem: string): Promise<BuildResult> {
          here instead. A shorter document beats an error message, and the
          visitor keeps the thing they came for. */
       await new Promise((resolve) => setTimeout(resolve, 400));
-      return { kind: "structured", synopsis: draftSynopsis(problem) };
+      return { kind: "structured", synopsis: american(draftSynopsis(problem)) };
     }
   }
   // A short pause. The draft is instant, and a result that appears with no
   // transition reads as the page jumping rather than as work being done.
   await new Promise((resolve) => setTimeout(resolve, 650));
-  return { kind: "structured", synopsis: draftSynopsis(problem) };
+  return { kind: "structured", synopsis: american(draftSynopsis(problem)) };
 }

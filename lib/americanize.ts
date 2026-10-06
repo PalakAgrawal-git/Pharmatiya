@@ -59,8 +59,8 @@ const WORDS: Record<string, string> = {
   cancelled: "canceled", cancelling: "canceling", travelling: "traveling", fulfil: "fulfill", fulfils: "fulfills",
   skilful: "skillful", instalment: "installment", sceptical: "skeptical", plough: "plow",
   analogue: "analog", dialogue: "dialogue", paracetamol: "acetaminophen",
-  // Wording specific to this product's output
-  "year-end": "year-end",
+  // Common slips seen in client input
+  organsation: "organization", organsations: "organizations", organisaton: "organization",
 };
 
 const PATTERN = new RegExp(
@@ -71,9 +71,17 @@ const PATTERN = new RegExp(
   "gi",
 );
 
-/** Americanizes one string, keeping the capitalisation of each word it changes. */
+/* -isation is always British, so it is a rule rather than a list. -ise is
+   not (otherwise, exercise, advise), so those stay on the list above. */
+const ISATION = /\b(\w+?)isation(s|al)?\b/gi;
+
+/** Americanizes one string, keeping the capitalization of each word it changes. */
 export function americanize(text: string): string {
-  return text.replace(PATTERN, (match) => {
+  const rule = text.replace(ISATION, (_m, stem: string, tail = "") =>
+    stem === stem.toUpperCase() && stem.length > 1
+      ? `${stem}IZATION${tail.toUpperCase()}`
+      : `${stem}ization${tail}`);
+  return rule.replace(PATTERN, (match) => {
     const replacement = WORDS[match.toLowerCase()];
     if (match === match.toUpperCase() && match.length > 1) return replacement.toUpperCase();
     if (match[0] === match[0].toUpperCase()) return replacement.charAt(0).toUpperCase() + replacement.slice(1);

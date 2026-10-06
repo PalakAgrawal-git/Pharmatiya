@@ -123,6 +123,14 @@ Reply with JSON only, in exactly this shape:
   "closing": "One closing sentence."
 }
 
+Be thorough. Background is two to three paragraphs of four or more sentences.
+Each list has four to eight specific items, each a complete sentence naming
+the variable, window, code family, method or output concerned. Include the
+sections Cohort Definition and Stratification, Healthcare Resource
+Utilization and Cost, Key Outputs, Strategic Impact (by stakeholder) and
+Timeline between the structure above, in the order they fit. Use short,
+specific phrases for timeframes.
+
 Write every string as finished prose. No markdown, no asterisks, no bullet
 characters, no headings inside a string: the structure above is the
 formatting, and the document is typeset from it. Each item is a complete
@@ -298,7 +306,7 @@ function asSynopsis(raw: string) {
   if (!audience || !sources || !background || !sections) return null;
 
   /* A draft that stops after the objectives is not a synopsis. */
-  if (sections.length < 6) return null;
+  if (sections.length < 8) return null;
 
   return {
     title: String(d.title).trim(),
@@ -374,7 +382,7 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
                   {
                     role: "system" as const,
                     content:
-                      "The previous draft was missing required fields. Return every field in the shape, including the background, all seven sections and the closing sentence.",
+                      "The previous draft was missing required fields. Return every field in the shape, including the background, all the sections and the closing sentence.",
                   },
                 ]
               : []),

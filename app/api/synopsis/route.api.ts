@@ -24,6 +24,9 @@ import { americanizeDeep } from "@/lib/americanize";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+/* A full synopsis takes longer than a host's default function limit, which
+   would cut the reply off and send the visitor to the browser-side draft. */
+export const maxDuration = 60;
 
 /* ── Settings, all from the environment ─────────────────────────────────
    None of these may be NEXT_PUBLIC_: that prefix would publish them. */

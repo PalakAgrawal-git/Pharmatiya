@@ -59,7 +59,7 @@ const SUGGESTIONS = [
   },
   {
     label: "Heart failure · provider",
-    text: "Heart failure readmissions in a provider health system: which patients drive hospitalisations and cost, using EHR and lab data?",
+    text: "Heart failure readmissions in a provider health system: which patients drive hospitalizations and cost, using EHR and lab data?",
   },
   {
     label: "Type 2 diabetes · access",
@@ -75,7 +75,7 @@ const REFINEMENTS = [
   "Make it payer-facing",
   "Add adherence as an outcome",
   "Use EHR and lab data",
-  "Focus on hospitalisations and cost",
+  "Focus on hospitalizations and cost",
 ];
 
 const uid = () => Math.random().toString(36).slice(2, 10);

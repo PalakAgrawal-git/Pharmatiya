@@ -100,7 +100,7 @@ const CONDITIONS: { name: string; match: RegExp; codes: string }[] = [
   { name: "Breast cancer", match: /breast cancer/i, codes: "C50 (malignant neoplasm of breast)" },
   { name: "Lung cancer", match: /lung cancer|\bnsclc\b/i, codes: "C34 (malignant neoplasm of bronchus and lung)" },
   { name: "Prostate cancer", match: /prostate cancer/i, codes: "C61 (malignant neoplasm of prostate)" },
-  { name: "Haemophilia A", match: /ha?emophilia/i, codes: "D66 (hereditary factor VIII deficiency)" },
+  { name: "Hemophilia A", match: /h(a)?emophilia/i, codes: "D66 (hereditary factor VIII deficiency)" },
   { name: "Sickle cell disease", match: /sickle/i, codes: "D57 (sickle-cell disorders)" },
   { name: "HIV", match: /\bhiv\b/i, codes: "B20 (HIV disease)" },
   { name: "COVID-19", match: /covid|sars-cov-2/i, codes: "U07.1 (COVID-19)" },
@@ -128,8 +128,8 @@ const AUDIENCES: { name: string; match: RegExp }[] = [
 const OUTCOMES: { name: string; match: RegExp }[] = [
   { name: "Treatment patterns, switching and cycling", match: /switch|cycl|line of therapy|treatment pattern|persisten/i },
   { name: "Adherence (proportion of days covered)", match: /adheren|\bpdc\b|compliance/i },
-  { name: "Hospitalisations and emergency visits", match: /hospitali|admission|emergency|\bed\b visits|readmi/i },
-  { name: "Healthcare resource utilisation (HCRU)", match: /utili[sz]ation|\bhcru\b|visits/i },
+  { name: "Hospitalizations and emergency visits", match: /hospitali|admission|emergency|\bed\b visits|readmi/i },
+  { name: "Healthcare resource utilization (HCRU)", match: /utili[sz]ation|\bhcru\b|visits/i },
   { name: "Total cost of care", match: /cost|spend|economic|budget/i },
   { name: "Clinical outcomes and complications", match: /clinical outcome|complication|mortality|survival/i },
 ];
@@ -174,14 +174,14 @@ export function readStatement(problem: string) {
 const DEFAULT_SOURCES = ["Medical and pharmacy claims", "EHR / EMR"];
 const DEFAULT_AUDIENCE = ["Payer", "Provider", "Pharma"];
 const DEFAULT_OUTCOMES = [
-  "Healthcare resource utilisation (HCRU)",
+  "Healthcare resource utilization (HCRU)",
   "Total cost of care",
   "Clinical outcomes and complications",
 ];
 
 const VALUE: Record<string, string> = {
-  Payer: "Where cost and utilisation concentrate, and which management actions change them.",
-  Provider: "Which patients to prioritise, and how the care pathway performs against comparable care.",
+  Payer: "Where cost and utilization concentrate, and which management actions change them.",
+  Provider: "Which patients to prioritize, and how the care pathway performs against comparable care.",
   Pharma: "Real-world effectiveness and value evidence for access, contracting and medical affairs.",
 };
 
@@ -237,7 +237,7 @@ export function draftSynopsis(problem: string): Synopsis {
             items: [
               "Index date: first qualifying diagnosis, or first fill of the exposure, in the identification window",
               hasClaims
-                ? "Continuous enrolment for 12 months before and after the index date"
+                ? "Continuous enrollment for 12 months before and after the index date"
                 : "Active care in the system for 12 months before and after the index date",
               "Age 18 or over at index",
               "Diagnosis confirmed by one inpatient or two outpatient encounters at least 30 days apart",
@@ -290,9 +290,9 @@ export function draftSynopsis(problem: string): Synopsis {
           {
             heading: "Statistical plan",
             items: [
-              "Descriptive statistics, with standardised differences before and after matching",
+              "Descriptive statistics, with standardized differences before and after matching",
               "Time to event: Kaplan–Meier estimates and Cox proportional hazards models",
-              "Counts: negative binomial regression. Costs: generalised linear model, gamma distribution, log link",
+              "Counts: negative binomial regression. Costs: generalized linear model, gamma distribution, log link",
               "Sensitivity analyses on the index definition, follow-up length and matching specification",
             ],
           },
@@ -307,14 +307,14 @@ export function draftSynopsis(problem: string): Synopsis {
             items: [
               "Identify the patients or members who match the Step 1 risk profile",
               "Stratify them by risk and by likelihood of benefit",
-              "Reach them through the channel the population responds to, with consent captured before enrolment",
+              "Reach them through the channel the population responds to, with consent captured before enrollment",
             ],
           },
           { heading: "Conversion funnel", items: ["Identified", "Contacted", "Consented", "Enrolled", "Retained to follow-up"] },
           {
             heading: "Dashboards",
             items: [
-              "Enrolment against target, by site and by channel",
+              "Enrollment against target, by site and by channel",
               "Outcomes against the matched comparator, refreshed at every data cut",
             ],
           },

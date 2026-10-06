@@ -1,4 +1,5 @@
 import { looksLikePHI } from "@/lib/synopsis";
+import { americanizeDeep } from "@/lib/americanize";
 
 /**
  * The drafting service.
@@ -68,6 +69,11 @@ Close with value by stakeholder, and with what a reviewer must confirm.
 
 Never request, infer or repeat patient-identifying information.
 
+Write in American English throughout: American spelling (hospitalization,
+utilization, enrollment, program, randomized, generalized, standardized,
+analyze, behavior, hemophilia, pediatric), American terms and US date and
+number conventions. Never use British spellings.
+
 Write at the standard of a synopsis going to a sponsor for a decision, not
 notes towards one. That means an executive summary that stands alone, a
 background that says what is already known, named statistical methods
@@ -108,13 +114,13 @@ Reply with JSON only, in exactly this shape:
 
 Section headings per step, used as they fit the step: primary objectives,
 secondary objectives, study design and data source, cohort definition,
-stratification, statistical analysis plan, healthcare resource utilisation,
+stratification, statistical analysis plan, healthcare resource utilization,
 key outputs, strategic impact. Step 2 covers outreach strategies,
 governance and compliance, the conversion funnel and operational metrics.
 
 Give enrolment windows and look-back periods in the design section. Name
 the statistical methods: Kaplan-Meier and Cox proportional hazards for time
-to event, negative binomial for utilisation counts, generalised linear
+to event, negative binomial for utilisation counts, generalized linear
 models for cost, propensity matching for comparability. Name only methods
 the question warrants.
 
@@ -439,7 +445,7 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
          that shape would be shown as a wall of raw text, which is worse
          than not answering. */
       const synopsis = asSynopsis(raw);
-      if (synopsis) return Response.json({ synopsis: withReferences(synopsis, papers) });
+      if (synopsis) return Response.json({ synopsis: withReferences(americanizeDeep(synopsis), papers) });
     }
 
     console.error("Synopsis reply was not the expected shape", lastRaw.slice(0, 600));

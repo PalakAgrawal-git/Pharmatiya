@@ -124,13 +124,20 @@ await api(`/vector_stores/${storeId}/file_batches`, {
 /* Indexing is not instant, and a store queried before it finishes simply
    finds nothing — which looks exactly like samples that did not help. */
 process.stdout.write("\nIndexing");
-for (let i = 0; i < 60; i++) {
-  const list = await api(`/vector_stores/${storeId}/files?limit=100`);
-  const counts = list.data.reduce((acc, f) => ({ ...acc, [f.status]: (acc[f.status] ?? 0) + 1 }), {});
-  if (!counts.in_progress) {
+for (let i = 0; i < 90; i++) {
+  /* The store's own counts, not a list of files. A freshly created store
+     answers the file list with nothing for a moment, and reading that as
+     "none in progress" would call indexing finished before it began. */
+  const store = await api(`/vector_stores/${storeId}`);
+  const counts = store.file_counts ?? {};
+  if (counts.total && !counts.in_progress) {
     console.log(`\n\nIndexed: ${JSON.stringify(counts)}`);
-    const failed = list.data.filter((f) => f.status === "failed");
-    for (const f of failed) console.error(`  FAILED ${f.id}: ${f.last_error?.message ?? "unknown"}`);
+    if (counts.failed) {
+      const list = await api(`/vector_stores/${storeId}/files?limit=100`);
+      for (const f of list.data.filter((x) => x.status === "failed")) {
+        console.error(`  FAILED ${f.id}: ${f.last_error?.message ?? "unknown"}`);
+      }
+    }
     break;
   }
   process.stdout.write(".");

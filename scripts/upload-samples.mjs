@@ -30,9 +30,13 @@ function readKey() {
   if (process.env.OPENAI_API_KEY) return process.env.OPENAI_API_KEY;
   for (const file of [".env.local", ".env"]) {
     if (!existsSync(file)) continue;
-    const line = readFileSync(file, "utf8")
-      .split("\n")
-      .find((l) => l.trim().startsWith("OPENAI_API_KEY="));
+    /* PowerShell's `>` writes a byte-order mark, and a file saved from
+       Notepad can carry one too. Stripped here rather than left to turn a
+       correct key into "key not found". */
+    const text = readFileSync(file, "utf8").replace(/^﻿/, "");
+    const line = text
+      .split(/\r?\n/)
+      .find((l) => l.replace(/^﻿/, "").trim().startsWith("OPENAI_API_KEY="));
     const value = line?.slice(line.indexOf("=") + 1).trim().replace(/^["']|["']$/g, "");
     if (value) return value;
   }

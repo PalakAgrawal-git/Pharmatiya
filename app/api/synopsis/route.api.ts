@@ -27,6 +27,9 @@ export const dynamic = "force-dynamic";
 /* A full synopsis takes longer than a host's default function limit, which
    would cut the reply off and send the visitor to the browser-side draft. */
 export const maxDuration = 60;
+/* Five seconds short of the limit, so the route returns its own answer
+   rather than being killed mid-reply and returning none. */
+const DEADLINE = (maxDuration - 5) * 1000;
 
 /* ── Settings, all from the environment ─────────────────────────────────
    None of these may be NEXT_PUBLIC_: that prefix would publish them. */
@@ -484,6 +487,7 @@ function asSynopsis(raw: string) {
 }
 
 export async function POST(request: Request) {
+  const startedAt = Date.now();
   if (!KEY) {
     return fail(503, "The drafting service is not configured.");
   }
@@ -523,9 +527,20 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
        asking again is cheaper for everyone than giving the visitor a
        document that reads as notes. Three rather than two because a draft
        discarded for naming a client also spends an attempt, and a leak and
-       a missing field should not compete for the same budget. */
+       a missing field should not compete for the same budget.
+
+       But the host kills the function at maxDuration, and a kill is a 504
+       with no body — the visitor waits the full minute and then the page
+       has to guess what happened. So the attempts run against a clock and
+       the route gives up a few seconds early, deliberately, which hands the
+       browser-side builder a clean failure it can act on immediately. */
     let lastRaw = "";
     for (let attempt = 0; attempt < 3; attempt++) {
+      const left = DEADLINE - (Date.now() - startedAt);
+      if (attempt && left < 18_000) {
+        console.error(`Synopsis gave up with ${Math.round(left / 1000)}s left rather than be cut off.`);
+        break;
+      }
       const house = HOUSE
         ? `\n\nHouse instructions. Follow these for the content, depth and tone of every section. Where they conflict with the length guidance above, they win. The JSON shape and American English still apply.\n\n${HOUSE}`
         : "";
@@ -540,9 +555,14 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
          been drafting in production. Both are asked for JSON and both are
          checked the same way, so the samples change the writing and
          nothing else. */
+      /* Bounded so one slow reply cannot eat the whole budget and leave
+         nothing for a second attempt. */
+      const perCall = AbortSignal.timeout(Math.max(DEADLINE - (Date.now() - startedAt) - 2_000, 5_000));
+
       const response = STORE
         ? await fetch(`${BASE}/responses`, {
             method: "POST",
+            signal: perCall,
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${KEY}` },
             body: JSON.stringify({
               model: MODEL,
@@ -561,6 +581,7 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
           })
         : await fetch(`${BASE}/chat/completions`, {
             method: "POST",
+            signal: perCall,
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${KEY}` },
             body: JSON.stringify({
               model: MODEL,

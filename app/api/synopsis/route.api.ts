@@ -433,6 +433,14 @@ function withReferences(
   };
 }
 
+/** "payers and providers", for the closing sentence when one is missing. */
+function listOrThem(audience: string[]): string {
+  const clean = audience.map((a) => a.toLowerCase().trim()).filter(Boolean);
+  if (!clean.length) return "the teams who commissioned it";
+  if (clean.length === 1) return clean[0];
+  return `${clean.slice(0, -1).join(", ")} and ${clean[clean.length - 1]}`;
+}
+
 function asSynopsis(raw: string) {
   let parsed: unknown;
   try {
@@ -454,7 +462,6 @@ function asSynopsis(raw: string) {
   const missing = [
     !isText(d?.title) && "title",
     !isText(d?.problem) && "problem",
-    !isText(d?.closing) && "closing",
     !audience && "audience",
     !sources && "sources",
     !background && "background",
@@ -482,7 +489,13 @@ function asSynopsis(raw: string) {
     sources: sources!,
     background: background!,
     sections: sections!,
-    closing: String(d.closing).trim(),
+    /* One sentence, and the only field the model reliably forgets once it
+       has samples to read. Throwing away a complete ten-section synopsis
+       over it, and handing the visitor the shorter browser draft instead,
+       costs far more than writing the sentence ourselves. */
+    closing: isText(d?.closing)
+      ? String(d.closing).trim()
+      : `This study is designed to provide evidence that ${listOrThem(audience!)} can act on, and is a planning draft for review before use.`,
   };
 }
 

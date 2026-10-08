@@ -77,8 +77,8 @@ export default function ServicesPage() {
               asking. We have worked on the payer, provider and manufacturer
               side of each of these — and inside a manufacturer, with market
               access, commercial, R&amp;D and medical affairs on the same
-              programme.{" "}
-              <Link href="/evidence/#programme" className="text-accent underline underline-offset-4">
+              program.{" "}
+              <Link href="/evidence/#program" className="text-accent underline underline-offset-4">
                 See how that worked on mSToPS
               </Link>
               .

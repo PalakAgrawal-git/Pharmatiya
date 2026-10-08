@@ -41,10 +41,10 @@ const filters = [
  *
  * This is the strongest verifiable proof on the site: every entry is a real
  * citation, and the ones carrying a DOI, PMID or patent number link out so a
- * sceptical buyer can check them without asking us for anything.
+ * skeptical buyer can check them without asking us for anything.
  *
  * Only the published record appears here — no personal contact details, no
- * licence numbers, and no client engagement that is not already in the
+ * license numbers, and no client engagement that is not already in the
  * literature.
  */
 export default function PublicationList() {

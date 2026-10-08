@@ -19,7 +19,7 @@ const stakeholders = [
       "Formulary decisions",
       "Care and disease management",
       "Risk stratification",
-      "Utilisation and outcomes",
+      "Utilization and outcomes",
     ],
   },
   {

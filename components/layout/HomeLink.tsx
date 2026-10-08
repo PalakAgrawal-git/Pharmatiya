@@ -7,7 +7,7 @@ import Wordmark from "./Wordmark";
 /**
  * The masthead wordmark, linking home.
  *
- * Carries the same behaviour as the nav items: a Link to the route you are
+ * Carries the same behavior as the nav items: a Link to the route you are
  * already on is a no-op in the App Router, so clicking the logo from halfway
  * down the homepage did nothing at all. Returning to the top is what the
  * click means there — and the logo is the control most people reach for to

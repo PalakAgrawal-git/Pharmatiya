@@ -8,7 +8,7 @@ import { nav, site } from "@/lib/site";
  * Breadcrumbs.
  *
  * The site is one level deep, so this is Home › Page and nothing more. It is
- * carried anyway because it gives search results a labelled path and gives a
+ * carried anyway because it gives search results a labeled path and gives a
  * visitor arriving from search — which is most of them, on the Evidence page —
  * an obvious way back up.
  *

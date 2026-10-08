@@ -1,7 +1,7 @@
 import { methods } from "@/lib/site";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CaseStudies from "@/components/evidence/CaseStudies";
-import LandmarkProgramme from "@/components/evidence/LandmarkProgramme";
+import LandmarkProgram from "@/components/evidence/LandmarkProgram";
 import SelectedStudies from "@/components/evidence/SelectedStudies";
 import DatasetMap from "@/components/evidence/DatasetMap";
 import TherapeuticMatrix from "@/components/evidence/TherapeuticMatrix";
@@ -35,7 +35,7 @@ const glance = [
 ];
 
 const sections = [
-  { id: "programme", label: "mSToPS programme" },
+  { id: "program", label: "mSToPS program" },
   { id: "studies", label: "Selected studies" },
   { id: "areas", label: "Therapeutic areas" },
   { id: "data", label: "Data coverage" },
@@ -122,19 +122,19 @@ export default function EvidencePage() {
         </div>
       </section>
 
-      {/* The landmark programme leads: it is the strongest single proof on
+      {/* The landmark program leads: it is the strongest single proof on
           the site, and the argument it makes — manufacturer, research
           institute and health plan on one author list — is the one a buyer
           is really asking about. */}
-      <section id="programme" className="scroll-mt-24 border-b border-rule">
+      <section id="program" className="scroll-mt-24 border-b border-rule">
         <div className="shell section">
           <Head
             index="01"
-            label="Landmark programme"
-            title="mSToPS: three organisations, one trial"
+            label="Landmark program"
+            title="mSToPS: three organizations, one trial"
             lede="A nationwide, direct-to-participant screening trial run by a manufacturer, a research institute and a national health plan together — published in JAMA, and now the model for how much of the industry works."
           />
-          <LandmarkProgramme />
+          <LandmarkProgram />
         </div>
       </section>
 
@@ -173,7 +173,7 @@ export default function EvidencePage() {
             index="04"
             label="Data coverage"
             title="The real-world data we work in"
-            lede="Payer, provider and pharmacy data — extracted and analysed by the same team, so the cohort definition survives contact with the data."
+            lede="Payer, provider and pharmacy data — extracted and analyzed by the same team, so the cohort definition survives contact with the data."
           />
           <Reveal delay={100}>
             <DatasetMap />

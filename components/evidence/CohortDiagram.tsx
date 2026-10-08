@@ -8,7 +8,7 @@ const steps = [
   { label: "Plan members assessed for eligibility", n: "1,039,862", y: 16 },
   { label: "Met eligibility criteria", n: "359,161", y: 78 },
   { label: "Invited by mail or email", n: "102,553", y: 140 },
-  { label: "Randomised", n: "2,659", y: 202 },
+  { label: "Randomized", n: "2,659", y: 202 },
   { label: "Monitored, with 12-month follow-up", n: "1,738", y: 264 },
 ];
 
@@ -54,7 +54,7 @@ export default function CohortDiagram({
         470,094 did not meet the inclusion criteria and 210,607 met an
         exclusion criterion — leaving 359,161 eligible. 102,553 were invited,
         50,000 by mail and 52,553 by email; 2,820 consented, 161 were then
-        found ineligible, and 2,659 were randomised: 1,366 to immediate and
+        found ineligible, and 2,659 were randomized: 1,366 to immediate and
         1,293 to delayed monitoring. 1,738 were actively monitored with
         12-month follow-up. A further 3,476 matched observational controls
         were followed. Source: Steinhubl et al., JAMA 2018.

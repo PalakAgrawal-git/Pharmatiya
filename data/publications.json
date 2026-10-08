@@ -1,7 +1,7 @@
 {
   "generatedAt": null,
   "source": "MehtaRR_Publications.pdf, supplied by Pharmatiya. p49 from the citation list in RWE-Presentation-RRM (Oct 2025); p50 from the supplied ICAAC poster file. p51 from the ACC 2019 abstract, verified through Crossref.",
-  "note": "Published record only. Derived from the supplied bibliography; no personal contact details, licence numbers or unpublished client engagements are included.",
+  "note": "Published record only. Derived from the supplied bibliography; no personal contact details, license numbers or unpublished client engagements are included.",
   "counts": {
     "publication": 15,
     "poster": 12,
@@ -73,7 +73,7 @@
         "Atrial fibrillation"
       ],
       "methods": [
-        "Randomised / pragmatic trial"
+        "Randomized / pragmatic trial"
       ]
     },
     {
@@ -87,7 +87,7 @@
         "Atrial fibrillation"
       ],
       "methods": [
-        "Randomised / pragmatic trial"
+        "Randomized / pragmatic trial"
       ]
     },
     {
@@ -98,7 +98,7 @@
       "venue": "ASHP",
       "link": null,
       "topics": [
-        "Opioid utilisation"
+        "Opioid utilization"
       ],
       "methods": []
     },
@@ -137,7 +137,7 @@
       "venue": "European Association for Haemophilia and Allied Disorders - 11th Annual Congress 2018 (Poster)",
       "link": null,
       "topics": [
-        "Haemophilia"
+        "Hemophilia"
       ],
       "methods": [
         "Claims analysis"
@@ -169,7 +169,7 @@
         "Atrial fibrillation"
       ],
       "methods": [
-        "Randomised / pragmatic trial"
+        "Randomized / pragmatic trial"
       ]
     },
     {
@@ -195,7 +195,7 @@
         "Atrial fibrillation"
       ],
       "methods": [
-        "Randomised / pragmatic trial"
+        "Randomized / pragmatic trial"
       ]
     },
     {
@@ -657,7 +657,7 @@
         "Atrial fibrillation"
       ],
       "methods": [
-        "Healthcare resource utilisation"
+        "Healthcare resource utilization"
       ]
     }
   ]

@@ -25,7 +25,7 @@ const dated = entries
 export const record = {
   total: entries.length,
   // The supplied bibliography's own "Publications" section. It mixes journal
-  // papers with a preprint and conference items, so it is not labelled
+  // papers with a preprint and conference items, so it is not labeled
   // peer-reviewed anywhere on the site.
   publications: entries.filter((entry) => entry.type === "publication").length,
   dated: dated.length,

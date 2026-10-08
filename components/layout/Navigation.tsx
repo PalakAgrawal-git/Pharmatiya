@@ -18,7 +18,7 @@ import { nav } from "@/lib/site";
  * the single loudest object on every page.
  *
  * The current page is marked by a hairline that enters from the left rather
- * than by a weight change, so the row keeps an even colour and nothing shifts
+ * than by a weight change, so the row keeps an even color and nothing shifts
  * when the route changes.
  */
 export default function Navigation() {

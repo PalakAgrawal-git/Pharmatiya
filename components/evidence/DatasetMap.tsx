@@ -4,7 +4,7 @@ import { DataLabel } from "@/components/ui/DataLabel";
 /**
  * Dataset coverage.
  *
- * Dataset TYPES always display. Named organisations display only where
+ * Dataset TYPES always display. Named organizations display only where
  * `cleared` is true in lib/site.ts, which decides whether they may be named
  * publicly. Nothing here is inferred.
  *
@@ -14,7 +14,7 @@ import { DataLabel } from "@/components/ui/DataLabel";
  */
 
 const BLURB: Record<string, string> = {
-  Payer: "Enrolment, benefits and what the plan paid for.",
+  Payer: "Enrollment, benefits and what the plan paid for.",
   Provider: "What happened clinically, inside the health system.",
   "Claims & pharmacy": "What was dispensed, billed and tested.",
 };
@@ -77,7 +77,7 @@ export default function DatasetMap({ compact = false }: { compact?: boolean }) {
         <p className="text-small leading-[1.6] text-muted">
           {cleared.length > 0
             ? cleared.map((source) => source.name).join(" · ")
-            : "We hold direct experience with named payer, PBM and provider organisations. Naming them publicly is subject to client clearance."}
+            : "We hold direct experience with named payer, PBM and provider organizations. Naming them publicly is subject to client clearance."}
         </p>
       </div>
     </div>

@@ -84,7 +84,7 @@ export default function ForestPlot({
       </g>
       <line x1="0" y1="26" x2="470" y2="26" stroke="var(--color-rule)" strokeWidth="1" />
 
-      {/* Line of no effect, labelled in words rather than left as a bare
+      {/* Line of no effect, labeled in words rather than left as a bare
           dashed rule that only a specialist reads. */}
       <line
         x1={x(1)}
@@ -99,7 +99,7 @@ export default function ForestPlot({
       {rows.map((row, i) => {
         const y = ROW_Y(i);
         const crosses = row.lo <= 1 && row.hi >= 1;
-        const colour = crosses ? "var(--color-series-3)" : "var(--color-series-1)";
+        const color = crosses ? "var(--color-series-3)" : "var(--color-series-1)";
 
         return (
           <g key={row.label}>
@@ -137,11 +137,11 @@ export default function ForestPlot({
                 y1={y}
                 x2={x(row.hi)}
                 y2={y}
-                stroke={colour}
+                stroke={color}
                 strokeWidth="1.5"
               />
-              <line x1={x(row.lo)} y1={y - 5} x2={x(row.lo)} y2={y + 5} stroke={colour} strokeWidth="1.5" />
-              <line x1={x(row.hi)} y1={y - 5} x2={x(row.hi)} y2={y + 5} stroke={colour} strokeWidth="1.5" />
+              <line x1={x(row.lo)} y1={y - 5} x2={x(row.lo)} y2={y + 5} stroke={color} strokeWidth="1.5" />
+              <line x1={x(row.hi)} y1={y - 5} x2={x(row.hi)} y2={y + 5} stroke={color} strokeWidth="1.5" />
             </g>
 
             <rect
@@ -149,7 +149,7 @@ export default function ForestPlot({
               y={y - 4.5}
               width="9"
               height="9"
-              fill={colour}
+              fill={color}
               className={animate ? "fade-part" : undefined}
               style={
                 animate
@@ -217,7 +217,7 @@ export default function ForestPlot({
       ))}
 
       {/* Both directions named, on their own line — set alongside the
-          centre annotation they collided with it, since the plot is only
+          center annotation they collided with it, since the plot is only
           198 units wide. Previously only the left arrow survived, so the
           scale had no stated meaning at all. */}
       <text x={PLOT_X} y={AXIS_Y + 32} fontSize="10" fill="var(--color-muted)" fontFamily="var(--font-sans)">

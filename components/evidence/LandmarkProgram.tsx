@@ -1,20 +1,20 @@
-import { partners, departments, outputs, programme, related } from "@/lib/programme";
+import { partners, departments, outputs, program, related } from "@/lib/program";
 import Reveal from "@/components/motion/Reveal";
 
 /**
- * The mSToPS programme.
+ * The mSToPS program.
  *
  * The argument of this section is not the trial's result — it is the author
  * list. A manufacturer, a research institute and a national health plan ran
  * one nationwide trial together, and our principal was the health plan's
  * analytics lead on it across six published outputs, 2016 to 2019.
  *
- * The three organisations and the funding line come from the JAMA paper
+ * The three organizations and the funding line come from the JAMA paper
  * itself. The departments inside the manufacturer are our own account of the
  * engagement, and are introduced as such rather than folded in beside the
  * cited facts.
  */
-export default function LandmarkProgramme() {
+export default function LandmarkProgram() {
   return (
     <div>
       <div className="grid gap-x-16 gap-y-12 lg:grid-cols-12">
@@ -25,7 +25,7 @@ export default function LandmarkProgramme() {
             no study site.
           </p>
           <p className="measure mt-6 text-small leading-[1.7] text-muted">
-            {programme.full} tested whether a wearable ECG patch, posted to
+            {program.full} tested whether a wearable ECG patch, posted to
             people identified as at risk from their own claims history, would
             find atrial fibrillation that routine care was missing. The health
             plan found the population and measured what followed; the research
@@ -35,14 +35,14 @@ export default function LandmarkProgramme() {
             Aetna and Healthagen Outcomes.
           </p>
           <p className="measure mt-4 text-small leading-[1.7] text-muted">
-            Three organisations that had no history of sharing a protocol, an
+            Three organizations that had no history of sharing a protocol, an
             endpoint or a dataset. That was unusual in 2016. It is how much of
             the industry now works — and we have been inside it from the payer
             side since the beginning.
           </p>
 
           <dl className="mt-10 grid grid-cols-3 gap-6 border-t border-rule pt-6">
-            {programme.figures.map((figure) => (
+            {program.figures.map((figure) => (
               <div key={figure.label}>
                 <dt className="sr-only">{figure.label}</dt>
                 <dd>
@@ -89,18 +89,18 @@ export default function LandmarkProgramme() {
               ))}
             </ul>
             <p className="mt-4 text-caption leading-[1.55] text-faint">
-              Four departments that buy evidence differently, on one programme.
+              Four departments that buy evidence differently, on one program.
             </p>
           </Reveal>
         </div>
       </div>
 
-      {/* The programme, as published. */}
+      {/* The program, as published. */}
       <Reveal className="mt-14 border-t border-rule pt-8">
         <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
-          <h3 className="label text-faint">The programme, as published</h3>
+          <h3 className="label text-faint">The program, as published</h3>
           <p className="text-caption text-faint">
-            {programme.funding}
+            {program.funding}
           </p>
         </div>
 
@@ -155,12 +155,12 @@ export default function LandmarkProgramme() {
             {related.label}
           </a>{" "}
           ({related.venue}, {related.year}), which our principal co-authored
-          with regulators, sponsors and academic centres.
+          with regulators, sponsors and academic centers.
         </p>
         <p className="mt-3 text-caption leading-[1.6] text-faint">
-          Primary result: {programme.citation}{" "}
+          Primary result: {program.citation}{" "}
           <a
-            href={programme.link}
+            href={program.link}
             target="_blank"
             rel="noopener noreferrer"
             className="text-accent underline underline-offset-4"

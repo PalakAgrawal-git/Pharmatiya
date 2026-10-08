@@ -5,7 +5,7 @@ import Link from "next/link";
  *
  * Most secondary actions belong here. A page with one filled control and
  * several of these has a readable hierarchy; a page where every action is a
- * button has none. The underline is drawn from the rule colour and firms to
+ * button has none. The underline is drawn from the rule color and firms to
  * the accent on hover, so the resting state stays quiet.
  */
 export default function ArrowLink({

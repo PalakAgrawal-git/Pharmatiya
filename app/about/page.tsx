@@ -33,7 +33,7 @@ const expertise = [
     items: [
       "Value propositions",
       "Value-based contracting",
-      "Care management programme design",
+      "Care management program design",
       "Payer–provider value propositions",
     ],
   },
@@ -92,7 +92,7 @@ export default function AboutPage() {
       </section>
 
       {/* The same proof figures as the homepage band, on the same inverted
-          ground. They were previously set small and grey on `sunk`, which
+          ground. They were previously set small and gray on `sunk`, which
           made the strongest credentials on the page the quietest thing on
           it — and left the page with no tonal break at all. */}
       <section className="bg-inverse text-white">

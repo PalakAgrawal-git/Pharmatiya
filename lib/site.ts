@@ -73,7 +73,7 @@ export const services = [
       "Protocol development",
       "Survival analysis",
       "Propensity scoring",
-      "Multivariate modelling",
+      "Multivariate modeling",
       "Incidence and prevalence studies",
       "Event rates defined from the literature",
       "Post-marketing adverse-event surveillance algorithms",
@@ -164,7 +164,7 @@ export const services = [
     methodology: [
       "Value proposition development",
       "Value-based and outcomes-based contract design",
-      "Care management programme design",
+      "Care management program design",
       "Payer–provider value propositions",
     ],
     deliverables: [
@@ -203,7 +203,7 @@ export const methods = {
   design: [
     "Retrospective observational",
     "Prospective pragmatic",
-    "Randomised controlled trials",
+    "Randomized controlled trials",
     "Epidemiology and burden of illness",
     "Cohort development",
     "Risk stratification",
@@ -236,7 +236,7 @@ export const datasetCoverage = [
 ] as const;
 
 /**
- * PENDING input 4 — dataset name clearance. These organisations are named on
+ * PENDING input 4 — dataset name clearance. These organizations are named on
  * the current About page, but public use has not been cleared. Set
  * `cleared: true` per entry once confirmed; until then the UI shows dataset
  * types only and suppresses every name.

@@ -144,7 +144,7 @@ export function Select({
       <label htmlFor={id} className="label text-faint">
         {label}
       </label>
-      {/* Native select: correct behaviour on mobile, accessible for free.
+      {/* Native select: correct behavior on mobile, accessible for free.
           The open list is drawn by the operating system, not by us, so it
           keeps its own white background while the options inherit the page's
           light text — white on white, and unreadable. Each option therefore

@@ -47,7 +47,7 @@ const eras: Era[] = [
     end: 2014,
     event: "ActiveHealth Management — pharmacy informatics and pharmacovigilance",
     detail:
-      "Director of pharmacy informatics, improving and building clinical programmes — polypharmacy, medication adherence, risk adjustment. With physicians and the Aetna Innovation Lab, co-developed a claims-based pharmacovigilance platform for generating hypotheses about drugs, devices and biologics. The method is patented: US 8,744,872.",
+      "Director of pharmacy informatics, improving and building clinical programs — polypharmacy, medication adherence, risk adjustment. With physicians and the Aetna Innovation Lab, co-developed a claims-based pharmacovigilance platform for generating hypotheses about drugs, devices and biologics. The method is patented: US 8,744,872.",
   },
   {
     start: 2014,
@@ -61,7 +61,7 @@ const eras: Era[] = [
     end: 2022,
     event: "Machine learning in outcomes research",
     detail:
-      "Hospitalisation risk in COVID-19, guideline conformance in type 2 diabetes, and published work on where machine learning improves on traditional statistical modelling in healthcare analytics — and where it does not.",
+      "Hospitalization risk in COVID-19, guideline conformance in type 2 diabetes, and published work on where machine learning improves on traditional statistical modeling in healthcare analytics — and where it does not.",
   },
   {
     start: null,
@@ -152,7 +152,7 @@ export default function Milestones() {
           </desc>
 
           <defs>
-            {/* The fill is the line's own colour falling away to nothing, so
+            {/* The fill is the line's own color falling away to nothing, so
                 the area reads as the line having weight rather than as a
                 second object with an edge of its own. */}
             <linearGradient id="tl-fill" x1="0" y1="0" x2="0" y2="1">

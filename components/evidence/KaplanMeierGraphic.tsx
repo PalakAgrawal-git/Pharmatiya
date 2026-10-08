@@ -56,7 +56,7 @@ export default function KaplanMeierGraphic({
         <line x1="56" y1="270" x2="430" y2="270" />
       </g>
 
-      {/* Only the extremes are labelled. The scale is what matters, not
+      {/* Only the extremes are labeled. The scale is what matters, not
           reading a value off the curve. */}
       <g
         fontSize="12"
@@ -95,7 +95,7 @@ export default function KaplanMeierGraphic({
       </text>
 
       {/* Comparator first — it is the arm that falls away. Dashed as well as
-          coloured, so the series survive greyscale and colour-blind viewing. */}
+          coloured, so the series survive greyscale and color-blind viewing. */}
       <path
         className={animate ? "draw" : undefined}
         style={

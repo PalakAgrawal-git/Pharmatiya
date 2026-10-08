@@ -16,7 +16,7 @@ export default function TeamRoster() {
     return (
       <div>
         <p className="measure text-muted">
-          Team profiles are being finalised. Ask us directly and we will tell
+          Team profiles are being finalized. Ask us directly and we will tell
           you who would run your study.
         </p>
       </div>

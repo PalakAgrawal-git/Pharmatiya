@@ -650,7 +650,7 @@ function documentFor(message: AssistantMessage) {
 }
 
 function downloadWord(html: string, reference: string) {
-  // Word opens HTML saved as .doc as an ordinary document. The grey viewing
+  // Word opens HTML saved as .doc as an ordinary document. The gray viewing
   // backdrop and page shadow are for the screen only, so they are removed.
   const word = html
     .replace("html { background: #e9ecea; }", "html { background: #fff; }")

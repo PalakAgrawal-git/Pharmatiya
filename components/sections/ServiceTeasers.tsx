@@ -31,7 +31,7 @@ import CostEffectivenessPlane from "@/components/evidence/CostEffectivenessPlane
 /* `source` says where each figure's numbers come from. Only the cohort
    figure is real data; the other two are drawn to show the form of the
    output and say so, because a hazard ratio on a research firm's homepage
-   reads as a result unless it is labelled otherwise. */
+   reads as a result unless it is labeled otherwise. */
 const figures = [
   {
     node: <ForestPlot animate />,
@@ -46,7 +46,7 @@ const figures = [
     node: <CohortDiagram animate className="max-w-[19rem]" />,
     number: "03",
     title: "Participant flow",
-    sub: "mSToPS randomised trial",
+    sub: "mSToPS randomized trial",
     source: "Steinhubl et al., JAMA 2018",
   },
   {

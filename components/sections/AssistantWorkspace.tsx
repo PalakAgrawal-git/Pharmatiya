@@ -59,7 +59,7 @@ const SUGGESTIONS = [
   },
   {
     label: "Heart failure · provider",
-    text: "Heart failure readmissions in a provider health system: which patients drive hospitalisations and cost, using EHR and lab data?",
+    text: "Heart failure readmissions in a provider health system: which patients drive hospitalizations and cost, using EHR and lab data?",
   },
   {
     label: "Type 2 diabetes · access",
@@ -75,7 +75,7 @@ const REFINEMENTS = [
   "Make it payer-facing",
   "Add adherence as an outcome",
   "Use EHR and lab data",
-  "Focus on hospitalisations and cost",
+  "Focus on hospitalizations and cost",
 ];
 
 const uid = () => Math.random().toString(36).slice(2, 10);
@@ -112,7 +112,7 @@ function planSteps(problem: string): Step[] {
     return [
       { label: "Checking for patient data", detail: "None found", done: false },
       { label: "Sending to NextGen AI", detail: "Your statement, and nothing else", done: false },
-      { label: "Drafting the synopsis", detail: "Feasibility · Retrospective · Outreach", done: false },
+      { label: "Drafting the synopsis", detail: "Objectives · Design · Population · Outcomes", done: false },
     ];
   }
   const read = readStatement(problem);
@@ -139,10 +139,10 @@ function planSteps(problem: string): Step[] {
     },
     {
       label: "Outcomes",
-      detail: read.outcomes.length ? read.outcomes.join("; ") : "Utilisation, cost and clinical outcomes",
+      detail: read.outcomes.length ? read.outcomes.join("; ") : "Utilization, cost and clinical outcomes",
       done: false,
     },
-    { label: "Drafting the synopsis", detail: "Feasibility · Retrospective study · Pragmatic outreach", done: false },
+    { label: "Drafting the synopsis", detail: "Objectives · Design · Population · Outcomes", done: false },
   ];
 }
 
@@ -588,7 +588,7 @@ function AssistantTurn({
           <div className="mt-4">
             <p className="text-small leading-[1.65] text-muted">
               {message.result.kind === "structured"
-                ? `Here is the synopsis — ${contentsOf(message.result).length} sections in the three-step framework, set as a client document. Open it to review, or save it as a PDF or Word file.`
+                ? `Here is the synopsis — ${contentsOf(message.result).length} sections, set as a client document. Open it to review, or save it as a PDF or Word file.`
                 : "Here is the synopsis, set as a client document. Open it to review, or save it as a PDF or Word file."}
             </p>
             <DocumentCard message={message} onOpen={onOpen} />
@@ -676,16 +676,10 @@ function contentsOf(result: BuildResult): string[] {
   if (result.kind !== "structured") return ["Synopsis"];
   const s = result.synopsis;
   return [
-    ...(s.summary ? ["Executive summary"] : []),
-    ...(s.background?.length ? ["Background"] : []),
     "Problem statement",
-    "Study question",
-    ...s.steps.map((step) => `${step.step} — ${step.name}`),
-    "Value by stakeholder",
-    "Review and limitations",
-    ...(s.nextSteps?.length ? ["Next steps"] : []),
+    ...(s.background.length ? ["Background"] : []),
+    ...s.sections.map((section) => section.heading),
     ...(s.references?.length ? ["References"] : []),
-    ...(s.codes?.length ? ["Appendix: code list"] : []),
   ];
 }
 

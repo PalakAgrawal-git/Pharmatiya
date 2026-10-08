@@ -266,9 +266,9 @@ export const therapeuticAreas = [
   { area: "Cardiovascular", note: "Technology-enabled trials, Circulation 2019" },
   { area: "Mental health", note: "Pharmacogenetic testing, Depress Anxiety 2018" },
   { area: "Psoriasis & PsA", note: "Treatment patterns within a health plan" },
-  { area: "Haemophilia A", note: "Prophylaxis utilisation, claims" },
-  { area: "Opioid utilisation", note: "Peri-surgical opioid use" },
-  { area: "COVID-19", note: "Machine learning hospitalisation risk" },
+  { area: "Hemophilia A", note: "Prophylaxis utilization, claims" },
+  { area: "Opioid utilization", note: "Peri-surgical opioid use" },
+  { area: "COVID-19", note: "Machine learning hospitalization risk" },
 ] as const;
 
 /**

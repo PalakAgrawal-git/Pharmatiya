@@ -1,9 +1,9 @@
-import type { Synopsis } from "@/lib/synopsis";
+import { CREDIT, type Synopsis } from "@/lib/synopsis";
 
 /**
  * The synopsis as a client deliverable.
  *
- * On the website the synopsis was set in the website's own type and colours,
+ * On the website the synopsis was set in the website's own type and colors,
  * which made the thing a client receives look like a page of our site. This
  * renders it as a document instead: white paper, a letterhead, a reference
  * number, a draft status, numbered sections and tables.
@@ -28,7 +28,7 @@ export function makeMeta(seed: string, when = new Date()): DocumentMeta {
   const d = String(when.getDate()).padStart(2, "0");
   return {
     reference: `PH-SYN-${y}${m}${d}-${seed.replace(/[^a-z0-9]/gi, "").slice(0, 4).toUpperCase()}`,
-    date: when.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }),
+    date: when.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }),
   };
 }
 
@@ -75,9 +75,9 @@ const CSS = `
 
   h2 { margin: 30px 0 0; padding-top: 12px; border-top: 1px solid #d6dcda;
     font-size: 12.5pt; font-weight: 600; color: #0f1a18; page-break-after: avoid; }
-  h2 .n { display: inline-block; min-width: 30px; color: #2f8f81; }
+  h2 .n { color: #2f8f81; }
   h3 { margin: 16px 0 0; font-size: 10.5pt; font-weight: 600; color: #2a3431; page-break-after: avoid; }
-  h3 .n { color: #6b7572; font-weight: 400; margin-right: 6px; }
+  h3 .n { color: #6b7572; font-weight: 400; }
   p { margin: 8px 0 0; }
   ul { margin: 6px 0 0; padding-left: 18px; }
   li { margin: 3px 0 0; }
@@ -91,6 +91,9 @@ const CSS = `
   .funnel { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; padding: 0; list-style: none; }
   .funnel li { margin: 0; padding: 4px 10px; border: 1px solid #b9d9d3; background: #eef7f5; border-radius: 12px; font-size: 9pt; }
   .text { white-space: pre-wrap; }
+  .closing { margin-top: 22px; font-weight: 600; }
+  .credit { margin-top: 28px; padding: 12px 0; border-top: 1px solid #d6dcda; border-bottom: 1px solid #d6dcda; font-size: 9pt; color: #56605d; }
+  .credit a { color: #2f8f81; }
 
   .signoff { margin-top: 32px; page-break-inside: avoid; }
   .signoff td { height: 38px; }
@@ -122,53 +125,34 @@ export function synopsisDocumentHtml(s: Synopsis, meta: DocumentMeta): string {
   let n = 0;
   const section = (title: string, inner: string) => {
     n += 1;
-    return `<h2><span class="n">${n}.</span>${esc(title)}</h2>${inner}`;
+    return `<h2><span class="n">${n}.</span>&nbsp;&nbsp;${esc(title)}</h2>${inner}`;
   };
 
   // Sections are numbered as they are produced, so they must be produced in
   // the order they appear on the page.
 
-  /* A sponsor reads the first page and decides whether to read the rest, so
-     the summary and the background come before the problem statement. Both
-     are absent from a synopsis drafted in the browser, and the document
-     simply starts at the problem statement then. */
-  const summary = s.summary
-    ? section("Executive summary", `<p class="problem">${esc(s.summary)}</p>`)
-    : "";
-  const background = s.background?.length
+  const problem = section("Problem statement", `<p class="problem">${esc(s.problem)}</p>`);
+  const background = s.background.length
     ? section("Background", s.background.map((p) => `<p>${esc(p)}</p>`).join(""))
     : "";
 
-  const problem = section("Problem statement", `<p class="problem">${esc(s.problem)}</p>`);
-  const question = section(
-    "Study question",
-    `<p class="lede">The question the evidence has to answer, set out in population, exposure, comparator, outcome and time terms.</p>
-     <table>${s.question.map((q) => `<tr><th>${esc(q.label)}</th><td>${esc(q.value)}</td></tr>`).join("")}</table>`,
-  );
-  const steps = s.steps
-    .map((step) => {
+  const sections = s.sections
+    .map((sec) => {
       const k = n + 1;
-      const subs = step.sections
-        .map((sec, i) => {
-          const content =
-            sec.heading === "Conversion funnel"
-              ? `<ol class="funnel">${sec.items.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>`
-              : list(sec.items);
-          return `<h3><span class="n">${k}.${i + 1}</span>${esc(sec.heading)}</h3>${content}`;
+      const paragraphs = (sec.paragraphs ?? []).map((p) => `<p>${esc(p)}</p>`).join("");
+      let sub = 0;
+      const groups = (sec.groups ?? [])
+        .map((g) => {
+          const heading = g.label
+            ? `<h3><span class="n">${k}.${++sub}</span>&nbsp;&nbsp;${esc(g.label)}</h3>`
+            : "";
+          return heading + list(g.items);
         })
         .join("");
-      const when = step.timeframe
-        ? `<p class="lede">Execution timeframe: ${esc(step.timeframe)}</p>`
-        : "";
-      return section(`${step.step} — ${step.name}`, when + subs);
+      return section(sec.heading, paragraphs + groups);
     })
     .join("");
-  const value = section(
-    "Value by stakeholder",
-    `<table>${s.value.map((v) => `<tr><th>${esc(v.audience)}</th><td>${esc(v.message)}</td></tr>`).join("")}</table>`,
-  );
-  const review = section("Review and limitations", list(s.review));
-  const next = s.nextSteps?.length ? section("Next steps", list(s.nextSteps)) : "";
+
   const references = s.references?.length
     ? section(
         "References",
@@ -182,42 +166,30 @@ export function synopsisDocumentHtml(s: Synopsis, meta: DocumentMeta): string {
           .join("")}</ol>`,
       )
     : "";
-  const appendix = s.codes?.length
-    ? section(
-        "Appendix: illustrative code list",
-        `<p class="lede">Categories to be confirmed against the data before any cohort is built.</p>
-         <table><tr><th>Group</th><th>Code</th><th>Description</th></tr>${s.codes
-           .map(
-             (c) =>
-               `<tr><td>${esc(c.group)}</td><td>${esc(c.code)}</td><td>${esc(c.description)}</td></tr>`,
-           )
-           .join("")}</table>`,
-      )
-    : "";
 
   const body = `
 <p class="kind">Study synopsis &middot; Draft</p>
 <h1>${esc(s.title)}</h1>
-<div class="status"><b>Draft for expert review.</b> Prepared with Pharmatiya NextGen AI in Pharmatiya&rsquo;s three-step framework. A Pharmatiya researcher reviews and signs off every synopsis before it is used.</div>
+<div class="status"><b>Draft for expert review.</b> Prepared with Pharmatiya NextGen AI. A Pharmatiya researcher reviews and signs off every synopsis before it is used.</div>
 
 <table class="summary">
   <tr><th>Prepared for</th><td>${esc(s.audience.join(", "))} stakeholders</td></tr>
   <tr><th>Condition</th><td>${esc(s.condition ?? "As defined in the problem statement")}</td></tr>
   <tr><th>Data sources</th><td>${esc(s.sources.join("; "))}</td></tr>
-  <tr><th>Framework</th><td>Step 0 Feasibility &middot; Step 1 Retrospective study &middot; Step 2 Pragmatic outreach</td></tr>
   <tr><th>Status</th><td>Draft &mdash; not for distribution until reviewed</td></tr>
 </table>
 
-${summary}
-${background}
 ${problem}
-${question}
-${steps}
-${value}
-${review}
-${next}
+${background}
+${sections}
+<p class="closing">${esc(s.closing)}</p>
 ${references}
-${appendix}
+
+<div class="credit">
+  <p><b>${esc(CREDIT.line)}</b></p>
+  <p>${esc(CREDIT.detail)}</p>
+  <p>Learn more: <a href="${esc(CREDIT.link)}">${esc(CREDIT.link)}</a></p>
+</div>
 
 <table class="signoff">
   <tr><th>Reviewed by</th><td></td><th style="width:14%">Date</th><td style="width:22%"></td></tr>

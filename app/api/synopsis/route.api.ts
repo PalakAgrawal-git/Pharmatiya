@@ -30,6 +30,18 @@ const KEY = process.env.OPENAI_API_KEY;
 const MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";
 const BASE = process.env.OPENAI_BASE_URL || "https://api.openai.com/v1";
 /**
+ * Pharmatiya's own synopses, uploaded with scripts/upload-samples.mjs.
+ *
+ * Set, and each draft is written with those documents to hand, so it follows
+ * the firm's structure and language rather than a general idea of what a
+ * synopsis looks like. Unset, drafting works exactly as before.
+ *
+ * Nothing is trained: the documents are searched at the moment of drafting.
+ * Adding one changes the next synopsis, and removing one takes its influence
+ * away just as quickly.
+ */
+const STORE = process.env.SYNOPSIS_VECTOR_STORE;
+/**
  * A ceiling on cost per request, not a target.
  *
  * It must clear the whole synopsis comfortably. A reply cut off at the
@@ -191,6 +203,52 @@ type Body = { problem?: unknown };
 
 function fail(status: number, error: string) {
   return Response.json({ error }, { status });
+}
+
+/**
+ * How to use the sample synopses, when there are any.
+ *
+ * Worth being explicit that they are a model for form rather than a source
+ * of fact: the samples contain real cohort counts from a real health plan's
+ * claims, and a draft that borrowed those numbers for an unrelated question
+ * would be inventing evidence while looking authoritative.
+ */
+const SAMPLES = `
+
+You have Pharmatiya's own past synopses available to search. Consult them
+and follow their structure, their section headings and their language, so
+this reads as the same firm's work.
+
+Take the form from them, never the findings. Their cohort sizes, their
+percentages and their results belong to the studies they describe. Do not
+carry a number from a sample into this synopsis.`;
+
+/**
+ * Either shape of reply, depending on which endpoint was used.
+ *
+ * Chat completions puts the text in choices[].message.content; the Responses
+ * API returns an output list that also carries the file_search call, so the
+ * message has to be found among the items rather than assumed first.
+ */
+type ProviderReply = {
+  choices?: { message?: { content?: string }; finish_reason?: string }[];
+  output_text?: string;
+  output?: { type?: string; content?: { type?: string; text?: string }[] }[];
+  incomplete_details?: { reason?: string };
+};
+
+function textOf(data: ProviderReply): string {
+  const chat = data.choices?.[0]?.message?.content;
+  if (chat) return chat.trim();
+  if (typeof data.output_text === "string" && data.output_text.trim()) {
+    return data.output_text.trim();
+  }
+  const parts = (data.output ?? [])
+    .filter((item) => item.type === "message")
+    .flatMap((item) => item.content ?? [])
+    .filter((c) => c.type === "output_text" && typeof c.text === "string")
+    .map((c) => c.text as string);
+  return parts.join("").trim();
 }
 
 /* ── Checking the reply ─────────────────────────────────────────────────
@@ -384,34 +442,45 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
        the visitor a document that reads as notes. */
     let lastRaw = "";
     for (let attempt = 0; attempt < 2; attempt++) {
-      const response = await fetch(`${BASE}/chat/completions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${KEY}`,
-        },
-        body: JSON.stringify({
-          model: MODEL,
-          max_tokens: MAX_TOKENS,
-          temperature: 0.3,
-          /* Guarantees syntactically valid JSON. It does not guarantee the
-             right shape, which is why the reply is still checked below. */
-          response_format: { type: "json_object" },
-          messages: [
-            { role: "system", content: SYSTEM + sources },
-            { role: "user", content: problem },
-            ...(attempt
-              ? [
-                  {
-                    role: "system" as const,
-                    content:
-                      "The previous draft was missing required fields. Return every field in the shape, including summary, background, nextSteps and codes.",
-                  },
-                ]
-              : []),
-          ],
-        }),
-      });
+      const nudge = attempt
+        ? "\n\nThe previous draft was missing required fields. Return every field in the shape, including summary, background, nextSteps and codes."
+        : "";
+
+      /* Two endpoints for one job. With samples to read from, the request
+         goes to the Responses API, which is the one that can search a vector
+         store; without, it stays on chat completions, which is what has been
+         drafting in production. Both are asked for JSON and both are checked
+         the same way, so the samples change the writing and nothing else. */
+      const response = STORE
+        ? await fetch(`${BASE}/responses`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${KEY}` },
+            body: JSON.stringify({
+              model: MODEL,
+              max_output_tokens: MAX_TOKENS,
+              temperature: 0.3,
+              instructions: SYSTEM + sources + SAMPLES + nudge,
+              input: problem,
+              tools: [{ type: "file_search", vector_store_ids: [STORE] }],
+              text: { format: { type: "json_object" } },
+            }),
+          })
+        : await fetch(`${BASE}/chat/completions`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${KEY}` },
+            body: JSON.stringify({
+              model: MODEL,
+              max_tokens: MAX_TOKENS,
+              temperature: 0.3,
+              /* Guarantees syntactically valid JSON. It does not guarantee
+                 the right shape, which is why the reply is still checked. */
+              response_format: { type: "json_object" },
+              messages: [
+                { role: "system", content: SYSTEM + sources + nudge },
+                { role: "user", content: problem },
+              ],
+            }),
+          });
 
       if (!response.ok) {
         /* The provider's own message can name the account, the key or the
@@ -420,18 +489,16 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
         return fail(502, "The drafting service is unavailable. Please try again shortly.");
       }
 
-      const data = (await response.json()) as {
-        choices?: { message?: { content?: string }; finish_reason?: string }[];
-      };
+      const data = (await response.json()) as ProviderReply;
 
       /* Truncation is worth naming in the log. It looks identical to a
          malformed reply from the outside, and the fix is different: the
          token ceiling is too low for the shape being asked for. */
-      if (data.choices?.[0]?.finish_reason === "length") {
+      if (data.choices?.[0]?.finish_reason === "length" || data.incomplete_details?.reason === "max_output_tokens") {
         console.error(`Synopsis reply hit the ${MAX_TOKENS}-token ceiling and was cut off.`);
       }
 
-      const raw = data.choices?.[0]?.message?.content?.trim();
+      const raw = textOf(data);
       if (!raw) return fail(502, "The drafting service returned nothing.");
       lastRaw = raw;
 

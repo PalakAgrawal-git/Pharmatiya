@@ -90,13 +90,24 @@ console.log(`Found ${paths.length} document(s) in ${folder}\n`);
 
 /* ── Upload ───────────────────────────────────────────────────────────── */
 
+/**
+ * Uploaded under a neutral name, never the one on disk.
+ *
+ * The samples are named after the sponsors they were written for, and a
+ * model searching them will cite the filename it found — so a synopsis for
+ * an unrelated question came back listing "Emblem-HEOR-Pfizer-Migraine.docx"
+ * as a data source. The file's own name is the easiest thing to leak and
+ * the easiest to remove.
+ */
 const fileIds = [];
-for (const path of paths) {
+paths.sort();
+for (const [i, path] of paths.entries()) {
+  const alias = `Sample-${String(i + 1).padStart(2, "0")}${extname(path).toLowerCase()}`;
   const form = new FormData();
   form.append("purpose", "assistants");
-  form.append("file", new Blob([readFileSync(path)]), basename(path));
+  form.append("file", new Blob([readFileSync(path)]), alias);
   const file = await api("/files", { method: "POST", body: form });
-  console.log(`  uploaded  ${basename(path)}  ->  ${file.id}`);
+  console.log(`  uploaded  ${basename(path)}\n              as ${alias}  ->  ${file.id}`);
   fileIds.push(file.id);
 }
 

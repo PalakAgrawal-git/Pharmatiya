@@ -141,7 +141,12 @@ Reply with JSON only, in exactly this shape:
      "groups": [{"label": "Clinical Outcomes", "items": ["..."]},
                 {"label": "Economic Outcomes", "items": ["..."]},
                 {"label": "Patient-Reported Outcomes", "items": ["..."]}]},
+    {"heading": "Cohort Definition and Stratification", "groups": [{"items": ["..."]}]},
+    {"heading": "Healthcare Resource Utilization and Cost", "groups": [{"items": ["..."]}]},
     {"heading": "Statistical Approach", "groups": [{"items": ["..."]}]},
+    {"heading": "Key Outputs", "groups": [{"items": ["..."]}]},
+    {"heading": "Strategic Impact", "groups": [{"items": ["..."]}]},
+    {"heading": "Timeline", "groups": [{"items": ["..."]}]},
     {"heading": "Deliverables", "groups": [{"items": ["..."]}]}
   ],
   "closing": "One closing sentence."
@@ -149,11 +154,9 @@ Reply with JSON only, in exactly this shape:
 
 Be thorough. Background is two to three paragraphs of four or more sentences.
 Each list has four to eight specific items, each a complete sentence naming
-the variable, window, code family, method or output concerned. Include the
-sections Cohort Definition and Stratification, Healthcare Resource
-Utilization and Cost, Key Outputs, Strategic Impact (by stakeholder) and
-Timeline between the structure above, in the order they fit. Use short,
-specific phrases for timeframes.
+the variable, window, code family, method or output concerned. Give every
+section in the shape above, Strategic Impact broken down by stakeholder, and
+short, specific phrases for timeframes.
 
 Write every string as finished prose. No markdown, no asterisks, no bullet
 characters, no headings inside a string: the structure above is the
@@ -223,6 +226,63 @@ function fail(status: number, error: string) {
 }
 
 /**
+ * Names that must never appear in a draft.
+ *
+ * The samples are real proposals written for named sponsors, and asking the
+ * model not to repeat them is a request, not a guarantee: the first live
+ * test of the sample search returned a synopsis for an unrelated question
+ * that cited two of the documents by filename and named the health plan.
+ *
+ * So the draft is checked rather than trusted. A draft naming any of these
+ * is thrown away and asked for again, and if the second one does it too the
+ * visitor gets the browser-side builder instead. A synopsis that is merely
+ * shorter is a far smaller problem than one that tells a stranger who
+ * Pharmatiya's clients are.
+ *
+ * SYNOPSIS_FORBIDDEN_NAMES adds to this list, comma separated, so a new
+ * engagement can be covered without a deployment.
+ */
+const FORBIDDEN = [
+  "EmblemHealth",
+  "Emblem",
+  "Pfizer",
+  "Novartis",
+  "Sanofi",
+  "Moderna",
+  "Grail",
+  "Freenome",
+  "Cybin",
+  "Johnson & Johnson",
+  "Janssen",
+  "JnJ",
+  "Exact Sciences",
+  "SiteSmart",
+  "ACPNY",
+  "Healthagen",
+  ".docx",
+]
+  .concat((process.env.SYNOPSIS_FORBIDDEN_NAMES || "").split(",").map((s) => s.trim()))
+  .filter(Boolean);
+
+const FORBIDDEN_RE = new RegExp(
+  FORBIDDEN.map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"),
+  "i",
+);
+
+/** Which forbidden names a finished draft mentions, if any. */
+function leaks(synopsis: unknown): string[] {
+  const found = new Set<string>();
+  (function walk(node: unknown) {
+    if (typeof node === "string") {
+      const hit = node.match(FORBIDDEN_RE);
+      if (hit) found.add(hit[0]);
+    } else if (Array.isArray(node)) node.forEach(walk);
+    else if (node && typeof node === "object") Object.values(node).forEach(walk);
+  })(synopsis);
+  return [...found];
+}
+
+/**
  * How to use the sample synopses, when there are any.
  *
  * Worth being explicit that they are a model for form rather than a source
@@ -233,12 +293,23 @@ function fail(status: number, error: string) {
 const SAMPLES = `
 
 You have Pharmatiya's own past synopses available to search. Consult them and
-follow their structure, their section headings and their language, so this
+follow their language, their depth and the way they phrase a method, so this
 reads as the same firm's work.
+
+Take wording from them, not the section list. They are older and shorter
+than what is asked for here, and a draft that copies a sample's outline ends
+up missing sections. The structure set out above governs: produce every
+section it names, eight at the least, however few a sample has.
 
 Take the form from them, never the findings. Their cohort sizes, their
 percentages and their results belong to the studies they describe. Do not
-carry a number from a sample into this synopsis.`;
+carry a number from a sample into this synopsis.
+
+Name nothing you find in them. No sponsor, no manufacturer, no health plan,
+no provider network, no document or file name. Those are confidential, and
+this synopsis is written for someone unconnected to them. Describe data
+generically: "a national health plan's closed medical and pharmacy claims",
+never the plan that holds them.`;
 
 /**
  * Either shape of reply, depending on which endpoint was used.
@@ -373,20 +444,41 @@ function asSynopsis(raw: string) {
   const background = textList(d?.background);
   const sections = sectionsOf(d?.sections);
 
-  if (!isText(d?.title) || !isText(d?.problem) || !isText(d?.closing)) return null;
-  if (!audience || !sources || !background || !sections) return null;
+  /* Which check failed, for the log. A rejected draft used to be reported
+     as "not the expected shape" with 600 characters of JSON underneath,
+     which says nothing about whether the model missed a field or stopped
+     early — and those have different fixes. */
+  const missing = [
+    !isText(d?.title) && "title",
+    !isText(d?.problem) && "problem",
+    !isText(d?.closing) && "closing",
+    !audience && "audience",
+    !sources && "sources",
+    !background && "background",
+    !sections && "sections",
+  ].filter(Boolean) as string[];
+  if (missing.length) {
+    console.error(`Synopsis draft missing: ${missing.join(", ")}`);
+    return null;
+  }
 
   /* A draft that stops after the objectives is not a synopsis. */
-  if (sections.length < 8) return null;
+  if (sections!.length < 8) {
+    console.error(`Synopsis draft had ${sections!.length} sections, needs 8.`);
+    return null;
+  }
 
+  /* Non-null below: every one of these was checked above, but the checks
+     now run through a list so the log can name what was missing, and that
+     costs the compiler its narrowing. */
   return {
     title: String(d.title).trim(),
     problem: String(d.problem).trim(),
     condition: isText(d?.condition) ? String(d.condition).trim() : null,
-    audience,
-    sources,
-    background,
-    sections,
+    audience: audience!,
+    sources: sources!,
+    background: background!,
+    sections: sections!,
     closing: String(d.closing).trim(),
   };
 }
@@ -426,17 +518,19 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
     : "";
 
   try {
-    /* Asked twice at most. A model given this much structure occasionally
-       returns a thinner draft than the brief asks for — a missing summary
-       or background — and asking again is cheaper for everyone than giving
-       the visitor a document that reads as notes. */
+    /* Asked three times at most. A model given this much structure
+       occasionally returns a thinner draft than the brief asks for, and
+       asking again is cheaper for everyone than giving the visitor a
+       document that reads as notes. Three rather than two because a draft
+       discarded for naming a client also spends an attempt, and a leak and
+       a missing field should not compete for the same budget. */
     let lastRaw = "";
-    for (let attempt = 0; attempt < 2; attempt++) {
+    for (let attempt = 0; attempt < 3; attempt++) {
       const house = HOUSE
         ? `\n\nHouse instructions. Follow these for the content, depth and tone of every section. Where they conflict with the length guidance above, they win. The JSON shape and American English still apply.\n\n${HOUSE}`
         : "";
       const nudge = attempt
-        ? "\n\nThe previous draft was missing required fields. Return every field in the shape, including the background, all the sections and the closing sentence."
+        ? "\n\nThe previous draft was rejected. Return every field in the shape, including the background, all the sections and the closing sentence. Name no company, health plan, sponsor or document: write the data sources generically, as 'a national health plan's closed claims' rather than naming one."
         : "";
       const brief = SYSTEM + house + sources + (STORE ? SAMPLES : "") + nudge;
 
@@ -454,8 +548,13 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
               model: MODEL,
               max_output_tokens: MAX_TOKENS,
               temperature: 0.3,
-              instructions: brief,
-              input: problem,
+              /* The brief goes in `input` rather than in `instructions`:
+                 asking for a JSON format is refused unless the word appears
+                 in the input messages, and `instructions` does not count. */
+              input: [
+                { role: "system", content: brief },
+                { role: "user", content: problem },
+              ],
               tools: [{ type: "file_search", vector_store_ids: [STORE] }],
               text: { format: { type: "json_object" } },
             }),
@@ -504,7 +603,17 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
          that shape would be shown as a wall of raw text, which is worse
          than not answering. */
       const synopsis = asSynopsis(raw);
-      if (synopsis) return Response.json({ synopsis: withReferences(americanizeDeep(synopsis), papers) });
+      if (synopsis) {
+        /* Checked after the draft is assembled, so it covers every string in
+           it rather than whatever the model happened to put where. */
+        const named = leaks(synopsis);
+        if (named.length) {
+          console.error(`Synopsis draft named ${named.join(", ")}; discarded.`);
+          lastRaw = raw;
+          continue;
+        }
+        return Response.json({ synopsis: withReferences(americanizeDeep(synopsis), papers) });
+      }
     }
 
     console.error("Synopsis reply was not the expected shape", lastRaw.slice(0, 600));

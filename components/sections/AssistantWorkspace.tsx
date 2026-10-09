@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import {
+  Refused,
   buildSynopsis,
   looksLikePHI,
   readStatement,
@@ -263,14 +264,15 @@ export default function AssistantWorkspace() {
         patchAssistant(threadId, assistantId, { shown: i });
       }
     } catch (error) {
+      /* A refusal is not a failure. Being told to try again in a moment,
+         after being told the question was not a research question, invites
+         the visitor to send the same thing twice. The service's messages
+         are sentences and end in a full stop, so one is not added here. */
+      const refused = error instanceof Refused;
+      const said = error instanceof Error ? error.message.replace(/\.*$/, ".") : "The service did not respond.";
       patchAssistant(threadId, assistantId, {
         status: "error",
-        /* The service's messages are sentences and end in a full stop, so
-           one is not added here — "unusable draft.. Try again" was the
-           result of assuming otherwise. */
-        note: `I couldn't build that. ${
-          error instanceof Error ? error.message.replace(/\.*$/, ".") : "The service did not respond."
-        } Try again in a moment.`,
+        note: refused ? said : `I couldn't build that. ${said} Try again in a moment.`,
       });
     } finally {
       setBusy(false);

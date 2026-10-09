@@ -122,7 +122,17 @@ The synopsis has this structure, in this order:
     formulary submissions and HTAs, and recommendations.
   Closing: one sentence stating what the study will provide and for whom.
 
-Reply with JSON only, in exactly this shape:
+First decide whether you have been given a health research question at all.
+A condition, a treatment, a population, an outcome, a data source or a
+decision a payer or manufacturer faces are all research questions, however
+roughly put. A request for a poem, a recipe, code, an opinion, general
+knowledge or anything else is not.
+
+If it is not one, reply with exactly {"notAStudyQuestion": true} and nothing
+else. Do not fill the shape below with placeholders around it; an empty
+answer is useful and a study document about a recipe is not.
+
+Otherwise reply with JSON only, in exactly this shape:
 
 {
   "title": "...",
@@ -630,6 +640,19 @@ reference.\n\n` + papers.map((p, i) => `[${i + 1}] ${p.citation}`).join("\n")
       }
 
       const raw = textOf(data);
+
+      /* Asked something that is not a research question. Said plainly rather
+         than answered: a twelve-section study document whose problem
+         statement reads "the user is looking for a recipe to bake sourdough
+         bread" is worse than no answer, and that is what this used to
+         produce. */
+      if (raw && /"notAStudyQuestion"\s*:\s*true/.test(raw)) {
+        return fail(
+          422,
+          "That does not look like a research question. Describe a condition, a population and what you need to find out — for example, adherence and total cost of care for patients starting a new therapy.",
+        );
+      }
+
       if (!raw) return fail(502, "The drafting service returned nothing.");
       lastRaw = raw;
 

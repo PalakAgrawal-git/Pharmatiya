@@ -122,25 +122,15 @@ The synopsis has this structure, in this order:
     formulary submissions and HTAs, and recommendations.
   Closing: one sentence stating what the study will provide and for whom.
 
-First decide whether what you were given belongs to this field at all. Be
-generous: the visitor is a researcher sketching an idea, not filling in a
-form, and one word is a perfectly ordinary way to start.
+First decide whether you have been given a health research question at all.
+A condition, a treatment, a population, an outcome, a data source or a
+decision a payer or manufacturer faces are all research questions, however
+roughly put. A request for a poem, a recipe, code, an opinion, general
+knowledge or anything else is not.
 
-In scope, and to be answered: a condition, a drug, a device, a population,
-an outcome, a data type, a method, a stakeholder, a decision a payer or a
-manufacturer faces, and the field's own vocabulary — HEOR, RWE, RWD, HTA,
-claims, EHR, PRO, adherence, utilization, cost-effectiveness and the like.
-A single term such as "HEOR", "migraine" or "claims" is in scope: draft the
-synopsis that term implies, keeping [Drug X] or [Disease Y] where the
-visitor has not said which.
-
-Out of scope, and only this: something with no connection to health
-research. A poem, a recipe, code, a political opinion, general knowledge,
-a film plot.
-
-For those, and only those, reply with exactly {"notAStudyQuestion": true}
-and nothing else. Do not fill the shape below with placeholders around it;
-an empty answer is useful and a study document about a recipe is not.
+If it is not one, reply with exactly {"notAStudyQuestion": true} and nothing
+else. Do not fill the shape below with placeholders around it; an empty
+answer is useful and a study document about a recipe is not.
 
 Otherwise reply with JSON only, in exactly this shape:
 

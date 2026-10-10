@@ -70,6 +70,26 @@ const SUGGESTIONS = [
     label: "Psoriasis · pharma",
     text: "Treatment switching and cost for psoriasis patients on biologics, for a pharma medical affairs team, using claims data.",
   },
+  {
+    label: "Severe asthma · payer",
+    text: "Build a payer-facing HEOR synopsis for patients with severe asthma experiencing frequent exacerbations, evaluating healthcare utilization and costs using claims data.",
+  },
+  {
+    label: "Rheumatoid arthritis · pharma",
+    text: "Real-world treatment persistence, switching patterns, and healthcare costs among rheumatoid arthritis patients initiating biologic therapies, using claims data for a pharma medical affairs team.",
+  },
+  {
+    label: "Chronic kidney disease · provider",
+    text: "Build a provider-facing HEOR synopsis examining disease progression, hospitalizations, and cost of care among chronic kidney disease patients using EHR and lab data.",
+  },
+  {
+    label: "COPD · payer",
+    text: "Healthcare resource utilization and total cost of care among COPD patients with recurrent exacerbations, evaluating the impact of maintenance therapy adherence using claims data.",
+  },
+  {
+    label: "Metastatic breast cancer · pharma",
+    text: "Real-world treatment patterns, time to next treatment, and healthcare costs among metastatic breast cancer patients receiving targeted therapies, using oncology EHR data for a pharma medical affairs team.",
+  },
 ];
 
 const REFINEMENTS = [
@@ -514,7 +534,10 @@ function Welcome({ onPick, disabled }: { onPick: (text: string) => void; disable
         hold. I&rsquo;ll structure it into a feasibility plan, a retrospective study
         and a pragmatic outreach design.
       </p>
-      <div className="mt-8 grid gap-3 sm:grid-cols-2">
+      {/* Three across on a wide screen: nine examples in two columns leave
+          one stranded on a row of its own, and the set reads as a grid
+          rather than a list when it divides evenly. */}
+      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {SUGGESTIONS.map((s) => (
           <button
             key={s.label}
@@ -524,7 +547,11 @@ function Welcome({ onPick, disabled }: { onPick: (text: string) => void; disable
             className="group rounded-[10px] border border-rule-firm bg-surface/50 p-4 text-left transition-colors hover:border-accent hover:bg-surface disabled:opacity-50"
           >
             <span className="label-sm text-accent">{s.label}</span>
-            <span className="mt-2 line-clamp-2 block text-small leading-[1.5] text-muted group-hover:text-ink">
+            {/* No `block` here: line-clamp needs display:-webkit-box, and
+                the block utility was quietly overriding it, so the clamp
+                has never taken effect. Three lines rather than two, since
+                the cards now sit in a narrower column. */}
+            <span className="mt-2 line-clamp-3 text-small leading-[1.5] text-muted group-hover:text-ink">
               {s.text}
             </span>
           </button>

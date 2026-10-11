@@ -170,7 +170,7 @@ export function synopsisDocumentHtml(s: Synopsis, meta: DocumentMeta): string {
   const body = `
 <p class="kind">Study synopsis &middot; Draft</p>
 <h1>${esc(s.title)}</h1>
-<div class="status"><b>Draft for expert review.</b> Prepared with Pharmatiya NextGen AI. A Pharmatiya researcher reviews and signs off every synopsis before it is used.</div>
+<div class="status"><b>Draft for expert review.</b> Prepared with Pharmatiya&rsquo;s RWE Synopsis builder. A Pharmatiya researcher reviews and signs off every synopsis before it is used.</div>
 
 <table class="summary">
   <tr><th>Prepared for</th><td>${esc(s.audience.join(", "))} stakeholders</td></tr>
@@ -204,7 +204,7 @@ export function textDocumentHtml(text: string, meta: DocumentMeta): string {
   const body = `
 <p class="kind">Study synopsis &middot; Draft</p>
 <h1>HEOR / RWE study synopsis</h1>
-<div class="status"><b>Draft for expert review.</b> Prepared with Pharmatiya NextGen AI. A Pharmatiya researcher reviews and signs off every synopsis before it is used.</div>
+<div class="status"><b>Draft for expert review.</b> Prepared with Pharmatiya&rsquo;s RWE Synopsis builder. A Pharmatiya researcher reviews and signs off every synopsis before it is used.</div>
 <div class="text" style="margin-top:22px">${esc(text)}</div>`;
   return shell(meta, "HEOR / RWE study synopsis", body);
 }

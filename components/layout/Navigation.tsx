@@ -27,7 +27,7 @@ export default function Navigation() {
   const isCurrent = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
-  const onProductPage = pathname.startsWith("/nextgen-ai");
+  const onProductPage = pathname.startsWith("/rwe-synopsis");
 
   /* A Link to the route you are already on is a no-op in the App Router: no
      navigation happens, so no scroll reset happens either. Clicking "Home"

@@ -12,7 +12,7 @@ export const metadata = {
   title: `${site.productName}`,
   description:
     "Build an HEOR or RWE study synopsis from a plain-language problem statement — feasibility, retrospective study and pragmatic outreach — with mandatory expert review and no patient data.",
-  alternates: { canonical: "/nextgen-ai/" },
+  alternates: { canonical: "/rwe-synopsis/" },
 };
 
 /* What the product does, in the terms the live product uses for its own

@@ -58,7 +58,7 @@ export default function NextGenTeaser() {
               signs.
             </p>
             <div className="mt-8">
-              <ArrowLink href="/nextgen-ai/" tone="dark">
+              <ArrowLink href="/rwe-synopsis/" tone="dark">
                 Explore {site.productName}
               </ArrowLink>
             </div>

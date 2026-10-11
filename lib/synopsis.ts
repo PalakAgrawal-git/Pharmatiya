@@ -67,7 +67,7 @@ export type Synopsis = {
 
 /** Closing credit, printed at the end of every synopsis. */
 export const CREDIT = {
-  line: "This synopsis was powered by Pharmatiya NextGen AI — where real HEOR/RWE scars meet machine speed.",
+  line: "This synopsis was built with Pharmatiya's RWE Synopsis builder — where real HEOR/RWE scars meet machine speed.",
   detail: "Built by industry veterans with decades of payer, pharma, outcomes research, and evidence-generation experience.",
   link: "https://pharmatiya.net/about",
 };

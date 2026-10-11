@@ -16,7 +16,7 @@ import {
 } from "@/lib/synopsisDocument";
 
 /**
- * NextGen AI, as an application rather than as a page section.
+ * RWE Synopsis, as an application rather than as a page section.
  *
  * A sidebar of synopses, a conversation, a composer. The first message is the
  * problem; every later message refines it, and the synopsis is rebuilt from
@@ -132,7 +132,7 @@ function planSteps(problem: string): Step[] {
   if (SERVICE) {
     return [
       { label: "Checking for patient data", detail: "None found", done: false },
-      { label: "Sending to NextGen AI", detail: "Your statement, and nothing else", done: false },
+      { label: "Sending to RWE Synopsis", detail: "Your statement, and nothing else", done: false },
       { label: "Drafting the synopsis", detail: "Objectives · Design · Population · Outcomes", done: false },
     ];
   }
@@ -331,7 +331,7 @@ export default function AssistantWorkspace() {
         <div className="flex items-center gap-2.5 px-5 pb-4 pt-5">
           <Mark />
           <div className="leading-tight">
-            <p className="text-small font-medium text-ink">NextGen AI</p>
+            <p className="text-small font-medium text-ink">RWE Synopsis</p>
             <p className="text-caption text-faint">Synopsis Builder</p>
           </div>
         </div>
@@ -387,7 +387,7 @@ export default function AssistantWorkspace() {
       </aside>
 
       {/* ── Conversation ───────────────────────────────────────── */}
-      <section className="flex min-h-[40rem] min-w-0 flex-col lg:min-h-0" aria-label="NextGen AI conversation">
+      <section className="flex min-h-[40rem] min-w-0 flex-col lg:min-h-0" aria-label="RWE Synopsis conversation">
         <header className="flex items-center justify-between gap-4 border-b border-rule px-5 py-3.5">
           <div className="flex min-w-0 items-center gap-3">
             <span className="lg:hidden"><Mark /></span>
@@ -484,7 +484,7 @@ export default function AssistantWorkspace() {
               </button>
             </div>
             <p className="mt-2 text-center text-caption text-faint">
-              NextGen AI drafts; a Pharmatiya researcher reviews. Don&rsquo;t include patient-identifying information.
+              RWE Synopsis drafts; a Pharmatiya researcher reviews. Don&rsquo;t include patient-identifying information.
             </p>
           </div>
         </form>
@@ -524,7 +524,7 @@ function Welcome({ onPick, disabled }: { onPick: (text: string) => void; disable
     <div className="m-auto w-full max-w-[46rem] px-5 py-10">
       <div className="flex items-center gap-3">
         <Mark />
-        <p className="label-sm text-accent">NextGen AI · Synopsis Builder</p>
+        <p className="label-sm text-accent">RWE Synopsis · Pharmatiya Health</p>
       </div>
       <p className="mt-6 text-[clamp(1.75rem,1.3rem+1.6vw,2.5rem)] font-light leading-[1.12] tracking-[-0.025em] text-ink">
         What evidence question are you working on?
@@ -583,7 +583,7 @@ function AssistantTurn({
     <div className="flex gap-3">
       <span className="mt-0.5 shrink-0"><Mark /></span>
       <div className="min-w-0 flex-1">
-        <p className="text-caption font-medium text-ink">NextGen AI</p>
+        <p className="text-caption font-medium text-ink">RWE Synopsis</p>
 
         {message.note && (
           <p className="mt-2 text-small leading-[1.6] text-muted">{message.note}</p>

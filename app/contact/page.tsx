@@ -93,7 +93,7 @@ export default function ContactPage() {
             </address>
             <p className="mt-5 text-caption text-faint">
               To try it first, the synopsis builder is on the{" "}
-              <Link href="/nextgen-ai/#builder" className="text-accent underline">
+              <Link href="/rwe-synopsis/#builder" className="text-accent underline">
                 {site.productName} page
               </Link>
               .

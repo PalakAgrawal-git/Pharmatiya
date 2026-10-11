@@ -25,17 +25,17 @@ export const site = {
   // PENDING input 6 — confirm whether admin@ remains the public address.
   email: "admin@pharmatiya.net",
 
-  // The synopsis builder now lives on the NextGen AI page. It used to be a
-  // separate application at app.pharmatiya.net, which stops resolving once
-  // the domain points at this site.
-  productName: "NextGen AI",
+  // The product's one name, used by the navigation, the page, the builder
+  // and the documents it generates. It was called NextGen AI in the brief
+  // and RWE - Builder in the old menu; a buyer should meet one name.
+  productName: "RWE Synopsis",
 } as const;
 
 export const nav = [
   { href: "/", label: "Home" },
   { href: "/services/", label: "Services" },
   { href: "/evidence/", label: "Evidence" },
-  { href: "/nextgen-ai/", label: "RWE Synopsis" },
+  { href: "/rwe-synopsis/", label: "RWE Synopsis" },
   { href: "/about/", label: "About" },
   { href: "/contact/", label: "Contact" },
 ] as const;

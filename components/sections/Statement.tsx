@@ -32,7 +32,7 @@ export default function Statement() {
           <p className="text-small leading-[1.7] text-muted">
             A result that cannot survive a payer's methodologist is not a
             result. We design for the challenge that comes after the readout —
-            which is why feasibility, the analysis plan and the interpretation
+            which is why feasibility, the analysis plan, and the interpretation
             are all done by the same senior team.
           </p>
         </Reveal>

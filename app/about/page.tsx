@@ -13,7 +13,7 @@ import CountUp from "@/components/motion/CountUp";
 export const metadata = {
   title: "About",
   description:
-    "A senior evidence team with twenty-five years in health economics, outcomes research and real-world evidence, across payer, provider and claims data.",
+    "A senior evidence team with twenty-five years in health economics, outcomes research, and real-world evidence, across payer, provider, and claims data.",
   alternates: { canonical: "/about/" },
 };
 
@@ -52,7 +52,7 @@ export default function AboutPage() {
               title="A senior evidence team, not a staffing model."
             />
             <p className="measure mt-6 text-muted">
-              We work with commercial, medical affairs and HEOR teams inside
+              We work with commercial, medical affairs, and HEOR teams inside
               pharmaceutical and device companies, and directly with payers and
               providers. The people who scope your study are the people who run
               it.
@@ -60,7 +60,7 @@ export default function AboutPage() {
             <p className="measure mt-4 text-muted">
               That matters because the failure mode in this work is a protocol
               written by someone who will never touch the data. We keep design,
-              analysis and interpretation with the same senior team, and we
+              analysis, and interpretation with the same senior team, and we
               have spent enough time on the payer side to know which evidence
               actually moves an access decision.
             </p>
@@ -84,7 +84,7 @@ export default function AboutPage() {
                 </dd>
               </dl>
               <p className="mt-6 border-t border-rule pt-4 text-small leading-[1.6] text-muted">
-                Revolutionise research and analytics &mdash; together.
+                Revolutionize research and analytics &mdash; together.
               </p>
             </div>
           </Reveal>

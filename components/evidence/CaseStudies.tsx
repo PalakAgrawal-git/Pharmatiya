@@ -26,12 +26,12 @@ export default function CaseStudies() {
         </h3>
         <p className="measure mb-4 text-muted">
           We do not publish client names, and we will not publish an outcome we
-          cannot evidence. Anonymised case material — the question, the data,
-          the method and what the work enabled — is available under NDA, or we
+          cannot evidence. Anonymized case material — the question, the data,
+          the method, and what the work enabled — is available under NDA, or we
           can walk you through comparable engagements on a call.
         </p>
         <Button href="/contact/" variant="secondary">
-          Ask for anonymised case material
+          Ask for anonymized case material
         </Button>
 
       </div>

@@ -28,7 +28,7 @@ const methodGroups = [
 
 /* Counted from the archive, so the hero cannot disagree with the list. */
 const glance = [
-  { value: String(record.total), label: "Publications, abstracts and posters" },
+  { value: String(record.total), label: "Publications, abstracts, and posters" },
   { value: String(record.publications), label: "Full publications, incl. JAMA and Circulation" },
   { value: String(record.areas), label: "Therapeutic areas" },
   { value: String(record.lastYear - record.firstYear + 1), label: `Years of output, ${record.firstYear}–${record.lastYear}` },
@@ -79,7 +79,7 @@ export default function EvidencePage() {
             />
             <p className="measure mt-6 text-muted">
               Our client work is confidential. What follows is our published
-              record — the studies, the data they used and the methods behind
+              record — the studies, the data they used, and the methods behind
               them — and every method described is one we have executed
               ourselves.
             </p>
@@ -158,7 +158,7 @@ export default function EvidencePage() {
             label="Therapeutic areas"
             tone="dark"
             title="Where our published work is concentrated"
-            lede="One deep specialism in infectious disease and hospital outcomes, then a spread across cardiology, diabetes, respiratory, dermatology and mental health."
+            lede="One deep specialty in infectious disease and hospital outcomes, then a spread across cardiology, diabetes, respiratory, dermatology, and mental health."
           />
           <Reveal delay={100}>
             <TherapeuticMatrix inverted />
@@ -173,7 +173,7 @@ export default function EvidencePage() {
             index="04"
             label="Data coverage"
             title="The real-world data we work in"
-            lede="Payer, provider and pharmacy data — extracted and analyzed by the same team, so the cohort definition survives contact with the data."
+            lede="Payer, provider, and pharmacy data — extracted and analyzed by the same team, so the cohort definition survives contact with the data."
           />
           <Reveal delay={100}>
             <DatasetMap />
@@ -189,7 +189,7 @@ export default function EvidencePage() {
             index="05"
             label="Published record"
             title="Everything we have published, searchable"
-            lede={`${capitalise(inWords(record.total))} publications, abstracts, posters, a patent and a book chapter authored or co-authored by our team between ${record.firstYear} and ${record.lastYear} — in JAMA, Circulation, Diabetes, Obesity and Metabolism, Vaccine and others. Search it, or filter by type.`}
+            lede={`${capitalise(inWords(record.total))} publications, abstracts, posters, a patent, and a book chapter authored or co-authored by our team between ${record.firstYear} and ${record.lastYear} — in JAMA, Circulation, Diabetes, Obesity and Metabolism, Vaccine and others. Search it, or filter by type.`}
           />
           <Reveal delay={100}>
             <PublicationList />

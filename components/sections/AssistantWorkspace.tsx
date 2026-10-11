@@ -154,7 +154,7 @@ function planSteps(problem: string): Step[] {
       label: "Data and audience",
       detail: [
         read.sources.length ? read.sources.join(", ") : "Claims and EHR",
-        read.audience.length ? `for ${read.audience.join(", ").toLowerCase()}` : "for payer, provider and pharma",
+        read.audience.length ? `for ${read.audience.join(", ").toLowerCase()}` : "for payer, provider, and pharma",
       ].join(" · "),
       done: false,
     },

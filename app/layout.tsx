@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     template: `%s — ${site.name}`,
   },
   description:
-    "Health economics, outcomes research and real-world evidence for commercial, medical affairs and market access teams. Twenty-five years across payer, provider and claims data.",
+    "Health economics, outcomes research, and real-world evidence for commercial, medical affairs, and market access teams. Twenty-five years across payer, provider, and claims data.",
   openGraph: {
     type: "website",
     siteName: site.name,
@@ -102,7 +102,7 @@ export default function RootLayout({
         logo: new URL("/icon.svg", site.url).toString(),
         image: new URL("/og.png", site.url).toString(),
         description:
-          "Health economics, outcomes research and real-world evidence consultancy.",
+          "Health economics, outcomes research, and real-world evidence consultancy.",
         address,
       },
       {

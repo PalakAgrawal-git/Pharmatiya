@@ -24,7 +24,7 @@ export default function CoverageBand() {
               Data coverage
             </SectionLabel>
             <p className="mt-7 text-[clamp(1.5rem,1.1rem+1.5vw,2.25rem)] leading-[1.12]">
-              Payer, provider and claims data — for twenty-five years.
+              Payer, provider, and claims data — for twenty-five years.
             </p>
             <p className="measure mt-6 text-muted">
               If your question sits in one of these sources, we have almost

@@ -45,12 +45,12 @@ export const nav = [
  * number — nothing here is invented to fill a layout.
  */
 export const proofFigures = [
-  { value: "25+", label: "years in HEOR, RWE and outcomes research" },
+  { value: "25+", label: "years in HEOR, RWE, and outcomes research" },
   {
     // Counted from data/publications.json. Every entry is on the Evidence
     // page and the linkable ones cite a DOI, PMID or patent.
     value: String(record.total),
-    label: `publications, abstracts and posters, ${record.firstYear}–${record.lastYear}`,
+    label: `publications, abstracts, and posters, ${record.firstYear}–${record.lastYear}`,
   },
   { value: String(record.publications), label: "full publications, including JAMA and Circulation" },
   { value: String(record.areas), label: "therapeutic areas in the published record" },
@@ -94,7 +94,7 @@ export const services = [
       },
       {
         label: "Protocol & SAP",
-        detail: "Design, endpoints and the analysis plan agreed and fixed in writing before any analysis is run.",
+        detail: "Design, endpoints, and the analysis plan agreed and fixed in writing before any analysis is run.",
       },
       {
         label: "Execution",
@@ -113,11 +113,11 @@ export const services = [
     problem:
       "You hold claims or EHR data and no analytic capacity to interrogate it.",
     teaser:
-      "Cohorts, models and the code behind them, so the analysis is reproducible rather than a black box.",
+      "Cohorts, models, and the code behind them, so the analysis is reproducible rather than a black box.",
     approach:
       "We build the cohort, run the statistics and hand back something you can act on — including the code, so the work is reproducible rather than a black box. Extraction and analysis are done by the same team, which is why the cohort definition survives contact with the data.",
     methodology: [
-      "SQL extraction across Hadoop, Teradata and TOAD",
+      "SQL extraction across Hadoop, Teradata, and TOAD",
       "Analysis in SAS and SPSS",
       "Logistic regression and ANOVA",
       "Machine learning on hierarchical files",
@@ -140,7 +140,7 @@ export const services = [
       },
       {
         label: "Cohort definition",
-        detail: "Study period, population and outcome fixed first; inclusion and exclusion applied step by step, with every drop accounted for and comorbidities controlled for.",
+        detail: "Study period, population, and outcome fixed first; inclusion and exclusion applied step by step, with every drop accounted for and comorbidities controlled for.",
       },
       {
         label: "Analysis",
@@ -148,7 +148,7 @@ export const services = [
       },
       {
         label: "Handover",
-        detail: "Results, interpretation and the code behind them, so your team can re-run and extend the work.",
+        detail: "Results, interpretation, and the code behind them, so your team can re-run and extend the work.",
       },
     ],
     cta: "Discuss an analytics project",

@@ -7,7 +7,7 @@ import { Field, TextArea } from "@/components/ui/Field";
 import Button from "@/components/ui/Button";
 
 /**
- * The enquiry form.
+ * The inquiry form.
  *
  * One form, not three. It used to ask which of three routes applied before
  * anything could be filled in, which put a question in front of the form
@@ -15,7 +15,7 @@ import Button from "@/components/ui/Button";
  * write, and sorting it is our job rather than the visitor's.
  *
  * Submission goes through lib/submit to the configured endpoint, which writes
- * the enquiry into Pharmatiya's sheet. Required fields are checked first, and
+ * the inquiry into Pharmatiya's sheet. Required fields are checked first, and
  * the result is announced. Nothing here opens a mail client.
  */
 export default function ContactRouting() {
@@ -36,7 +36,7 @@ export default function ContactRouting() {
     });
     setState("sending");
     try {
-      setState(await sendMessage("Website enquiry", fields));
+      setState(await sendMessage("Website inquiry", fields));
     } catch {
       setState("error");
     }
@@ -96,7 +96,7 @@ export default function ContactRouting() {
           </Button>
           <p role="status" className="text-small text-muted">
             {state === "invalid" && "Please fill in the required fields."}
-            {state === "sent" && "Thank you. Your enquiry has been sent, and we will reply shortly."}
+            {state === "sent" && "Thank you. Your inquiry has been sent, and we will reply shortly."}
             {(state === "unconfigured" || state === "error") && (
               <>
                 That did not send. Please write to{" "}

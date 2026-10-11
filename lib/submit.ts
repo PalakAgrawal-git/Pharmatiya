@@ -40,7 +40,7 @@ export async function sendMessage(
   /* An Apps Script web app answers 200 even when its own code failed, so the
      HTTP status proves nothing: the status it reports is in the body. Without
      this a submission that never reached the sheet still told the visitor
-     "your enquiry has been sent". */
+     "your inquiry has been sent". */
   const text = await response.text();
   let reported: { status?: number; message?: string } | null = null;
   try {

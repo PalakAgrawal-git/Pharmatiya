@@ -47,7 +47,7 @@ export const studies: Study[] = [
       "Wei H, Mehta R, Steinberg G. ISPOR 18th Annual International Meeting, 2013.",
     lead: { value: "47,319", label: "indication–drug–outcome combinations, in under 48 hours" },
     question:
-      "Can relationships between indications, drugs and outcomes be surfaced from routine claims fast enough to direct further study?",
+      "Can relationships between indications, drugs, and outcomes be surfaced from routine claims fast enough to direct further study?",
     data:
       "De-identified claims for five million people over twelve months.",
     method:
@@ -68,7 +68,7 @@ export const studies: Study[] = [
     data:
       "79,839 admissions from 62,647 adult patients at two urban hospitals, July 2008 to September 2010.",
     method:
-      "Electronic surveillance with every case verified against NHSN definitions by three infection preventionists; clinical, cost and demographic data drawn from the enterprise data warehouse.",
+      "Electronic surveillance with every case verified against NHSN definitions by three infection preventionists; clinical, cost, and demographic data drawn from the enterprise data warehouse.",
     finding:
       "2,707 infections in 2,080 patients — 3.3% of patients, 8.5 per 1,000 patient-days, with a median stay of 12 days. Nearly half were not device-related, and C. difficile had become the most common microbial cause.",
   },
@@ -85,7 +85,7 @@ export const studies: Study[] = [
     data:
       "56,554 patients with an indwelling catheter at two tertiary hospitals, 2000–2008, including 28,888 Medicare patients.",
     method:
-      "Matched case–control: 277 coded cases matched on sex, facility, surgery, admission year, severity of illness and DRG.",
+      "Matched case–control: 277 coded cases matched on sex, facility, surgery, admission year, severity of illness, and DRG.",
     finding:
       "382 patients were coded; 1,604 developed the infection. Cases stayed longer (14.2 against 11.0 days) and cost more ($16,913 against $15,553 median per encounter). Cost estimates built on coded cases understate the real burden.",
   },

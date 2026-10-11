@@ -9,7 +9,7 @@ import CTA from "@/components/sections/CTA";
 export const metadata = {
   title: "Pharmatiya Health — Health economics and real-world evidence",
   description:
-    "Twenty-five years designing HEOR and RWE studies across payer, provider and claims data — protocol through interpretation, for commercial, medical affairs and market access teams.",
+    "Twenty-five years designing HEOR and RWE studies across payer, provider, and claims data — protocol through interpretation, for commercial, medical affairs, and market access teams.",
   alternates: { canonical: "/" },
 };
 

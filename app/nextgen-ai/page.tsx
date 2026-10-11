@@ -21,7 +21,7 @@ const division = {
   model: [
     "Structures a plain-language problem into a synopsis",
     "Drafts cohort logic and claims / EHR code families",
-    "Proposes objectives, endpoints, cost and statistical plans",
+    "Proposes objectives, endpoints, cost, and statistical plans",
     "Outlines the outreach workflow and dashboards",
   ],
   researcher: [

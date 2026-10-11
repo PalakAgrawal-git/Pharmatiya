@@ -10,7 +10,7 @@ import Reveal from "@/components/motion/Reveal";
 export const metadata = {
   title: "Contact",
   description:
-    "Send us the question you are trying to answer. Every enquiry is read by a researcher. Book a 30-minute consultation with a senior researcher.",
+    "Send us the question you are trying to answer. Every inquiry is read by a researcher. Book a 30-minute consultation with a senior researcher.",
   alternates: { canonical: "/contact/" },
 };
 
@@ -33,7 +33,7 @@ export default function ContactPage() {
           </Reveal>
           <Reveal delay={120} className="lg:col-span-4 lg:col-start-9">
             <p className="text-small leading-[1.7] text-muted">
-              Every enquiry is read by a researcher. If there is a study in it,
+              Every inquiry is read by a researcher. If there is a study in it,
               we will tell you what data it would take and whether that data
               exists.
             </p>
@@ -41,7 +41,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section id="enquiry" className="scroll-mt-28 border-b border-rule">
+      <section id="inquiry" className="scroll-mt-28 border-b border-rule">
         <div className="shell section grid gap-x-16 gap-y-14 lg:grid-cols-12">
           <Reveal className="lg:col-span-4">
             <h2 className="text-[clamp(1.6rem,1.2rem+1.6vw,2.4rem)] leading-[1.1]">
@@ -70,10 +70,10 @@ export default function ContactPage() {
               no discovery call before the discovery call.
             </p>
             {/* A booking calendar replaces this once one is supplied
-                (client input 6). Until then the enquiry form above is the
+                (client input 6). Until then the inquiry form above is the
                 route, so this points at it rather than showing an empty
                 embed. */}
-            <Button href="#enquiry" variant="secondary">
+            <Button href="#inquiry" variant="secondary">
               Request a time
             </Button>
           </Reveal>

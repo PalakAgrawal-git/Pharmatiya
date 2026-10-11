@@ -76,7 +76,7 @@ export default function SelectedStudies() {
 
             <details className="group mt-5 border-t border-rule pt-4">
               <summary className="flex cursor-pointer list-none items-center justify-between text-small text-accent">
-                Data, method and finding
+                Data, method, and finding
                 <span aria-hidden="true" className="transition-transform group-open:rotate-45">
                   ＋
                 </span>

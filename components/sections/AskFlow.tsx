@@ -24,13 +24,13 @@ const moves = [
     n: "02",
     label: "Structure",
     title: "Laid into the framework",
-    body: "Feasibility first: cohort logic and code families. Then the retrospective study: objectives, endpoints, cost and the statistical plan. Then pragmatic outreach: workflow, funnel and dashboards.",
+    body: "Feasibility first: cohort logic and code families. Then the retrospective study: objectives, endpoints, cost, and the statistical plan. Then pragmatic outreach: workflow, funnel, and dashboards.",
   },
   {
     n: "03",
     label: "Review",
     title: "Checked by a researcher",
-    body: "The draft is copied or downloaded, then reviewed — code lists, windows and sample sizes confirmed against the data — before anything reaches a client.",
+    body: "The draft is copied or downloaded, then reviewed — code lists, windows, and sample sizes confirmed against the data — before anything reaches a client.",
   },
 ];
 

@@ -47,14 +47,14 @@ const eras: Era[] = [
     end: 2014,
     event: "ActiveHealth Management — pharmacy informatics and pharmacovigilance",
     detail:
-      "Director of pharmacy informatics, improving and building clinical programs — polypharmacy, medication adherence, risk adjustment. With physicians and the Aetna Innovation Lab, co-developed a claims-based pharmacovigilance platform for generating hypotheses about drugs, devices and biologics. The method is patented: US 8,744,872.",
+      "Director of pharmacy informatics, improving and building clinical programs — polypharmacy, medication adherence, risk adjustment. With physicians and the Aetna Innovation Lab, co-developed a claims-based pharmacovigilance platform for generating hypotheses about drugs, devices, and biologics. The method is patented: US 8,744,872.",
   },
   {
     start: 2014,
     end: 2019,
     event: "Healthagen — an outcomes research business on the payer side",
     detail:
-      "Conceived, built and ran the outcomes research business inside a payer: retrospective HEOR on claims, and prospective pragmatic trials built on the pharmacovigilance outputs — including the nationwide mSToPS atrial fibrillation screening trial, published in JAMA in 2018.",
+      "Conceived, built, and ran the outcomes research business inside a payer: retrospective HEOR on claims, and prospective pragmatic trials built on the pharmacovigilance outputs — including the nationwide mSToPS atrial fibrillation screening trial, published in JAMA in 2018.",
   },
   {
     start: 2019,
@@ -68,7 +68,7 @@ const eras: Era[] = [
     end: null,
     event: "Pharmatiya, and provider-side evidence today",
     detail:
-      "An independent HEOR and RWE practice working directly with commercial, medical affairs and market access teams. Alongside it: research and value-based contracting built from a national provider's EHR data, and an advisory seat on the American Diabetes Association's Overcoming Therapeutic Inertia initiative.",
+      "An independent HEOR and RWE practice working directly with commercial, medical affairs, and market access teams. Alongside it: research and value-based contracting built from a national provider's EHR data, and an advisory seat on the American Diabetes Association's Overcoming Therapeutic Inertia initiative.",
   },
 ];
 

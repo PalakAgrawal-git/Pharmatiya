@@ -155,7 +155,7 @@ export default function LandmarkProgram() {
             {related.label}
           </a>{" "}
           ({related.venue}, {related.year}), which our principal co-authored
-          with regulators, sponsors and academic centers.
+          with regulators, sponsors, and academic centers.
         </p>
         <p className="mt-3 text-caption leading-[1.6] text-faint">
           Primary result: {program.citation}{" "}

@@ -12,7 +12,7 @@ import { topicCounts } from "@/lib/record";
  * figure had already gone stale when the archive grew.
  *
  * Bars are scaled to the largest area and sorted by it, so the shape of the
- * practice is legible at a glance: one deep specialism, then a spread.
+ * practice is legible at a glance: one deep specialty, then a spread.
  */
 
 /* The site's area names differ from the archive's topic tags in two places. */

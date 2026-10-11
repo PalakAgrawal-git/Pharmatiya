@@ -45,8 +45,8 @@ export default function Hero() {
           <Reveal delay={170}>
             <p className="measure mt-10 text-lede leading-[1.55] text-muted">
               Twenty-five years designing HEOR and RWE studies across payer,
-              provider and claims data — protocol through interpretation, for
-              commercial, medical affairs and market access teams.
+              provider, and claims data — protocol through interpretation, for
+              commercial, medical affairs, and market access teams.
             </p>
           </Reveal>
 

@@ -6,7 +6,7 @@ import type { CSSProperties } from "react";
  * The previous version dropped the numeric column and the tick axis as
  * clutter. That went too far: a forest plot with no scale and no values is
  * not a simplified forest plot, it is an undecodable one — the marks sit at
- * positions that mean nothing, and the only cue left was a single "favours
+ * positions that mean nothing, and the only cue left was a single "favors
  * intervention" arrow. This restores the scale and the numbers, and adds the
  * one thing a manuscript figure assumes you already know.
  *
@@ -64,10 +64,10 @@ export default function ForestPlot({
         Hazard ratios with 95% confidence intervals across four subgroups
       </title>
       <desc id="fp-desc">
-        Overall 0.72, confidence interval 0.61 to 0.85 — favours intervention.
+        Overall 0.72, confidence interval 0.61 to 0.85 — favors intervention.
         Age 65 and over 0.88, 0.74 to 1.05 — crosses 1.0, so no clear
         difference. Prior therapy 1.14, 0.93 to 1.40 — crosses 1.0, so no
-        clear difference. High adherence 0.65, 0.48 to 0.88 — favours
+        clear difference. High adherence 0.65, 0.48 to 0.88 — favors
         intervention. A ratio below 1.0 means fewer events on the
         intervention arm.
       </desc>
@@ -183,7 +183,7 @@ export default function ForestPlot({
                 fill={crosses ? "var(--color-faint)" : "var(--color-series-1)"}
                 fontFamily="var(--font-sans)"
               >
-                {crosses ? "No clear difference" : "Favours intervention"}
+                {crosses ? "No clear difference" : "Favors intervention"}
               </text>
             </g>
           </g>

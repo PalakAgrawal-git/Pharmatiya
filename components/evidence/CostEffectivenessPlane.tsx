@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 
 /**
- * Bootstrap replicates in the north-east quadrant: the intervention is both
+ * Bootstrap replicates in the northeast quadrant: the intervention is both
  * more effective and more costly than the comparator. All but two sit below
  * the willingness-to-pay line, so it is cost-effective at that threshold.
  *
@@ -55,7 +55,7 @@ export default function CostEffectivenessPlane({
     >
       <title id="ce-title">Cost-effectiveness plane with willingness-to-pay threshold</title>
       <desc id="ce-desc">
-        Bootstrap replicates cluster in the north-east quadrant — the
+        Bootstrap replicates cluster in the northeast quadrant — the
         intervention is both more effective and more costly than the
         comparator. Thirteen of fifteen fall below the willingness-to-pay
         threshold line, indicating cost-effectiveness at that threshold.
@@ -63,7 +63,7 @@ export default function CostEffectivenessPlane({
 
       {/* Axes through the origin at (230, 150). The viewBox crops the empty
           left of the plane rather than centring the origin: with the whole
-          cloud in the north-east quadrant, a symmetric frame spent over half
+          cloud in the northeast quadrant, a symmetric frame spent over half
           its width on white space. Both loss quadrants stay visible, which is
           the part that carries meaning. */}
       <line x1="122" y1="150" x2="440" y2="150" stroke="var(--color-faint)" strokeWidth="1" />

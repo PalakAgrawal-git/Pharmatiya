@@ -147,7 +147,7 @@ export default function Milestones() {
             {capitalise(inWords(record.dated))} dated entries. Output is steadiest through the hospital
             epidemiology years, thins between {2009} and 2012, and peaks at{" "}
             {PEAK} in 2018, the year of the mSToPS trial. Four working periods
-            are marked: {FIRST} to 2011, 2011 to 2014, 2014 to 2019 and 2019 to{" "}
+            are marked: {FIRST} to 2011, 2011 to 2014, 2014 to 2019, and 2019 to{" "}
             {LAST}.
           </desc>
 

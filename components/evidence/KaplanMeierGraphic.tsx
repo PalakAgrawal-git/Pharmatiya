@@ -46,7 +46,7 @@ export default function KaplanMeierGraphic({
         Kaplan–Meier survival estimate for two study arms over 24 months
       </title>
       <desc id="km-desc">
-        Stepped survival curves. The intervention arm retains 78 per cent
+        Stepped survival curves. The intervention arm retains 78 percent
         event-free survival at 24 months; the comparator arm retains 55 per
         cent. Curves separate from around month 6 and do not converge.
       </desc>

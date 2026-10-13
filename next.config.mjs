@@ -24,6 +24,40 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
  */
 const serverBuild = process.env.SERVER_BUILD === '1';
 
+/**
+ * The addresses the old site answered on.
+ *
+ * Taken from its sitemap the day before the domain moved. Anyone holding a
+ * bookmark, a link in an email, or a search result for one of these would
+ * otherwise meet a 404 the moment DNS changes — and a search engine seeing
+ * 404s where it had ranked pages drops them rather than following to the
+ * replacements.
+ *
+ * Permanent, because they are: the old pages are not coming back, and a
+ * permanent redirect is what passes a page's standing to its successor.
+ *
+ * Only in a server build. A static export cannot redirect, so a host like
+ * GitHub Pages serves the site without these; the live site is on Vercel,
+ * which can.
+ */
+const OLD_PAGES = [
+  ['/home/', '/'],
+  ['/aboutus/', '/about/'],
+  /* The old booking page. The new contact page keeps booking in its own
+     section rather than on a page of its own. */
+  ['/appointments/', '/contact/#demo'],
+  /* Sign-up for the separate application, which this site does not replace. */
+  ['/register/', '/contact/'],
+  /* The old site's matcher is the ancestor of the synopsis builder. */
+  ['/rwe-matcher/', '/rwe-synopsis/'],
+  /* Pages with no successor: drafts and personal pages left published.
+     Sent to the front page rather than nowhere. */
+  ['/adrika/', '/'],
+  ['/vacation/', '/'],
+  ['/dev/', '/'],
+  ['/dev2/', '/'],
+];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   ...(serverBuild ? {} : { output: 'export' }),
@@ -33,6 +67,17 @@ const nextConfig = {
   reactStrictMode: true,
   basePath,
   assetPrefix: basePath || undefined,
+  ...(serverBuild
+    ? {
+        async redirects() {
+          return OLD_PAGES.map(([source, destination]) => ({
+            source,
+            destination,
+            permanent: true,
+          }));
+        },
+      }
+    : {}),
 };
 
 export default nextConfig;

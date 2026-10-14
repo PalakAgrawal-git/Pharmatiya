@@ -50,9 +50,19 @@ export default function Hero() {
             </p>
           </Reveal>
 
+          {/* Three actions, in the order a visitor is most likely to want
+              them. The synopsis builder leads because it is the only one
+              that gives something back immediately — booking a call asks
+              for a commitment first, and the record is for the reader who
+              is already convinced. */}
           <Reveal delay={250}>
-            <div className="mt-12 flex flex-wrap items-center gap-x-10 gap-y-5">
-              <Button href="/contact/">Book a consultation</Button>
+            <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-5">
+              <Button href="/rwe-synopsis/" size="lg" arrow>
+                Build a synopsis
+              </Button>
+              <Button href="/contact/" variant="secondary" size="lg">
+                Book a consultation
+              </Button>
               <ArrowLink href="/evidence/">View published record</ArrowLink>
             </div>
           </Reveal>

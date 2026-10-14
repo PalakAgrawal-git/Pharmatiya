@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 type Variant = "primary" | "secondary";
-type Size = "sm" | "md";
+type Size = "sm" | "md" | "lg";
 
 type Props = {
   children: React.ReactNode;
@@ -38,6 +38,10 @@ const variants: Record<Variant, string> = {
 const sizes: Record<Size, string> = {
   sm: "min-h-10 px-4",
   md: "min-h-[3.25rem] px-7",
+  /* For the one action a page is built around. Larger text as well as a
+     taller box: height alone reads as a wide button rather than a
+     prominent one. */
+  lg: "min-h-[3.75rem] px-9 text-[1.0625rem]",
 };
 
 export default function Button({

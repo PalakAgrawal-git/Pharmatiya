@@ -31,11 +31,17 @@ export const site = {
   productName: "RWE Synopsis",
 } as const;
 
+/**
+ * The product sits second, directly after Home, at the client's request.
+ * It is the thing a visitor can use rather than read, and burying it
+ * fourth put three pages of reading in front of the only page that does
+ * something.
+ */
 export const nav = [
   { href: "/", label: "Home" },
+  { href: "/rwe-synopsis/", label: "RWE Synopsis" },
   { href: "/services/", label: "Services" },
   { href: "/evidence/", label: "Evidence" },
-  { href: "/rwe-synopsis/", label: "RWE Synopsis" },
   { href: "/about/", label: "About" },
   { href: "/contact/", label: "Contact" },
 ] as const;

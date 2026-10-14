@@ -12,7 +12,21 @@ export const site = {
   name: "Pharmatiya Health",
   legalName: "Pharmatiya LLC",
   tagline: "Healthcare Research & Analytics",
-  url: "https://www.pharmatiya.net",
+
+  /**
+   * The one address the site claims as its own.
+   *
+   * Every canonical tag, the sitemap, the social image URLs and the
+   * structured data are built from it, so it has to be the domain that
+   * actually serves the site — a canonical pointing somewhere that does
+   * not answer is worse than none.
+   *
+   * Set NEXT_PUBLIC_SITE_URL to move it. It is a variable rather than a
+   * constant because the move from .net to .com has to happen at the same
+   * moment DNS does, and a variable can be flipped and reverted in the
+   * time a code change takes to review.
+   */
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.pharmatiya.net",
 
   // Retained verbatim from the current site's footer.
   address: {

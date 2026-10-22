@@ -183,7 +183,11 @@
     border-radius: 2px;
   }
 
-  p, li, dd { overflow-wrap: break-word; hyphens: auto; }
+  /* Long unbroken strings — a URL, a long code — may break so they do not
+     run out of the column. Ordinary words may not: automatic hyphenation
+     split "credible" across two lines in the hero, and a ragged edge reads
+     better than "credi-" does. */
+  p, li, dd { overflow-wrap: break-word; }
 
   ::selection { background: var(--color-accent); color: #071110; }
 }

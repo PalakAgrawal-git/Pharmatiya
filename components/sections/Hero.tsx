@@ -44,9 +44,11 @@ export default function Hero() {
 
           <Reveal delay={170}>
             <p className="measure mt-10 text-lede leading-[1.55] text-muted">
-              Twenty-five years designing HEOR and RWE studies across payer,
-              provider, and claims data — protocol through interpretation, for
-              commercial, medical affairs, and market access teams.
+              Built on decades of experience across healthcare delivery, payer
+              analytics, and life sciences research, Pharmatiya transforms
+              complex real-world data into credible clinical and economic
+              evidence that informs treatment decisions, demonstrates value,
+              and strengthens market access strategies.
             </p>
           </Reveal>
 
